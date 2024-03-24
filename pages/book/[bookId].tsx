@@ -6,6 +6,8 @@ import { BackSVG, ReadSVG, ReadingSVG, PendingSVG } from "@/utils/svgs";
 import LoadComponent from "@/components/LoadComponent";
 import ButtonsBook from "@/components/ButtonsBook";
 import { db } from "@/database/firebase";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import {
   collection,
   query,
@@ -13,26 +15,45 @@ import {
   getDocs,
   DocumentData,
   Query,
+  doc,
+  updateDoc,
+  DocumentReference,
 } from "firebase/firestore";
 
 function BookId() {
   const router: NextRouter = useRouter(),
     bookTitle: string = router.query.bookId?.toString() ?? "",
     [load, setLoad] = useState<boolean>(true),
-    [data, setData] = useState<DocumentData | void>({});
+    [data, setData] = useState<DocumentData | void>({}),
+    [showNotes, setShowNotes] = useState<boolean>(false),
+    [notes, setNotes] = useState<string>("");
 
   useEffect(() => {
     (async function () {
       const book: DocumentData | void = await getBookData(bookTitle);
-      setData(book);
+      setData(book?.data);
       setLoad(false);
     })();
   }, [bookTitle]);
 
+  useEffect(() => setNotes(data?.notes), [data]);
+
+  async function saveNotesInFb() {
+    if (!notes) return;
+
+    try {
+      const book: DocumentData | void = await getBookData(bookTitle);
+      const bookRef: DocumentReference = doc(db, "books", book?.id);
+      await updateDoc(bookRef, { notes });
+    } catch (err: any) {
+      console.error(`Error al guardar las notas en Firebase: ${err.messagee}`);
+    }
+  }
+
   return load ? (
     <LoadComponent />
   ) : (
-    <section className="flex flex-col justify-center items-center w-full gap-y-6">
+    <section className="flex flex-col justify-center items-center w-full gap-y-6 ">
       <BackSVG route="/" />
       <article className="w-[700px] h-[315px] flex flex-row justify-start items-start bg-slate-800 border-4 border-gray-700 rounded-md p-1">
         <Image
@@ -50,7 +71,7 @@ function BookId() {
             </h4>
             <p className="text-md text-gray-200 mb-2">{data?.author}</p>
             <span className="text-sm text-gray-200 ">
-              Género: {data?.gender}{" "}
+              Género: {data?.gender}
             </span>
 
             <div className="flex items-center gap-x-2 text-gray-900">
@@ -77,9 +98,34 @@ function BookId() {
               </span>
             </div>
           </div>
-          <ButtonsBook titleBook={data?.title} />
+          <ButtonsBook
+            showNotes={showNotes}
+            setShowNotes={setShowNotes}
+            titleBook={data?.title}
+            saveNotesInFb={saveNotesInFb}
+          />
         </div>
       </article>
+
+      {showNotes ? (
+        <div className="w-[700px] flex flex-col justify-start items-start bg-slate-9800 border-gray-700 rounded-md p-1 gap-y-10">
+          <ReactQuill
+            className="w-full bg-slate-100"
+            theme="snow"
+            value={notes}
+            onChange={setNotes}
+          />
+          <div
+            className="text-white w-full"
+            dangerouslySetInnerHTML={{ __html: notes }}
+          />
+        </div>
+      ) : (
+        <div
+          className="text-white w-[700px] mt-14"
+          dangerouslySetInnerHTML={{ __html: notes }}
+        />
+      )}
     </section>
   );
 }
@@ -91,12 +137,15 @@ async function getBookData(bookTitle: string) {
     throw new Error("bookTitle is empty");
   } else {
     const q: Query<DocumentData> = query(
-      collection(db, "books"),
-      where("title", "==", bookTitle)
-    );
-    const querySnapshot: DocumentData = await getDocs(q);
+        collection(db, "books"),
+        where("title", "==", bookTitle)
+      ),
+      querySnapshot: DocumentData = await getDocs(q),
+      docData: DocumentData = querySnapshot.docs[0].data(),
+      docId: DocumentData = querySnapshot.docs[0].id;
+
     return !querySnapshot.empty
-      ? querySnapshot.docs[0].data()
+      ? { data: docData, id: docId }
       : console.error("No hay libro con el título: " + bookTitle);
   }
 }

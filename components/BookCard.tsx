@@ -1,4 +1,5 @@
 "use client";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -11,13 +12,12 @@ interface BookProps {
 }
 
 function BookCard({ id, title, author, state, image }: BookProps) {
-  const router = useRouter();
+  const router: AppRouterInstance = useRouter();
 
   return (
-
     <li
       onClick={() => router.push(`/book/${title}`)}
-      className="flex flex-row justify-between w-[300px] items-start gap-x-2 pr-0.5 bg-slate-800 border-4 border-gray-700 h-[135px] cursor-pointer duration-150  rounded-md hover:bg-gray-700 hover:scale-105"
+      className="flex flex-row justify-between w-[300px] items-start gap-x-2 pr-0.5  border-2 bg-[rgb(51,65,85,0.8)] border-gray-600 h-[135px] cursor-pointer duration-150  rounded-md hover:bg-gray-700 hover:scale-105"
     >
       <Image
         src={

@@ -1,6 +1,7 @@
 import AddForm from "@/components/AddForm";
 import { GetServerSidePropsContext } from "next";
 import { getSession } from "next-auth/react";
+import { Session } from "next-auth";
 
 function AddBook({ session }: any) {
   return (
@@ -13,10 +14,10 @@ function AddBook({ session }: any) {
 export default AddBook;
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-  const SESSION = await getSession(ctx);
+  const SESSION: Session | null = await getSession(ctx);
   return {
     props: {
-      session: SESSION?.user ?? null,
+      session: SESSION?.user,
     },
   };
 }
