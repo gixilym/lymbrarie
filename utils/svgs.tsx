@@ -31,7 +31,7 @@ const SettingsSVG = () => {
     <svg
       width={38}
       onClick={() => router.push("/settings")}
-      className="cursor-pointer duration-100 hover:scale-105"
+      className="cursor-pointer duration-100 hover:scale-110"
       viewBox="0 0 24 24"
       fill="none"
     >
@@ -81,7 +81,7 @@ const ReadingSVG = () => (
 );
 
 const PendingSVG = () => (
-  <svg className="w-6 h-6" viewBox="0 0 24 24" fill="#fff">
+  <svg width={25} className="" viewBox="0 0 24 24" fill="#fff">
     <path
       d="M12 7V12L9.5 13.5M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
       stroke="#000000"
@@ -92,32 +92,4 @@ const PendingSVG = () => (
   </svg>
 );
 
-const DefaultUserImg = () => (
-  <svg className="w-20 h-20" viewBox="0 0 24 24" fill="none">
-    <circle
-      opacity="0.5"
-      cx="12"
-      cy="9"
-      r="3"
-      stroke="#1C274C"
-      strokeWidth="1.5"
-    />
-    <circle cx="12" cy="12" r="10" stroke="#1C274C" strokeWidth="1.5" />
-    <path
-      opacity="0.5"
-      d="M17.9691 20C17.81 17.1085 16.9247 15 11.9999 15C7.07521 15 6.18991 17.1085 6.03076 20"
-      stroke="#1C274C"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-    />
-  </svg>
-);
-
-export {
-  BackSVG,
-  SettingsSVG,
-  ReadSVG,
-  ReadingSVG,
-  PendingSVG,
-  DefaultUserImg,
-};
+export { BackSVG, SettingsSVG, ReadSVG, ReadingSVG, PendingSVG };

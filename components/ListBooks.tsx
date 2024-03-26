@@ -31,7 +31,7 @@ function ListBooks({ myBooks }: { myBooks: object[] }) {
       />
     ));
 
-    return all.length > 0 ? all : "Add your first book!";
+    return all.length > 0 ? all : "¡Añade tu primer libro!";
   }
 
   function filterByValue() {
@@ -55,7 +55,7 @@ function ListBooks({ myBooks }: { myBooks: object[] }) {
     return booksFiltered.length > 0 ? (
       booksFiltered
     ) : (
-      <p className="text-gray-200 text-2xl">No matches...</p>
+      <p className="text-gray-200 text-2xl">Sin coincidencias...</p>
     );
   }
 
@@ -79,7 +79,7 @@ function ListBooks({ myBooks }: { myBooks: object[] }) {
     return booksFiltered.length > 0 ? (
       booksFiltered
     ) : (
-      <p className="text-gray-200 text-2xl">No matches...</p>
+      <p className="text-gray-200 text-2xl">Sin coincidencias...</p>
     );
   }
 
@@ -109,7 +109,7 @@ function ListBooks({ myBooks }: { myBooks: object[] }) {
     return booksFiltered.length > 0 ? (
       booksFiltered
     ) : (
-      <p className="text-gray-200 text-2xl">No matches...</p>
+      <p className="text-gray-200 text-2xl">Sin coincidencias...</p>
     );
   }
 

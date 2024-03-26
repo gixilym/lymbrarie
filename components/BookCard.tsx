@@ -31,10 +31,9 @@ function BookCard({ id, title, author, state, image }: BookProps) {
         height={60}
         priority
       />
-      <div className="flex flex-col items-start justify-start py-1.5 w-[200px]">
-        <h3 className="font-semibold text-white ">{title}</h3>
+      <div className="flex flex-col items-start justify-between py-1.5 w-[200px] h-full">
+        <p className="font-semibold text-white ">{title}</p>
         <p className="text-sm text-slate-200">{author}</p>
-        <p className="text-sm text-slate-200">{state}</p>
       </div>
     </li>
   );

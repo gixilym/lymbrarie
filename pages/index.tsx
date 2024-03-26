@@ -17,12 +17,12 @@ import {
 
 function Home({ session, myBooks }: HomeProps) {
   return (
-    <>
+    <div className="flex flex-col justify-start  items-center w-full h-full">
       <HeadPage />
       <HeaderMain session={session} />
       <SearchMain />
       <ListBooks myBooks={myBooks} />
-    </>
+    </div>
   );
 }
 export default Home;
