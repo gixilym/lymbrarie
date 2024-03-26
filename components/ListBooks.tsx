@@ -55,7 +55,9 @@ function ListBooks({ myBooks }: { myBooks: object[] }) {
     return booksFiltered.length > 0 ? (
       booksFiltered
     ) : (
-      <p className="text-gray-200 text-2xl">Sin coincidencias...</p>
+      <p className=" text-gray-200/70 text-2xl font-public font-normal">
+        Sin coincidencias...
+      </p>
     );
   }
 
@@ -79,7 +81,9 @@ function ListBooks({ myBooks }: { myBooks: object[] }) {
     return booksFiltered.length > 0 ? (
       booksFiltered
     ) : (
-      <p className="text-gray-200 text-2xl">Sin coincidencias...</p>
+      <p className=" text-gray-200/70 text-2xl font-public font-normal">
+        Sin coincidencias...
+      </p>
     );
   }
 
@@ -109,7 +113,9 @@ function ListBooks({ myBooks }: { myBooks: object[] }) {
     return booksFiltered.length > 0 ? (
       booksFiltered
     ) : (
-      <p className="text-gray-200 text-2xl">Sin coincidencias...</p>
+      <p className="text-gray-200/70 text-2xl font-public font-normal">
+        Sin coincidencias...
+      </p>
     );
   }
 

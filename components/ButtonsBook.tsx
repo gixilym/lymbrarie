@@ -1,6 +1,5 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { twMerge } from "tailwind-merge";
 import { Dispatch, SetStateAction } from "react";
 
 interface BtnsProps {

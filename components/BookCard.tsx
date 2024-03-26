@@ -11,13 +11,13 @@ interface BookProps {
   image?: string;
 }
 
-function BookCard({ id, title, author, state, image }: BookProps) {
+function BookCard({ title, author, image }: BookProps) {
   const router: AppRouterInstance = useRouter();
 
   return (
     <li
       onClick={() => router.push(`/book/${title}`)}
-      className="flex flex-row justify-between w-[300px] items-start gap-x-2 pr-0.5  border-2 bg-[rgb(51,65,85,0.8)] border-gray-600 h-[135px] cursor-pointer duration-150  rounded-md hover:bg-gray-700 hover:scale-105"
+      className="flex flex-row justify-between w-[300px] items-start gap-x-2 pr-0.5 bg-gradient-to-b from-slate-800/80 to-slate-900/20 border-2 border-rose-300/5 h-[135px] cursor-pointer duration-150 rounded-md hover:scale-105 hover:bg-slate-800"
     >
       <Image
         src={
@@ -32,8 +32,8 @@ function BookCard({ id, title, author, state, image }: BookProps) {
         priority
       />
       <div className="flex flex-col items-start justify-between py-1.5 w-[200px] h-full">
-        <p className="font-semibold text-white ">{title}</p>
-        <p className="text-sm text-slate-200">{author}</p>
+        <p className="font-public font-light text-slate-100 ">{title}</p>
+        <p className="text-sm text-slate-300">{author}</p>
       </div>
     </li>
   );

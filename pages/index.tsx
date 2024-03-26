@@ -17,7 +17,7 @@ import {
 
 function Home({ session, myBooks }: HomeProps) {
   return (
-    <div className="flex flex-col justify-start  items-center w-full h-full">
+    <div className="flex flex-col justify-start items-center w-[950px] h-full">
       <HeadPage />
       <HeaderMain session={session} />
       <SearchMain />
@@ -35,19 +35,20 @@ interface HomeProps {
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const SESSION: Session | null = await getSession(ctx);
   const MY_BOOKS: object[] = await loadListBooks(SESSION);
+
   return {
     props: {
-      session: SESSION?.user,
+      session: SESSION?.user ?? null,
       myBooks: MY_BOOKS,
     },
   };
 }
 
-async function loadListBooks(session: any) {
+async function loadListBooks(session: Session | null) {
   const booksArr: object[] = [];
-  const user: object[] = session?.user;
+  const user: UserProps | undefined = session?.user;
 
-  if ("email" in user) {
+  if (user && "email" in user) {
     const q: Query = query(
       collection(db, "books"),
       where("owner", "==", user.email)
@@ -57,4 +58,10 @@ async function loadListBooks(session: any) {
   }
 
   return booksArr;
+}
+
+interface UserProps {
+  name?: string | null | undefined;
+  email?: string | null | undefined;
+  image?: string | null | undefined;
 }

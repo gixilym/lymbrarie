@@ -1,4 +1,10 @@
 import type { Config } from "tailwindcss";
+import daisyui from "daisyui";
+// import "@fontsource-variable/public-sans";
+// import "@fontsource-variable/public-sans";
+// fontFamily: {
+//   public: ["Public Sans Variable", "mono"],
+// },
 
 const config: Config = {
   content: [
@@ -14,7 +20,10 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
     },
+    fontFamily: {
+      public: ["Public Sans Variable", "mono"],
+    },
   },
-  plugins: [],
+  plugins: [daisyui],
 };
 export default config;
