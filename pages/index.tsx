@@ -6,6 +6,8 @@ import SearchMain from "@/components/SearchMain";
 import ListBooks from "@/components/ListBooks";
 import HeadPage from "@/components/HeadPage";
 import { Session } from "next-auth";
+import { NextRouter, useRouter } from "next/router";
+import { useEffect } from "react";
 import {
   collection,
   query,
@@ -16,6 +18,16 @@ import {
 } from "firebase/firestore";
 
 function Home({ session, myBooks }: HomeProps) {
+  const router: NextRouter = useRouter();
+
+  useEffect(() => {
+    if (!router.query.theme) {
+      router.push({ pathname: "/", query: { theme: "sunset" } }, undefined, {
+        shallow: true,
+      });
+    }
+  }, [router]);
+
   return (
     <div className="flex flex-col justify-start items-center w-[950px] h-full">
       <HeadPage />
@@ -26,11 +38,6 @@ function Home({ session, myBooks }: HomeProps) {
   );
 }
 export default Home;
-
-interface HomeProps {
-  myBooks: object[];
-  session: Session | null;
-}
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const SESSION: Session | null = await getSession(ctx);
@@ -64,4 +71,9 @@ interface UserProps {
   name?: string | null | undefined;
   email?: string | null | undefined;
   image?: string | null | undefined;
+}
+
+interface HomeProps {
+  myBooks: object[];
+  session: Session | null;
 }

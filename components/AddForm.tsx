@@ -50,16 +50,15 @@ function AddForm({ session }: any) {
     router.push("/");
   }
 
+  function cancel() {
+    router.push("/");
+  }
   /* async function editedBook(event: FormEvent) {
     event.preventDefault();
     await axios.put(`/api/books/${params.bookId}`, { ...book, owner: email });
     router.push(`/book/${params.bookId}`);
     router.refresh();
   }*/
-
-  function cancel() {
-    return router.push("/");
-  }
 
   return (
     <form onSubmit={newBook} ref={form} className="w-full">

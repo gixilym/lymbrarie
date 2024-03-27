@@ -1,10 +1,5 @@
 import type { Config } from "tailwindcss";
 import daisyui from "daisyui";
-// import "@fontsource-variable/public-sans";
-// import "@fontsource-variable/public-sans";
-// fontFamily: {
-//   public: ["Public Sans Variable", "mono"],
-// },
 
 const config: Config = {
   content: [
@@ -25,5 +20,8 @@ const config: Config = {
     },
   },
   plugins: [daisyui],
+  daisyui: {
+    themes: ["sunset", "pastel"],
+  },
 };
 export default config;
