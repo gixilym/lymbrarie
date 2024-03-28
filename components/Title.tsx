@@ -1,4 +1,4 @@
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { Params } from "next/dist/shared/lib/router/utils/route-matcher";
 import { twMerge } from "tailwind-merge";
 

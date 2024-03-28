@@ -40,7 +40,6 @@ function BookId() {
 
   async function saveNotesInFb() {
     if (!notes) return;
-
     try {
       const book: DocumentData | void = await getBookData(bookTitle);
       const bookRef: DocumentReference = doc(db, "books", book?.id);
@@ -55,7 +54,7 @@ function BookId() {
   ) : (
     <section className="flex flex-col justify-center items-center w-full gap-y-6 ">
       <BackSVG route="/" />
-      <article className="w-[700px] h-[315px] flex flex-row justify-start items-start bg-slate-800 border-4 border-gray-700 rounded-md p-1">
+      <article className="w-[700px] h-[315px] flex flex-row justify-start items-start rounded-md p-1">
         <Image
           className="aspect-[200/300] w-[200px] h-[300px] object-center object-fill rounded-sm"
           src={data?.image}

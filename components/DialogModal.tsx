@@ -103,8 +103,8 @@ function DialogModal() {
           <option value="Estado" disabled>
             Estado
           </option>
-          <option value="Read">Leyendo</option>
-          <option value="Reading">Leído</option>
+          <option value="Reading">Leyendo</option>
+          <option value="Read">Leído</option>
           <option value="Pending">Pendiente</option>
         </select>
 
