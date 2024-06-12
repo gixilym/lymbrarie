@@ -1,4 +1,4 @@
-import type { Card, Component } from "@/utils/types";
+import type { Component } from "@/utils/types";
 import { motion } from "framer-motion";
 import { Ampersand as GenderIcon, User as UserIcon } from "lucide-react";
 import Image from "next/image";
@@ -54,3 +54,12 @@ function CardWithDetails(props: Card): Component {
 }
 
 export default CardWithDetails;
+
+interface Card {
+  title: string;
+  formatState: () => Component;
+  onClick: () => void;
+  img?: string;
+  gender?: string;
+  author?: string;
+}

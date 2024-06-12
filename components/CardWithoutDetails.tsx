@@ -1,4 +1,4 @@
-import type { Card, Component } from "@/utils/types";
+import type { Component } from "@/utils/types";
 import { motion } from "framer-motion";
 import { Book as BookIcon } from "lucide-react";
 
@@ -30,3 +30,9 @@ function CardWithOutDetails(props: Card): Component {
 }
 
 export default CardWithOutDetails;
+
+interface Card {
+  title: string;
+  formatState: () => Component;
+  onClick: () => void;
+}
