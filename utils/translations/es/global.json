@@ -1,0 +1,86 @@
+{
+    "Search": {
+        "placeholder": "Busca por titulo o autor",
+        "add-book": "Nuevo libro",
+        "select": {
+            "all": "todos",
+            "read": "leídos",
+            "reading": "leyendo",
+            "borrowed": "prestados",
+            "pending": "pendientes"
+        }
+    },
+    "ModalSettings": {
+        "settings": "Configuración",
+        "close": "Cerrar",
+        "language": "Idioma",
+        "theme": "Tema",
+        "dark": "noche",
+        "animations": "Animaciones",
+        "light": "día",
+        "enabled": "Activado",
+        "disabled": "Desactivado",
+        "change-state": "Cambiar estado"
+    },
+    "ModalNewBook": {
+        "new-book": "Nuevo libro",
+        "title": "Titulo: Don Quijote de la Mancha",
+        "author": "Autor: Miguel de Cervantes",
+        "add": "Añadir",
+        "cancel": "Cancelar",
+        "link": "URL de portada: ",
+        "gender": "Género: Ficción",
+        "state": {
+            "default": "Estado",
+            "read": "Leído",
+            "reading": "Leyendo",
+            "pending": "Pendiente",
+            "borrowed": "Prestado"
+        },
+        "generate-link": "genera el link de tu imagen aquí",
+        "loanedto": "Prestado a",
+        "charging": "Cargando"
+    },
+    "HomeIcon": {
+        "profile": "Perfil"
+    },
+    "Footer": {
+        "copyright": "Todos los derechos reservados (y los izquierdos también)",
+        "support": "Soporte",
+        "donate": "Donar"
+    },
+    "ModalSupport": {
+        "title": "Soporte",
+        "text": "Contacta con este email para cualquier pregunta sobre "
+    },
+    "ModalDonations": {
+        "title": "Donaciones",
+        "xd": "Proximamente..."
+    },
+    "ModalProfile": {
+        "books": "libros",
+        "logout": "Cerrar Sesión",
+        "access": "Inicia sesión para acceder a tu perfíl"
+    },
+    "ModalBook": {
+        "delete": "Eliminar libro",
+        "modify-notes": "Modificar notas",
+        "hidden-notes": "Ocultar notas",
+        "edit": "Editar libro",
+        "send-thugs": "Enviar matones",
+        "notes": "Notas",
+        "save": "Guardar",
+        "warning": "Advertencia",
+        "delete-message": "¿Deseas borrar este libro?"
+    },
+    "ModalEdit": {
+        "edit-book": "Editar libro",
+        "edit-confirm": "Editar"
+    },
+    "ModalDelete": {
+        "deleting": "Eliminando"
+    },
+    "ModalMatones": "Enviando matones para recuperar tu libro...",
+    "LogInBtn": "Iniciar Sesión",
+    "Unknow": "Anónimo"
+}

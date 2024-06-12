@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #2d3748;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #35435b;
+}
+
+/* esitlos de btn premium
+.Btn {
+  width: 200px;
+  height: 40px;
+  border: none;
+  border-radius: 40px;
+  background: linear-gradient(
+    to right,
+    #bf953f,
+    #fcf6ba,
+    #b38728,
+    #fbf5b7,
+    #aa771c
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.8em;
+  color: rgb(121, 103, 3);
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+  transition-duration: 3s;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.144);
+  background-size: 200% 200%;
+}
+
+.logoIcon path {
+  fill: rgb(121, 103, 3);
+}
+
+.Btn:hover {
+  transform: scale(0.95);
+  transition-duration: 3s;
+  animation: gradient 5s ease infinite;
+  background-position: right;
+} */

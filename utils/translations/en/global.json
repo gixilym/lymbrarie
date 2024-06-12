@@ -1,0 +1,86 @@
+{
+    "Search": {
+        "placeholder": "Search by title or author",
+        "add-book": "New book",
+        "select": {
+            "all": "all",
+            "read": "read",
+            "reading": "reading",
+            "borrowed": "borrowed",
+            "pending": "pending"
+        }
+    },
+    "ModalSettings": {
+        "settings": "Configuration",
+        "close": "Close",
+        "language": "Language",
+        "theme": "Theme",
+        "dark": "dark",
+        "animations": "Animations",
+        "light": "light",
+        "enabled": "Enabled",
+        "disabled": "Disabled",
+        "change-state": "Change State"
+    },
+    "ModalNewBook": {
+        "new-book": "New book",
+        "title": "Title: The Shining",
+        "author": "Author: Stephen King",
+        "add": "Add",
+        "cancel": "Cancel",
+        "link": "Cover URL: ",
+        "gender": "Gender: Fiction",
+        "state": {
+            "default": "State",
+            "read": "Read",
+            "reading": "Reading",
+            "pending": "Pending",
+            "borrowed": "Borrowed"
+        },
+        "generate-link": "generate the link of your image here",
+        "loanedto": "Loaned to",
+        "charging": "Charging"
+    },
+    "HomeIcon": {
+        "profile": "Profile"
+    },
+    "Footer": {
+        "copyright": "All rights reserved (and the lefts too)",
+        "support": "Support",
+        "donate": "Donate"
+    },
+    "ModalSupport": {
+        "title": "Support",
+        "text": "Contact this email for any questions about "
+    },
+    "ModalDonations": {
+        "title": "Donations",
+        "xd": "Cooming soon..."
+    },
+    "ModalProfile": {
+        "books": "books",
+        "logout": "Log Out",
+        "access": "Log In to access your profile"
+    },
+    "ModalBook": {
+        "delete": "Delete book",
+        "modify-notes": "Modify notes",
+        "hidden-notes": "Hidden notes",
+        "edit": "Edit book",
+        "send-thugs": "Send thugs",
+        "notes": "Notes",
+        "save": "Save",
+        "warning": "Warning",
+        "delete-message": "Do you want to delete this book?"
+    },
+    "ModalEdit": {
+        "edit-book": "Edit book",
+        "edit-confirm": "Edit"
+    },
+    "ModalDelete": {
+        "deleting": "Deleting"
+    },
+    "ModalMatones": "Sending thugs to get your book back...",
+    "LogInBtn": "Log In",
+    "Unknow": "Unknow"
+}
