@@ -17,7 +17,7 @@ const popupsValue = atom({
     profile: false,
     support: false,
     settings: false,
-    matones: false,
+    thugs: false,
     donations: false,
   },
 });

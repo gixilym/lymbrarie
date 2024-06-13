@@ -1,18 +1,18 @@
 import type { Component } from "@/utils/types";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
+import ClosePopUpBtn from "../ClosePopUpBtn";
 import DialogContainer from "../DialogContainer";
 import PopUpTitle from "./TitlePopUp";
-import ClosePopUpBtn from "../ClosePopUpBtn";
 
 function SupportPopUp(): Component {
   const [t] = useTranslation("global");
 
   return (
     <DialogContainer divClass="justify-between items-center">
-      <PopUpTitle title={t("ModalSupport.title")} />
+      <PopUpTitle title={t("support")} />
       <p className="text-2xl text-center">
-        {t("ModalSupport.text")}
+        {t("text-support")}
         <b>
           <i>lymbrarie</i>
         </b>

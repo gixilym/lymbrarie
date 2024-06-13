@@ -63,7 +63,7 @@ function NewBookPopUp({ allTitles }: { allTitles: string[] }): Component {
 
   return (
     <DialogContainer>
-      <PopUpTitle title={t("ModalNewBook.new-book")} />
+      <PopUpTitle title={t("new-book")} />
       <label className="input input-bordered flex items-center sm:text-xl text-lg h-14">
         <TitleIcon size={18} className="mt-0.5 mr-2" />
         <input
@@ -72,7 +72,7 @@ function NewBookPopUp({ allTitles }: { allTitles: string[] }): Component {
           name="title"
           type="text"
           className="grow px-1 h-14"
-          placeholder={t("ModalNewBook.title")}
+          placeholder={t("placeholder-title")}
         />
       </label>
 
@@ -84,7 +84,7 @@ function NewBookPopUp({ allTitles }: { allTitles: string[] }): Component {
           name="author"
           type="text"
           className="grow px-1 h-14"
-          placeholder={t("ModalNewBook.author")}
+          placeholder={t("placeholder-author")}
         />
       </label>
 
@@ -97,7 +97,7 @@ function NewBookPopUp({ allTitles }: { allTitles: string[] }): Component {
           name="gender"
           type="text"
           className="grow px-1 h-14"
-          placeholder={t("ModalNewBook.gender")}
+          placeholder={t("placeholder-gender")}
         />
       </label>
 
@@ -115,10 +115,10 @@ function NewBookPopUp({ allTitles }: { allTitles: string[] }): Component {
             className="select input-bordered border-x-0 rounded-none sm:text-xl text-lg w-full text-gray-400 focus:outline-0 h-14"
             defaultValue="Pending"
           >
-            <option value="Reading">{t("ModalNewBook.state.reading")}</option>
-            <option value="Read">{t("ModalNewBook.state.read")}</option>
-            <option value="Pending">{t("ModalNewBook.state.pending")}</option>
-            <option value="Borrowed">{t("ModalNewBook.state.borrowed")}</option>
+            <option value="Reading">{t("new-book-reading")}</option>
+            <option value="Read">{t("new-book-read")}</option>
+            <option value="Pending">{t("new-book-pending")}</option>
+            <option value="Borrowed">{t("new-book-borrowed")}</option>
           </select>
         </label>
         {book.state == "Borrowed" && (
@@ -130,7 +130,7 @@ function NewBookPopUp({ allTitles }: { allTitles: string[] }): Component {
               name="loaned"
               type="text"
               className="grow px-1"
-              placeholder={t("ModalNewBook.loanedto")}
+              placeholder={t("loanedto")}
             />
           </label>
         )}
@@ -146,7 +146,7 @@ function NewBookPopUp({ allTitles }: { allTitles: string[] }): Component {
             type="text"
             className="grow px-1 text-md"
             placeholder={
-              t("ModalNewBook.link") +
+              t("placeholder-link") +
               "https://res.cloudinary.com/dgs55s8qh/image/upload/v1711510484/dvjjtuqhfjqtwh3vcf3p.webp"
             }
           />
@@ -156,7 +156,7 @@ function NewBookPopUp({ allTitles }: { allTitles: string[] }): Component {
           target="_blank"
           className="link text-slate-500 hover:text-slate-400 duration-75 text-md sm:text-lg"
         >
-          {t("ModalNewBook.generate-link")}
+          {t("generate-link")}
         </Link>
       </div>
 
@@ -172,7 +172,7 @@ function NewBookPopUp({ allTitles }: { allTitles: string[] }): Component {
             onClick={() => closePopUp("add_book")}
             className="btn text-lg w-24 px-2 bg-slate-800 hover:bg-slate-700 text-white"
           >
-            {t("ModalSettings.close")}
+            {t("close")}
           </button>
 
           {isLoading ? (
@@ -181,14 +181,14 @@ function NewBookPopUp({ allTitles }: { allTitles: string[] }): Component {
               type="button"
               className="btn bg-red-500 text-black hover:bg-red-400 duration-100 text-lg w-24 px-2"
             >
-              {t("ModalNewBook.charging")}
+              {t("charging")}
             </button>
           ) : (
             <button
               type="submit"
               className="btn bg-blue-500 text-black hover:bg-blue-400 duration-100 text-lg w-24 px-2"
             >
-              {t("ModalNewBook.add")}
+              {t("add")}
             </button>
           )}
         </form>

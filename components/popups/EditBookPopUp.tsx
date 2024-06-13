@@ -66,7 +66,7 @@ function EditBookPopUp(props: { data: any; documentId: string }): Component {
 
   return (
     <DialogContainer divClass="justify-between">
-      <PopUpTitle title={t("ModalEdit.edit-book")} />
+      <PopUpTitle title={t("edit-book")} />
 
       <label className="input input-bordered flex items-center sm:text-xl text-lg h-14">
         <TitleIcon size={18} className="mt-0.5 mr-2" />
@@ -77,7 +77,7 @@ function EditBookPopUp(props: { data: any; documentId: string }): Component {
           type="text"
           className="grow px-1 placeholder:text-slate-500"
           defaultValue={data.title}
-          placeholder={t("ModalNewBook.title")}
+          placeholder={t("placeholder-title")}
         />
       </label>
 
@@ -89,7 +89,7 @@ function EditBookPopUp(props: { data: any; documentId: string }): Component {
           type="text"
           className="grow px-1 placeholder:text-slate-500"
           defaultValue={data.author}
-          placeholder={t("ModalNewBook.author")}
+          placeholder={t("placeholder-author")}
         />
       </label>
 
@@ -101,7 +101,7 @@ function EditBookPopUp(props: { data: any; documentId: string }): Component {
           type="text"
           className="grow px-1 placeholder:text-slate-500"
           defaultValue={data.gender}
-          placeholder={t("ModalNewBook.gender")}
+          placeholder={t("placeholder-gender")}
         />
       </label>
 
@@ -119,12 +119,12 @@ function EditBookPopUp(props: { data: any; documentId: string }): Component {
             defaultValue="Default"
           >
             <option value="Default" disabled>
-              {t("ModalNewBook.state.default")}
+              {t("new-book-default")}
             </option>
-            <option value="Reading">{t("ModalNewBook.state.reading")}</option>
-            <option value="Read">{t("ModalNewBook.state.read")}</option>
-            <option value="Pending">{t("ModalNewBook.state.pending")}</option>
-            <option value="Borrowed">{t("ModalNewBook.state.borrowed")}</option>
+            <option value="Reading">{t("new-book-reading")}</option>
+            <option value="Read">{t("new-book-read")}</option>
+            <option value="Pending">{t("new-book-pending")}</option>
+            <option value="Borrowed">{t("new-book-borrowed")}</option>
           </select>
         </label>
         {isLoaned && (
@@ -136,7 +136,7 @@ function EditBookPopUp(props: { data: any; documentId: string }): Component {
               type="text"
               defaultValue={data.loaned}
               className="grow px-1 placeholder:text-slate-500"
-              placeholder={t("ModalNewBook.loanedto")}
+              placeholder={t("loanedto")}
             />
           </label>
         )}
@@ -151,7 +151,7 @@ function EditBookPopUp(props: { data: any; documentId: string }): Component {
           className="grow px-1 placeholder:text-slate-500 text-md"
           defaultValue={data.image}
           placeholder={
-            t("ModalNewBook.link") +
+            t("placeholder-link") +
             "https://res.cloudinary.com/dgs55s8qh/image/upload/v1711510484/dvjjtuqhfjqtwh3vcf3p.webp"
           }
         />
@@ -169,7 +169,7 @@ function EditBookPopUp(props: { data: any; documentId: string }): Component {
             onClick={() => closePopUp("edit_book")}
             className="btn text-lg w-24 px-2 bg-slate-800 hover:bg-slate-700 text-white"
           >
-            {t("ModalSettings.close")}
+            {t("close")}
           </button>
 
           {isLoading ? (
@@ -178,14 +178,14 @@ function EditBookPopUp(props: { data: any; documentId: string }): Component {
               type="button"
               className="btn bg-red-500 text-black hover:bg-red-400 duration-100 text-lg w-24 px-2"
             >
-              {t("ModalNewBook.charging")}
+              {t("charging")}
             </button>
           ) : (
             <button
               type="submit"
               className="btn bg-blue-500 text-black hover:bg-blue-400 duration-100 text-lg w-24 px-2"
             >
-              {t("ModalEdit.edit-confirm")}
+              {t("edit-confirm")}
             </button>
           )}
         </form>

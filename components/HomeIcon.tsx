@@ -25,14 +25,14 @@ function HomeIcon(): Component {
         <li onClick={() => openPopUp("profile")}>
           <div className="flex flex-row items-center justify-start gap-x-3">
             <UserIcon size={20} />
-            <p>{t("HomeIcon.profile")}</p>
+            <p>{t("profile")}</p>
           </div>
         </li>
 
         <li onClick={() => openPopUp("settings")}>
           <div className="flex flex-row items-center justify-start gap-x-3">
             <SettingsIcon size={18} />
-            <p>{t("ModalSettings.settings")}</p>
+            <p>{t("settings")}</p>
           </div>
         </li>
       </ul>

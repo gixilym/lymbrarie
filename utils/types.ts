@@ -84,7 +84,7 @@ type Ids =
   | "profile"
   | "support"
   | "settings"
-  | "matones"
+  | "thugs"
   | "donations";
 
 export type {

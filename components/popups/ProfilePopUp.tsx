@@ -24,7 +24,7 @@ function ProfilePopUp({
   function UserData(): Component {
     return (
       <>
-        <PopUpTitle title={t("HomeIcon.profile")} />
+        <PopUpTitle title={t("profile")} />
         <div className="w-full flex flex-col justify-center items-center gap-y-6">
           <div className="flex flex-col justify-center items-center w-full">
             <Image
@@ -42,10 +42,10 @@ function ProfilePopUp({
           <table className="table">
             <thead className="sm:text-xl text-lg">
               <tr className="capitalize">
-                <th>{t("ModalProfile.books")}</th>
-                <th>{t("Search.select.reading")}</th>
-                <th>{t("Search.select.pending")}</th>
-                <th>{t("Search.select.read")}</th>
+                <th>{t("books")}</th>
+                <th>{t("add-book-reading")}</th>
+                <th>{t("add-book-pending")}</th>
+                <th>{t("add-book-read")}</th>
               </tr>
             </thead>
             <tbody className="sm:text-xl text-lg border-y-[1.5px] border-white/10 text-white/60">
@@ -66,7 +66,7 @@ function ProfilePopUp({
     return (
       <div className="flex flex-col justify-start items-center gap-y-8 mt-10">
         <p className="sm:text-3xl text-2xl text-center text-pretty">
-          {t("ModalProfile.access")}
+          {t("access")}
         </p>
         <LogInBtn />
       </div>

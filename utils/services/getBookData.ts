@@ -21,16 +21,16 @@ async function getBookData(bookTitle: string, user: Email) {
 function translateStateBook(state: string, t: any): string {
   switch (state) {
     case "Read":
-      return t("ModalNewBook.state.read");
+      return t("new-book-read");
 
     case "Reading":
-      return t("ModalNewBook.state.reading");
+      return t("new-book-reading");
 
     case "Pending":
-      return t("ModalNewBook.state.pending");
+      return t("new-book-pending");
 
     case "Borrowed":
-      return t("ModalNewBook.loanedto");
+      return t("loanedto");
 
     default:
       return "";

@@ -22,7 +22,7 @@ function FooterMain(): Component {
           src="https://res.cloudinary.com/dgs55s8qh/image/upload/v1711605978/ppwljpmujdgqzuskudws.ico"
           alt="logo"
         />
-        <p>Copyright © 2024 Lymbrarie - {t("Footer.copyright")}</p>
+        <p>Copyright © 2024 Lymbrarie - {t("copyright")}</p>
       </aside>
       <div className="flex space-x-4">
         <div className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline hover:text-slate-300">
@@ -30,14 +30,14 @@ function FooterMain(): Component {
             onClick={() => openPopUp("profile")}
             className="text-lg hover:underline duration-75 cursor-pointer hover:text-slate-300"
           >
-            {t("HomeIcon.profile")}
+            {t("profile")}
           </p>
           <UserIcon size={18} />
         </div>
 
         <div className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline hover:text-slate-300">
           <p onClick={() => openPopUp("support")} className="text-lg">
-            {t("Footer.support")}
+            {t("support")}
           </p>
           <SupportIcon size={18} />
         </div>
@@ -46,7 +46,7 @@ function FooterMain(): Component {
           className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline hover:text-slate-300"
           onClick={() => openPopUp("donations")}
         >
-          <p className="text-lg">{t("Footer.donate")}</p>
+          <p className="text-lg">{t("donate")}</p>
           <HeartIcon size={18} />
         </div>
       </div>

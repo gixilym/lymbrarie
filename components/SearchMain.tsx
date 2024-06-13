@@ -27,7 +27,7 @@ function SearchMain(): Component {
             value={value}
             onChange={handleChangeInput}
             className="focus:outline-0 font-public backdrop-blur-[2px] input join-item w-[260px] h-14 bg-slate-800/60 border-2 border-rose-300/10 placeholder:text-slate-300 text-lg text-slate-300"
-            placeholder={t("Search.placeholder")}
+            placeholder={t("placeholder-search")}
             type="search"
           />
           <select
@@ -39,23 +39,23 @@ function SearchMain(): Component {
               className={twMerge(selectedState(""), "border-t-2")}
               value=""
             >
-              {t("Search.select.all")}
+              {t("add-book-all")}
             </option>
             <option className={selectedState("Reading")} value="Reading">
-              {t("Search.select.reading")}
+              {t("add-book-reading")}
             </option>
             <option className={selectedState("Read")} value="Read">
-              {t("Search.select.read")}
+              {t("add-book-read")}
             </option>
             <option className={selectedState("Pending")} value="Pending">
-              {t("Search.select.pending")}
+              {t("add-book-pending")}
             </option>
             <option className={selectedState("Borrowed")} value="Borrowed">
-              {t("Search.select.borrowed")}
+              {t("add-book-borrowed")}
             </option>
           </select>
         </div>
-        <AddBookBtn text={t("Search.add-book")} />
+        <AddBookBtn text={t("new-book")} />
       </div>
     </form>
   );

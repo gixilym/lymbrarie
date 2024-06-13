@@ -35,7 +35,7 @@ function BookCard({ data, showDetails }: Props): Component {
       case "Reading":
         return (
           <BookState
-            text={t("ModalNewBook.state.reading")}
+            text={t("new-book-reading")}
             bg="bg-yellow-600/30"
             showDetails={showDetails}
           />
@@ -44,7 +44,7 @@ function BookCard({ data, showDetails }: Props): Component {
       case "Read":
         return (
           <BookState
-            text={t("ModalNewBook.state.read")}
+            text={t("new-book-read")}
             bg="bg-green-600/30"
             showDetails={showDetails}
           />
@@ -53,7 +53,7 @@ function BookCard({ data, showDetails }: Props): Component {
       case "Pending":
         return (
           <BookState
-            text={t("ModalNewBook.state.pending")}
+            text={t("new-book-pending")}
             bg="bg-orange-600/30"
             showDetails={showDetails}
           />
@@ -62,7 +62,7 @@ function BookCard({ data, showDetails }: Props): Component {
       case "Borrowed":
         return (
           <BookState
-            text={t("ModalNewBook.loanedto")}
+            text={t("loanedto")}
             bg="bg-orange-600/30"
             showDetails={showDetails}
           />

@@ -1,12 +1,12 @@
-import type { Component, RouterNavigation } from "@/utils/types";
-import { collectionDB } from "@/utils/store";
-import { TriangleAlert as WarningIcon } from "lucide-react";
 import useLoadContent from "@/utils/hooks/useLoadContent";
+import usePopUp from "@/utils/hooks/usePopUp";
+import { collectionDB } from "@/utils/store";
+import type { Component, RouterNavigation } from "@/utils/types";
+import { deleteDoc, doc } from "firebase/firestore";
+import { motion } from "framer-motion";
+import { TriangleAlert as WarningIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
-import { deleteDoc, doc } from "firebase/firestore";
-import usePopUp from "@/utils/hooks/usePopUp";
-import { motion } from "framer-motion";
 
 function DeleteBookPopUp({ documentId }: { documentId: string }): Component {
   const router: RouterNavigation = useRouter(),
@@ -32,9 +32,9 @@ function DeleteBookPopUp({ documentId }: { documentId: string }): Component {
       <div className="modal-box">
         <div className="flex flex-row justify-start items-center gap-x-4">
           <WarningIcon size={25} />
-          <p className="font-bold text-lg">{t("ModalBook.warning")}</p>
+          <p className="font-bold text-lg">{t("warning")}</p>
         </div>
-        <p className="py-4 text-lg">{t("ModalBook.delete-message")}</p>
+        <p className="py-4 text-lg">{t("delete-message")}</p>
         <div className="modal-action">
           <form method="dialog" className="space-x-2">
             <button
@@ -42,11 +42,11 @@ function DeleteBookPopUp({ documentId }: { documentId: string }): Component {
               onClick={() => closePopUp("delete_book")}
               className="btn font-public bg-slate-700 hover:bg-slate-600 text-white text-md w-24"
             >
-              {t("ModalNewBook.cancel")}
+              {t("cancel")}
             </button>
             {isLoading ? (
               <button className="btn font-public text-white text-md w-26">
-                {t("ModalDelete.deleting")}
+                {t("deleting")}
               </button>
             ) : (
               <button
@@ -54,7 +54,7 @@ function DeleteBookPopUp({ documentId }: { documentId: string }): Component {
                 type="button"
                 className="btn font-public bg-red-600 hover:bg-red-500 text-white text-md w-26"
               >
-                {t("ModalBook.delete")}
+                {t("delete-book")}
               </button>
             )}
           </form>

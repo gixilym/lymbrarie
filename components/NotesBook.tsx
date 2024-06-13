@@ -11,7 +11,7 @@ function NotesBook(props: Notes) {
       <div className="flex flex-col items-center justify-between w-full">
         <div className="flex justify-between items-center w-full">
           {(notes?.length > 0 || showNotes) && (
-            <p className="text-2xl opacity-80">{t("ModalBook.notes")}</p>
+            <p className="text-2xl opacity-80">{t("notes")}</p>
           )}
 
           {showNotes && (
@@ -20,7 +20,7 @@ function NotesBook(props: Notes) {
               onClick={updateNotes}
             >
               <SaveIcon size={20} />
-              {t("ModalBook.save")}
+              {t("save")}
             </button>
           )}
         </div>

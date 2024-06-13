@@ -3,7 +3,7 @@ import LoadComponent from "@/components/LoadComponent";
 import NotesBook from "@/components/NotesBook";
 import DeleteBookPopUp from "@/components/popups/DeleteBookPopUp";
 import EditBookPopUp from "@/components/popups/EditBookPopUp";
-import MatonesPopUp from "@/components/popups/MatonesPopUp";
+import ThugsPopUp from "@/components/popups/ThugsPopUp";
 import useLoadContent from "@/utils/hooks/useLoadContent";
 import usePopUp from "@/utils/hooks/usePopUp";
 import useSessionExists from "@/utils/hooks/useSessionExists";
@@ -87,7 +87,7 @@ function BookId(): Component {
   return (
     <section className="flex flex-col justify-center items-center w-full gap-y-6 py-20">
       {popup.edit_book && <EditBookPopUp data={data} documentId={documentId} />}
-      {popup.matones && <MatonesPopUp />}
+      {popup.thugs && <ThugsPopUp />}
       {popup.delete_book && <DeleteBookPopUp documentId={documentId} />}
 
       <article className="w-full sm:w-[700px] h-[315px] flex flex-col sm:flex-row gap-y-12 sm:gap-y-0 justify-start items-center sm:items-start backdrop-blur-[2.5px] relative rounded-lg">
@@ -115,7 +115,7 @@ function BookId(): Component {
               <div className="flex flex-row justify-start items-center gap-x-2">
                 <UserIcon size={18} />
                 <p className="text-md">
-                  {data?.author ? data.author : t("Unknow")}
+                  {data?.author ? data.author : t("unknow")}
                 </p>
               </div>
 
@@ -143,31 +143,27 @@ function BookId(): Component {
                   <li onClick={() => openPopUp("edit_book")}>
                     <div className="flex flex-row items-center justify-start gap-x-3">
                       <PencilIcon size={18} />
-                      <p>{t("ModalBook.edit")}</p>
+                      <p>{t("edit-book")}</p>
                     </div>
                   </li>
                   <li onClick={() => setShowNotes(!showNotes)}>
                     <div className="flex flex-row items-center justify-start gap-x-3">
                       <NotesIcon size={18} />
-                      <p>
-                        {showNotes
-                          ? t("ModalBook.hidden-notes")
-                          : t("ModalBook.modify-notes")}
-                      </p>
+                      <p>{showNotes ? t("hidden-notes") : t("modify-notes")}</p>
                     </div>
                   </li>
                   {data?.state == "Borrowed" && (
-                    <li onClick={() => openPopUp("matones")}>
+                    <li onClick={() => openPopUp("thugs")}>
                       <div className="flex flex-row justify-start items-center gap-x-2">
                         <ThugsIcon size={18} />
-                        <p>{t("ModalBook.send-thugs")}</p>
+                        <p>{t("send-thugs")}</p>
                       </div>
                     </li>
                   )}
                   <li onClick={() => openPopUp("delete_book")}>
                     <div className="flex flex-row items-center justify-start gap-x-3">
                       <TrashIcon size={18} />
-                      <p>{t("ModalBook.delete")}</p>
+                      <p>{t("delete-book")}</p>
                     </div>
                   </li>
                 </ul>

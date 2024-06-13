@@ -9,7 +9,7 @@ function NoMatchesText(): Component {
       id="no-matches"
       className=" text-gray-200/70 text-2xl font-public font-normal w-full text-center mt-8"
     >
-      {t("NoMatches")}
+      {t("no-matches")}
     </p>
   );
 }

@@ -9,8 +9,8 @@ function DonationsPopUp(): Component {
 
   return (
     <DialogContainer divClass="justify-between">
-      <PopUpTitle title={t("ModalDonations.title")} />
-      <p className="text-2xl text-center">{t("ModalDonations.xd")}</p>
+      <PopUpTitle title={t("donations")} />
+      <p className="text-2xl text-center">{t("coming-soon")}</p>
       <div className="modal-action pt-1 w-full">
         <ClosePopUpBtn id="donations" />
       </div>
