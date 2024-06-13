@@ -23,4 +23,3 @@ export default function Document(): Component {
   );
 }
 
-//colocar title yeso dentro de Head
