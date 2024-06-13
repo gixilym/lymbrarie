@@ -85,5 +85,7 @@
     "Unknow": "Anónimo",
     "NoMatches": "Sin coincidencias...",
     "empty-title": "Ingresa un título",
-    "repeated-title": "Este título ya existe"
+    "repeated-title": "Este título ya existe",
+    "page-not-found": "La ruta solicitada no existe",
+    "home": "Inicio"
 }

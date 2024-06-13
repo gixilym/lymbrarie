@@ -85,5 +85,7 @@
     "Unknow": "Unknow",
     "NoMatches": "No Matches...",
     "empty-title": "Enter a title",
-    "repeated-title": "This title already exists"
+    "repeated-title": "This title already exists",
+    "page-not-found": "The specified route does not exist",
+    "home": "Home"
 }
