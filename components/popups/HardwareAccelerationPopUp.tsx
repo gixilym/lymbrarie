@@ -13,7 +13,7 @@ function HardwareAccelerationPopUp(): Component {
   if (!isClient) return null;
   return (
     hardwareMsg == "YES" && (
-      <DialogContainer divClass="h-[200px] items-center justify-between mt-10">
+      <DialogContainer divClass="!h-[200px] items-center justify-between mt-10">
         <p className="text-center sm:text-xl text-lg">
           Se recomienda activar la aceleración por hardware del navegador para
           una experiencia de usuario más fluida.
