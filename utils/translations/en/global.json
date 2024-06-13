@@ -82,5 +82,8 @@
     },
     "ModalMatones": "Sending thugs to get your book back...",
     "LogInBtn": "Log In",
-    "Unknow": "Unknow"
+    "Unknow": "Unknow",
+    "NoMatches": "No Matches...",
+    "empty-title": "Enter a title",
+    "repeated-title": "This title already exists"
 }

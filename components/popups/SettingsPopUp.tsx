@@ -7,7 +7,7 @@ import {
 import { useTranslation } from "react-i18next";
 import ClosePopUpBtn from "../ClosePopUpBtn";
 import DialogContainer from "../DialogContainer";
-import ModalTitle from "./ModalTitle";
+import PopUpTitle from "./TitlePopUp";
 
 function SettingsPopUp(): Component {
   const [t, i18n] = useTranslation("global");
@@ -15,7 +15,7 @@ function SettingsPopUp(): Component {
 
   return (
     <DialogContainer divClass="justify-between">
-      <ModalTitle title={t("ModalSettings.settings")} />
+      <PopUpTitle title={t("ModalSettings.settings")} />
       <div className="w-full flex flex-col justify-start items-center gap-y-6">
         <div className="w-full sm:w-[90%] flex justify-between items-center gap-x-6 sm:gap-x-0">
           <label

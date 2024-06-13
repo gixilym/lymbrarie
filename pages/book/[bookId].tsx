@@ -13,7 +13,7 @@ import {
   BOOK_HANDLER_URL,
   DEFAULT_COVER,
   EMPTY_BOOK,
-  modalsValue,
+  popupsValue,
 } from "@/utils/store";
 import { SettingsSVG } from "@/utils/svgs";
 import type { Component, DocumentVoid, NextRouter } from "@/utils/types";
@@ -51,7 +51,7 @@ function BookId(): Component {
     formatTitle: string = bookTitle.replaceAll("_", " "),
     userExists: boolean = userEmail != null,
     notesProps = { updateNotes, notes, showNotes, setNotes },
-    [modal] = useRecoilState(modalsValue);
+    [popup] = useRecoilState(popupsValue);
 
   useEffect(() => {
     if (!bookTitle) return;
@@ -86,9 +86,9 @@ function BookId(): Component {
 
   return (
     <section className="flex flex-col justify-center items-center w-full gap-y-6 py-20">
-      {modal.edit_book && <EditBookPopUp data={data} documentId={documentId} />}
-      {modal.matones && <MatonesPopUp />}
-      {modal.delete_book && <DeleteBookPopUp documentId={documentId} />}
+      {popup.edit_book && <EditBookPopUp data={data} documentId={documentId} />}
+      {popup.matones && <MatonesPopUp />}
+      {popup.delete_book && <DeleteBookPopUp documentId={documentId} />}
 
       <article className="w-full sm:w-[700px] h-[315px] flex flex-col sm:flex-row gap-y-12 sm:gap-y-0 justify-start items-center sm:items-start backdrop-blur-[2.5px] relative rounded-lg">
         {isLoading ? (

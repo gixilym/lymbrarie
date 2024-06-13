@@ -2,7 +2,7 @@ import usePopUp from "@/utils/hooks/usePopUp";
 import type { Component } from "@/utils/types";
 import { useTranslation } from "react-i18next";
 import DialogContainer from "../DialogContainer";
-import ModalTitle from "./ModalTitle";
+import PopUpTitle from "./TitlePopUp";
 
 function MatonesPopUp(): Component {
   const [t] = useTranslation("global");
@@ -10,7 +10,7 @@ function MatonesPopUp(): Component {
 
   return (
     <DialogContainer>
-      <ModalTitle title={t("ModalMatones")} />
+      <PopUpTitle title={t("ModalMatones")} />
       <div className="modal-action h-full items-end">
         <button
           type="button"

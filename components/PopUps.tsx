@@ -1,4 +1,4 @@
-import { modalsValue } from "@/utils/store";
+import { popupsValue } from "@/utils/store";
 import type { AccountInfo, Component } from "@/utils/types";
 import { useRecoilState } from "recoil";
 import NewBookPopUp from "./popups/NewBookPopUp";
@@ -9,15 +9,15 @@ import DonationsPopUp from "./popups/DonationsPopUp";
 
 function PopUps(props: Props): Component {
   const { allTitles, accountInfo } = props;
-  const [modal] = useRecoilState(modalsValue);
+  const [popup] = useRecoilState(popupsValue);
 
   return (
     <>
-      {modal.add_book && <NewBookPopUp allTitles={allTitles} />}
-      {modal.profile && <ProfilePopUp accountInfo={accountInfo} />}
-      {modal.settings && <SettingsPopUp />}
-      {modal.support && <SupportPopUp />}
-      {modal.donations && <DonationsPopUp />}
+      {popup.add_book && <NewBookPopUp allTitles={allTitles} />}
+      {popup.profile && <ProfilePopUp accountInfo={accountInfo} />}
+      {popup.settings && <SettingsPopUp />}
+      {popup.support && <SupportPopUp />}
+      {popup.donations && <DonationsPopUp />}
     </>
   );
 }

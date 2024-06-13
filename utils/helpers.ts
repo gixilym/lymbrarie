@@ -7,6 +7,7 @@ function notification(type: "success" | "error", msg: string): void {
       backgroundColor: "#202020",
       color: "#fff",
       padding: "6px 20px",
+      zIndex: 50,
     },
   });
 }

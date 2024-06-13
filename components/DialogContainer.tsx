@@ -1,5 +1,6 @@
 import type { Component } from "@/utils/types";
 import { motion } from "framer-motion";
+import { Toaster as ToastNotification } from "react-hot-toast";
 import { twJoin } from "tailwind-merge";
 
 function DialogContainer({ children, divClass }: Props): Component {
@@ -8,7 +9,7 @@ function DialogContainer({ children, divClass }: Props): Component {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.2 }}
-      className="backdrop-blur-md w-full h-full absolute top-0 z-50 flex justify-center items-start bg-transparent"
+      className="backdrop-blur-md w-full h-full absolute top-0 z-40 flex justify-center items-start bg-transparent"
     >
       <div
         className={twJoin(
@@ -18,6 +19,7 @@ function DialogContainer({ children, divClass }: Props): Component {
       >
         {children}
       </div>
+      <ToastNotification reverseOrder={false} position="top-right" />
     </motion.dialog>
   );
 }

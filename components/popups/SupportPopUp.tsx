@@ -2,7 +2,7 @@ import type { Component } from "@/utils/types";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import DialogContainer from "../DialogContainer";
-import ModalTitle from "./ModalTitle";
+import PopUpTitle from "./TitlePopUp";
 import ClosePopUpBtn from "../ClosePopUpBtn";
 
 function SupportPopUp(): Component {
@@ -10,7 +10,7 @@ function SupportPopUp(): Component {
 
   return (
     <DialogContainer divClass="justify-between items-center">
-      <ModalTitle title={t("ModalSupport.title")} />
+      <PopUpTitle title={t("ModalSupport.title")} />
       <p className="text-2xl text-center">
         {t("ModalSupport.text")}
         <b>

@@ -9,10 +9,13 @@ function CardWithOutDetails(props: Card): Component {
     <motion.li
       title={title}
       onClick={onClick}
-      whileHover={{ scale: 1.05 }}
+      whileHover={{
+        scale: 1.03,
+        boxShadow: "2px 4px 61px 5px rgba(0,0,0,0.45)",
+      }}
       initial={{ y: "-300px", opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.4 }}
+      transition={{ duration: 0.3 }}
       className="sm:mx-4 cursor-pointer bg-gradient-to-r from-slate-900 to-transparent backdrop-blur-sm border-r-2 border-b-2 border-rose-300/10 hover:border-rose-300/20 flex flex-col justify-center items-start w-full sm:w-[580px] gap-y-1.5 rounded-xl p-4 relative h-16"
     >
       <div className="flex justify-between sm:justify-center items-center gap-x-4 w-full">

@@ -42,7 +42,12 @@ function ListBooks(props: Props): Component {
   }
 
   function renderBooks(books: object[]): Component {
-    if (books.length == 0 && loadExamples) return <NoMatchesText />;
+    if (
+      (books.length == 0 && loadExamples) ||
+      (books.length == 0 && !loadExamples && userLoggedIn)
+    )
+      return <NoMatchesText />;
+
     return books.map((b: Book) => (
       <BookCard key={b.title} data={b} showDetails={showDetails} />
     ));
@@ -52,12 +57,14 @@ function ListBooks(props: Props): Component {
     const books = userLoggedIn ? myBooks : initialBooks,
       tLC = (val: string) => val?.toLowerCase().trim(),
       checkState = (b: Book) => !check || b.state == stateVal,
-      checkTitle = (b: any) => tLC(b.title)?.includes(tLC(value)),
-      checkAuthor = (b: any) => tLC(b.author)?.includes(tLC(value));
+      checkTitle = (b: Book) => tLC(b.title ?? "")?.includes(tLC(value)),
+      checkAuthor = (b: Book) => tLC(b.author ?? "")?.includes(tLC(value));
 
-    return books?.filter(
+    const filterBooks = books?.filter(
       (b: Book) => checkState(b) && (checkTitle(b) || checkAuthor(b))
     );
+
+    return filterBooks;
   }
 
   return (
@@ -90,6 +97,6 @@ async function exampleBooks() {
 }
 
 interface Props {
-  myBooks: Array<object>;
+  myBooks: object[];
   accountInfo: AccountInfo;
 }

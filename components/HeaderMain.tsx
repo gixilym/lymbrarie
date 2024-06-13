@@ -3,7 +3,6 @@ import SearchMain from "@/components/SearchMain";
 import useSessionExists from "@/utils/hooks/useSessionExists";
 import type { Component } from "@/utils/types";
 import LogInBtn from "./LogInBtn";
-import { Toaster as ToastNotification } from "react-hot-toast";
 import HardwareAccelerationPopUp from "./popups/HardwareAccelerationPopUp";
 
 function HeaderMain(): Component {
@@ -17,10 +16,7 @@ function HeaderMain(): Component {
       ) : (
         <LogInBtn inHeader />
       )}
-
       <HardwareAccelerationPopUp />
-
-      <ToastNotification reverseOrder={false} position="top-right" />
     </header>
   );
 }

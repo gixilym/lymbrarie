@@ -8,8 +8,8 @@ const inputSearch: RecoilString = atom({ key: "inputSearch", default: "" });
 
 const checkboxValue: RecoilString = atom({ key: "checkboxValue", default: "" });
 
-const modalsValue = atom({
-  key: "modals",
+const popupsValue = atom({
+  key: "popups",
   default: {
     add_book: false,
     edit_book: false,
@@ -53,5 +53,5 @@ export {
   BOOK_HANDLER_URL,
   EMPTY_BOOK,
   catchError,
-  modalsValue,
+  popupsValue,
 };

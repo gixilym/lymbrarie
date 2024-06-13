@@ -82,5 +82,8 @@
     },
     "ModalMatones": "Enviando matones para recuperar tu libro...",
     "LogInBtn": "Iniciar Sesión",
-    "Unknow": "Anónimo"
+    "Unknow": "Anónimo",
+    "NoMatches": "Sin coincidencias...",
+    "empty-title": "Ingresa un título",
+    "repeated-title": "Este título ya existe"
 }

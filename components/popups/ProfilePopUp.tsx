@@ -7,7 +7,7 @@ import { twMerge } from "tailwind-merge";
 import DialogContainer from "../DialogContainer";
 import LogInBtn from "../LogInBtn";
 import LogOutBtn from "../LogOut";
-import ModalTitle from "./ModalTitle";
+import PopUpTitle from "./TitlePopUp";
 import ClosePopUpBtn from "../ClosePopUpBtn";
 
 function ProfilePopUp({
@@ -24,7 +24,7 @@ function ProfilePopUp({
   function UserData(): Component {
     return (
       <>
-        <ModalTitle title={t("HomeIcon.profile")} />
+        <PopUpTitle title={t("HomeIcon.profile")} />
         <div className="w-full flex flex-col justify-center items-center gap-y-6">
           <div className="flex flex-col justify-center items-center w-full">
             <Image

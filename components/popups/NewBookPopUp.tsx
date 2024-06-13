@@ -26,7 +26,7 @@ import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { twMerge } from "tailwind-merge";
 import DialogContainer from "../DialogContainer";
-import ModalTitle from "./ModalTitle";
+import PopUpTitle from "./TitlePopUp";
 import usePopUp from "@/utils/hooks/usePopUp";
 
 function NewBookPopUp({ allTitles }: { allTitles: string[] }): Component {
@@ -51,8 +51,8 @@ function NewBookPopUp({ allTitles }: { allTitles: string[] }): Component {
     event.preventDefault();
     const title: string = book.title?.toLowerCase().trim() ?? "";
     const repeteadTitle: boolean = allTitles.includes(title);
-    if (!title) return notification("error", "Nombre vacío");
-    if (repeteadTitle) return notification("error", "Nombre repetido");
+    if (!title) return notification("error", t("empty-title"));
+    if (repeteadTitle) return notification("error", t("repeated-title"));
     const bookData: object = { ...book, owner: userEmail };
     startLoading();
     await axios.post(BOOK_HANDLER_URL, bookData);
@@ -63,7 +63,7 @@ function NewBookPopUp({ allTitles }: { allTitles: string[] }): Component {
 
   return (
     <DialogContainer>
-      <ModalTitle title={t("ModalNewBook.new-book")} />
+      <PopUpTitle title={t("ModalNewBook.new-book")} />
       <label className="input input-bordered flex items-center sm:text-xl text-lg h-14">
         <TitleIcon size={18} className="mt-0.5 mr-2" />
         <input

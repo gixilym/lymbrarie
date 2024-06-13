@@ -20,7 +20,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { twMerge } from "tailwind-merge";
 import DialogContainer from "../DialogContainer";
-import ModalTitle from "./ModalTitle";
+import PopUpTitle from "./TitlePopUp";
 import usePopUp from "@/utils/hooks/usePopUp";
 
 function EditBookPopUp(props: { data: any; documentId: string }): Component {
@@ -66,7 +66,7 @@ function EditBookPopUp(props: { data: any; documentId: string }): Component {
 
   return (
     <DialogContainer divClass="justify-between">
-      <ModalTitle title={t("ModalEdit.edit-book")} />
+      <PopUpTitle title={t("ModalEdit.edit-book")} />
 
       <label className="input input-bordered flex items-center sm:text-xl text-lg h-14">
         <TitleIcon size={18} className="mt-0.5 mr-2" />
