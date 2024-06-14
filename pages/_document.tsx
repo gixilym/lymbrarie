@@ -12,6 +12,7 @@ export default function Document(): Component {
       <meta name="description" content="Donde cada libro encuentra su lugar" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <title>Lymbrarie</title>
+
       <Providers>
         <Body>
           <Main />
@@ -21,4 +22,3 @@ export default function Document(): Component {
     </Html>
   );
 }
-

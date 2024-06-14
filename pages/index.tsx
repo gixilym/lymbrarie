@@ -1,11 +1,7 @@
 import FooterMain from "@/components/FooterMain";
 import HeaderMain from "@/components/HeaderMain";
 import ListBooks from "@/components/ListBooks";
-import LoadComponent from "@/components/LoadComponent";
 import PopUps from "@/components/PopUps";
-import useLoadContent from "@/utils/hooks/useLoadContent";
-import useLocalStorage from "@/utils/hooks/useLocalStorage";
-import useSessionExists from "@/utils/hooks/useSessionExists";
 import useUserEmail from "@/utils/hooks/useUserEmail";
 import { collectionDB } from "@/utils/store";
 import type {
@@ -28,31 +24,22 @@ import { getSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 function Home({ accountInfo }: { accountInfo: AccountInfo }): Component {
-  const { userEmail } = useUserEmail(),
-    [myBooks, setMyBooks] = useState<any>([]),
-    { isLoading, finishLoading, startLoading } = useLoadContent(),
-    { userLoggedIn } = useSessionExists(),
-    conditon: boolean = isLoading || (myBooks.length == 0 && userLoggedIn),
-    allTitles: string[] = myBooks.map((b: Book) => b.title?.toLowerCase());
+  const { userEmail } = useUserEmail();
+  const [myBooks, setMyBooks] = useState<any>([]);
+  const allTitles: string[] = myBooks.map((b: Book) => b.title?.toLowerCase());
 
   useEffect(() => {
     (async function () {
-      startLoading();
       const userBooks: object[] = await getListBooks(userEmail);
       setMyBooks(userBooks);
-      finishLoading();
     })();
-  }, [userEmail]); // eslint-disable-line
+  }, [userEmail]);
 
   return (
     <div className="flex flex-col justify-start items-center w-full sm:max-w-[950px] h-full gap-y-10 sm:gap-y-20">
       <HeaderMain />
       <PopUps allTitles={allTitles} accountInfo={accountInfo} />
-      {conditon ? (
-        <LoadComponent />
-      ) : (
-        <ListBooks myBooks={myBooks} accountInfo={accountInfo} />
-      )}
+      <ListBooks myBooks={myBooks} />
       <FooterMain />
     </div>
   );
@@ -60,10 +47,9 @@ function Home({ accountInfo }: { accountInfo: AccountInfo }): Component {
 export default Home;
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-  const session = await getSession(ctx);
-  const books = await getListBooks(session?.user?.email);
-  const accountInfo = loadAccountInfo(books, session);
-
+  const session: Session = await getSession(ctx);
+  const books: Book[] = await getListBooks(session?.user?.email);
+  const accountInfo: AccountInfo = loadAccountInfo(books, session);
   return { props: { accountInfo } };
 }
 

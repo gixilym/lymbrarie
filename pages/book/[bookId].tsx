@@ -22,7 +22,6 @@ import {
   Ampersand as AmpersandIcon,
   CircleChevronLeft as BackIcon,
   Library as LibraryIcon,
-  NotepadText as NotesIcon,
   Pencil as PencilIcon,
   MessageSquareWarning as ThugsIcon,
   Trash as TrashIcon,
@@ -42,7 +41,6 @@ function BookId(): Component {
     [data, setData] = useState<DocumentVoid>(EMPTY_BOOK),
     [documentId, setDocumentId] = useState<string>(""),
     img: string = data?.image || DEFAULT_COVER,
-    [showNotes, setShowNotes] = useState<boolean>(false),
     { userLoggedIn } = useSessionExists(),
     { userEmail } = useUserEmail(),
     { openPopUp } = usePopUp(),
@@ -50,7 +48,7 @@ function BookId(): Component {
     [t] = useTranslation("global"),
     formatTitle: string = bookTitle.replaceAll("_", " "),
     userExists: boolean = userEmail != null,
-    notesProps = { updateNotes, notes, showNotes, setNotes },
+    notesProps = { updateNotes, notes, setNotes },
     [popup] = useRecoilState(popupsValue);
 
   useEffect(() => {
@@ -63,7 +61,6 @@ function BookId(): Component {
 
   function updateNotes(): void {
     const bookData = { documentId, data, notes };
-    setShowNotes(false);
     axios.put(BOOK_HANDLER_URL, bookData);
   }
 
@@ -85,12 +82,12 @@ function BookId(): Component {
   }
 
   return (
-    <section className="flex flex-col justify-center items-center w-full gap-y-6 py-20">
+    <section className="flex flex-col justify-center items-center w-full gap-y-6 sm:py-10 h-full ">
       {popup.edit_book && <EditBookPopUp data={data} documentId={documentId} />}
       {popup.thugs && <ThugsPopUp />}
       {popup.delete_book && <DeleteBookPopUp documentId={documentId} />}
 
-      <article className="w-full sm:w-[700px] h-[315px] flex flex-col sm:flex-row gap-y-12 sm:gap-y-0 justify-start items-center sm:items-start backdrop-blur-[2.5px] relative rounded-lg">
+      <article className="w-full sm:w-[700px] h-[315px] flex flex-col sm:flex-row gap-y-12 justify-start items-center sm:items-start backdrop-blur-[2.5px] relative">
         {isLoading ? (
           <LoadComponent />
         ) : (
@@ -102,6 +99,7 @@ function BookId(): Component {
               <BackIcon size={40} color="white" className="scale-[3]" />
             </Link>
             <Image
+              priority
               className="aspect-[200/300] w-[200px] h-[300px] object-center object-fill rounded-sm"
               src={img}
               width={100}
@@ -146,12 +144,7 @@ function BookId(): Component {
                       <p>{t("edit-book")}</p>
                     </div>
                   </li>
-                  <li onClick={() => setShowNotes(!showNotes)}>
-                    <div className="flex flex-row items-center justify-start gap-x-3">
-                      <NotesIcon size={18} />
-                      <p>{showNotes ? t("hidden-notes") : t("modify-notes")}</p>
-                    </div>
-                  </li>
+
                   {data?.state == "Borrowed" && (
                     <li onClick={() => openPopUp("thugs")}>
                       <div className="flex flex-row justify-start items-center gap-x-2">
@@ -170,14 +163,14 @@ function BookId(): Component {
               </div>
             </div>
             <NotesBook
-              classText="sm:hidden px-4 w-[100vw] flex flex-col justify-start items-start rounded-md gap-y-4"
+              classText="sm:hidden w-full flex h-full flex-col justify-start items-start gap-y-4"
               {...notesProps}
             />
           </>
         )}
       </article>
       <NotesBook
-        classText="hidden sm:flex px-0 w-[700px] flex-col justify-start items-start rounded-md p-1 gap-y-10"
+        classText="hidden sm:flex w-[700px] flex-col justify-start items-start gap-y-10 mt-10"
         {...notesProps}
       />
     </section>

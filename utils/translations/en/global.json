@@ -58,5 +58,7 @@
     "empty-title": "Enter a title",
     "repeated-title": "This title already exists",
     "page-not-found": "The specified route does not exist",
-    "home": "Home"
+    "home": "Home",
+    "unsaved-changes": "You have unsaved changes. Are you sure you want to go out?",
+    "first-book": "Add your first book!"
 }

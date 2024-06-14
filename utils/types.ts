@@ -5,8 +5,6 @@ import type {
   PropsWithChildren,
   RefObject,
   Reference,
-  SetStateAction,
-  Dispatch,
   ReactNode,
 } from "react";
 import type {
@@ -31,14 +29,6 @@ type FormRef = RefObject<any>;
 type Email = string | undefined | null;
 type RecoilString = RecoilState<string>;
 type DocumentVoid = DocumentData | void;
-
-interface Notes {
-  notes: string;
-  showNotes: boolean;
-  updateNotes: () => void;
-  classText: string;
-  setNotes: Dispatch<SetStateAction<string>>;
-}
 
 interface Book {
   title?: string;
@@ -91,7 +81,6 @@ export type {
   Ids,
   NextApiRequest,
   NextApiResponse,
-  Notes,
   Component,
   PropsWithChildren,
   RouterNavigation,

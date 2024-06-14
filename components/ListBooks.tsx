@@ -4,13 +4,15 @@ import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import useSessionExists from "@/utils/hooks/useSessionExists";
 import { checkboxValue, collectionDB, inputSearch } from "@/utils/store";
 import { ToggleDetailsIcon } from "@/utils/svgs";
-import type { AccountInfo, Book, Component, DocumentData } from "@/utils/types";
+import type { Book, Component, DocumentData } from "@/utils/types";
 import { Query, getDocs, query, where as whereFB } from "firebase/firestore";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
+import AddYourFirstBook from "./AddYourFirstBook";
 import BookCard from "./BookCard";
 import NoMatchesText from "./NoMatchesText";
+import LoadComponent from "./LoadComponent";
 
 function ListBooks(props: Props): Component {
   const { myBooks } = props,
@@ -18,9 +20,22 @@ function ListBooks(props: Props): Component {
     [stateVal] = useRecoilState(checkboxValue),
     [listModeOn, setListModeOn] = useLocalStorage("list-mode-on"),
     [showDetails, setShowDetails] = useState<boolean>(false),
-    [initialBooks, setInitialBooks] = useState<Array<object>>([{}]),
-    [loadExamples, setLoadExamples] = useState(false),
+    [initialBooks, setInitialBooks] = useState<Array<Book>>([]),
+    [loadExamples, setLoadExamples] = useState<boolean>(false),
+    [isLoadingBooks, setIsLoadingBooks] = useState<boolean>(true),
+    [showAddFirstBook, setShowAddFirstBook] = useState<boolean>(false),
     { userLoggedIn, userNotLoggedIn } = useSessionExists();
+
+  useEffect(() => {
+    if (userNotLoggedIn) return;
+    const checkBooksTimeout = setTimeout(() => {
+      if (myBooks.length == 0) {
+        setShowAddFirstBook(true);
+      }
+      setIsLoadingBooks(false);
+    }, 2000);
+    return () => clearTimeout(checkBooksTimeout);
+  }, [myBooks, userNotLoggedIn]);
 
   useEffect(() => {
     if (userNotLoggedIn) loadExampleBooks();
@@ -31,9 +46,11 @@ function ListBooks(props: Props): Component {
   }, [listModeOn]);
 
   async function loadExampleBooks(): Promise<void> {
-    const books: object[] = await exampleBooks();
+    setIsLoadingBooks(true);
+    const books: Book[] = await exampleBooks();
     setInitialBooks(books);
     setLoadExamples(true);
+    setIsLoadingBooks(false);
   }
 
   function changeDetails(): void {
@@ -41,30 +58,33 @@ function ListBooks(props: Props): Component {
     setListModeOn(!showDetails);
   }
 
-  function renderBooks(books: object[]): Component {
+  function renderBooks(books: Book[]): Component {
+    if (isLoadingBooks) return <LoadComponent />;
+
+    if (showAddFirstBook) return <AddYourFirstBook />;
+
     if (
-      (books.length == 0 && loadExamples) ||
-      (books.length == 0 && !loadExamples && userLoggedIn)
-    )
+      (books.length == 0 && loadExamples && inputVal) ||
+      (books.length == 0 && !loadExamples && userLoggedIn && inputVal)
+    ) {
       return <NoMatchesText />;
+    }
 
     return books.map((b: Book) => (
       <BookCard key={b.title} data={b} showDetails={showDetails} />
     ));
   }
 
-  function where(value: string, check: string): object[] {
-    const books = userLoggedIn ? myBooks : initialBooks,
+  function where(value: string, check: string): Book[] {
+    const books: Book[] = userLoggedIn ? myBooks : initialBooks,
       tLC = (val: string) => val?.toLowerCase().trim(),
-      checkState = (b: Book) => !check || b.state == stateVal,
+      checkState = (b: Book) => !check || b.state === stateVal,
       checkTitle = (b: Book) => tLC(b.title ?? "")?.includes(tLC(value)),
       checkAuthor = (b: Book) => tLC(b.author ?? "")?.includes(tLC(value));
 
-    const filterBooks = books?.filter(
+    return books.filter(
       (b: Book) => checkState(b) && (checkTitle(b) || checkAuthor(b))
     );
-
-    return filterBooks;
   }
 
   return (
@@ -89,7 +109,7 @@ function ListBooks(props: Props): Component {
 export default ListBooks;
 
 async function exampleBooks() {
-  const booksArr: Array<object> = [];
+  const booksArr: Array<Book> = [];
   const q: Query = query(collectionDB, whereFB("owner", "==", "examples"));
   const querySnapshot: DocumentData = await getDocs(q);
   querySnapshot.forEach((b: DocumentData) => booksArr.push(b.data()));
@@ -97,6 +117,5 @@ async function exampleBooks() {
 }
 
 interface Props {
-  myBooks: object[];
-  accountInfo: AccountInfo;
+  myBooks: Book[];
 }

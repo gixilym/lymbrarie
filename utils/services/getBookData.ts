@@ -1,8 +1,8 @@
 import { collectionDB } from "@/utils/store";
-import { Query, getDocs, query, where } from "firebase/firestore";
 import type { DocumentData, Email } from "@/utils/types";
+import { Query, getDocs, query, where } from "firebase/firestore";
 
-async function getBookData(bookTitle: string, user: Email) {
+async function getBookData(bookTitle: string, user: Email): Promise<Res> {
   const q: Query<DocumentData> = query(
       collectionDB,
       where("owner", "==", user),
@@ -15,7 +15,7 @@ async function getBookData(bookTitle: string, user: Email) {
 
   return documentsExist
     ? { data: docData, id: docId }
-    : console.error("No hay libro con el título: " + bookTitle);
+    : { data: null, id: null };
 }
 
 function translateStateBook(state: string, t: any): string {
@@ -37,4 +37,8 @@ function translateStateBook(state: string, t: any): string {
   }
 }
 
+
+
 export { getBookData, translateStateBook };
+
+type Res = { data: DocumentData | null; id: DocumentData | null };
