@@ -1,8 +1,8 @@
 import usePopUp from "@/utils/hooks/usePopUp";
-import type { Component, Ids } from "@/utils/types";
+import type { Component, PopUpsIds } from "@/utils/types";
 import { CircleX as CloseIcon } from "lucide-react";
 
-function ClosePopUpBtn({ id }: { id: Ids }): Component {
+function ClosePopUpBtn({ id }: { id: PopUpsIds }): Component {
   const { closePopUp } = usePopUp();
 
   return (

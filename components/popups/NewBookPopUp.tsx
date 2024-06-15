@@ -1,16 +1,9 @@
 import { notification } from "@/utils/helpers";
 import useLoadContent from "@/utils/hooks/useLoadContent";
+import usePopUp from "@/utils/hooks/usePopUp";
 import useUserEmail from "@/utils/hooks/useUserEmail";
 import { BOOK_HANDLER_URL, EMPTY_BOOK } from "@/utils/store";
-import type {
-  Book,
-  Component,
-  FormEvent,
-  FormRef,
-  InputEvent,
-  Reference,
-  RouterNavigation,
-} from "@/utils/types";
+import type { Book, Component, FormRef, InputEvent } from "@/utils/types";
 import axios from "axios";
 import {
   UserRoundSearch as BorrowedIcon,
@@ -20,18 +13,18 @@ import {
   Italic as TitleIcon,
   User as UserIcon,
 } from "lucide-react";
+import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { type FormEvent, type Reference, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { twMerge } from "tailwind-merge";
 import DialogContainer from "../DialogContainer";
 import PopUpTitle from "./TitlePopUp";
-import usePopUp from "@/utils/hooks/usePopUp";
 
 function NewBookPopUp({ allTitles }: { allTitles: string[] }): Component {
   const [t] = useTranslation("global"),
-    { refresh }: RouterNavigation = useRouter(),
+    { refresh }: AppRouterInstance = useRouter(),
     formRef: FormRef = useRef<Reference>(null),
     [book, setBook] = useState<Book>(EMPTY_BOOK),
     { userEmail } = useUserEmail(),

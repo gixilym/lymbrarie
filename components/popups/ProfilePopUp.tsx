@@ -11,13 +11,13 @@ import PopUpTitle from "./TitlePopUp";
 import ClosePopUpBtn from "../ClosePopUpBtn";
 
 function ProfilePopUp({
-  accountInfo,
+  accountDetails,
 }: {
-  accountInfo: AccountInfo;
+  accountDetails: AccountDetails;
 }): Component {
   const [t] = useTranslation("global"),
     { userLoggedIn } = useSessionExists(),
-    { allBooks, reading, read, pending, user } = accountInfo,
+    { allBooks, reading, read, pending, user } = accountDetails,
     img: string = user?.image ?? DEFAULT_COVER,
     name: string = user?.name ?? "";
 

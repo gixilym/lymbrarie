@@ -1,14 +1,20 @@
 "use client";
 import { collection, type CollectionReference } from "firebase/firestore";
-import { RecoilString } from "./types";
-import { atom } from "recoil";
+import { atom, RecoilState } from "recoil";
 import { db } from "@/database/firebase";
+import { Book } from "./types";
 
-const inputSearch: RecoilString = atom({ key: "inputSearch", default: "" });
+const inputSearch: RecoilState<string> = atom({
+  key: "inputSearch",
+  default: "",
+});
 
-const checkboxValue: RecoilString = atom({ key: "checkboxValue", default: "" });
+const stateBookValue: RecoilState<string> = atom({
+  key: "stateBookValue",
+  default: "",
+});
 
-const popupsValue = atom({
+const popupsValue: RecoilState<any> = atom({
   key: "popups",
   default: {
     add_book: false,
@@ -31,7 +37,7 @@ const NAME_DB: string = "books";
 
 const collectionDB: CollectionReference = collection(db, NAME_DB);
 
-const EMPTY_BOOK: object = {
+const EMPTY_BOOK: Book = {
   title: "",
   author: "",
   state: "Pending",
@@ -41,17 +47,12 @@ const EMPTY_BOOK: object = {
   loaned: "",
 };
 
-function catchError(msg: string, err: any): void {
-  console.error(`${msg}: ${err}`);
-}
-
 export {
   inputSearch,
-  checkboxValue,
+  stateBookValue,
   DEFAULT_COVER,
   collectionDB,
   BOOK_HANDLER_URL,
   EMPTY_BOOK,
-  catchError,
   popupsValue,
 };

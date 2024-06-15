@@ -1,4 +1,5 @@
-import type { Component, PropsWithChildren } from "@/utils/types";
+import type { Component } from "@/utils/types";
+import type { PropsWithChildren } from "react";
 
 function Body({ children }: PropsWithChildren): Component {
   return (

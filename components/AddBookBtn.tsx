@@ -1,12 +1,13 @@
 "use client";
 import usePopUp from "@/utils/hooks/usePopUp";
 import useSessionExists from "@/utils/hooks/useSessionExists";
-import type { Component, RouterNavigation } from "@/utils/types";
+import type { Component } from "@/utils/types";
+import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
 
 function AddBookBtn({ text }: { text: string }): Component {
   const { userLoggedIn } = useSessionExists();
-  const router: RouterNavigation = useRouter();
+  const router: AppRouterInstance = useRouter();
   const { openPopUp } = usePopUp();
 
   function goTo(): void {

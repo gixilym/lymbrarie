@@ -1,5 +1,5 @@
 import { getSession } from "next-auth/react";
-import { Session } from "../types";
+import type { Session } from "../types";
 import { useEffect, useState } from "react";
 
 function useSessionExists() {

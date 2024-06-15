@@ -1,12 +1,12 @@
 "use client";
-import type { Component, PropsWithChildren } from "@/utils/types";
-import { RecoilRoot } from "recoil";
-import { I18nextProvider } from "react-i18next";
-import i18next from "i18next";
-import global_es from "@/utils/translations/es/global.json";
-import global_en from "@/utils/translations/en/global.json";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
-import { useEffect } from "react";
+import global_en from "@/utils/translations/en/global.json";
+import global_es from "@/utils/translations/es/global.json";
+import type { Component } from "@/utils/types";
+import i18next from "i18next";
+import { type PropsWithChildren, useEffect } from "react";
+import { I18nextProvider } from "react-i18next";
+import { RecoilRoot } from "recoil";
 
 i18next.init({
   interpolation: { escapeValue: false },

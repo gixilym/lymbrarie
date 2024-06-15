@@ -1,17 +1,17 @@
 "use client";
-import { MouseEventHandler } from "react";
 import { motion } from "framer-motion";
-import { useRouter } from "next/navigation";
-import type { RouterNavigation } from "./types";
 import {
-  List as ListIcon,
   Rows3 as LayoutIcon,
+  List as ListIcon,
   Settings as SettingsIcon,
 } from "lucide-react";
+import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { useRouter } from "next/navigation";
+import type { MouseEventHandler } from "react";
+import { Component } from "./types";
 
-const BackSVG = ({ route }: { route: string }) => {
-  const router: RouterNavigation = useRouter();
-
+const BackSVG = ({ route }: { route: string }): Component => {
+  const router: AppRouterInstance = useRouter();
   return (
     <div
       className=" absolute top-0 right-2 sm:right-0 w-8 h-8 opacity-80 cursor-pointer"
@@ -24,7 +24,7 @@ const BackSVG = ({ route }: { route: string }) => {
   );
 };
 
-const ReadSVG = () => (
+const ReadSVG = (): Component => (
   <svg
     className="w-4 h-4 "
     width="24"
@@ -41,7 +41,7 @@ const ReadSVG = () => (
   </svg>
 );
 
-const ArrowSVG = () => (
+const ArrowSVG = (): Component => (
   <svg viewBox="0 0 24 24" fill="none" width={30} height={30}>
     <path
       fillRule="evenodd"
@@ -62,13 +62,13 @@ const ArrowSVG = () => (
   </svg>
 );
 
-const ReadingSVG = () => (
+const ReadingSVG = (): Component => (
   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="#fff">
     <path d="M17.749937,2.00096718 C18.9408009,2.00096718 19.9155819,2.92612877 19.9947461,4.09691837 L19.999937,4.25096718 L19.999937,19.7490328 C19.999937,20.9398968 19.0747754,21.9146777 17.9039858,21.993842 L17.749937,21.9990328 L6.25006305,21.9990328 C5.05919905,21.9990328 4.08441813,21.0738712 4.00525386,19.9030816 L4.00006305,19.7490328 L4.00006305,4.25096718 C4.00006305,3.06010319 4.92522464,2.08532227 6.09601423,2.006158 L6.25006305,2.00096718 L17.749937,2.00096718 Z M17.749937,3.50096718 L6.25006305,3.50096718 C5.87036728,3.50096718 5.55657209,3.78312106 5.50690966,4.14919663 L5.50006305,4.25096718 L5.50006305,19.7490328 C5.50006305,20.1287286 5.78221693,20.4425238 6.14829249,20.4921862 L6.25006305,20.4990328 L17.749937,20.4990328 C18.1296327,20.4990328 18.4434279,20.2168789 18.4930903,19.8508034 L18.499937,19.7490328 L18.499937,4.25096718 C18.499937,3.87127142 18.2177831,3.55747622 17.8517075,3.5078138 L17.749937,3.50096718 Z M12.248125,12.997298 C12.6623386,12.997298 12.998125,13.3330845 12.998125,13.747298 C12.998125,14.1269938 12.7159712,14.440789 12.3498956,14.4904514 L12.248125,14.497298 L7.75,14.497298 C7.33578644,14.497298 7,14.1615116 7,13.747298 C7,13.3676023 7.28215388,13.0538071 7.64822944,13.0041447 L7.75,12.997298 L12.248125,12.997298 Z M16.25,9.99864902 C16.6642136,9.99864902 17,10.3344355 17,10.748649 C17,11.1283448 16.7178461,11.44214 16.3517706,11.4918024 L16.25,11.498649 L7.75,11.498649 C7.33578644,11.498649 7,11.1628626 7,10.748649 C7,10.3689533 7.28215388,10.0551581 7.64822944,10.0054956 L7.75,9.99864902 L16.25,9.99864902 Z M16.25,7 C16.6642136,7 17,7.33578644 17,7.75 C17,8.12969577 16.7178461,8.44349096 16.3517706,8.49315338 L16.25,8.5 L7.75,8.5 C7.33578644,8.5 7,8.16421356 7,7.75 C7,7.37030423 7.28215388,7.05650904 7.64822944,7.00684662 L7.75,7 L16.25,7 Z" />
   </svg>
 );
 
-const PendingSVG = () => (
+const PendingSVG = (): Component => (
   <svg width={25} className="" viewBox="0 0 24 24" fill="#fff">
     <path
       d="M12 7V12L9.5 13.5M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
@@ -80,7 +80,7 @@ const PendingSVG = () => (
   </svg>
 );
 
-const ListSVG = ({ onClick }: { onClick: MouseEventHandler }) => (
+const ListSVG = ({ onClick }: { onClick: MouseEventHandler }): Component => (
   <motion.svg
     whileHover={{ scale: 0.95 }}
     transition={{ duration: 0.1 }}
@@ -95,7 +95,7 @@ const ListSVG = ({ onClick }: { onClick: MouseEventHandler }) => (
   </motion.svg>
 );
 
-const LayoutSVG = ({ onClick }: { onClick: MouseEventHandler }) => (
+const LayoutSVG = ({ onClick }: { onClick: MouseEventHandler }): Component => (
   <motion.svg
     whileHover={{ scale: 0.95 }}
     transition={{ duration: 0.1 }}
@@ -116,10 +116,10 @@ const ToggleDetailsIcon = ({
 }: {
   showDetails: boolean;
   onClick: MouseEventHandler;
-}) =>
+}): Component =>
   showDetails ? <LayoutSVG onClick={onClick} /> : <ListSVG onClick={onClick} />;
 
-const SettingsSVG = () => (
+const SettingsSVG = (): Component => (
   <div tabIndex={0} role="button">
     <button className="btn btn-square btn-ghost w-8">
       <SettingsIcon size={35} />
@@ -128,13 +128,13 @@ const SettingsSVG = () => (
 );
 
 export {
-  BackSVG,
-  SettingsSVG,
-  ReadSVG,
-  ReadingSVG,
-  PendingSVG,
-  ListSVG,
   ArrowSVG,
+  BackSVG,
   LayoutSVG,
+  ListSVG,
+  PendingSVG,
+  ReadingSVG,
+  ReadSVG,
+  SettingsSVG,
   ToggleDetailsIcon,
 };

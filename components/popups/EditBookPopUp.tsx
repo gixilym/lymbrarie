@@ -1,12 +1,7 @@
 import useLoadContent from "@/utils/hooks/useLoadContent";
-import { BOOK_HANDLER_URL, catchError, EMPTY_BOOK } from "@/utils/store";
-import type {
-  Book,
-  Component,
-  FormRef,
-  InputEvent,
-  Reference,
-} from "@/utils/types";
+import usePopUp from "@/utils/hooks/usePopUp";
+import { BOOK_HANDLER_URL, EMPTY_BOOK } from "@/utils/store";
+import type { Book, Component, FormRef, InputEvent } from "@/utils/types";
 import axios from "axios";
 import {
   UserRoundSearch as BorrowedIcon,
@@ -16,12 +11,11 @@ import {
   Italic as TitleIcon,
   User as UserIcon,
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { type Reference, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { twMerge } from "tailwind-merge";
 import DialogContainer from "../DialogContainer";
 import PopUpTitle from "./TitlePopUp";
-import usePopUp from "@/utils/hooks/usePopUp";
 
 function EditBookPopUp(props: { data: any; documentId: string }): Component {
   const [t] = useTranslation("global"),

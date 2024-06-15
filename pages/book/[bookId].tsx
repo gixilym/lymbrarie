@@ -8,7 +8,7 @@ import useLoadContent from "@/utils/hooks/useLoadContent";
 import usePopUp from "@/utils/hooks/usePopUp";
 import useSessionExists from "@/utils/hooks/useSessionExists";
 import useUserEmail from "@/utils/hooks/useUserEmail";
-import { getBookData, translateStateBook } from "@/utils/services/getBookData";
+import { getBookData, translateStateBook } from "@/utils/helpers";
 import {
   BOOK_HANDLER_URL,
   DEFAULT_COVER,
@@ -16,7 +16,7 @@ import {
   popupsValue,
 } from "@/utils/store";
 import { SettingsSVG } from "@/utils/svgs";
-import type { Component, DocumentVoid, NextRouter } from "@/utils/types";
+import type { Component, Document } from "@/utils/types";
 import axios from "axios";
 import {
   Ampersand as AmpersandIcon,
@@ -29,7 +29,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { type NextRouter, useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilState } from "recoil";
@@ -38,7 +38,7 @@ function BookId(): Component {
   const router: NextRouter = useRouter(),
     bookTitle: string = router.query.bookId?.toString() ?? "",
     { isLoading, startLoading, finishLoading } = useLoadContent(),
-    [data, setData] = useState<DocumentVoid>(EMPTY_BOOK),
+    [data, setData] = useState<Document>(EMPTY_BOOK),
     [documentId, setDocumentId] = useState<string>(""),
     img: string = data?.image || DEFAULT_COVER,
     { userLoggedIn } = useSessionExists(),
@@ -66,7 +66,7 @@ function BookId(): Component {
 
   async function loadBookData(): Promise<void> {
     if (userExists) {
-      const book: DocumentVoid = await getBookData(formatTitle, userEmail);
+      const book: Document = await getBookData(formatTitle, userEmail);
       setData(book?.data);
       setDocumentId(book?.id);
       setNotes(book?.data?.notes);
@@ -75,7 +75,7 @@ function BookId(): Component {
   }
 
   async function loadExampleBookData(): Promise<void> {
-    const book: DocumentVoid = await getBookData(formatTitle, "examples");
+    const book: Document = await getBookData(formatTitle, "examples");
     setData(book?.data);
     setDocumentId(book?.id);
     finishLoading();

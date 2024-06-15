@@ -1,6 +1,6 @@
 "use client";
 import type { Component, InputEvent } from "@/utils/types";
-import { checkboxValue, inputSearch } from "@/utils/store";
+import { stateBookValue, inputSearch } from "@/utils/store";
 import AddBookBtn from "./AddBookBtn";
 import { useRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
@@ -9,14 +9,14 @@ import { twMerge } from "tailwind-merge";
 function SearchMain(): Component {
   const [value, setValue] = useRecoilState(inputSearch),
     handleChangeInput = (e: InputEvent) => setValue(e.target.value),
-    [selectVal, setSelectStateValue] = useRecoilState<string>(checkboxValue),
+    [selectVal, setSelectStateValue] = useRecoilState<string>(stateBookValue),
     handleChangeSelect = (value: string) => setSelectStateValue(value),
     [t] = useTranslation("global");
 
   function selectedState(state: string) {
     return selectVal == state
       ? "bg-blue-300 text-gray-700"
-      : "bg-slate-800 text-white";
+      : "bg-slate-800 text-whitChangeEvent<HTMLInputElement>e";
   }
 
   return (

@@ -1,15 +1,16 @@
 import useLoadContent from "@/utils/hooks/useLoadContent";
 import usePopUp from "@/utils/hooks/usePopUp";
 import { collectionDB } from "@/utils/store";
-import type { Component, RouterNavigation } from "@/utils/types";
+import type { Component } from "@/utils/types";
 import { deleteDoc, doc } from "firebase/firestore";
 import { motion } from "framer-motion";
 import { TriangleAlert as WarningIcon } from "lucide-react";
+import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 
 function DeleteBookPopUp({ documentId }: { documentId: string }): Component {
-  const router: RouterNavigation = useRouter(),
+  const router: AppRouterInstance = useRouter(),
     { isLoading, startLoading, finishLoading } = useLoadContent(),
     { closePopUp } = usePopUp(),
     [t] = useTranslation("global");

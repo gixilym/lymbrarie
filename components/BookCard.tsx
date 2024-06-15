@@ -1,6 +1,7 @@
 import { DEFAULT_COVER } from "@/utils/store";
-import type { Book, Component, NextRouter } from "@/utils/types";
+import type { Book, Component } from "@/utils/types";
 import { motion } from "framer-motion";
+import type { NextRouter } from "next/router";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import { twMerge } from "tailwind-merge";
