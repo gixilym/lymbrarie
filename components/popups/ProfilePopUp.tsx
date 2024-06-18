@@ -1,6 +1,6 @@
 import useSessionExists from "@/utils/hooks/useSessionExists";
 import { DEFAULT_COVER } from "@/utils/store";
-import type { AccountInfo, Component } from "@/utils/types";
+import type { AccountDetails, Component } from "@/utils/types";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
 import { twMerge } from "tailwind-merge";
