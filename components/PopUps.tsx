@@ -1,5 +1,5 @@
 import { popupsValue } from "@/utils/store";
-import type { AccountInfo, Component } from "@/utils/types";
+import type { AccountDetails, Component } from "@/utils/types";
 import { useRecoilState } from "recoil";
 import NewBookPopUp from "./popups/NewBookPopUp";
 import ProfilePopUp from "./popups/ProfilePopUp";
