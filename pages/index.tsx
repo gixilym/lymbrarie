@@ -36,7 +36,7 @@ function Home({
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [booksIsEmpty, setBooksIsEmpty] = useState<boolean | null>(null);
 
-  useEffect((): void => { 
+  useEffect(() => {
     (async function (): Promise<void> {
       const { booksArr, isEmpty } = await getListBooks(userEmail);
       setMyBooks(booksArr);
@@ -51,7 +51,7 @@ function Home({
       <PopUps allTitles={allTitles} accountDetails={accountDetails} />
       {isLoading && <LoadComponent />}
       {!isLoading && booksIsEmpty && <AddYourFirstBook />}
-      {!booksIsEmpty && !isLoading && myBooks.length > 0 && <ListBooks myBooks={myBooks} />}
+      {!booksIsEmpty && !isLoading && <ListBooks myBooks={myBooks} />}
       <FooterMain />
     </div>
   );

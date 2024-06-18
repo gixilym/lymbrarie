@@ -2,11 +2,10 @@
 import HomeIcon from "@/components/HomeIcon";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import useSessionExists from "@/utils/hooks/useSessionExists";
-import { stateBookValue, collectionDB, inputSearch } from "@/utils/store";
+import { collectionDB, inputSearch, stateBookValue } from "@/utils/store";
 import { ToggleDetailsIcon } from "@/utils/svgs";
 import type { Book, Component, Document } from "@/utils/types";
 import { Query, getDocs, query, where as whereFB } from "firebase/firestore";
-import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import BookCard from "./BookCard";
@@ -56,7 +55,7 @@ function ListBooks(props: Props): Component {
   function where(value: string, check: string): Book[] {
     const books: Book[] = userLoggedIn ? myBooks : initialBooks,
       tLC = (val: string) => val?.toLowerCase().trim(),
-      checkState = (b: Book) => !check || b.state === stateVal,
+      checkState = (b: Book) => !check || b.state == stateVal,
       checkTitle = (b: Book) => tLC(b.title ?? "")?.includes(tLC(value)),
       checkAuthor = (b: Book) => tLC(b.author ?? "")?.includes(tLC(value));
 
