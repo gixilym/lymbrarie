@@ -162,17 +162,21 @@ function BookId(): Component {
                 </ul>
               </div>
             </div>
-            <NotesBook
-              classText="sm:hidden w-full flex h-full flex-col justify-start items-start gap-y-4"
-              {...notesProps}
-            />
+            {userExists && (
+              <NotesBook
+                classText="sm:hidden w-full flex h-full flex-col justify-start items-start gap-y-4"
+                {...notesProps}
+              />
+            )}
           </>
         )}
       </article>
-      <NotesBook
-        classText="hidden sm:flex w-[700px] flex-col justify-start items-start gap-y-10 mt-10"
-        {...notesProps}
-      />
+      {userExists && (
+        <NotesBook
+          classText="hidden sm:flex w-[700px] flex-col justify-start items-start gap-y-10 mt-10"
+          {...notesProps}
+        />
+      )}
     </section>
   );
 }
