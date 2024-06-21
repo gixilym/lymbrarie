@@ -23,7 +23,7 @@ import {
 } from "firebase/firestore";
 import type { GetServerSidePropsContext as Ctx } from "next";
 import { getSession } from "next-auth/react";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 function Home(props: Props): Component {
   const { accountDetails } = props,
@@ -36,14 +36,16 @@ function Home(props: Props): Component {
       [myBooks]
     );
 
-  useEffect(() => {
-    (async function (): Promise<void> {
-      const { booksArr, isEmpty } = await getListBooks(userEmail);
-      setMyBooks(booksArr);
-      setBooksIsEmpty(isEmpty);
-      setIsLoading(false);
-    })();
+  const fetchBooks: () => Promise<void> = useCallback(async () => {
+    const { booksArr, isEmpty } = await getListBooks(userEmail);
+    setMyBooks(booksArr);
+    setBooksIsEmpty(isEmpty);
+    setIsLoading(false);
   }, [userEmail]);
+
+  useEffect(() => {
+    fetchBooks();
+  }, [fetchBooks]);
 
   return (
     <div className="flex flex-col justify-start items-center w-full sm:max-w-[950px] h-full gap-y-10 sm:gap-y-20">

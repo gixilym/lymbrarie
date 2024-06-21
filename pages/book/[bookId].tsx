@@ -88,11 +88,11 @@ function BookId(): Component {
       {popup.thugs && <ThugsPopUp />}
       {popup.delete_book && <DeleteBookPopUp documentId={documentId} />}
 
-      <article className="w-full sm:w-[700px] h-[315px] flex flex-col sm:flex-row gap-y-12 justify-start items-center sm:items-start backdrop-blur-[2.5px] relative">
-        {isLoading ? (
-          <LoadComponent />
-        ) : (
-          <>
+      {isLoading ? (
+        <LoadComponent />
+      ) : (
+        <>
+          <article className="w-full sm:w-[700px] h-[315px] flex flex-col sm:flex-row gap-y-12 justify-start items-center sm:items-start backdrop-blur-[2.5px] relative">
             <Link
               href="/"
               className="absolute w-12 right-0 rounded-full z-10 mr-2 sm:mr-0 btn btn-ghost"
@@ -169,14 +169,14 @@ function BookId(): Component {
                 {...notesProps}
               />
             )}
-          </>
-        )}
-      </article>
-      {userExists && (
-        <NotesBook
-          classText="hidden sm:flex w-[700px] flex-col justify-start items-start gap-y-10 mt-10"
-          {...notesProps}
-        />
+          </article>
+          {userExists && (
+            <NotesBook
+              classText="hidden sm:flex w-[700px] flex-col justify-start items-start gap-y-10 mt-10"
+              {...notesProps}
+            />
+          )}
+        </>
       )}
     </section>
   );
