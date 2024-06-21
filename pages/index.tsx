@@ -23,18 +23,18 @@ import {
 } from "firebase/firestore";
 import type { GetServerSidePropsContext as Ctx } from "next";
 import { getSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-function Home({
-  accountDetails,
-}: {
-  accountDetails: AccountDetails;
-}): Component {
-  const { userEmail } = useUserEmail();
-  const [myBooks, setMyBooks] = useState<any>([]);
-  const allTitles: string[] = myBooks.map((b: Book) => b.title?.toLowerCase());
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [booksIsEmpty, setBooksIsEmpty] = useState<boolean | null>(null);
+function Home(props: Props): Component {
+  const { accountDetails } = props,
+    { userEmail } = useUserEmail(),
+    [myBooks, setMyBooks] = useState<any>([]),
+    [isLoading, setIsLoading] = useState<boolean>(true),
+    [booksIsEmpty, setBooksIsEmpty] = useState<boolean | null>(null),
+    allTitles: string[] = useMemo(
+      () => myBooks.map((b: Book) => b.title?.toLowerCase()),
+      [myBooks]
+    );
 
   useEffect(() => {
     (async function (): Promise<void> {
@@ -102,3 +102,6 @@ function calculateTotal(arr: object[], state: string): number {
 }
 
 type ResProp = { props: { accountDetails: AccountDetails } };
+interface Props {
+  accountDetails: AccountDetails;
+}

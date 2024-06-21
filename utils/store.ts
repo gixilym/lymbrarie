@@ -37,6 +37,8 @@ const NAME_DB: string = "books";
 
 const collectionDB: CollectionReference = collection(db, NAME_DB);
 
+const EXAMPLES_BOOKS: string = "examples";
+
 const EMPTY_BOOK: Book = {
   title: "",
   author: "",
@@ -55,4 +57,5 @@ export {
   BOOK_HANDLER_URL,
   EMPTY_BOOK,
   popupsValue,
+  EXAMPLES_BOOKS,
 };

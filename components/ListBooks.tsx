@@ -2,16 +2,21 @@
 import HomeIcon from "@/components/HomeIcon";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import useSessionExists from "@/utils/hooks/useSessionExists";
-import { collectionDB, inputSearch, stateBookValue } from "@/utils/store";
+import {
+  collectionDB,
+  EXAMPLES_BOOKS,
+  inputSearch,
+  stateBookValue,
+} from "@/utils/store";
 import { ToggleDetailsIcon } from "@/utils/svgs";
-import type { Book, Component, Document } from "@/utils/types";
-import { Query, getDocs, query, where as whereFB } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import type { Book, Component, Document, MemoComponent } from "@/utils/types";
+import { getDocs, Query, query, where as whereFB } from "firebase/firestore";
+import { memo, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import BookCard from "./BookCard";
 import NoMatchesText from "./NoMatchesText";
 
-function ListBooks(props: Props): Component {
+const ListBooks: MemoComponent = memo(function ListBooksMemo(props: Props) {
   const { myBooks } = props,
     [inputVal] = useRecoilState(inputSearch),
     [stateVal] = useRecoilState(stateBookValue),
@@ -76,13 +81,13 @@ function ListBooks(props: Props): Component {
       </ul>
     </section>
   );
-}
+});
 
 export default ListBooks;
 
 async function exampleBooks(): Promise<Book[]> {
   const booksArr: Array<Book> = [];
-  const q: Query = query(collectionDB, whereFB("owner", "==", "examples"));
+  const q: Query = query(collectionDB, whereFB("owner", "==", EXAMPLES_BOOKS));
   const querySnapshot: Document = await getDocs(q);
   querySnapshot.forEach((b: Document) => booksArr.push(b?.data()));
   return booksArr;

@@ -13,6 +13,7 @@ import {
   BOOK_HANDLER_URL,
   DEFAULT_COVER,
   EMPTY_BOOK,
+  EXAMPLES_BOOKS,
   popupsValue,
 } from "@/utils/store";
 import { SettingsSVG } from "@/utils/svgs";
@@ -75,7 +76,7 @@ function BookId(): Component {
   }
 
   async function loadExampleBookData(): Promise<void> {
-    const book: Document = await getBookData(formatTitle, "examples");
+    const book: Document = await getBookData(formatTitle, EXAMPLES_BOOKS);
     setData(book?.data);
     setDocumentId(book?.id);
     finishLoading();

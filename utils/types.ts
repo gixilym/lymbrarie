@@ -1,4 +1,10 @@
-import type { ChangeEvent, JSX, RefObject, ReactNode } from "react";
+import type {
+  ChangeEvent,
+  JSX,
+  RefObject,
+  ReactNode,
+  MemoExoticComponent,
+} from "react";
 import type { Session as NextSession } from "next-auth";
 import type { DocumentData } from "firebase/firestore";
 
@@ -15,6 +21,8 @@ type Email = string | undefined | null;
 type Document = DocumentData | void;
 
 type User = UserData | null;
+
+type MemoComponent = MemoExoticComponent<(arg0: any) => Component>;
 
 type PopUpsIds =
   | "add_book"
@@ -61,6 +69,7 @@ export type {
   Book,
   InputEvent,
   FormRef,
+  MemoComponent,
   AccountDetails,
   User,
   Email,
