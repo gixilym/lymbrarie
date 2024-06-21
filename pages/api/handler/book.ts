@@ -1,12 +1,13 @@
-import { addDoc, setDoc, doc } from "firebase/firestore";
+import { addDoc, setDoc, doc, deleteDoc } from "firebase/firestore";
 import { collectionDB } from "@/utils/store";
 import type { Book } from "@/utils/types";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 function handlerBook(req: NextApiRequest, res: NextApiResponse): void {
   const body = req.body;
+  const method: string = req.method ?? "INVALID_REQUEST";
 
-  switch (req.method) {
+  switch (method) {
     case "POST": {
       const bookData: Book = body;
       addNewBook(bookData);
@@ -25,8 +26,14 @@ function handlerBook(req: NextApiRequest, res: NextApiResponse): void {
       break;
     }
 
+    case "DELETE": {
+      const documentId = req.body;
+      deleteBook(documentId);
+      break;
+    }
+
     default: {
-      res.status(405).json({ message: "Petición inválida" });
+      invalidRequest();
       break;
     }
   }
@@ -46,10 +53,14 @@ function handlerBook(req: NextApiRequest, res: NextApiResponse): void {
     res.status(200).json({ message: "Notas actualizadas correctamente" });
   }
 
-  /*function deleteBook(id: string) {
+  function deleteBook(id: string): void {
     deleteDoc(doc(collectionDB, id));
     res.status(200).json({ message: "Documento eliminado correctamente" });
-  }*/
+  }
+
+  function invalidRequest(): void {
+    res.status(400).json({ message: "Petición inválida" });
+  }
 }
 
 export default handlerBook;

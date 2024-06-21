@@ -1,23 +1,26 @@
 import useLoadContent from "@/utils/hooks/useLoadContent";
 import usePopUp from "@/utils/hooks/usePopUp";
-import { collectionDB } from "@/utils/store";
+import { BOOK_HANDLER_URL, inputSearch } from "@/utils/store";
 import type { Component } from "@/utils/types";
-import { deleteDoc, doc } from "firebase/firestore";
+import axios from "axios";
 import { motion } from "framer-motion";
 import { TriangleAlert as WarningIcon } from "lucide-react";
 import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
+import { useRecoilState } from "recoil";
 
 function DeleteBookPopUp({ documentId }: { documentId: string }): Component {
   const router: AppRouterInstance = useRouter(),
     { isLoading, startLoading, finishLoading } = useLoadContent(),
     { closePopUp } = usePopUp(),
-    [t] = useTranslation("global");
+    [t] = useTranslation("global"),
+    [_, setSearchVal] = useRecoilState(inputSearch);
 
   async function deleteDocument(): Promise<void> {
     startLoading();
-    await deleteDoc(doc(collectionDB, documentId));
+    axios.delete(BOOK_HANDLER_URL, { data: documentId });
+    setSearchVal("");
     closePopUp("delete_book");
     finishLoading();
     router.push("/");
