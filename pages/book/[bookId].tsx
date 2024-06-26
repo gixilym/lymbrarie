@@ -34,6 +34,7 @@ import { type NextRouter, useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilState } from "recoil";
+import Head from "next/head";
 
 function BookId(): Component {
   const router: NextRouter = useRouter(),
@@ -84,6 +85,10 @@ function BookId(): Component {
 
   return (
     <section className="flex flex-col justify-center items-center w-full gap-y-6 sm:py-10 h-full ">
+      <Head>
+        <title>{data?.title || "lymbrarie"}</title>
+      </Head>
+
       {popup.edit_book && <EditBookPopUp data={data} documentId={documentId} />}
       {popup.thugs && <ThugsPopUp />}
       {popup.delete_book && <DeleteBookPopUp documentId={documentId} />}
