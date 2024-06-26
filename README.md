@@ -1,7 +1,7 @@
 
 # Lymbrarie 📖
 En Lymbarie puede llevar un registro ordenado de lo que leíste, lees o planeas leer.
-***
+![image](https://github.com/gixilym/lymbrarie/assets/104705119/2d905039-1933-4dcc-a858-fc4a734eccc2)
 ### Demo 🟢
 https://lymbrarie.vercel.app
 ***

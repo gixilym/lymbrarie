@@ -23,6 +23,7 @@ import {
 } from "firebase/firestore";
 import type { GetServerSidePropsContext as Ctx } from "next";
 import { getSession } from "next-auth/react";
+import Head from "next/head";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 function Home(props: Props): Component {
@@ -49,6 +50,9 @@ function Home(props: Props): Component {
 
   return (
     <div className="flex flex-col justify-start items-center w-full sm:max-w-[950px] h-full gap-y-10 sm:gap-y-20">
+      <Head>
+        <title>lymbrarie</title>
+      </Head>
       <HeaderMain />
       <PopUps allTitles={allTitles} accountDetails={accountDetails} />
       {isLoading && <LoadComponent />}
@@ -96,9 +100,10 @@ function loadAccountDetails(
 }
 
 function calculateTotal(arr: object[], state: string): number {
-  const total: number = arr.reduce(function (acc: number, b: Book) {
-    return b.state == state ? ++acc : acc;
-  }, 0);
+  const total: number = arr.reduce(
+    (acc: number, b: Book) => (b.state == state ? ++acc : acc),
+    0
+  );
 
   return total;
 }
