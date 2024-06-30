@@ -16,6 +16,7 @@ function SettingsPopUp(): Component {
   return (
     <DialogContainer divClass="justify-between">
       <PopUpTitle title={t("settings")} />
+
       <div className="w-full flex flex-col justify-start items-center gap-y-6">
         <div className="w-full sm:w-[90%] flex justify-between items-center gap-x-6 sm:gap-x-0">
           <label

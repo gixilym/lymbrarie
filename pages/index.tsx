@@ -51,7 +51,7 @@ function Home(props: Props): Component {
   return (
     <div className="flex flex-col justify-start items-center w-full sm:max-w-[950px] h-full gap-y-10 sm:gap-y-20">
       <Head>
-        <title>lymbrarie</title>
+        <title>Lymbrarie</title>
       </Head>
       <HeaderMain />
       <PopUps allTitles={allTitles} accountDetails={accountDetails} />

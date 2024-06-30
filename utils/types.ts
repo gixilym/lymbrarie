@@ -1,12 +1,12 @@
+import type { DocumentData } from "firebase/firestore";
+import type { Session as NextSession } from "next-auth";
 import type {
   ChangeEvent,
   JSX,
-  RefObject,
-  ReactNode,
   MemoExoticComponent,
+  ReactNode,
+  RefObject,
 } from "react";
-import type { Session as NextSession } from "next-auth";
-import type { DocumentData } from "firebase/firestore";
 
 type Component = JSX.Element | JSX.Element[] | ReactNode;
 
@@ -23,6 +23,10 @@ type Document = DocumentData | void;
 type User = UserData | null;
 
 type MemoComponent = MemoExoticComponent<(arg0: any) => Component>;
+
+type GoTo = Promise<boolean> | any;
+
+type SelectEvent = ChangeEvent<HTMLSelectElement>;
 
 type PopUpsIds =
   | "add_book"
@@ -63,15 +67,17 @@ interface UserData {
 }
 
 export type {
-  PopUpsIds,
-  Component,
-  Session,
-  Book,
-  InputEvent,
-  FormRef,
-  MemoComponent,
   AccountDetails,
-  User,
-  Email,
+  Book,
+  Component,
   Document,
+  Email,
+  FormRef,
+  InputEvent,
+  MemoComponent,
+  PopUpsIds,
+  Session,
+  GoTo,
+  User,
+  SelectEvent,
 };

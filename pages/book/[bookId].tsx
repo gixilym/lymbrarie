@@ -1,14 +1,15 @@
 "use client";
+import BackBtn from "@/components/BackBtn";
 import LoadComponent from "@/components/LoadComponent";
 import NotesBook from "@/components/NotesBook";
 import DeleteBookPopUp from "@/components/popups/DeleteBookPopUp";
 import EditBookPopUp from "@/components/popups/EditBookPopUp";
 import ThugsPopUp from "@/components/popups/ThugsPopUp";
+import { getBookData, translateStateBook } from "@/utils/helpers";
 import useLoadContent from "@/utils/hooks/useLoadContent";
 import usePopUp from "@/utils/hooks/usePopUp";
 import useSessionExists from "@/utils/hooks/useSessionExists";
 import useUserEmail from "@/utils/hooks/useUserEmail";
-import { getBookData, translateStateBook } from "@/utils/helpers";
 import {
   BOOK_HANDLER_URL,
   DEFAULT_COVER,
@@ -21,20 +22,18 @@ import type { Component, Document } from "@/utils/types";
 import axios from "axios";
 import {
   Ampersand as AmpersandIcon,
-  CircleChevronLeft as BackIcon,
   Library as LibraryIcon,
   Pencil as PencilIcon,
   MessageSquareWarning as ThugsIcon,
   Trash as TrashIcon,
   User as UserIcon,
 } from "lucide-react";
+import Head from "next/head";
 import Image from "next/image";
-import Link from "next/link";
 import { type NextRouter, useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilState } from "recoil";
-import Head from "next/head";
 
 function BookId(): Component {
   const router: NextRouter = useRouter(),
@@ -84,10 +83,12 @@ function BookId(): Component {
   }
 
   return (
-    <section className="flex flex-col justify-center items-center w-full gap-y-6 sm:py-10 h-full ">
+    <section className=" flex flex-col justify-center items-center w-full gap-y-6 sm:py-10 h-full ">
       <Head>
-        <title>{data?.title || "lymbrarie"}</title>
+        <title>{data?.title || "Lymbrarie"}</title>
       </Head>
+
+      <BackBtn />
 
       {popup.edit_book && <EditBookPopUp data={data} documentId={documentId} />}
       {popup.thugs && <ThugsPopUp />}
@@ -97,13 +98,7 @@ function BookId(): Component {
         <LoadComponent />
       ) : (
         <>
-          <article className="w-full sm:w-[700px] h-[315px] flex flex-col sm:flex-row gap-y-12 justify-start items-center sm:items-start backdrop-blur-[2.5px] relative">
-            <Link
-              href="/"
-              className="absolute w-12 right-0 rounded-full z-10 mr-2 sm:mr-0 btn btn-ghost"
-            >
-              <BackIcon size={40} color="white" className="scale-[3]" />
-            </Link>
+          <article className="w-full sm:w-[700px] h-[315px] flex flex-col sm:flex-row gap-y-12 justify-start items-center sm:items-start backdrop-blur-[2.5px] relative mt-20 xl:mt-0 sm:mt-12">
             <Image
               priority
               className="aspect-[200/300] w-[200px] h-[300px] object-center object-fill rounded-sm"
@@ -112,21 +107,19 @@ function BookId(): Component {
               height={100}
               alt="cover"
             />
-            <div className="flex flex-col justify-start items-start w-[100vw] sm:w-full sm:h-full px-4 gap-y-2">
+            <div className="flex flex-col justify-start items-start w-[100vw] sm:w-full sm:h-full px-10 sm:px-4 gap-y-2">
               <h4 className="text-2xl sm:text-3xl font-bold tracking-tight sm:min-h-20 h-auto text-ellipsis">
                 {data?.title}
               </h4>
               <div className="flex flex-row justify-start items-center gap-x-2">
                 <UserIcon size={18} />
-                <p className="text-md">
-                  {data?.author ? data.author : t("unknow")}
-                </p>
+                <p className="text-md">{data?.author || t("unknow")}</p>
               </div>
 
               {data?.gender && (
                 <div className="flex flex-row justify-start items-center gap-x-2">
                   <AmpersandIcon size={18} />
-                  <p className="text-sm">{data.gender}</p>
+                  <p className="text-sm capitalize">{data.gender}</p>
                 </div>
               )}
 
@@ -134,7 +127,7 @@ function BookId(): Component {
                 <LibraryIcon size={18} />
                 <p className="text-sm">
                   {translateStateBook(data?.state, t)}
-                  {data?.loaned ? ` ${data.loaned}` : ""}
+                  {data?.loaned || ""}
                 </p>
               </div>
 
@@ -170,14 +163,14 @@ function BookId(): Component {
             </div>
             {userExists && (
               <NotesBook
-                classText="sm:hidden w-full flex h-full flex-col justify-start items-start gap-y-4"
+                classText="sm:hidden w-full flex min-h-full flex-col justify-start items-start gap-y-4 px-6 bg-slate-950 "
                 {...notesProps}
               />
             )}
           </article>
           {userExists && (
             <NotesBook
-              classText="hidden sm:flex w-[700px] flex-col justify-start items-start gap-y-10 mt-10"
+              classText="hidden sm:flex w-[700px] flex-col justify-start items-start gap-y-10 mt-10 bg-slate-950"
               {...notesProps}
             />
           )}

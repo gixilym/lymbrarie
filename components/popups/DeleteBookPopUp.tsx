@@ -3,7 +3,6 @@ import usePopUp from "@/utils/hooks/usePopUp";
 import { BOOK_HANDLER_URL, inputSearch } from "@/utils/store";
 import type { Component } from "@/utils/types";
 import axios from "axios";
-import { motion } from "framer-motion";
 import { TriangleAlert as WarningIcon } from "lucide-react";
 import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
@@ -27,12 +26,7 @@ function DeleteBookPopUp({ documentId }: { documentId: string }): Component {
   }
 
   return (
-    <motion.dialog
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.2 }}
-      className="backdrop-blur-md w-full h-full absolute top-0 z-50 flex justify-center items-start pt-10 bg-transparent"
-    >
+    <dialog className="backdrop-blur-md w-full h-full absolute top-0 z-50 flex justify-center items-start pt-10 bg-transparent">
       <div className="modal-box">
         <div className="flex flex-row justify-start items-center gap-x-4">
           <WarningIcon size={25} />
@@ -64,7 +58,7 @@ function DeleteBookPopUp({ documentId }: { documentId: string }): Component {
           </form>
         </div>
       </div>
-    </motion.dialog>
+    </dialog>
   );
 }
 

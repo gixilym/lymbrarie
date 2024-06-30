@@ -1,15 +1,26 @@
-import type { Component } from "@/utils/types";
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import { Toaster as ToastNotification } from "react-hot-toast";
-import { twJoin } from "tailwind-merge";
+import { twJoin, twMerge } from "tailwind-merge";
 
-function DialogContainer({ children, divClass }: Props): Component {
+function DialogContainer(props: Props) {
+  const { children, divClass } = props;
+  const ref = useRef<HTMLDialogElement | null>(null);
+  const [isVisible] = useState(true);
+
+  useEffect(() => {
+    const dialogElement = ref.current;
+    if (dialogElement) {
+      dialogElement.style.display = "flex";
+    }
+  }, []);
+
   return (
-    <motion.dialog
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.2 }}
-      className="backdrop-blur-md w-full h-full absolute top-0 z-40 flex justify-center items-start bg-transparent"
+    <dialog
+      ref={ref}
+      className={twMerge(
+        isVisible ? "dialog-container" : "dialog-container fade-out",
+        "backdrop"
+      )}
     >
       <div
         className={twJoin(
@@ -20,7 +31,7 @@ function DialogContainer({ children, divClass }: Props): Component {
         {children}
       </div>
       <ToastNotification reverseOrder={false} position="top-right" />
-    </motion.dialog>
+    </dialog>
   );
 }
 

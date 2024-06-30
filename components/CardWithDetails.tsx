@@ -1,5 +1,4 @@
 import type { Component } from "@/utils/types";
-import { motion } from "framer-motion";
 import { Ampersand as GenderIcon, User as UserIcon } from "lucide-react";
 import Image from "next/image";
 
@@ -7,16 +6,9 @@ function CardWithDetails(props: Card): Component {
   const { title, formatState, img, gender, author, onClick } = props;
 
   return (
-    <motion.li
-      whileHover={{
-        scale: 1.03,
-        boxShadow: "2px 4px 61px 5px rgba(0,0,0,0.45)",
-      }}
-      initial={{ y: "-300px", opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.3 }}
+    <li
       onClick={onClick}
-      className="mx-4 cursor-pointer bg-gradient-to-r from-slate-900 to-transparent backdrop-blur-sm border-r-2 border-b-2 border-rose-300/10 hover:border-rose-300/20 flex flex-row justify-start items-start w-full sm:w-[580px] gap-x-4 rounded-xl relative h-28"
+      className="mx-4 hover:scale-105 duration-300 cursor-pointer bg-gradient-to-r from-slate-900 to-transparent backdrop-blur-sm border-r-2 border-b-2 border-rose-300/10 hover:border-rose-300/20 flex flex-row justify-start items-start w-full sm:w-[580px] gap-x-4 rounded-xl relative h-28"
     >
       {formatState()}
       {img && (
@@ -52,7 +44,7 @@ function CardWithDetails(props: Card): Component {
           )}
         </div>
       </div>
-    </motion.li>
+    </li>
   );
 }
 

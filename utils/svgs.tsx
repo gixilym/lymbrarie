@@ -1,5 +1,4 @@
 "use client";
-import { motion } from "framer-motion";
 import {
   Rows3 as LayoutIcon,
   List as ListIcon,
@@ -81,9 +80,7 @@ const PendingSVG = (): Component => (
 );
 
 const ListSVG = ({ onClick }: { onClick: MouseEventHandler }): Component => (
-  <motion.svg
-    whileHover={{ scale: 0.95 }}
-    transition={{ duration: 0.1 }}
+  <svg
     onClick={onClick}
     className="mt-1 duration-300 cursor-pointer"
     viewBox="0 0 24 24"
@@ -92,13 +89,11 @@ const ListSVG = ({ onClick }: { onClick: MouseEventHandler }): Component => (
     height={30}
   >
     <ListIcon size={25} />
-  </motion.svg>
+  </svg>
 );
 
 const LayoutSVG = ({ onClick }: { onClick: MouseEventHandler }): Component => (
-  <motion.svg
-    whileHover={{ scale: 0.95 }}
-    transition={{ duration: 0.1 }}
+  <svg
     onClick={onClick}
     className="mt-2 duration-300 cursor-pointer"
     viewBox="0 0 24 24"
@@ -107,7 +102,7 @@ const LayoutSVG = ({ onClick }: { onClick: MouseEventHandler }): Component => (
     height={30}
   >
     <LayoutIcon size={22} />
-  </motion.svg>
+  </svg>
 );
 
 const ToggleDetailsIcon = ({

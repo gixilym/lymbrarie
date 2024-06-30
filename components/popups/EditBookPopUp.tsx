@@ -1,10 +1,17 @@
 import useLoadContent from "@/utils/hooks/useLoadContent";
 import usePopUp from "@/utils/hooks/usePopUp";
 import { BOOK_HANDLER_URL, EMPTY_BOOK } from "@/utils/store";
-import type { Book, Component, FormRef, InputEvent } from "@/utils/types";
+import type {
+  Book,
+  Component,
+  FormRef,
+  InputEvent,
+  SelectEvent,
+} from "@/utils/types";
 import axios from "axios";
 import {
   UserRoundSearch as BorrowedIcon,
+  Type as CustomIcon,
   Ampersand as GenderIcon,
   Image as ImageIcon,
   Library as StateIcon,
@@ -16,18 +23,18 @@ import { useTranslation } from "react-i18next";
 import { twMerge } from "tailwind-merge";
 import DialogContainer from "../DialogContainer";
 import PopUpTitle from "./TitlePopUp";
+import Link from "next/link";
 
-function EditBookPopUp(props: { data: any; documentId: string }): Component {
+function EditBookPopUp(props: Props): Component {
   const [t] = useTranslation("global"),
     { closePopUp } = usePopUp(),
     { data, documentId } = props,
     form: FormRef = useRef<Reference>(null),
-    { isLoading, startLoading, finishLoading } = useLoadContent(),
+    { isLoading, startLoading } = useLoadContent(),
     [book, setBook] = useState<Book>(EMPTY_BOOK),
-    isLoaned: boolean = book?.state == "Borrowed";
-
-  const handleStateChange = (state: string): void =>
-    setBook({ ...book, state });
+    [isCustomGender, setIsCustomGender] = useState<boolean>(false),
+    isLoaned: boolean = book?.state == "Borrowed",
+    handleState = (state: string): void => setBook({ ...book, state });
 
   useEffect(() => loadBookData(), [data]); // eslint-disable-line
 
@@ -44,10 +51,16 @@ function EditBookPopUp(props: { data: any; documentId: string }): Component {
     setBook({ ...loadData });
   }
 
-  function handleChange(event: InputEvent): void {
-    const key: string = event.target?.name;
-    const value: string = event.target?.value;
+  function handleChange(e: InputEvent): void {
+    const key: string = e.target?.name;
+    const value: string = e.target?.value;
     setBook({ ...book, [key]: value });
+  }
+
+  function handleGender(e: SelectEvent): void {
+    const gender: string = e.target?.value;
+    setBook({ ...book, gender });
+    setIsCustomGender(gender == "custom");
   }
 
   async function editBook(): Promise<void> {
@@ -62,9 +75,13 @@ function EditBookPopUp(props: { data: any; documentId: string }): Component {
     <DialogContainer divClass="justify-between">
       <PopUpTitle title={t("edit-book")} />
 
-      <label className="input input-bordered flex items-center sm:text-xl text-lg h-14">
+      <label
+        htmlFor="title-input"
+        className="input input-bordered flex items-center sm:text-xl text-lg h-14"
+      >
         <TitleIcon size={18} className="mt-0.5 mr-2" />
         <input
+          id="title-input"
           onChange={handleChange}
           required
           name="title"
@@ -75,9 +92,13 @@ function EditBookPopUp(props: { data: any; documentId: string }): Component {
         />
       </label>
 
-      <label className="input input-bordered flex items-center sm:text-xl text-lg h-14">
+      <label
+        htmlFor="author-input"
+        className="input input-bordered flex items-center sm:text-xl text-lg h-14"
+      >
         <UserIcon size={18} className="mt-0.5 mr-2" />
         <input
+          id="author-input"
           onChange={handleChange}
           name="author"
           type="text"
@@ -87,20 +108,63 @@ function EditBookPopUp(props: { data: any; documentId: string }): Component {
         />
       </label>
 
-      <label className="input input-bordered flex items-center sm:text-xl text-lg h-14">
-        <GenderIcon size={18} className="mt-0.5 mr-2" />
-        <input
-          onChange={handleChange}
-          name="gender"
-          type="text"
-          className="grow px-1 placeholder:text-slate-500"
-          defaultValue={data.gender}
-          placeholder={t("placeholder-gender")}
-        />
-      </label>
+      <div className="join w-full space-x-2">
+        <label
+          htmlFor="gender-select"
+          className="w-full input input-bordered flex items-center sm:text-xl text-lg h-14 sm:w-full"
+        >
+          <GenderIcon size={18} className="mt-0.5 mr-2" />
+          <select
+            id="gender-select"
+            onChange={handleGender}
+            className="select input-bordered border-x-0 rounded-none sm:text-xl text-lg w-full text-gray-400 focus:outline-0 h-14"
+            defaultValue={data.gender}
+          >
+            <option value="default" disabled>
+              {t("placeholder-gender")}
+            </option>
+            <option value="custom">{t("custom-gender")}</option>
+            <option value="fiction">{t("fiction")}</option>
+            <option value="non-fiction">{t("non-fiction")}</option>
+            <option value="mystery">{t("mystery")}</option>
+            <option value="fantasy">{t("fantasy")}</option>
+            <option value="philosophy">{t("philosophy")}</option>
+            <option value="economy">{t("economy")}</option>
+            <option value="romance">{t("romance")}</option>
+            <option value="horror">{t("horror")}</option>
+            <option value="thriller">{t("thriller")}</option>
+            <option value="history">{t("history")}</option>
+            <option value="biography">{t("biography")}</option>
+            <option value="self-help">{t("self-help")}</option>
+            <option value="poetry">{t("poetry")}</option>
+            <option value="drama">{t("drama")}</option>
+            <option value="adventure">{t("adventure")}</option>
+            <option value="young-adult">{t("young-adult")}</option>
+            <option value="children's">{t("children's")}</option>
+          </select>
+        </label>
+        {isCustomGender && (
+          <label
+            htmlFor="gender-input"
+            className="input input-bordered flex items-center sm:text-xl text-lg h-14 w-2/4 sm:w-full"
+          >
+            <CustomIcon size={18} className="mt-0.5 mr-2" />
+            <input
+              id="gender-input"
+              onChange={handleChange}
+              name="gender"
+              type="text"
+              defaultValue={data.gender}
+              className="grow px-1 placeholder:text-slate-500"
+              placeholder={t("custom-gender")}
+            />
+          </label>
+        )}
+      </div>
 
       <div className="join w-full space-x-2">
         <label
+          htmlFor="state-select"
           className={twMerge(
             isLoaned ? "w-2/4" : "w-full",
             "input input-bordered flex items-center sm:text-xl text-lg h-14 sm:w-full"
@@ -108,11 +172,12 @@ function EditBookPopUp(props: { data: any; documentId: string }): Component {
         >
           <StateIcon size={18} className="mt-0.5" />
           <select
-            onChange={e => handleStateChange(e.target.value)}
+            id="state-select"
+            onChange={e => handleState(e.target.value)}
             className="select input-bordered border-x-0 rounded-none sm:text-xl text-lg w-full text-gray-400 focus:outline-0 h-14"
-            defaultValue="Default"
+            defaultValue="default"
           >
-            <option value="Default" disabled>
+            <option value="default" disabled>
               {t("new-book-default")}
             </option>
             <option value="Reading">{t("new-book-reading")}</option>
@@ -122,9 +187,13 @@ function EditBookPopUp(props: { data: any; documentId: string }): Component {
           </select>
         </label>
         {isLoaned && (
-          <label className="input input-bordered flex items-center sm:text-xl text-lg h-14 w-2/4 sm:w-full">
+          <label
+            htmlFor="loaned-input"
+            className="input input-bordered flex items-center sm:text-xl text-lg h-14 w-2/4 sm:w-full"
+          >
             <BorrowedIcon size={18} className="mt-0.5 mr-2" />
             <input
+              id="loaned-input"
               onChange={handleChange}
               name="loaned"
               type="text"
@@ -136,20 +205,33 @@ function EditBookPopUp(props: { data: any; documentId: string }): Component {
         )}
       </div>
 
-      <label className="input input-bordered flex items-center sm:text-xl text-lg h-14">
-        <ImageIcon size={18} className="mt-0.5 mr-2" />
-        <input
-          onChange={handleChange}
-          name="image"
-          type="text"
-          className="grow px-1 placeholder:text-slate-500 text-md"
-          defaultValue={data.image}
-          placeholder={
-            t("placeholder-link") +
-            "https://res.cloudinary.com/dgs55s8qh/image/upload/v1711510484/dvjjtuqhfjqtwh3vcf3p.webp"
-          }
-        />
-      </label>
+      <div>
+        <label
+          htmlFor="image-input"
+          className="input input-bordered flex items-center sm:text-xl text-lg h-14"
+        >
+          <ImageIcon size={18} className="mt-0.5 mr-2" />
+          <input
+            id="image-input"
+            onChange={handleChange}
+            name="image"
+            type="text"
+            className="grow px-1 placeholder:text-slate-500 text-md"
+            defaultValue={data.image}
+            placeholder={
+              t("placeholder-link") +
+              "https://res.cloudinary.com/dgs55s8qh/image/upload/v1711510484/dvjjtuqhfjqtwh3vcf3p.webp"
+            }
+          />
+        </label>
+        <Link
+          href="https://imagen-a-link.netlify.app"
+          target="_blank"
+          className="link text-slate-400 hover:text-slate-300 duration-75 text-md sm:text-lg"
+        >
+          {t("generate-link")}
+        </Link>
+      </div>
 
       <div className="modal-action pt-1">
         <form
@@ -189,3 +271,8 @@ function EditBookPopUp(props: { data: any; documentId: string }): Component {
 }
 
 export default EditBookPopUp;
+
+interface Props {
+  data: any;
+  documentId: string;
+}

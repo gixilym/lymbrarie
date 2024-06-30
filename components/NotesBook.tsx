@@ -70,12 +70,12 @@ function NotesBook(props: Notes) {
         </div>
       </div>
 
-      <div className="sm:px-0 px-4 h-[calc(100dvh-6rem)] bg-slate-950 flex items-center justify-center w-full">
+      <div className="sm:px-0 px-4 h-[calc(100dvh-6rem)] flex items-center justify-center w-full ">
         <textarea
           placeholder="..."
           value={notes}
           onChange={handleChangeContent}
-          className="w-full bg-transparent h-full min-h-[200px] max-h-[1200px] text-white/80 resize-none border-none focus:ring-0 focus:outline-none text-md sm:text-lg sm:pr-2"
+          className="w-full h-full bg-transparent min-h-[200px] max-h-[1200px] text-white/80 resize-none border-none focus:ring-0 focus:outline-none text-md sm:text-lg sm:pr-2 py-4"
         />
       </div>
     </div>
