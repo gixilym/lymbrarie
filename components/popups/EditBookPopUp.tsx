@@ -47,6 +47,7 @@ function EditBookPopUp(props: Props): Component {
       gender: data?.gender,
       owner: data?.owner,
       loaned: data?.loaned,
+      notes: data?.notes,
     };
     setBook({ ...loadData });
   }

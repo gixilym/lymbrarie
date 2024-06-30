@@ -3,7 +3,7 @@ import { collectionDB } from "@/utils/store";
 import type { Document, Email } from "@/utils/types";
 import { Query, getDocs, query, where } from "firebase/firestore";
 
-const UNDER_MAINTENANCE: boolean = true;
+const UNDER_MAINTENANCE: boolean = false;
 
 function notification(type: "success" | "error", msg: string): void {
   toast[type](msg, {

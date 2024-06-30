@@ -88,8 +88,6 @@ function BookId(): Component {
         <title>{data?.title || "Lymbrarie"}</title>
       </Head>
 
-      <BackBtn />
-
       {popup.edit_book && <EditBookPopUp data={data} documentId={documentId} />}
       {popup.thugs && <ThugsPopUp />}
       {popup.delete_book && <DeleteBookPopUp documentId={documentId} />}
@@ -98,6 +96,7 @@ function BookId(): Component {
         <LoadComponent />
       ) : (
         <>
+          <BackBtn />
           <article className="w-full sm:w-[700px] h-[315px] flex flex-col sm:flex-row gap-y-12 justify-start items-center sm:items-start backdrop-blur-[2.5px] relative mt-20 xl:mt-0 sm:mt-12">
             <Image
               priority

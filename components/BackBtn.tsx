@@ -24,7 +24,7 @@ function BackBtn(): Component {
         onClick={goTo}
         size={50}
         color="white"
-        className="z-50 cursor-pointer hover:scale-110 duration-100"
+        className="z-30 cursor-pointer hover:scale-110 duration-100"
       />
     </div>
   );
