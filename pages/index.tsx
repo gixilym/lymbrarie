@@ -4,6 +4,7 @@ import HeaderMain from "@/components/HeaderMain";
 import ListBooks from "@/components/ListBooks";
 import LoadComponent from "@/components/LoadComponent";
 import PopUps from "@/components/PopUps";
+import { UNDER_MAINTENANCE } from "@/utils/helpers";
 import useUserEmail from "@/utils/hooks/useUserEmail";
 import { collectionDB } from "@/utils/store";
 import type {
@@ -25,6 +26,7 @@ import type { GetServerSidePropsContext as Ctx } from "next";
 import { getSession } from "next-auth/react";
 import Head from "next/head";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import UnderMaintenance from "@/components/UnderMaintenance";
 
 function Home(props: Props): Component {
   const { accountDetails } = props,
@@ -53,12 +55,18 @@ function Home(props: Props): Component {
       <Head>
         <title>Lymbrarie</title>
       </Head>
-      <HeaderMain />
-      <PopUps allTitles={allTitles} accountDetails={accountDetails} />
-      {isLoading && <LoadComponent />}
-      {!isLoading && booksIsEmpty && <AddYourFirstBook />}
-      {!booksIsEmpty && !isLoading && <ListBooks myBooks={myBooks} />}
-      <FooterMain />
+      {UNDER_MAINTENANCE ? (
+        <UnderMaintenance />
+      ) : (
+        <>
+          <HeaderMain />
+          <PopUps allTitles={allTitles} accountDetails={accountDetails} />
+          {isLoading && <LoadComponent />}
+          {!isLoading && booksIsEmpty && <AddYourFirstBook />}
+          {!booksIsEmpty && !isLoading && <ListBooks myBooks={myBooks} />}
+          <FooterMain />
+        </>
+      )}
     </div>
   );
 }

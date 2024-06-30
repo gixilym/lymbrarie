@@ -8,7 +8,7 @@ function CardWithDetails(props: Card): Component {
   return (
     <li
       onClick={onClick}
-      className="mx-4 hover:scale-105 duration-300 cursor-pointer bg-gradient-to-r from-slate-900 to-transparent backdrop-blur-sm border-r-2 border-b-2 border-rose-300/10 hover:border-rose-300/20 flex flex-row justify-start items-start w-full sm:w-[580px] gap-x-4 rounded-xl relative h-28"
+      className="mx-4 hover:scale-95 duration-300 cursor-pointer bg-gradient-to-r from-slate-900 to-transparent backdrop-blur-sm border-r-2 border-b-2 border-rose-300/10 hover:border-rose-300/20 flex flex-row justify-start items-start w-full sm:w-[580px] gap-x-4 rounded-xl relative h-28"
     >
       {formatState()}
       {img && (
