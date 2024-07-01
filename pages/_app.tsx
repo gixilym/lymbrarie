@@ -1,6 +1,6 @@
 import Providers from "@/components/Providers";
 import "@/globals.css";
-import { UNDER_MAINTENANCE } from "@/utils/helpers";
+import { UNDER_MAINTENANCE } from "@/utils/consts";
 import type { Component } from "@/utils/types";
 import "@fontsource-variable/public-sans";
 import type { AppProps } from "next/app";

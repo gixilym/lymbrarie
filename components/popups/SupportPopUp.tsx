@@ -14,12 +14,12 @@ function SupportPopUp(): Component {
       <p className="text-2xl text-center">
         {t("text-support")}
         <b>
-          <i>lymbrarie</i>
+          <i>Lymbrarie</i>
         </b>
       </p>
       <address className="text-2xl link text-blue-500">
-        <Link href="mailto:gioliotta.io@gmail.com" target="_blank">
-          gioliotta.io@gmail.com
+        <Link href="mailto:gixipixel@gmail.com" target="_blank">
+          gixipixel@gmail.com
         </Link>
       </address>
       <div className="modal-action pt-1 w-full">

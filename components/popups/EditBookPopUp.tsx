@@ -1,3 +1,4 @@
+import { GENDERS } from "@/utils/consts";
 import useLoadContent from "@/utils/hooks/useLoadContent";
 import usePopUp from "@/utils/hooks/usePopUp";
 import { BOOK_HANDLER_URL, EMPTY_BOOK } from "@/utils/store";
@@ -18,12 +19,12 @@ import {
   Italic as TitleIcon,
   User as UserIcon,
 } from "lucide-react";
+import Link from "next/link";
 import { type Reference, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { twMerge } from "tailwind-merge";
 import DialogContainer from "../DialogContainer";
 import PopUpTitle from "./TitlePopUp";
-import Link from "next/link";
 
 function EditBookPopUp(props: Props): Component {
   const [t] = useTranslation("global"),
@@ -32,7 +33,9 @@ function EditBookPopUp(props: Props): Component {
     form: FormRef = useRef<Reference>(null),
     { isLoading, startLoading } = useLoadContent(),
     [book, setBook] = useState<Book>(EMPTY_BOOK),
-    [isCustomGender, setIsCustomGender] = useState<boolean>(false),
+    [hasChanges, setHasChanges] = useState<boolean>(false),
+    customVal: boolean = !GENDERS.includes(data.gender),
+    [isCustomGender, setIsCustomGender] = useState<boolean>(customVal),
     isLoaned: boolean = book?.state == "Borrowed",
     handleState = (state: string): void => setBook({ ...book, state });
 
@@ -56,12 +59,14 @@ function EditBookPopUp(props: Props): Component {
     const key: string = e.target?.name;
     const value: string = e.target?.value;
     setBook({ ...book, [key]: value });
+    setHasChanges(true);
   }
 
   function handleGender(e: SelectEvent): void {
     const gender: string = e.target?.value;
     setBook({ ...book, gender });
     setIsCustomGender(gender == "custom");
+    setHasChanges(true);
   }
 
   async function editBook(): Promise<void> {
@@ -128,8 +133,11 @@ function EditBookPopUp(props: Props): Component {
             <option value="fiction">{t("fiction")}</option>
             <option value="non-fiction">{t("non-fiction")}</option>
             <option value="mystery">{t("mystery")}</option>
+            <option value="science">{t("science")}</option>
             <option value="fantasy">{t("fantasy")}</option>
             <option value="philosophy">{t("philosophy")}</option>
+            <option value="contrabulary">{t("contrabulary")}</option>
+            <option value="psychology">{t("psychology")}</option>
             <option value="economy">{t("economy")}</option>
             <option value="romance">{t("romance")}</option>
             <option value="horror">{t("horror")}</option>
@@ -259,6 +267,7 @@ function EditBookPopUp(props: Props): Component {
             </button>
           ) : (
             <button
+              disabled={!hasChanges}
               type="submit"
               className="btn bg-blue-500 text-black hover:bg-blue-400 duration-100 text-lg w-24 px-2"
             >

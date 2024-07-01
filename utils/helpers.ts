@@ -3,8 +3,6 @@ import { collectionDB } from "@/utils/store";
 import type { Document, Email } from "@/utils/types";
 import { Query, getDocs, query, where } from "firebase/firestore";
 
-const UNDER_MAINTENANCE: boolean = false;
-
 function notification(type: "success" | "error", msg: string): void {
   toast[type](msg, {
     duration: 2000,
@@ -61,12 +59,6 @@ async function ONLY_DEV_getBooks(): Promise<any> {
   console.log(querySnapshot.docs[1].data());
 }
 
-export {
-  notification,
-  getBookData,
-  translateStateBook,
-  ONLY_DEV_getBooks,
-  UNDER_MAINTENANCE,
-};
+export { notification, getBookData, translateStateBook, ONLY_DEV_getBooks };
 
 type Res = { data: Document | null; id: Document | null };

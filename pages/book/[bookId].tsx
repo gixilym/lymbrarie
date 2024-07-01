@@ -41,7 +41,6 @@ function BookId(): Component {
     { isLoading, startLoading, finishLoading } = useLoadContent(),
     [data, setData] = useState<Document>(EMPTY_BOOK),
     [documentId, setDocumentId] = useState<string>(""),
-    img: string = data?.image || DEFAULT_COVER,
     { userLoggedIn } = useSessionExists(),
     { userEmail } = useUserEmail(),
     { openPopUp } = usePopUp(),
@@ -101,7 +100,7 @@ function BookId(): Component {
             <Image
               priority
               className="aspect-[200/300] w-[200px] h-[300px] object-center object-fill rounded-sm"
-              src={img}
+              src={data?.image || DEFAULT_COVER}
               width={100}
               height={100}
               alt="cover"
@@ -118,7 +117,7 @@ function BookId(): Component {
               {data?.gender && (
                 <div className="flex flex-row justify-start items-center gap-x-2">
                   <AmpersandIcon size={18} />
-                  <p className="text-sm capitalize">{data.gender}</p>
+                  <p className="text-sm capitalize">{t(data.gender)}</p>
                 </div>
               )}
 

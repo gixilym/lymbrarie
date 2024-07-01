@@ -5,7 +5,7 @@ import ListBooks from "@/components/ListBooks";
 import LoadComponent from "@/components/LoadComponent";
 import PopUps from "@/components/PopUps";
 import UnderMaintenance from "@/components/UnderMaintenance";
-import { UNDER_MAINTENANCE } from "@/utils/helpers";
+import { UNDER_MAINTENANCE } from "@/utils/consts";
 import useUserEmail from "@/utils/hooks/useUserEmail";
 import { collectionDB } from "@/utils/store";
 import type {

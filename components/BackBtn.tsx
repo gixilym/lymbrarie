@@ -1,3 +1,4 @@
+import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import type { Component, GoTo } from "@/utils/types";
 import { CircleChevronLeft as BackIcon } from "lucide-react";
 import { useRouter } from "next/router";
@@ -5,12 +6,11 @@ import { flushSync } from "react-dom";
 
 function BackBtn(): Component {
   const { push } = useRouter();
-
+  const [animations] = useLocalStorage("animations", "true");
   function goTo(): GoTo {
-    const animationsEnabled: boolean = true;
     const condition: boolean =
       // @ts-ignore
-      typeof document.startViewTransition == "function" && animationsEnabled;
+      typeof document.startViewTransition == "function" && animations;
 
     return condition
       ? // @ts-ignore

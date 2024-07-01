@@ -1,8 +1,10 @@
 import type { Component } from "@/utils/types";
 import { Ampersand as GenderIcon, User as UserIcon } from "lucide-react";
 import Image from "next/image";
+import { useTranslation } from "react-i18next";
 
 function CardWithDetails(props: Card): Component {
+  const [t] = useTranslation("global");
   const { title, formatState, img, gender, author, onClick } = props;
 
   return (
@@ -33,13 +35,13 @@ function CardWithDetails(props: Card): Component {
           {author && (
             <div className="flex flex-row justify-start items-center gap-x-2">
               <UserIcon size={16} />
-              <p>{author}</p>
+              <p className="capitalize">{author}</p>
             </div>
           )}
           {gender && (
             <div className="flex flex-row justify-start items-center gap-x-2">
               <GenderIcon size={16} />
-              <p>{gender}</p>
+              <p className="capitalize">{t(gender)}</p>
             </div>
           )}
         </div>
