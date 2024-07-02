@@ -125,7 +125,7 @@ function BookId(): Component {
                 <LibraryIcon size={18} />
                 <p className="text-sm">
                   {translateStateBook(data?.state, t)}
-                  {data?.loaned || ""}
+                  {" " + data?.loaned || ""}
                 </p>
               </div>
 

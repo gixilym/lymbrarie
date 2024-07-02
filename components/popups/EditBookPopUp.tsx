@@ -33,13 +33,45 @@ function EditBookPopUp(props: Props): Component {
     form: FormRef = useRef<Reference>(null),
     { isLoading, startLoading } = useLoadContent(),
     [book, setBook] = useState<Book>(EMPTY_BOOK),
-    [hasChanges, setHasChanges] = useState<boolean>(false),
     customVal: boolean = !GENDERS.includes(data.gender),
     [isCustomGender, setIsCustomGender] = useState<boolean>(customVal),
+    [customGenderVal, setCustomGenderVal] = useState<string>(""),
     isLoaned: boolean = book?.state == "Borrowed",
+    [editDisabled, setEditDisabled] = useState<boolean>(true),
+    // [defaultState, setDefaultState] = useState<string>(data.state),
     handleState = (state: string): void => setBook({ ...book, state });
 
   useEffect(() => loadBookData(), [data]); // eslint-disable-line
+
+  useEffect(() => {
+    //! Refactorizar este useEffect
+    const noChanges: boolean =
+      book.title == data.title &&
+      book.gender == data.gender &&
+      book.state == data.state &&
+      book.image == data.image &&
+      book.author == data.author &&
+      book.loaned == data.loaned;
+
+    if (noChanges) {
+      if (isCustomGender) {
+        if (customGenderVal.length == 0) {
+          return setEditDisabled(true);
+        } else setEditDisabled(false);
+      } else setEditDisabled(true);
+    } else {
+      if (book.state == "Borrowed") {
+        if (book.loaned == undefined || book.loaned == "") {
+          return setEditDisabled(true);
+        } else setEditDisabled(false);
+      }
+      if (isCustomGender) {
+        if (customGenderVal.length == 0) {
+          return setEditDisabled(true);
+        } else setEditDisabled(false);
+      } else setEditDisabled(false);
+    }
+  }, [book, isCustomGender, customGenderVal, data]);
 
   function loadBookData(): void {
     const loadData: Book = {
@@ -59,18 +91,17 @@ function EditBookPopUp(props: Props): Component {
     const key: string = e.target?.name;
     const value: string = e.target?.value;
     setBook({ ...book, [key]: value });
-    setHasChanges(true);
   }
 
   function handleGender(e: SelectEvent): void {
     const gender: string = e.target?.value;
     setBook({ ...book, gender });
     setIsCustomGender(gender == "custom");
-    setHasChanges(true);
   }
 
   async function editBook(): Promise<void> {
-    const updatedBook: Book = { ...book };
+    const loaned: string = book.state != "Borrowed" ? "" : book.loaned || "";
+    const updatedBook: Book = { ...book, loaned };
     const bookData: object = { documentId, updatedBook };
     startLoading();
     axios.patch(BOOK_HANDLER_URL, bookData);
@@ -123,7 +154,7 @@ function EditBookPopUp(props: Props): Component {
           <select
             id="gender-select"
             onChange={handleGender}
-            className="select input-bordered border-x-0 rounded-none sm:text-xl text-lg w-full text-gray-400 focus:outline-0 h-14"
+            className="select input-bordered border-x-0 rounded-none sm:text-xl -ml-2.5 text-lg w-full text-gray-400 focus:outline-0 h-14"
             defaultValue={data.gender}
           >
             <option value="default" disabled>
@@ -136,7 +167,7 @@ function EditBookPopUp(props: Props): Component {
             <option value="science">{t("science")}</option>
             <option value="fantasy">{t("fantasy")}</option>
             <option value="philosophy">{t("philosophy")}</option>
-            <option value="contrabulary">{t("contrabulary")}</option>
+            <option value="constabulary">{t("constabulary")}</option>
             <option value="psychology">{t("psychology")}</option>
             <option value="economy">{t("economy")}</option>
             <option value="romance">{t("romance")}</option>
@@ -160,10 +191,12 @@ function EditBookPopUp(props: Props): Component {
             <CustomIcon size={18} className="mt-0.5 mr-2" />
             <input
               id="gender-input"
-              onChange={handleChange}
+              onChange={(e: InputEvent) => {
+                handleChange(e);
+                setCustomGenderVal(e.target.value);
+              }}
               name="gender"
               type="text"
-              defaultValue={data.gender}
               className="grow px-1 placeholder:text-slate-500"
               placeholder={t("custom-gender")}
             />
@@ -184,7 +217,7 @@ function EditBookPopUp(props: Props): Component {
             id="state-select"
             onChange={e => handleState(e.target.value)}
             className="select input-bordered border-x-0 rounded-none sm:text-xl text-lg w-full text-gray-400 focus:outline-0 h-14"
-            defaultValue="default"
+            defaultValue={data.state}
           >
             <option value="default" disabled>
               {t("new-book-default")}
@@ -225,7 +258,7 @@ function EditBookPopUp(props: Props): Component {
             onChange={handleChange}
             name="image"
             type="text"
-            className="grow px-1 placeholder:text-slate-500 text-md"
+            className="grow px-1 placeholder:text-slate-500 text-md pl-3"
             defaultValue={data.image}
             placeholder={
               t("placeholder-link") +
@@ -267,7 +300,7 @@ function EditBookPopUp(props: Props): Component {
             </button>
           ) : (
             <button
-              disabled={!hasChanges}
+              disabled={editDisabled}
               type="submit"
               className="btn bg-blue-500 text-black hover:bg-blue-400 duration-100 text-lg w-24 px-2"
             >
