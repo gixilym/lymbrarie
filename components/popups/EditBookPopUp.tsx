@@ -33,12 +33,11 @@ function EditBookPopUp(props: Props): Component {
     form: FormRef = useRef<Reference>(null),
     { isLoading, startLoading } = useLoadContent(),
     [book, setBook] = useState<Book>(EMPTY_BOOK),
-    customVal: boolean = !GENDERS.includes(data.gender),
+    customVal: boolean = !GENDERS.includes(data.gender.toLowerCase()),
     [isCustomGender, setIsCustomGender] = useState<boolean>(customVal),
     [customGenderVal, setCustomGenderVal] = useState<string>(""),
     isLoaned: boolean = book?.state == "Borrowed",
     [editDisabled, setEditDisabled] = useState<boolean>(true),
-    // [defaultState, setDefaultState] = useState<string>(data.state),
     handleState = (state: string): void => setBook({ ...book, state });
 
   useEffect(() => loadBookData(), [data]); // eslint-disable-line
@@ -100,7 +99,7 @@ function EditBookPopUp(props: Props): Component {
   }
 
   async function editBook(): Promise<void> {
-    const loaned: string = book.state != "Borrowed" ? "" : book.loaned || "";
+    const loaned: string = book.state != "Borrowed" ? "" : book.loaned ?? "";
     const updatedBook: Book = { ...book, loaned };
     const bookData: object = { documentId, updatedBook };
     startLoading();
