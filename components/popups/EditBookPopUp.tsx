@@ -194,6 +194,7 @@ function EditBookPopUp(props: Props): Component {
                 handleChange(e);
                 setCustomGenderVal(e.target.value);
               }}
+              defaultValue={data.gender}
               name="gender"
               type="text"
               className="grow px-1 placeholder:text-slate-500"

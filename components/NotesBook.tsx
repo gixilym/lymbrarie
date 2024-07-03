@@ -22,7 +22,7 @@ function NotesBook(props: Notes) {
       router.events.off("routeChangeStart", handleRouteChange);
       removeEventListener("beforeunload", handleBeforeUnload);
     };
-  }, [hasChanges]); //eslint-disable-line
+  }, [hasChanges]); // eslint-disable-line
 
   function handleBeforeUnload(event: BeforeUnloadEvent): string | void {
     if (hasChanges) {

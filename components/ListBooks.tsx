@@ -22,9 +22,16 @@ const ListBooks: MemoComponent = memo(function ListBooksMemo(props: Props) {
     [stateVal] = useRecoilState(stateBookValue),
     [listModeOn, setListModeOn] = useLocalStorage("list-mode-on"),
     [showDetails, setShowDetails] = useState<boolean>(false),
-    [initialBooks, setInitialBooks] = useState<Array<Book>>([]),
     [loadExamples, setLoadExamples] = useState<boolean>(false),
+    [scroll, setScroll] = useLocalStorage("scroll", 0),
+    [initialBooks, setInitialBooks] = useState<Book[]>([]),
     { userLoggedIn, userNotLoggedIn } = useSessionExists();
+
+  useEffect(() => {
+    scrollTo({ top: scroll, behavior: "smooth" });
+    addEventListener("scroll", handleScroll);
+    return () => removeEventListener("scroll", handleScroll);
+  }, []); // eslint-disable-line
 
   useEffect(() => {
     if (userNotLoggedIn) loadExampleBooks();
@@ -67,6 +74,11 @@ const ListBooks: MemoComponent = memo(function ListBooksMemo(props: Props) {
     return books.filter(
       (b: Book) => checkState(b) && (checkTitle(b) || checkAuthor(b))
     );
+  }
+
+  function handleScroll(): void {
+    const position = window.pageYOffset;
+    setScroll(position);
   }
 
   return (
