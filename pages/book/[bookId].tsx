@@ -37,16 +37,16 @@ import { useRecoilState } from "recoil";
 
 function BookId(): Component {
   const router: NextRouter = useRouter(),
+    { openPopUp } = usePopUp(),
     bookTitle: string = router.query.bookId?.toString() ?? "",
     { isLoading, startLoading, finishLoading } = useLoadContent(),
     [data, setData] = useState<Document>(EMPTY_BOOK),
     [documentId, setDocumentId] = useState<string>(""),
     { userLoggedIn } = useSessionExists(),
     { userEmail } = useUserEmail(),
-    { openPopUp } = usePopUp(),
     [notes, setNotes] = useState<string>(""),
     [t] = useTranslation("global"),
-    formatTitle: string = bookTitle.replaceAll("_", " "),
+    formatTitle: string = bookTitle.replaceAll("_", " ").replaceAll("@", "?"),
     userExists: boolean = userEmail != null,
     notesProps = { updateNotes, notes, setNotes },
     [popup] = useRecoilState(popupsValue);

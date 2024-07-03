@@ -1,3 +1,4 @@
+import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import { DEFAULT_COVER } from "@/utils/store";
 import type { Book, Component, GoTo } from "@/utils/types";
 import type { NextRouter } from "next/router";
@@ -8,12 +9,14 @@ import { twMerge } from "tailwind-merge";
 import CardWithDetails from "./CardWithDetails";
 import CardWithOutDetails from "./CardWithoutDetails";
 
-function BookCard({ data, showDetails }: Props): Component {
-  const { push }: NextRouter = useRouter(),
-    formatTitle: string = data.title?.replaceAll(" ", "_") ?? "",
+function BookCard(props: Props): Component {
+  const { data, showDetails } = props,
+    { push }: NextRouter = useRouter(),
+    [animations] = useLocalStorage("animations", "true"),
+    title = data.title?.replaceAll(" ", "_").replaceAll(/\?/g, "@") ?? "",
     img: string = data.image || DEFAULT_COVER,
     [t] = useTranslation("global"),
-    path: string = `/book/${formatTitle}`,
+    path: string = `/book/${title}`,
     withProps: Details = {
       onClick: goTo,
       title: data.title ?? "",
@@ -29,10 +32,9 @@ function BookCard({ data, showDetails }: Props): Component {
     };
 
   function goTo(): GoTo {
-    const animationsEnabled: boolean = true;
     const condition: boolean =
       // @ts-ignore
-      typeof document.startViewTransition == "function" && animationsEnabled;
+      typeof document.startViewTransition == "function" && animations;
 
     return condition
       ? // @ts-ignore

@@ -7,6 +7,7 @@ import { flushSync } from "react-dom";
 function BackBtn(): Component {
   const { push } = useRouter();
   const [animations] = useLocalStorage("animations", "true");
+
   function goTo(): GoTo {
     const condition: boolean =
       // @ts-ignore

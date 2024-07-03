@@ -25,6 +25,7 @@ import { useTranslation } from "react-i18next";
 import { twMerge } from "tailwind-merge";
 import DialogContainer from "../DialogContainer";
 import PopUpTitle from "./TitlePopUp";
+import { notification } from "@/utils/helpers";
 
 function EditBookPopUp(props: Props): Component {
   const [t] = useTranslation("global"),
@@ -99,6 +100,7 @@ function EditBookPopUp(props: Props): Component {
   }
 
   async function editBook(): Promise<void> {
+    if (book.title?.includes("@")) return notification("error", t("@"));
     const loaned: string = book.state != "Borrowed" ? "" : book.loaned ?? "";
     const updatedBook: Book = { ...book, loaned };
     const bookData: object = { documentId, updatedBook };

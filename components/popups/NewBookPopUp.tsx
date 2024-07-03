@@ -58,6 +58,8 @@ function NewBookPopUp({ allTitles }: { allTitles: string[] }): Component {
     const repeteadTitle: boolean = allTitles.includes(title);
     if (!title) return notification("error", t("empty-title"));
     if (repeteadTitle) return notification("error", t("repeated-title"));
+    if (title.includes("@")) return notification("error", t("@"));
+
     const bookData: object = { ...book, owner: userEmail };
     startLoading();
     await axios.post(BOOK_HANDLER_URL, bookData);
