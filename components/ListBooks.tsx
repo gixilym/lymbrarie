@@ -68,7 +68,8 @@ const ListBooks: MemoComponent = memo(function ListBooksMemo(props: Props) {
     const books: Book[] = userLoggedIn ? myBooks : initialBooks,
       tLC = (val: string) => val?.toLowerCase().trim(),
       checkState = (b: Book) => !check || b.state == stateVal,
-      checkTitle = (b: Book) => tLC(b.title ?? "")?.includes(tLC(value)),
+      checkTitle = (b: Book) =>
+        normalizeText(tLC(b.title ?? ""))?.includes(normalizeText(tLC(value))),
       checkAuthor = (b: Book) => tLC(b.author ?? "")?.includes(tLC(value));
 
     return books.filter(
@@ -79,6 +80,10 @@ const ListBooks: MemoComponent = memo(function ListBooksMemo(props: Props) {
   function handleScroll(): void {
     const position = window.pageYOffset;
     setScroll(position);
+  }
+
+  function normalizeText(text: string): string {
+    return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   }
 
   return (

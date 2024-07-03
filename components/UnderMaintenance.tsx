@@ -1,6 +1,7 @@
 import type { Component } from "@/utils/types";
-import { useTranslation } from "react-i18next";
 import { PaintRoller as PaintIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
+
 function UnderMaintenance(): Component {
   const [t] = useTranslation("global");
   return (

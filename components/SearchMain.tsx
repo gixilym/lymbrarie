@@ -1,10 +1,10 @@
 "use client";
+import { inputSearch, stateBookValue } from "@/utils/store";
 import type { Component, InputEvent } from "@/utils/types";
-import { stateBookValue, inputSearch } from "@/utils/store";
-import AddBookBtn from "./AddBookBtn";
-import { useRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
+import { useRecoilState } from "recoil";
 import { twMerge } from "tailwind-merge";
+import AddBookBtn from "./AddBookBtn";
 
 function SearchMain(): Component {
   const [value, setValue] = useRecoilState(inputSearch),
@@ -16,7 +16,7 @@ function SearchMain(): Component {
   function selectedState(state: string) {
     return selectVal == state
       ? "bg-blue-300 text-gray-700"
-      : "bg-slate-800 text-whitChangeEvent<HTMLInputElement>e";
+      : "bg-slate-800 text-white";
   }
 
   return (
