@@ -27,7 +27,7 @@
     "new-book-reading": "Reading",
     "new-book-pending": "Pending",
     "new-book-borrowed": "Borrowed",
-    "generate-link": "generate the link of your image here",
+    "generate-link": "generate the link of your cover here",
     "loanedto": "Loaned to",
     "charging": "Charging",
     "profile": "Profile",
@@ -71,6 +71,7 @@
     "history": "History",
     "biography": "Biography",
     "self-help": "Self-help",
+    "novel": "Novel",
     "poetry": "Poetry",
     "drama": "Drama",
     "adventure": "Adventure",
@@ -85,5 +86,8 @@
     "lymbrarie-is-under-maintenance": "Lymbrarie is under maintenance",
     "performing-maintenance-tasks": "I am performing maintenance tasks to improve your experience.",
     "please-come-back-later": "Please come back later. I promise not to take long!",
-    "@": "Title cannot contain '@'"
+    "@": "Title cannot contain '@'",
+    "empty-custom-gender": "Enter a gender",
+    "empty-loaned": "Loaned to ...",
+    "no-gender": "Not assigned"
 }

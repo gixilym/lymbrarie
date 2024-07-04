@@ -8,6 +8,7 @@ const GENDERS: string[] = [
   "romance",
   "horror",
   "thriller",
+  "novel",
   "history",
   "biography",
   "self-help",

@@ -1,7 +1,7 @@
 import AddYourFirstBook from "@/components/AddYourFirstBook";
 import FooterMain from "@/components/FooterMain";
 import HeaderMain from "@/components/HeaderMain";
-import ListBooks from "@/components/ListBooks";
+import ListSection from "@/components/ListSection";
 import LoadComponent from "@/components/LoadComponent";
 import PopUps from "@/components/PopUps";
 import UnderMaintenance from "@/components/UnderMaintenance";
@@ -63,7 +63,7 @@ function Home(props: Props): Component {
           <PopUps allTitles={allTitles} accountDetails={accountDetails} />
           {isLoading && <LoadComponent />}
           {!isLoading && booksIsEmpty && <AddYourFirstBook />}
-          {!booksIsEmpty && !isLoading && <ListBooks myBooks={myBooks} />}
+          {!booksIsEmpty && !isLoading && <ListSection myBooks={myBooks} />}
           <FooterMain />
         </>
       )}

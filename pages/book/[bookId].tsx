@@ -114,7 +114,7 @@ function BookId(): Component {
                 <p className="text-md">{data?.author || t("unknow")}</p>
               </div>
 
-              {data?.gender && (
+              {data?.gender && data.gender != "no-gender" && (
                 <div className="flex flex-row justify-start items-center gap-x-2">
                   <AmpersandIcon size={18} />
                   <p className="text-sm capitalize">{t(data.gender)}</p>

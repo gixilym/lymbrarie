@@ -38,6 +38,7 @@ function NewBookPopUp({ allTitles }: { allTitles: string[] }): Component {
     [book, setBook] = useState<Book>(EMPTY_BOOK),
     { isLoading, startLoading, finishLoading } = useLoadContent(),
     [isCustomGender, setIsCustomGender] = useState<boolean>(false),
+    [customGenderVal, setCustomGenderVal] = useState<string>(""),
     handleState = (state: string): void => setBook({ ...book, state });
 
   function handleChange(event: InputEvent): void {
@@ -56,9 +57,16 @@ function NewBookPopUp({ allTitles }: { allTitles: string[] }): Component {
     event.preventDefault();
     const title: string = book.title?.toLowerCase().trim() ?? "";
     const repeteadTitle: boolean = allTitles.includes(title);
+
     if (!title) return notification("error", t("empty-title"));
     if (repeteadTitle) return notification("error", t("repeated-title"));
     if (title.includes("@")) return notification("error", t("@"));
+    if (isCustomGender && customGenderVal.length == 0) {
+      return notification("error", t("empty-custom-gender"));
+    }
+    if (book.state == "Borrowed" && book.loaned == "") {
+      return notification("error", t("empty-loaned"));
+    }
 
     const bookData: object = { ...book, owner: userEmail };
     startLoading();
@@ -118,12 +126,17 @@ function NewBookPopUp({ allTitles }: { allTitles: string[] }): Component {
             <option value="default" disabled>
               {t("placeholder-gender")}
             </option>
+            <option value="no-gender">{t("no-gender")}</option>
             <option value="custom">{t("custom-gender")}</option>
             <option value="fiction">{t("fiction")}</option>
             <option value="non-fiction">{t("non-fiction")}</option>
             <option value="mystery">{t("mystery")}</option>
+            <option value="novel">{t("novel")}</option>
+            <option value="science">{t("science")}</option>
             <option value="fantasy">{t("fantasy")}</option>
             <option value="philosophy">{t("philosophy")}</option>
+            <option value="constabulary">{t("constabulary")}</option>
+            <option value="psychology">{t("psychology")}</option>
             <option value="economy">{t("economy")}</option>
             <option value="romance">{t("romance")}</option>
             <option value="horror">{t("horror")}</option>
@@ -146,7 +159,10 @@ function NewBookPopUp({ allTitles }: { allTitles: string[] }): Component {
             <CustomIcon size={18} className="mt-0.5 mr-2" />
             <input
               id="gender-input"
-              onChange={handleChange}
+              onChange={(e: InputEvent) => {
+                handleChange(e);
+                setCustomGenderVal(e.target.value);
+              }}
               name="gender"
               type="text"
               className="grow px-1 placeholder:text-slate-500"

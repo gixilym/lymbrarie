@@ -27,7 +27,7 @@
     "new-book-reading": "Leyendo",
     "new-book-pending": "Pendiente",
     "new-book-borrowed": "Prestado",
-    "generate-link": "genera el link de tu imagen aquí",
+    "generate-link": "genera el link de tu portada aquí",
     "loanedto": "Prestado a",
     "charging": "Cargando",
     "profile": "Perfil",
@@ -75,6 +75,7 @@
     "drama": "Drama",
     "adventure": "Aventura",
     "psychology": "Psicología",
+    "novel": "Novela",
     "young-adult": "Juvenil",
     "children's": "Infantil",
     "philosophy": "Filosofía",
@@ -85,5 +86,8 @@
     "lymbrarie-is-under-maintenance": "Lymbrarie está en mantenimiento",
     "performing-maintenance-tasks": "Estoy realizando tareas de mantenimiento para mejorar tu experiencia.",
     "please-come-back-later": "Por favor, vuelve más tarde. ¡Prometo no tardar!",
-    "@": "El titulo no puede contener '@'"
+    "@": "El titulo no puede contener '@'",
+    "empty-custom-gender": "Ingresa un género",
+    "empty-loaned": "Prestado a...",
+    "no-gender": "Sin asignar"
 }

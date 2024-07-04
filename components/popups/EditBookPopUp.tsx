@@ -44,7 +44,6 @@ function EditBookPopUp(props: Props): Component {
   useEffect(() => loadBookData(), [data]); // eslint-disable-line
 
   useEffect(() => {
-    //! Refactorizar este useEffect
     const noChanges: boolean =
       book.title == data.title &&
       book.gender == data.gender &&
@@ -53,25 +52,9 @@ function EditBookPopUp(props: Props): Component {
       book.author == data.author &&
       book.loaned == data.loaned;
 
-    if (noChanges) {
-      if (isCustomGender) {
-        if (customGenderVal.length == 0) {
-          return setEditDisabled(true);
-        } else setEditDisabled(false);
-      } else setEditDisabled(true);
-    } else {
-      if (book.state == "Borrowed") {
-        if (book.loaned == undefined || book.loaned == "") {
-          return setEditDisabled(true);
-        } else setEditDisabled(false);
-      }
-      if (isCustomGender) {
-        if (customGenderVal.length == 0) {
-          return setEditDisabled(true);
-        } else setEditDisabled(false);
-      } else setEditDisabled(false);
-    }
-  }, [book, isCustomGender, customGenderVal, data]);
+    if (noChanges) return setEditDisabled(true);
+    else setEditDisabled(false);
+  }, [book, data]);
 
   function loadBookData(): void {
     const loadData: Book = {
@@ -101,12 +84,20 @@ function EditBookPopUp(props: Props): Component {
 
   async function editBook(): Promise<void> {
     if (book.title?.includes("@")) return notification("error", t("@"));
+    if (isCustomGender && customGenderVal.length == 0) {
+      return notification("error", t("empty-custom-gender"));
+    }
+    if (book.state == "Borrowed" && book.loaned == "") {
+      return notification("error", t("empty-loaned"));
+    }
     const loaned: string = book.state != "Borrowed" ? "" : book.loaned ?? "";
     const updatedBook: Book = { ...book, loaned };
     const bookData: object = { documentId, updatedBook };
+    const title: string =
+      book.title?.replaceAll(" ", "_").replaceAll(/\?/g, "@") ?? "";
     startLoading();
     axios.patch(BOOK_HANDLER_URL, bookData);
-    window.location.href = `/book/${book.title?.replaceAll(" ", "_")}`;
+    location.href = `/book/${title}`;
   }
 
   return (
@@ -161,10 +152,12 @@ function EditBookPopUp(props: Props): Component {
             <option value="default" disabled>
               {t("placeholder-gender")}
             </option>
+            <option value="no-gender">{t("no-gender")}</option>
             <option value="custom">{t("custom-gender")}</option>
             <option value="fiction">{t("fiction")}</option>
             <option value="non-fiction">{t("non-fiction")}</option>
             <option value="mystery">{t("mystery")}</option>
+            <option value="novel">{t("novel")}</option>
             <option value="science">{t("science")}</option>
             <option value="fantasy">{t("fantasy")}</option>
             <option value="philosophy">{t("philosophy")}</option>
@@ -321,3 +314,22 @@ interface Props {
   data: any;
   documentId: string;
 }
+
+/* if (noChanges) {
+      if (isCustomGender) {
+        if (customGenderVal.length == 0) {
+          return setEditDisabled(true);
+        } else setEditDisabled(false);
+      } else setEditDisabled(true);
+    } else {
+      if (book.state == "Borrowed") {
+        if (book.loaned == undefined || book.loaned == "") {
+          return setEditDisabled(true);
+        } else setEditDisabled(false);
+      }
+      if (isCustomGender) {
+        if (customGenderVal.length == 0) {
+          return setEditDisabled(true);
+        } else setEditDisabled(false);
+      } else setEditDisabled(false);
+    }*/
