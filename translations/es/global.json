@@ -22,7 +22,7 @@
     "placeholder-gender": "Género",
     "cancel": "Cancelar",
     "add": "Añadir",
-    "new-book-default": "Estado",
+    "state": "Estado",
     "new-book-read": "Leído",
     "new-book-reading": "Leyendo",
     "new-book-pending": "Pendiente",
@@ -89,5 +89,6 @@
     "@": "El titulo no puede contener '@'",
     "empty-custom-gender": "Ingresa un género",
     "empty-loaned": "Prestado a...",
-    "no-gender": "Sin asignar"
+    "no-gender": "Sin asignar",
+    "religion": "Religión"
 }

@@ -1,4 +1,4 @@
-import { notification } from "@/utils/helpers";
+import { isLoaned, notification } from "@/utils/helpers";
 import useLoadContent from "@/utils/hooks/useLoadContent";
 import usePopUp from "@/utils/hooks/usePopUp";
 import useUserEmail from "@/utils/hooks/useUserEmail";
@@ -13,9 +13,9 @@ import type {
 import axios from "axios";
 import {
   UserRoundSearch as BorrowedIcon,
+  Type as CustomIcon,
   Ampersand as GenderIcon,
   Image as ImageIcon,
-  Type as CustomIcon,
   Library as StateIcon,
   Italic as TitleIcon,
   User as UserIcon,
@@ -64,7 +64,7 @@ function NewBookPopUp({ allTitles }: { allTitles: string[] }): Component {
     if (isCustomGender && customGenderVal.length == 0) {
       return notification("error", t("empty-custom-gender"));
     }
-    if (book.state == "Borrowed" && book.loaned == "") {
+    if (isLoaned(book.state ?? "") && book.loaned?.trim() == "") {
       return notification("error", t("empty-loaned"));
     }
 
@@ -120,14 +120,14 @@ function NewBookPopUp({ allTitles }: { allTitles: string[] }): Component {
           <select
             id="gender-select"
             onChange={handleGender}
-            className="select input-bordered border-x-0 rounded-none sm:text-xl text-lg w-full text-gray-400 focus:outline-0 h-14"
+            className="select input-bordered pl-1.5 border-x-0 rounded-none sm:text-xl text-lg w-full text-gray-400 focus:outline-0 h-14"
             defaultValue="default"
           >
             <option value="default" disabled>
               {t("placeholder-gender")}
             </option>
-            <option value="no-gender">{t("no-gender")}</option>
             <option value="custom">{t("custom-gender")}</option>
+            <option value="no-gender">{t("no-gender")}</option>
             <option value="fiction">{t("fiction")}</option>
             <option value="non-fiction">{t("non-fiction")}</option>
             <option value="mystery">{t("mystery")}</option>
@@ -137,6 +137,7 @@ function NewBookPopUp({ allTitles }: { allTitles: string[] }): Component {
             <option value="philosophy">{t("philosophy")}</option>
             <option value="constabulary">{t("constabulary")}</option>
             <option value="psychology">{t("psychology")}</option>
+            <option value="religion">{t("religion")}</option>
             <option value="economy">{t("economy")}</option>
             <option value="romance">{t("romance")}</option>
             <option value="horror">{t("horror")}</option>
@@ -176,7 +177,7 @@ function NewBookPopUp({ allTitles }: { allTitles: string[] }): Component {
         <label
           htmlFor="state-select"
           className={twMerge(
-            book?.state == "Borrowed" ? "w-2/4" : "w-full",
+            isLoaned(book.state ?? "") ? "w-2/4" : "w-full",
             "input input-bordered flex items-center sm:text-xl text-lg sm:w-full h-14"
           )}
         >
@@ -186,15 +187,18 @@ function NewBookPopUp({ allTitles }: { allTitles: string[] }): Component {
             disabled={isLoading}
             onChange={e => handleState(e.target.value)}
             className="select input-bordered border-x-0 rounded-none sm:text-xl text-lg w-full text-gray-400 focus:outline-0 h-14"
-            defaultValue="Pending"
+            defaultValue="default"
           >
+            <option value="default" disabled>
+              {t("state")}
+            </option>
             <option value="Reading">{t("new-book-reading")}</option>
             <option value="Read">{t("new-book-read")}</option>
             <option value="Pending">{t("new-book-pending")}</option>
             <option value="Borrowed">{t("new-book-borrowed")}</option>
           </select>
         </label>
-        {book.state == "Borrowed" && (
+        {isLoaned(book.state ?? "") && (
           <label
             htmlFor="loaned-input"
             className="input input-bordered flex items-center sm:text-xl text-lg w-2/4 sm:w-full h-14"

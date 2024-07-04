@@ -32,25 +32,25 @@ function DeleteBookPopUp({ documentId }: { documentId: string }): Component {
           <WarningIcon size={25} />
           <p className="font-bold text-lg">{t("warning")}</p>
         </div>
-        <p className="py-4 text-lg">{t("delete-message")}</p>
+        <p className="py-4 text-xl">{t("delete-message")}</p>
         <div className="modal-action">
           <form method="dialog" className="space-x-2">
             <button
               disabled={isLoading}
               onClick={() => closePopUp("delete_book")}
-              className="btn font-public bg-slate-700 hover:bg-slate-600 text-white text-md w-24"
+              className="btn font-public bg-slate-700 hover:bg-slate-600 text-white text-lg w-24"
             >
               {t("cancel")}
             </button>
             {isLoading ? (
-              <button className="btn font-public text-white text-md w-26">
+              <button className="btn font-public text-white text-lg w-26">
                 {t("deleting")}
               </button>
             ) : (
               <button
                 onClick={deleteDocument}
                 type="button"
-                className="btn font-public bg-red-600 hover:bg-red-500 text-white text-md w-26"
+                className="btn font-public bg-red-700 hover:bg-red-500 text-white text-lg w-26"
               >
                 {t("delete-book")}
               </button>

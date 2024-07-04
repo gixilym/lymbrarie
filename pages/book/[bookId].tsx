@@ -5,7 +5,7 @@ import NotesBook from "@/components/NotesBook";
 import DeleteBookPopUp from "@/components/popups/DeleteBookPopUp";
 import EditBookPopUp from "@/components/popups/EditBookPopUp";
 import ThugsPopUp from "@/components/popups/ThugsPopUp";
-import { getBookData, translateStateBook } from "@/utils/helpers";
+import { getBookData, isLoaned, translateStateBook } from "@/utils/helpers";
 import useLoadContent from "@/utils/hooks/useLoadContent";
 import usePopUp from "@/utils/hooks/usePopUp";
 import useSessionExists from "@/utils/hooks/useSessionExists";
@@ -125,7 +125,7 @@ function BookId(): Component {
                 <LibraryIcon size={18} />
                 <p className="text-sm">
                   {translateStateBook(data?.state, t)}
-                  {data?.state == "Borrowed" && ` ${data?.loaned}`}
+                  {isLoaned(data?.state ?? "") && ` ${data?.loaned}`}
                 </p>
               </div>
 
@@ -142,7 +142,7 @@ function BookId(): Component {
                     </div>
                   </li>
 
-                  {data?.state == "Borrowed" && (
+                  {isLoaned(data?.state ?? "") && (
                     <li onClick={() => openPopUp("thugs")}>
                       <div className="flex flex-row justify-start items-center gap-x-2">
                         <ThugsIcon size={18} />

@@ -1,7 +1,7 @@
-import { toast } from "react-hot-toast";
 import { collectionDB } from "@/utils/store";
 import type { Document, Email } from "@/utils/types";
 import { Query, getDocs, query, where } from "firebase/firestore";
+import { toast } from "react-hot-toast";
 
 function notification(type: "success" | "error", msg: string): void {
   toast[type](msg, {
@@ -50,6 +50,10 @@ function translateStateBook(state: string, t: any): string {
   }
 }
 
+function isLoaned(state: string): boolean {
+  return state == "Borrowed";
+}
+
 async function ONLY_DEV_getBooks(): Promise<any> {
   const q: Query<Document> = query(collectionDB),
     querySnapshot: Document = await getDocs(q),
@@ -59,6 +63,12 @@ async function ONLY_DEV_getBooks(): Promise<any> {
   console.log(querySnapshot.docs[1].data());
 }
 
-export { notification, getBookData, translateStateBook, ONLY_DEV_getBooks };
+export {
+  ONLY_DEV_getBooks,
+  getBookData,
+  isLoaned,
+  notification,
+  translateStateBook,
+};
 
 type Res = { data: Document | null; id: Document | null };

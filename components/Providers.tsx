@@ -1,7 +1,7 @@
 "use client";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
-import global_en from "@/utils/translations/en/global.json";
-import global_es from "@/utils/translations/es/global.json";
+import global_en from "@/translations/en/global.json";
+import global_es from "@/translations/es/global.json";
 import type { Component } from "@/utils/types";
 import i18next from "i18next";
 import { type PropsWithChildren, useEffect } from "react";

@@ -1,4 +1,5 @@
 import { GENDERS } from "@/utils/consts";
+import { isLoaned, notification } from "@/utils/helpers";
 import useLoadContent from "@/utils/hooks/useLoadContent";
 import usePopUp from "@/utils/hooks/usePopUp";
 import { BOOK_HANDLER_URL, EMPTY_BOOK } from "@/utils/store";
@@ -25,7 +26,6 @@ import { useTranslation } from "react-i18next";
 import { twMerge } from "tailwind-merge";
 import DialogContainer from "../DialogContainer";
 import PopUpTitle from "./TitlePopUp";
-import { notification } from "@/utils/helpers";
 
 function EditBookPopUp(props: Props): Component {
   const [t] = useTranslation("global"),
@@ -36,8 +36,7 @@ function EditBookPopUp(props: Props): Component {
     [book, setBook] = useState<Book>(EMPTY_BOOK),
     customVal: boolean = !GENDERS.includes(data.gender.toLowerCase()),
     [isCustomGender, setIsCustomGender] = useState<boolean>(customVal),
-    [customGenderVal, setCustomGenderVal] = useState<string>(""),
-    isLoaned: boolean = book?.state == "Borrowed",
+    [customGenderVal, setCustomGenderVal] = useState<string>(data.gender),
     [editDisabled, setEditDisabled] = useState<boolean>(true),
     handleState = (state: string): void => setBook({ ...book, state });
 
@@ -87,7 +86,7 @@ function EditBookPopUp(props: Props): Component {
     if (isCustomGender && customGenderVal.length == 0) {
       return notification("error", t("empty-custom-gender"));
     }
-    if (book.state == "Borrowed" && book.loaned == "") {
+    if (isLoaned(book.state ?? "") && book.loaned?.trim() == "") {
       return notification("error", t("empty-loaned"));
     }
     const loaned: string = book.state != "Borrowed" ? "" : book.loaned ?? "";
@@ -152,8 +151,8 @@ function EditBookPopUp(props: Props): Component {
             <option value="default" disabled>
               {t("placeholder-gender")}
             </option>
-            <option value="no-gender">{t("no-gender")}</option>
             <option value="custom">{t("custom-gender")}</option>
+            <option value="no-gender">{t("no-gender")}</option>
             <option value="fiction">{t("fiction")}</option>
             <option value="non-fiction">{t("non-fiction")}</option>
             <option value="mystery">{t("mystery")}</option>
@@ -163,6 +162,7 @@ function EditBookPopUp(props: Props): Component {
             <option value="philosophy">{t("philosophy")}</option>
             <option value="constabulary">{t("constabulary")}</option>
             <option value="psychology">{t("psychology")}</option>
+            <option value="religion">{t("religion")}</option>
             <option value="economy">{t("economy")}</option>
             <option value="romance">{t("romance")}</option>
             <option value="horror">{t("horror")}</option>
@@ -203,7 +203,7 @@ function EditBookPopUp(props: Props): Component {
         <label
           htmlFor="state-select"
           className={twMerge(
-            isLoaned ? "w-2/4" : "w-full",
+            isLoaned(book.state ?? "") ? "w-2/4" : "w-full",
             "input input-bordered flex items-center sm:text-xl text-lg h-14 sm:w-full"
           )}
         >
@@ -215,7 +215,7 @@ function EditBookPopUp(props: Props): Component {
             defaultValue={data.state}
           >
             <option value="default" disabled>
-              {t("new-book-default")}
+              {t("state")}
             </option>
             <option value="Reading">{t("new-book-reading")}</option>
             <option value="Read">{t("new-book-read")}</option>
@@ -223,7 +223,7 @@ function EditBookPopUp(props: Props): Component {
             <option value="Borrowed">{t("new-book-borrowed")}</option>
           </select>
         </label>
-        {isLoaned && (
+        {isLoaned(book.state ?? "") && (
           <label
             htmlFor="loaned-input"
             className="input input-bordered flex items-center sm:text-xl text-lg h-14 w-2/4 sm:w-full"
@@ -314,22 +314,3 @@ interface Props {
   data: any;
   documentId: string;
 }
-
-/* if (noChanges) {
-      if (isCustomGender) {
-        if (customGenderVal.length == 0) {
-          return setEditDisabled(true);
-        } else setEditDisabled(false);
-      } else setEditDisabled(true);
-    } else {
-      if (book.state == "Borrowed") {
-        if (book.loaned == undefined || book.loaned == "") {
-          return setEditDisabled(true);
-        } else setEditDisabled(false);
-      }
-      if (isCustomGender) {
-        if (customGenderVal.length == 0) {
-          return setEditDisabled(true);
-        } else setEditDisabled(false);
-      } else setEditDisabled(false);
-    }*/

@@ -3,6 +3,8 @@ const UNDER_MAINTENANCE: boolean = false;
 const GENDERS: string[] = [
   "fiction",
   "non-fiction",
+  "religion",
+  "no-gender",
   "mystery",
   "fantasy",
   "romance",
