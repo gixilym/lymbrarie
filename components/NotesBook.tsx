@@ -1,5 +1,5 @@
-import { useTranslation } from "react-i18next";
 import { Save as SaveIcon } from "lucide-react";
+import { useRouter, type NextRouter } from "next/router";
 import {
   ChangeEvent,
   useEffect,
@@ -7,13 +7,14 @@ import {
   type Dispatch,
   type SetStateAction,
 } from "react";
-import { type NextRouter, useRouter } from "next/router";
+import { useTranslation } from "react-i18next";
+import { twMerge } from "tailwind-merge";
 
 function NotesBook(props: Notes) {
-  const { notes, updateNotes, setNotes, classText } = props;
-  const [hasChanges, setHasChanges] = useState<boolean>(false);
-  const [t] = useTranslation("global");
-  const router: NextRouter = useRouter();
+  const { notes, updateNotes, setNotes, classText } = props,
+    [hasChanges, setHasChanges] = useState<boolean>(false),
+    [t] = useTranslation("global"),
+    router: NextRouter = useRouter();
 
   useEffect(() => {
     router.events.on("routeChangeStart", handleRouteChange);
@@ -70,12 +71,15 @@ function NotesBook(props: Notes) {
         </div>
       </div>
 
-      <div className="sm:px-0 px-4 h-[calc(100dvh-6rem)] flex items-center justify-center w-full ">
+      <div className="sm:px-0 px-4 h-full flex items-center justify-center w-full ">
         <textarea
           placeholder="..."
           value={notes}
           onChange={handleChangeContent}
-          className="w-full h-full bg-transparent min-h-[200px] max-h-[1200px] text-white/80 resize-none border-none focus:ring-0 focus:outline-none text-md sm:text-lg sm:pr-2 py-4"
+          className={twMerge(
+            notes?.length > 0 ? "sm:min-h-[300px] max-h-[1200px]" : "h-14",
+            "w-full h-full bg-transparent  text-white/80 resize-none border-none focus:ring-0 focus:outline-none text-md sm:text-lg sm:pr-2 py-4"
+          )}
         />
       </div>
     </div>
