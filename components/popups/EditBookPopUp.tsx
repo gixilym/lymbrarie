@@ -1,5 +1,5 @@
 import { GENDERS } from "@/utils/consts";
-import { isLoaned, notification } from "@/utils/helpers";
+import { isLoaned, notification, tLC } from "@/utils/helpers";
 import useLoadContent from "@/utils/hooks/useLoadContent";
 import usePopUp from "@/utils/hooks/usePopUp";
 import { BOOK_HANDLER_URL, EMPTY_BOOK } from "@/utils/store";
@@ -26,6 +26,7 @@ import { useTranslation } from "react-i18next";
 import { twMerge } from "tailwind-merge";
 import DialogContainer from "../DialogContainer";
 import PopUpTitle from "./TitlePopUp";
+import useLocalStorage from "@/utils/hooks/useLocalStorage";
 
 function EditBookPopUp(props: Props): Component {
   const [t] = useTranslation("global"),
@@ -34,9 +35,10 @@ function EditBookPopUp(props: Props): Component {
     form: FormRef = useRef<Reference>(null),
     { isLoading, startLoading } = useLoadContent(),
     [book, setBook] = useState<Book>(EMPTY_BOOK),
-    customVal: boolean = !GENDERS.includes(data.gender.toLowerCase()),
+    customVal: boolean = !GENDERS.includes(tLC(data.gender)),
     [isCustomGender, setIsCustomGender] = useState<boolean>(customVal),
     [customGenderVal, setCustomGenderVal] = useState<string>(data.gender),
+    [cacheBooks, setCacheBooks] = useLocalStorage("cacheBooks", null),
     [editDisabled, setEditDisabled] = useState<boolean>(true),
     handleState = (state: string): void => setBook({ ...book, state });
 
@@ -83,18 +85,19 @@ function EditBookPopUp(props: Props): Component {
 
   async function editBook(): Promise<void> {
     if (book.title?.includes("@")) return notification("error", t("@"));
-    if (isCustomGender && customGenderVal.length == 0) {
+    if (isCustomGender && customGenderVal.length == 0)
       return notification("error", t("empty-custom-gender"));
-    }
-    if (isLoaned(book.state ?? "") && book.loaned?.trim() == "") {
+    if (isLoaned(book.state ?? "") && book.loaned?.trim() == "")
       return notification("error", t("empty-loaned"));
-    }
-    const loaned: string = book.state != "Borrowed" ? "" : book.loaned ?? "";
-    const updatedBook: Book = { ...book, loaned };
-    const bookData: object = { documentId, updatedBook };
-    const title: string =
-      book.title?.replaceAll(" ", "_").replaceAll(/\?/g, "@") ?? "";
+
+    const loaned: string = !isLoaned(book.state ?? "") ? "" : book.loaned ?? "",
+      updatedBook: Book = { ...book, loaned },
+      bookData: object = { documentId, updatedBook },
+      title: string =
+        book.title?.replaceAll(" ", "_").replaceAll(/\?/g, "@") ?? "";
     startLoading();
+    const editedBooks = cacheBooks?.filter((b: Book) => b.title != book.title);
+    setCacheBooks([...editedBooks, updatedBook]);
     axios.patch(BOOK_HANDLER_URL, bookData);
     location.href = `/book/${title}`;
   }

@@ -89,7 +89,9 @@ function BookId(): Component {
 
       {popup.edit_book && <EditBookPopUp data={data} documentId={documentId} />}
       {popup.thugs && <ThugsPopUp />}
-      {popup.delete_book && <DeleteBookPopUp documentId={documentId} />}
+      {popup.delete_book && (
+        <DeleteBookPopUp documentId={documentId} title={data?.title} />
+      )}
 
       {isLoading ? (
         <LoadComponent />

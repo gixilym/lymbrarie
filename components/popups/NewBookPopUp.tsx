@@ -1,13 +1,16 @@
-import { isLoaned, notification } from "@/utils/helpers";
+import { isLoaned, notification, tLC } from "@/utils/helpers";
 import useLoadContent from "@/utils/hooks/useLoadContent";
+import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import usePopUp from "@/utils/hooks/usePopUp";
 import useUserEmail from "@/utils/hooks/useUserEmail";
 import { BOOK_HANDLER_URL, EMPTY_BOOK } from "@/utils/store";
 import type {
   Book,
   Component,
+  Email,
   FormRef,
   InputEvent,
+  PopUpsIds,
   SelectEvent,
 } from "@/utils/types";
 import axios from "axios";
@@ -29,14 +32,15 @@ import { twMerge } from "tailwind-merge";
 import DialogContainer from "../DialogContainer";
 import PopUpTitle from "./TitlePopUp";
 
-function NewBookPopUp({ allTitles }: { allTitles: string[] }): Component {
+function NewBookPopUp({ allTitles }: Props): Component {
   const [t] = useTranslation("global"),
-    { userEmail } = useUserEmail(),
+    { userEmail }: { userEmail: Email } = useUserEmail(),
     { closePopUp } = usePopUp(),
     { refresh }: AppRouterInstance = useRouter(),
     formRef: FormRef = useRef<Reference>(null),
     [book, setBook] = useState<Book>(EMPTY_BOOK),
     { isLoading, startLoading, finishLoading } = useLoadContent(),
+    [cacheBooks, setCacheBooks] = useLocalStorage("cacheBooks", null),
     [isCustomGender, setIsCustomGender] = useState<boolean>(false),
     [customGenderVal, setCustomGenderVal] = useState<string>(""),
     handleState = (state: string): void => setBook({ ...book, state });
@@ -47,15 +51,15 @@ function NewBookPopUp({ allTitles }: { allTitles: string[] }): Component {
     setBook({ ...book, [key]: value });
   }
 
-  function handleGender(e: SelectEvent): void {
-    const gender: string = e.target?.value;
+  function handleGender(event: SelectEvent): void {
+    const gender: string = event.target?.value;
     setBook({ ...book, gender });
     setIsCustomGender(gender == "custom");
   }
 
   async function newBook(event: FormEvent): Promise<void> {
     event.preventDefault();
-    const title: string = book.title?.toLowerCase().trim() ?? "";
+    const title: string = tLC(book.title ?? "");
     const repeteadTitle: boolean = allTitles.includes(title);
 
     if (!title) return notification("error", t("empty-title"));
@@ -68,10 +72,11 @@ function NewBookPopUp({ allTitles }: { allTitles: string[] }): Component {
       return notification("error", t("empty-loaned"));
     }
 
-    const bookData: object = { ...book, owner: userEmail };
+    const bookData: Book = { ...book, owner: userEmail ?? "mail_is_empty" };
     startLoading();
     await axios.post(BOOK_HANDLER_URL, bookData);
     finishLoading();
+    setCacheBooks([...(cacheBooks ?? []), bookData]);
     closePopUp("add_book");
     refresh();
   }
@@ -283,3 +288,7 @@ function NewBookPopUp({ allTitles }: { allTitles: string[] }): Component {
 }
 
 export default NewBookPopUp;
+
+interface Props {
+  allTitles: string[];
+}

@@ -1,4 +1,4 @@
-const UNDER_MAINTENANCE: boolean = false;
+const MAINTENANCE: boolean = false;
 
 const GENDERS: string[] = [
   "fiction",
@@ -26,4 +26,4 @@ const GENDERS: string[] = [
   "science",
 ];
 
-export { UNDER_MAINTENANCE, GENDERS };
+export { MAINTENANCE, GENDERS };

@@ -2,8 +2,8 @@ import useLoadContent from "@/utils/hooks/useLoadContent";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import usePopUp from "@/utils/hooks/usePopUp";
 import { BOOK_HANDLER_URL, inputSearch } from "@/utils/store";
-import type { Component } from "@/utils/types";
-import { useSpring, animated } from "@react-spring/web";
+import type { Book, Component } from "@/utils/types";
+import { animated, useSpring } from "@react-spring/web";
 import axios from "axios";
 import { TriangleAlert as WarningIcon } from "lucide-react";
 import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
@@ -12,12 +12,13 @@ import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilState } from "recoil";
 
-function DeleteBookPopUp({ documentId }: { documentId: string }): Component {
+function DeleteBookPopUp({ documentId, title }: Props): Component {
   const { closePopUp } = usePopUp(),
     [t] = useTranslation("global"),
     [animations] = useLocalStorage("animations", "true"),
     router: AppRouterInstance = useRouter(),
     [, setSearchVal] = useRecoilState(inputSearch),
+    [cacheBooks, setCacheBooks] = useLocalStorage("cacheBooks", null),
     { isLoading, startLoading, finishLoading } = useLoadContent(),
     [styles, animate] = useSpring(() => ({
       transform: animations ? "scale(0.5)" : "scale(1)",
@@ -31,6 +32,7 @@ function DeleteBookPopUp({ documentId }: { documentId: string }): Component {
   async function deleteDocument(): Promise<void> {
     startLoading();
     axios.delete(BOOK_HANDLER_URL, { data: documentId });
+    setCacheBooks(cacheBooks?.filter((b: Book) => b.title != title));
     setSearchVal("");
     closePopUp("delete_book");
     finishLoading();
@@ -75,3 +77,8 @@ function DeleteBookPopUp({ documentId }: { documentId: string }): Component {
 }
 
 export default DeleteBookPopUp;
+
+interface Props {
+  documentId: string;
+  title: string;
+}

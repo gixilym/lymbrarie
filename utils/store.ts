@@ -1,8 +1,7 @@
-//"use client";
 import { collection, type CollectionReference } from "firebase/firestore";
 import { atom, RecoilState } from "recoil";
 import { db } from "@/database/firebase";
-import { Book } from "./types";
+import type { Book } from "./types";
 
 const inputSearch: RecoilState<string> = atom({
   key: "inputSearch",

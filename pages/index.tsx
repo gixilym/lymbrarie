@@ -3,9 +3,11 @@ import FooterMain from "@/components/FooterMain";
 import HeaderMain from "@/components/HeaderMain";
 import ListSection from "@/components/ListSection";
 import LoadComponent from "@/components/LoadComponent";
+import Maintenance from "@/components/Maintenance";
 import PopUps from "@/components/PopUps";
-import UnderMaintenance from "@/components/UnderMaintenance";
-import { UNDER_MAINTENANCE } from "@/utils/consts";
+import { MAINTENANCE } from "@/utils/consts";
+import { tLC } from "@/utils/helpers";
+import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import useUserEmail from "@/utils/hooks/useUserEmail";
 import { collectionDB } from "@/utils/store";
 import type {
@@ -14,6 +16,7 @@ import type {
   Component,
   Email,
   Session,
+  Timer,
   User,
 } from "@/utils/types";
 import {
@@ -28,35 +31,55 @@ import { getSession } from "next-auth/react";
 import Head from "next/head";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-function Home(props: Props): Component {
-  const { accountDetails } = props,
-    { userEmail } = useUserEmail(),
-    [myBooks, setMyBooks] = useState<any>([]),
+function Home({ accountDetails }: Props): Component {
+  const { userEmail }: { userEmail: Email } = useUserEmail(),
+    [myBooks, setMyBooks] = useState<Book[]>([]),
+    [cacheBooks, setCacheBooks] = useLocalStorage("cacheBooks", null),
     [isLoading, setIsLoading] = useState<boolean>(true),
     [booksIsEmpty, setBooksIsEmpty] = useState<boolean | null>(null),
     allTitles: string[] = useMemo(
-      () => myBooks.map((b: Book) => b.title?.toLowerCase()),
+      () => myBooks.map((b: Book) => tLC(b.title ?? "")),
       [myBooks]
     );
 
-  const fetchBooks: () => Promise<void> = useCallback(async () => {
-    const { booksArr, isEmpty } = await getListBooks(userEmail);
-    setMyBooks(booksArr);
-    setBooksIsEmpty(isEmpty);
-    setIsLoading(false);
-  }, [userEmail]);
+  //!quitar el loading cuando esta cacheado.
+  //! actualizar en el caché se  edita datos/notas 
+
+  useEffect(() => {
+    myBooks.length > 0 && setCacheBooks(myBooks);
+  }, [myBooks]); // eslint-disable-line
+
+  const fetchBooks: FetchBooks = useCallback(async () => {
+    const condition: boolean = Array.isArray(cacheBooks);
+    if (condition) {
+      console.log("🟢: Cacheados");
+      setMyBooks(cacheBooks);
+      cleanTimer();
+    } else {
+      console.log("🔴: Nuevos");
+      const { booksArr, isEmpty }: ResList = await getListBooks(userEmail);
+      setMyBooks(booksArr);
+      setBooksIsEmpty(isEmpty);
+      cleanTimer();
+    }
+  }, [userEmail]); // eslint-disable-line
 
   useEffect(() => {
     fetchBooks();
   }, [fetchBooks]);
+
+  function cleanTimer(): () => void {
+    const timer: Timer = setTimeout(() => setIsLoading(false), 1400);
+    return () => clearTimeout(timer);
+  }
 
   return (
     <div className="flex flex-col justify-start items-center w-full sm:max-w-[950px] h-full gap-y-10 sm:gap-y-20">
       <Head>
         <title>Lymbrarie</title>
       </Head>
-      {UNDER_MAINTENANCE ? (
-        <UnderMaintenance />
+      {MAINTENANCE ? (
+        <Maintenance />
       ) : (
         <>
           <HeaderMain />
@@ -121,3 +144,5 @@ interface Props {
 }
 
 type ResProp = { props: { accountDetails: AccountDetails } };
+type FetchBooks = () => Promise<void>;
+type ResList = { booksArr: Book[]; isEmpty: boolean };

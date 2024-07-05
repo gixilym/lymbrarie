@@ -2,7 +2,7 @@ import type { Component } from "@/utils/types";
 import { PaintRoller as PaintIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-function UnderMaintenance(): Component {
+function Maintenance(): Component {
   const [t] = useTranslation("global");
   return (
     <div className="flex flex-col justify-center items-center gap-y-12 w-full pt-20 h-full">
@@ -19,4 +19,4 @@ function UnderMaintenance(): Component {
   );
 }
 
-export default UnderMaintenance;
+export default Maintenance;

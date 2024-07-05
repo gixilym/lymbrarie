@@ -63,12 +63,15 @@ async function ONLY_DEV_getBooks(): Promise<any> {
   console.log(querySnapshot.docs[1].data());
 }
 
+const tLC = (val: string) => val?.toLowerCase().trim();
+
 export {
   ONLY_DEV_getBooks,
   getBookData,
   isLoaned,
   notification,
   translateStateBook,
+  tLC,
 };
 
 type Res = { data: Document | null; id: Document | null };

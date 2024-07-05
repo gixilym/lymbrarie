@@ -28,6 +28,8 @@ type GoTo = Promise<boolean> | any;
 
 type SelectEvent = ChangeEvent<HTMLSelectElement>;
 
+type Timer = ReturnType<typeof setTimeout>;
+
 type PopUpsIds =
   | "add_book"
   | "edit_book"
@@ -80,4 +82,5 @@ export type {
   GoTo,
   User,
   SelectEvent,
+  Timer,
 };

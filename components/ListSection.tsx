@@ -16,6 +16,7 @@ import { useRecoilState } from "recoil";
 import BookCard from "./BookCard";
 import NoMatchesText from "./NoMatchesText";
 import ListBooks from "./ListBooks";
+import { tLC } from "@/utils/helpers";
 
 const ListSection: MemoComponent = memo(function ListSectionMemo(props: Props) {
   const { myBooks } = props,
@@ -68,7 +69,6 @@ const ListSection: MemoComponent = memo(function ListSectionMemo(props: Props) {
 
   function where(value: string, state: string): Book[] {
     const books: Book[] = userLoggedIn ? myBooks : initialBooks,
-      tLC = (val: string) => val?.toLowerCase().trim(),
       checkState = (b: Book) => !state || b.state == stateVal,
       checkTitle = (b: Book) =>
         normalizeText(tLC(b.title ?? ""))?.includes(normalizeText(tLC(value))),

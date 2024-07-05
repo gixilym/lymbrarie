@@ -1,6 +1,6 @@
 import Providers from "@/components/Providers";
 import "@/globals.css";
-import { UNDER_MAINTENANCE } from "@/utils/consts";
+import { MAINTENANCE } from "@/utils/consts";
 import type { Component } from "@/utils/types";
 import "@fontsource-variable/public-sans";
 import type { AppProps } from "next/app";
@@ -11,7 +11,7 @@ export default function App({ Component, pageProps }: AppProps): Component {
   const router: NextRouter = useRouter();
 
   useEffect(() => {
-    if (UNDER_MAINTENANCE && router.pathname != "/") {
+    if (MAINTENANCE && router.pathname != "/") {
       router.push("/");
     }
   }, [router]);
