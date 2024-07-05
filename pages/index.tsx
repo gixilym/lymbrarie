@@ -119,9 +119,11 @@ async function getListBooks(email: Email) {
       isEmpty = resQuery.empty;
       resQuery.forEach(doc => booksArr.push(doc.data()));
     } catch (err: any) {
-      const type: string =
-        err.message == "Quota exceeded." ? "limit" : "unknown";
-      location.href = `/error?err=${type}`;
+      if (!MAINTENANCE) {
+        const type: string =
+          err.message == "Quota exceeded." ? "limit" : "unknown";
+        location.href = `/error?err=${type}`;
+      }
     }
   }
 

@@ -2,6 +2,7 @@ import { collectionDB } from "@/utils/store";
 import type { Document, Email } from "@/utils/types";
 import { Query, getDocs, query, where } from "firebase/firestore";
 import { toast } from "react-hot-toast";
+import { MAINTENANCE } from "./consts";
 
 function notification(type: "success" | "error", msg: string): void {
   toast[type](msg, {
@@ -31,8 +32,11 @@ async function getBookData(bookTitle: string, user: Email): Promise<Res> {
       ? { data: docData, id: docId }
       : { data: null, id: null };
   } catch (err: any) {
-    const type: string = err.message == "Quota exceeded." ? "limit" : "unknown";
-    location.href = `/error?err=${type}`;
+    if (!MAINTENANCE) {
+      const type: string =
+        err.message == "Quota exceeded." ? "limit" : "unknown";
+      location.href = `/error?err=${type}`;
+    }
     return { data: null, id: null };
   }
 }
