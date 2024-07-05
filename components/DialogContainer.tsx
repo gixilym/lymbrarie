@@ -1,35 +1,30 @@
-import { useEffect, useRef, useState } from "react";
+import { animated, useSpring } from "@react-spring/web";
+import { useEffect } from "react";
 import { Toaster as ToastNotification } from "react-hot-toast";
-import { twJoin, twMerge } from "tailwind-merge";
+import { twJoin } from "tailwind-merge";
 
 function DialogContainer(props: Props) {
-  const { children, divClass } = props;
-  const ref = useRef<HTMLDialogElement | null>(null);
-  const [isVisible] = useState(true);
+  const { children, divClass } = props,
+    [styles, animate] = useSpring(() => ({
+      transform: "scale(0.5)",
+      config: { duration: 100 },
+    }));
 
   useEffect(() => {
-    const dialogElement = ref.current;
-    if (dialogElement) {
-      dialogElement.style.display = "flex";
-    }
-  }, []);
+    animate.start({ transform: "scale(1)" });
+  }, [animate]);
 
   return (
-    <dialog
-      ref={ref}
-      className={twMerge(
-        isVisible ? "dialog-container" : "dialog-container fade-out",
-        "backdrop"
-      )}
-    >
-      <div
+    <dialog className="select-none w-full h-full absolute top-0 z-40 flex justify-center items-start bg-transparent backdrop-blur-md">
+      <animated.div
+        style={styles}
         className={twJoin(
           divClass,
           "modal-box max-w-[700px] w-full h-[550px] overflow-x-hidden rounded-2xl flex flex-col gap-y-3 border-2 border-rose-300/10 [&>label>input]:placeholder:text-gray-400 sm:mt-14"
         )}
       >
         {children}
-      </div>
+      </animated.div>
       <ToastNotification reverseOrder={false} position="top-right" />
     </dialog>
   );

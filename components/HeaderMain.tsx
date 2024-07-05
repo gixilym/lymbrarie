@@ -1,4 +1,3 @@
-"use client ";
 import SearchMain from "@/components/SearchMain";
 import useSessionExists from "@/utils/hooks/useSessionExists";
 import type { Component } from "@/utils/types";

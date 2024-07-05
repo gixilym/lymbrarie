@@ -4,17 +4,13 @@ import type { AccountDetails, Component } from "@/utils/types";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
 import { twMerge } from "tailwind-merge";
+import ClosePopUpBtn from "../ClosePopUpBtn";
 import DialogContainer from "../DialogContainer";
 import LogInBtn from "../LogInBtn";
 import LogOutBtn from "../LogOut";
 import PopUpTitle from "./TitlePopUp";
-import ClosePopUpBtn from "../ClosePopUpBtn";
 
-function ProfilePopUp({
-  accountDetails,
-}: {
-  accountDetails: AccountDetails;
-}): Component {
+function ProfilePopUp({ accountDetails }: Props): Component {
   const [t] = useTranslation("global"),
     { userLoggedIn } = useSessionExists(),
     { allBooks, reading, read, pending, user } = accountDetails,
@@ -90,3 +86,7 @@ function ProfilePopUp({
 }
 
 export default ProfilePopUp;
+
+interface Props {
+  accountDetails: AccountDetails;
+}

@@ -1,4 +1,4 @@
-"use client";
+//"use client";
 import type { Component } from "@/utils/types";
 import { LogIn as LogInIcon } from "lucide-react";
 import { signIn } from "next-auth/react";

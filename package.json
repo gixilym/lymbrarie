@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@fontsource-variable/public-sans": "^5.0.18",
+    "@react-spring/web": "^9.7.3",
     "axios": "^1.6.8",
     "firebase": "^10.8.1",
     "i18next": "^23.11.1",

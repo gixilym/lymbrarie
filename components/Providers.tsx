@@ -1,4 +1,4 @@
-"use client";
+//"use client";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import global_en from "@/translations/en/global.json";
 import global_es from "@/translations/es/global.json";

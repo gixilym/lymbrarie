@@ -1,4 +1,4 @@
-"use client";
+//"use client";
 import BackBtn from "@/components/BackBtn";
 import LoadComponent from "@/components/LoadComponent";
 import NotesBook from "@/components/NotesBook";
@@ -99,7 +99,7 @@ function BookId(): Component {
           <article className="w-full sm:w-[700px] h-[315px] flex flex-col sm:flex-row gap-y-12 justify-start items-center sm:items-start backdrop-blur-[2.5px] relative mt-20 xl:mt-0 sm:mt-12">
             <Image
               priority
-              className="aspect-[200/300] w-[200px] h-[300px] object-center object-fill rounded-sm"
+              className="select-none aspect-[200/300] w-[200px] h-[300px] object-center object-fill rounded-sm"
               src={data?.image || DEFAULT_COVER}
               width={100}
               height={100}

@@ -1,4 +1,4 @@
-"use client";
+//"use client";
 import type { Component } from "@/utils/types";
 import { signOut } from "next-auth/react";
 import { useTranslation } from "react-i18next";

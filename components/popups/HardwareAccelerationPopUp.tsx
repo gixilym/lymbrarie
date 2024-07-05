@@ -1,4 +1,4 @@
-"use client";
+//"use client";
 import type { Component } from "@/utils/types";
 import DialogContainer from "../DialogContainer";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";

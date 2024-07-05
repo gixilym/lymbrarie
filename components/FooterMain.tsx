@@ -13,7 +13,7 @@ function FooterMain(): Component {
   const { openPopUp } = usePopUp();
 
   return (
-    <footer className="footer absolute bottom-0 w-full flex flex-col-reverse sm:flex-row justify-between items-center sm:p-4 bg-slate-300/10 text-neutral-content py-2 sm:py-0 sm:h-14">
+    <footer className="select-none footer absolute bottom-0 w-full flex flex-col-reverse sm:flex-row justify-between items-center sm:p-4 bg-slate-300/10 text-neutral-content py-2 sm:py-0 sm:h-14">
       <aside className="items-center grid-flow-col px-4 sm:px-0">
         <Image
           width={30}

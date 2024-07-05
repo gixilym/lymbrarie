@@ -1,4 +1,4 @@
-"use client";
+//"use client";
 import {
   Rows3 as LayoutIcon,
   List as ListIcon,
@@ -82,7 +82,7 @@ const PendingSVG = (): Component => (
 const ListSVG = ({ onClick }: { onClick: MouseEventHandler }): Component => (
   <svg
     onClick={onClick}
-    className="mt-1 duration-300 cursor-pointer"
+    className="mt-2 duration-300 cursor-pointer"
     viewBox="0 0 24 24"
     fill="none"
     width={30}

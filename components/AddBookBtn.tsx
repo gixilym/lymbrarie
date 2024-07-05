@@ -1,4 +1,4 @@
-"use client";
+//"use client";
 import usePopUp from "@/utils/hooks/usePopUp";
 import useSessionExists from "@/utils/hooks/useSessionExists";
 import type { Component } from "@/utils/types";

@@ -1,4 +1,4 @@
-"use client";
+//"use client";
 import { inputSearch, stateBookValue } from "@/utils/store";
 import type { Component, InputEvent } from "@/utils/types";
 import { useTranslation } from "react-i18next";
@@ -20,7 +20,7 @@ function SearchMain(): Component {
   }
 
   return (
-    <form className="w-full sm:w-max flex flex-col items-center justify-center ">
+    <form className="w-full sm:w-max flex flex-col items-center justify-center select-none">
       <div className="w-full h-max flex flex-col sm:flex-row gap-y-2 sm:gap-y-0 sm:gap-x-2 justify-start items-center">
         <div className="join">
           <input

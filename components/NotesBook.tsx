@@ -58,7 +58,7 @@ function NotesBook(props: Notes) {
     <div className={classText}>
       <div className="flex flex-col items-center justify-between w-full sm:px-0 px-4">
         <div className="flex justify-between items-end w-full h-10">
-          <p className="text-2xl opacity-90">{t("notes")}</p>
+          <p className="text-2xl opacity-90 select-none">{t("notes")}</p>
           {hasChanges && (
             <button
               className="btn bg-green-400/80 text-black hover:bg-green-300"

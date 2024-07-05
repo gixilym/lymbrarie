@@ -1,4 +1,4 @@
-"use client";
+//"use client";
 import { collection, type CollectionReference } from "firebase/firestore";
 import { atom, RecoilState } from "recoil";
 import { db } from "@/database/firebase";

@@ -12,7 +12,7 @@ function HomeIcon(): Component {
   const { openPopUp } = usePopUp();
 
   return (
-    <div className="mt-0.5 dropdown dropdown-bottom dropdown-right">
+    <div className="mt-1 dropdown dropdown-bottom dropdown-right">
       <div tabIndex={0} role="button">
         <button className="btn btn-square btn-ghost">
           <HomIcon size={28} />

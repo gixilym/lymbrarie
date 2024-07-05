@@ -2,19 +2,29 @@ import useLoadContent from "@/utils/hooks/useLoadContent";
 import usePopUp from "@/utils/hooks/usePopUp";
 import { BOOK_HANDLER_URL, inputSearch } from "@/utils/store";
 import type { Component } from "@/utils/types";
+import { useSpring, animated } from "@react-spring/web";
 import axios from "axios";
 import { TriangleAlert as WarningIcon } from "lucide-react";
 import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilState } from "recoil";
 
 function DeleteBookPopUp({ documentId }: { documentId: string }): Component {
-  const router: AppRouterInstance = useRouter(),
-    { isLoading, startLoading, finishLoading } = useLoadContent(),
-    { closePopUp } = usePopUp(),
+  const { closePopUp } = usePopUp(),
     [t] = useTranslation("global"),
-    [_, setSearchVal] = useRecoilState(inputSearch);
+    router: AppRouterInstance = useRouter(),
+    [, setSearchVal] = useRecoilState(inputSearch),
+    { isLoading, startLoading, finishLoading } = useLoadContent(),
+    [styles, animate] = useSpring(() => ({
+      transform: "scale(0.5)",
+      config: { duration: 100 },
+    }));
+
+  useEffect(() => {
+    animate.start({ transform: "scale(1)" });
+  }, [animate]);
 
   async function deleteDocument(): Promise<void> {
     startLoading();
@@ -26,8 +36,8 @@ function DeleteBookPopUp({ documentId }: { documentId: string }): Component {
   }
 
   return (
-    <dialog className="backdrop-blur-md w-full h-full absolute top-0 z-50 flex justify-center items-start pt-10 bg-transparent">
-      <div className="modal-box">
+    <dialog className="select-none backdrop-blur-md w-full h-full absolute top-0 z-50 flex justify-center items-start pt-10 bg-transparent">
+      <animated.div style={styles} className="modal-box">
         <div className="flex flex-row justify-start items-center gap-x-4">
           <WarningIcon size={25} />
           <p className="font-bold text-lg">{t("warning")}</p>
@@ -57,7 +67,7 @@ function DeleteBookPopUp({ documentId }: { documentId: string }): Component {
             )}
           </form>
         </div>
-      </div>
+      </animated.div>
     </dialog>
   );
 }

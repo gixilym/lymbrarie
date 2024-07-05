@@ -1,13 +1,21 @@
 import type { Component } from "@/utils/types";
+import { useSpring, animated } from "@react-spring/web";
 import { Book as BookIcon } from "lucide-react";
+import { useEffect } from "react";
 
 function CardWithOutDetails(props: Card): Component {
   const { title, formatState, onClick } = props;
+  const [styles, animate] = useSpring(() => ({ opacity: 0 }));
+
+  useEffect(() => {
+    animate.start({ opacity: 1 });
+  }, [animate]);
 
   return (
-    <li
+    <animated.li
       title={title}
       onClick={onClick}
+      style={styles}
       className="sm:mx-4 hover:scale-95 duration-300 cursor-pointer bg-gradient-to-r from-slate-900 to-transparent backdrop-blur-sm border-r-2 border-b-2 border-rose-300/10 hover:border-rose-300/20 flex flex-col justify-center items-start w-full sm:w-[580px] gap-y-1.5 rounded-xl p-4 relative h-16"
     >
       <div className="flex justify-between sm:justify-center items-center gap-x-4 w-full">
@@ -20,7 +28,7 @@ function CardWithOutDetails(props: Card): Component {
         </p>
         {formatState()}
       </div>
-    </li>
+    </animated.li>
   );
 }
 

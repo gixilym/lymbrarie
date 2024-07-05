@@ -1,4 +1,4 @@
-"use client";
+//"use client";
 import HomeIcon from "@/components/HomeIcon";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import useSessionExists from "@/utils/hooks/useSessionExists";
@@ -11,7 +11,7 @@ import {
 import { ToggleDetailsIcon } from "@/utils/svgs";
 import type { Book, Component, Document, MemoComponent } from "@/utils/types";
 import { getDocs, Query, query, where as whereFB } from "firebase/firestore";
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import { useRecoilState } from "recoil";
 import BookCard from "./BookCard";
 import NoMatchesText from "./NoMatchesText";
@@ -87,11 +87,14 @@ const ListSection: MemoComponent = memo(function ListSectionMemo(props: Props) {
     return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   }
 
-  const listBooks: Component = renderBooks(where(inputVal, stateVal));
+  const listBooks: Component = useMemo(
+    () => renderBooks(where(inputVal, stateVal)),
+    [inputVal, stateVal, myBooks, showDetails, initialBooks] // eslint-disable-line
+  );
 
   return (
-    <section className="w-full px-4 sm:px-0 sm:w-[620px] flex flex-col justify-between items-center gap-y-4 relative">
-      <div className="flex justify-start w-full items-center gap-x-2">
+    <section className="w-full px-4 sm:px-0 sm:w-[620px] flex flex-col justify-between items-center gap-y-7 relative">
+      <div className="flex justify-start w-full items-center px-3">
         <HomeIcon />
         <ToggleDetailsIcon showDetails={showDetails} onClick={changeDetails} />
       </div>
