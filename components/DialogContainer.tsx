@@ -1,3 +1,4 @@
+import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import { animated, useSpring } from "@react-spring/web";
 import { useEffect } from "react";
 import { Toaster as ToastNotification } from "react-hot-toast";
@@ -5,14 +6,15 @@ import { twJoin } from "tailwind-merge";
 
 function DialogContainer(props: Props) {
   const { children, divClass } = props,
+    [animations] = useLocalStorage("animations", "true"),
     [styles, animate] = useSpring(() => ({
-      transform: "scale(0.5)",
+      transform: animations ? "scale(0.5)" : "scale(1)",
       config: { duration: 100 },
     }));
 
   useEffect(() => {
-    animate.start({ transform: "scale(1)" });
-  }, [animate]);
+    if (animations) animate.start({ transform: "scale(1)" });
+  }, [animate, animations]);
 
   return (
     <dialog className="select-none w-full h-full absolute top-0 z-40 flex justify-center items-start bg-transparent backdrop-blur-md">

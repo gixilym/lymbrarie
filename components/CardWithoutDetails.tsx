@@ -1,15 +1,17 @@
+import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import type { Component } from "@/utils/types";
-import { useSpring, animated } from "@react-spring/web";
+import { animated, useSpring } from "@react-spring/web";
 import { Book as BookIcon } from "lucide-react";
 import { useEffect } from "react";
 
 function CardWithOutDetails(props: Card): Component {
-  const { title, formatState, onClick } = props;
-  const [styles, animate] = useSpring(() => ({ opacity: 0 }));
+  const { title, formatState, onClick } = props,
+    [animations] = useLocalStorage("animations", "true"),
+    [styles, animate] = useSpring(() => ({ opacity: animations ? 0 : 1 }));
 
   useEffect(() => {
-    animate.start({ opacity: 1 });
-  }, [animate]);
+    if (animations) animate.start({ opacity: 1 });
+  }, [animate, animations]);
 
   return (
     <animated.li

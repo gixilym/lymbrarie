@@ -4,15 +4,17 @@ import Image from "next/image";
 import { useTranslation } from "react-i18next";
 import { useSpring, animated } from "@react-spring/web";
 import { useEffect } from "react";
+import useLocalStorage from "@/utils/hooks/useLocalStorage";
 
 function CardWithDetails(props: Card): Component {
   const [t] = useTranslation("global"),
-    [styles, animate] = useSpring(() => ({ opacity: 0 })),
+    [animations] = useLocalStorage("animations", "true"),
+    [styles, animate] = useSpring(() => ({ opacity: animations ? 0 : 1 })),
     { title, formatState, img, gender, author, onClick } = props;
 
   useEffect(() => {
-    animate.start({ opacity: 1 });
-  }, [animate]);
+    if (animations) animate.start({ opacity: 1 });
+  }, [animate, animations]);
 
   return (
     <animated.li

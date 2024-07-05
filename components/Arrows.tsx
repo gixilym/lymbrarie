@@ -1,19 +1,22 @@
+import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import type { Component } from "@/utils/types";
 import { MoveDown as DownIcon, MoveUp as UpIcon } from "lucide-react";
 import { twMerge } from "tailwind-merge";
 
 function Arrows(): Component {
+  const [animations] = useLocalStorage("animations", "true");
+
   function toTop(): void {
     scrollTo({
       top: 0,
-      behavior: "smooth",
+      behavior: animations ? "smooth" : "instant",
     });
   }
 
   function toBottom(): void {
     scrollTo({
       top: document.body.scrollHeight,
-      behavior: "smooth",
+      behavior: animations ? "smooth" : "instant",
     });
   }
 

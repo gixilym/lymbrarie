@@ -22,6 +22,7 @@ const ListSection: MemoComponent = memo(function ListSectionMemo(props: Props) {
     [inputVal] = useRecoilState(inputSearch),
     [stateVal] = useRecoilState(stateBookValue),
     [listModeOn, setListModeOn] = useLocalStorage("list-mode-on"),
+    [animations] = useLocalStorage("animations", "true"),
     [showDetails, setShowDetails] = useState<boolean>(false),
     [loadExamples, setLoadExamples] = useState<boolean>(false),
     [scroll, setScroll] = useLocalStorage("scroll", 0),
@@ -29,7 +30,7 @@ const ListSection: MemoComponent = memo(function ListSectionMemo(props: Props) {
     { userLoggedIn, userNotLoggedIn } = useSessionExists();
 
   useEffect(() => {
-    scrollTo({ top: scroll, behavior: "smooth" });
+    scrollTo({ top: scroll, behavior: animations ? "smooth" : "instant" });
     addEventListener("scroll", handleScroll);
     return () => removeEventListener("scroll", handleScroll);
   }, [myBooks]); // eslint-disable-line

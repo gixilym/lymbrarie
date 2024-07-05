@@ -51,7 +51,10 @@ function SettingsPopUp(): Component {
             {t("animations")}
           </label>
           <button
-            onClick={() => setAnimations(!animations)}
+            onClick={() => {
+              setAnimations(!animations);
+              location.reload();
+            }}
             id="select-animations"
             className="w-[230px] sm:w-full max-w-xs text-lg border border-gray-700 h-11 rounded-xl text-center pr-5"
           >

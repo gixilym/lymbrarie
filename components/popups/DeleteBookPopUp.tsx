@@ -1,4 +1,5 @@
 import useLoadContent from "@/utils/hooks/useLoadContent";
+import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import usePopUp from "@/utils/hooks/usePopUp";
 import { BOOK_HANDLER_URL, inputSearch } from "@/utils/store";
 import type { Component } from "@/utils/types";
@@ -14,17 +15,18 @@ import { useRecoilState } from "recoil";
 function DeleteBookPopUp({ documentId }: { documentId: string }): Component {
   const { closePopUp } = usePopUp(),
     [t] = useTranslation("global"),
+    [animations] = useLocalStorage("animations", "true"),
     router: AppRouterInstance = useRouter(),
     [, setSearchVal] = useRecoilState(inputSearch),
     { isLoading, startLoading, finishLoading } = useLoadContent(),
     [styles, animate] = useSpring(() => ({
-      transform: "scale(0.5)",
+      transform: animations ? "scale(0.5)" : "scale(1)",
       config: { duration: 100 },
     }));
 
   useEffect(() => {
-    animate.start({ transform: "scale(1)" });
-  }, [animate]);
+    if (animations) animate.start({ transform: "scale(1)" });
+  }, [animate, animations]);
 
   async function deleteDocument(): Promise<void> {
     startLoading();
