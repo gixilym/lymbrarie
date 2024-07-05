@@ -42,8 +42,8 @@ function Home({ accountDetails }: Props): Component {
       [myBooks]
     );
 
-  //!quitar el loading cuando esta cacheado.
-  //! actualizar en el caché se  edita datos/notas 
+  //! quitar el loading cuando esta cacheado.
+  //! actualizar el caché al editar notas.
 
   useEffect(() => {
     myBooks.length > 0 && setCacheBooks(myBooks);
