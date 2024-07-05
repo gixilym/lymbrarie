@@ -1,4 +1,3 @@
-//"use client";
 import BackBtn from "@/components/BackBtn";
 import LoadComponent from "@/components/LoadComponent";
 import NotesBook from "@/components/NotesBook";

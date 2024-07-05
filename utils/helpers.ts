@@ -16,19 +16,25 @@ function notification(type: "success" | "error", msg: string): void {
 }
 
 async function getBookData(bookTitle: string, user: Email): Promise<Res> {
-  const q: Query<Document> = query(
-      collectionDB,
-      where("owner", "==", user),
-      where("title", "==", bookTitle)
-    ),
-    querySnapshot: Document = await getDocs(q),
-    docData: Document = querySnapshot.docs[0].data(),
-    docId: Document = querySnapshot.docs[0].id,
-    documentsExist: boolean = !querySnapshot.empty;
+  try {
+    const q: Query<Document> = query(
+        collectionDB,
+        where("owner", "==", user),
+        where("title", "==", bookTitle)
+      ),
+      querySnapshot: Document = await getDocs(q),
+      docData: Document = querySnapshot.docs[0].data(),
+      docId: Document = querySnapshot.docs[0].id,
+      documentsExist: boolean = !querySnapshot.empty;
 
-  return documentsExist
-    ? { data: docData, id: docId }
-    : { data: null, id: null };
+    return documentsExist
+      ? { data: docData, id: docId }
+      : { data: null, id: null };
+  } catch (err: any) {
+    const type: string = err.message == "Quota exceeded." ? "limit" : "unknown";
+    location.href = `/error?err=${type}`;
+    return { data: null, id: null };
+  }
 }
 
 function translateStateBook(state: string, t: any): string {

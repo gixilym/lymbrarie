@@ -52,11 +52,9 @@ function Home({ accountDetails }: Props): Component {
   const fetchBooks: FetchBooks = useCallback(async () => {
     const condition: boolean = Array.isArray(cacheBooks);
     if (condition) {
-      console.log("🟢: Cacheados");
       setMyBooks(cacheBooks);
       cleanTimer();
     } else {
-      console.log("🔴: Nuevos");
       const { booksArr, isEmpty }: ResList = await getListBooks(userEmail);
       setMyBooks(booksArr);
       setBooksIsEmpty(isEmpty);
@@ -97,9 +95,17 @@ export default Home;
 
 export async function getServerSideProps(ctx: Ctx): Promise<ResProp> {
   const session: Session = await getSession(ctx);
-  const { booksArr } = await getListBooks(session?.user?.email);
-  const accountDetails: AccountDetails = loadAccountDetails(booksArr, session);
-  return { props: { accountDetails } };
+  try {
+    const { booksArr } = await getListBooks(session?.user?.email);
+    const accountDetails: AccountDetails = loadAccountDetails(
+      booksArr,
+      session
+    );
+    return { props: { accountDetails } };
+  } catch (err) {
+    // @ts-ignore
+    return { props: { accountDetails: null } };
+  }
 }
 
 async function getListBooks(email: Email) {
@@ -107,10 +113,16 @@ async function getListBooks(email: Email) {
   let isEmpty: boolean = false;
 
   if (email != null) {
-    const q: Query = query(collectionDB, where("owner", "==", email));
-    const resQuery: QuerySnapshot = await getDocs(q);
-    isEmpty = resQuery.empty;
-    resQuery.forEach(doc => booksArr.push(doc.data()));
+    try {
+      const q: Query = query(collectionDB, where("owner", "==", email));
+      const resQuery: QuerySnapshot = await getDocs(q);
+      isEmpty = resQuery.empty;
+      resQuery.forEach(doc => booksArr.push(doc.data()));
+    } catch (err: any) {
+      const type: string =
+        err.message == "Quota exceeded." ? "limit" : "unknown";
+      location.href = `/error?err=${type}`;
+    }
   }
 
   return { booksArr, isEmpty };

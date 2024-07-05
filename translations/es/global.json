@@ -90,5 +90,7 @@
     "empty-custom-gender": "Ingresa un género",
     "empty-loaned": "Prestado a...",
     "no-gender": "Sin asignar",
-    "religion": "Religión"
+    "religion": "Religión",
+    "limit": "Se ha alcanzado el límite de consultas. Por favor, informa a este email:",
+    "unknown": "Ocurrió un error inesperado, recarga la web y vuelve a intentarlo. Si el error persiste, informa a este email:"
 }
