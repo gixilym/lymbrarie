@@ -4,7 +4,7 @@ import {
   Languages as LanguagesIcon,
   Palette as PalletIcon,
   Sparkles as AnimationsIcon,
-  BookOpenCheck as StateIcon,
+  Library as StateIcon,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import ClosePopUpBtn from "../ClosePopUpBtn";

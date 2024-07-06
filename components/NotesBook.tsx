@@ -1,3 +1,4 @@
+import type { Component } from "@/utils/types";
 import { Save as SaveIcon } from "lucide-react";
 import { useRouter, type NextRouter } from "next/router";
 import {
@@ -8,13 +9,15 @@ import {
   type SetStateAction,
 } from "react";
 import { useTranslation } from "react-i18next";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import { twMerge } from "tailwind-merge";
 
-function NotesBook(props: Notes) {
-  const { notes, updateNotes, setNotes, classText } = props,
+function NotesBook(props: Notes): Component {
+  const [t] = useTranslation("global"),
+    router: NextRouter = useRouter(),
     [hasChanges, setHasChanges] = useState<boolean>(false),
-    [t] = useTranslation("global"),
-    router: NextRouter = useRouter();
+    { notes, updateNotes, setNotes, classText, isLoading } = props;
 
   useEffect(() => {
     router.events.on("routeChangeStart", handleRouteChange);
@@ -25,13 +28,18 @@ function NotesBook(props: Notes) {
     };
   }, [hasChanges]); // eslint-disable-line
 
-  function handleBeforeUnload(event: BeforeUnloadEvent): string | void {
+  function handleBeforeUnload(e: BeforeUnloadEvent): string | void {
     if (hasChanges) {
       const msg: string = t("unsaved-changes");
-      event.preventDefault();
-      event.returnValue = msg;
+      e.preventDefault();
+      e.returnValue = msg;
       return msg;
     }
+  }
+
+  function handleChangeContent(e: ChangeEvent<HTMLTextAreaElement>): void {
+    setNotes(e.target.value);
+    if (!hasChanges) setHasChanges(true);
   }
 
   function handleRouteChange(): void {
@@ -49,16 +57,21 @@ function NotesBook(props: Notes) {
     updateNotes();
   }
 
-  function handleChangeContent(event: ChangeEvent<HTMLTextAreaElement>): void {
-    setNotes(event.target.value);
-    if (!hasChanges) setHasChanges(true);
-  }
-
   return (
     <div className={classText}>
       <div className="flex flex-col items-center justify-between w-full sm:px-0 px-4">
         <div className="flex justify-between items-end w-full h-10">
-          <p className="text-2xl opacity-90 select-none">{t("notes")}</p>
+          {isLoading ? (
+            <Skeleton
+              width={100}
+              height={30}
+              baseColor="rgba(33, 30, 33, 0.25)"
+              highlightColor="rgba(203, 51, 220, 0.391)"
+            />
+          ) : (
+            <p className="text-2xl opacity-90 select-none">{t("notes")}</p>
+          )}
+
           {hasChanges && (
             <button
               className="btn bg-green-400/80 text-black hover:bg-green-300"
@@ -72,15 +85,26 @@ function NotesBook(props: Notes) {
       </div>
 
       <div className="sm:px-0 px-4 h-full flex items-center justify-center w-full ">
-        <textarea
-          placeholder="..."
-          value={notes}
-          onChange={handleChangeContent}
-          className={twMerge(
-            notes?.length > 0 ? "sm:min-h-[300px] max-h-[1200px]" : "h-14",
-            "w-full h-full bg-transparent  text-white/80 resize-none border-none focus:ring-0 focus:outline-none text-md sm:text-lg sm:pr-2 py-4"
-          )}
-        />
+        {isLoading ? (
+          <div className="flex justify-start items-center w-full">
+            <Skeleton
+              width={400}
+              height={30}
+              baseColor="rgba(33, 30, 33, 0.25)"
+              highlightColor="rgba(203, 51, 220, 0.391)"
+            />
+          </div>
+        ) : (
+          <textarea
+            placeholder="..."
+            value={notes}
+            onChange={handleChangeContent}
+            className={twMerge(
+              notes?.length > 0 ? "sm:min-h-[300px] max-h-[1200px]" : "h-14",
+              "w-full h-full bg-transparent  text-white/80 resize-none border-none focus:ring-0 focus:outline-none text-md sm:text-lg sm:pr-2 py-4"
+            )}
+          />
+        )}
       </div>
     </div>
   );
@@ -93,4 +117,5 @@ interface Notes {
   updateNotes: () => void;
   setNotes: Dispatch<SetStateAction<string>>;
   classText: string;
+  isLoading: boolean;
 }

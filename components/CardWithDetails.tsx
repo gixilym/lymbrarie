@@ -27,7 +27,7 @@ function CardWithDetails(props: Card): Component {
       {img && (
         <Image
           priority
-          src={img}
+          src={img || ""}
           width={60}
           height={100}
           alt="cover"
@@ -52,7 +52,7 @@ function CardWithDetails(props: Card): Component {
           {gender && (
             <div className="flex flex-row justify-start items-center gap-x-2">
               <GenderIcon size={15} className="mt-0.5" />
-              <p className="capitalize">{t(gender)}</p>
+              <p className="capitalize">{t(gender || "")}</p>
             </div>
           )}
         </div>

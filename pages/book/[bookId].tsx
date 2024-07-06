@@ -1,5 +1,4 @@
 import BackBtn from "@/components/BackBtn";
-import LoadComponent from "@/components/LoadComponent";
 import NotesBook from "@/components/NotesBook";
 import DeleteBookPopUp from "@/components/popups/DeleteBookPopUp";
 import EditBookPopUp from "@/components/popups/EditBookPopUp";
@@ -11,7 +10,6 @@ import useSessionExists from "@/utils/hooks/useSessionExists";
 import useUserEmail from "@/utils/hooks/useUserEmail";
 import {
   BOOK_HANDLER_URL,
-  DEFAULT_COVER,
   EMPTY_BOOK,
   EXAMPLES_BOOKS,
   popupsValue,
@@ -20,9 +18,9 @@ import { SettingsSVG } from "@/utils/svgs";
 import type { Component, Document } from "@/utils/types";
 import axios from "axios";
 import {
-  Tag as StateIcon,
   Library as LibraryIcon,
   Pencil as PencilIcon,
+  Tag as StateIcon,
   MessageSquareWarning as ThugsIcon,
   Trash as TrashIcon,
   User as UserIcon,
@@ -32,6 +30,8 @@ import Image from "next/image";
 import { type NextRouter, useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import { useRecoilState } from "recoil";
 
 function BookId(): Component {
@@ -47,7 +47,7 @@ function BookId(): Component {
     [t] = useTranslation("global"),
     formatTitle: string = bookTitle.replaceAll("_", " ").replaceAll("@", "?"),
     userExists: boolean = userEmail != null,
-    notesProps = { updateNotes, notes, setNotes },
+    notesProps = { updateNotes, notes, setNotes, isLoading },
     [popup] = useRecoilState(popupsValue);
 
   useEffect(() => {
@@ -81,7 +81,7 @@ function BookId(): Component {
   }
 
   return (
-    <section className=" flex flex-col justify-center items-center w-full gap-y-6 sm:py-10 h-full ">
+    <section className="flex flex-col justify-center items-center w-full gap-y-6 sm:py-10 h-full">
       <Head>
         <title>{data?.title || "Lymbrarie"}</title>
       </Head>
@@ -92,88 +92,148 @@ function BookId(): Component {
         <DeleteBookPopUp documentId={documentId} title={data?.title} />
       )}
 
-      {isLoading ? (
-        <LoadComponent />
-      ) : (
-        <>
-          <BackBtn />
-          <article className="w-full sm:w-[700px] h-[315px] flex flex-col sm:flex-row gap-y-12 justify-start items-center sm:items-start backdrop-blur-[2.5px] relative mt-20 xl:mt-0 sm:mt-12">
-            <Image
-              priority
-              className="select-none aspect-[200/300] w-[200px] h-[300px] object-center object-fill rounded-sm"
-              src={data?.image || DEFAULT_COVER}
-              width={100}
-              height={100}
-              alt="cover"
+      <BackBtn />
+      <article className="w-full sm:w-[700px] h-[315px] flex flex-col sm:flex-row gap-y-12 justify-start items-center sm:items-start backdrop-blur-[2.5px] relative mt-20 xl:mt-0 sm:mt-12">
+        {isLoading ? (
+          <Skeleton
+            width={200}
+            height={300}
+            baseColor="rgba(33, 30, 33, 0.25)"
+            highlightColor="rgba(203, 51, 220, 0.391)"
+          />
+        ) : (
+          <Image
+            priority
+            className="select-none aspect-[200/300] w-[200px] h-[300px] object-center object-fill rounded-sm"
+            src={data?.image}
+            width={100}
+            height={100}
+            alt="cover"
+          />
+        )}
+
+        <div className="flex flex-col justify-start items-start w-[100vw] sm:w-full sm:h-full px-10 sm:px-4 gap-y-2">
+          {isLoading ? (
+            <Skeleton
+              width={300}
+              height={30}
+              baseColor="rgba(33, 30, 33, 0.25)"
+              highlightColor="rgba(203, 51, 220, 0.391)"
             />
-            <div className="flex flex-col justify-start items-start w-[100vw] sm:w-full sm:h-full px-10 sm:px-4 gap-y-2">
-              <h4 className="text-2xl sm:text-3xl font-bold tracking-tight sm:min-h-20 h-auto text-ellipsis">
-                {data?.title}
-              </h4>
-              <div className="flex flex-row justify-start items-center gap-x-2">
+          ) : (
+            <h4 className="text-2xl sm:text-3xl font-bold tracking-tight sm:min-h-20 h-auto text-ellipsis">
+              {data?.title}
+            </h4>
+          )}
+          <div className="flex flex-row justify-start items-center gap-x-2">
+            {isLoading ? (
+              <Skeleton
+                width={100}
+                height={20}
+                baseColor="rgba(33, 30, 33, 0.25)"
+                highlightColor="rgba(203, 51, 220, 0.391)"
+              />
+            ) : (
+              <>
                 <UserIcon size={18} />
                 <p className="text-md">{data?.author || t("unknow")}</p>
-              </div>
+              </>
+            )}
+          </div>
 
-              {data?.gender && data.gender != "no-gender" && (
-                <div className="flex flex-row justify-start items-center gap-x-2">
+          {data?.gender && data.gender != "no-gender" && (
+            <div className="flex flex-row justify-start items-center gap-x-2">
+              {isLoading ? (
+                <Skeleton
+                  width={80}
+                  height={20}
+                  baseColor="rgba(33, 30, 33, 0.25)"
+                  highlightColor="rgba(203, 51, 220, 0.391)"
+                />
+              ) : (
+                <>
                   <StateIcon size={18} />
                   <p className="text-sm capitalize">{t(data.gender)}</p>
-                </div>
+                </>
               )}
+            </div>
+          )}
 
-              <div className="flex flex-row justify-start items-center gap-x-2">
+          <div className="flex flex-row justify-start items-center gap-x-2">
+            {isLoading ? (
+              <Skeleton
+                width={150}
+                height={20}
+                baseColor="rgba(33, 30, 33, 0.25)"
+                highlightColor="rgba(203, 51, 220, 0.391)"
+              />
+            ) : (
+              <>
                 <LibraryIcon size={18} />
                 <p className="text-sm">
                   {translateStateBook(data?.state, t)}
                   {isLoaned(data?.state ?? "") && ` ${data?.loaned}`}
                 </p>
-              </div>
-
-              <div className="dropdown dropdown-top dropdown-left sm:opacity-80 absolute bottom-0 right-2 sm:right-0">
-                {userLoggedIn && <SettingsSVG />}
-                <ul
-                  tabIndex={0}
-                  className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52 gap-y-1"
-                >
-                  <li onClick={() => openPopUp("edit_book")}>
-                    <div className="flex flex-row items-center justify-start gap-x-3">
-                      <PencilIcon size={18} />
-                      <p>{t("edit-book")}</p>
-                    </div>
-                  </li>
-
-                  {isLoaned(data?.state ?? "") && (
-                    <li onClick={() => openPopUp("thugs")}>
-                      <div className="flex flex-row justify-start items-center gap-x-2">
-                        <ThugsIcon size={18} />
-                        <p>{t("send-thugs")}</p>
-                      </div>
-                    </li>
-                  )}
-                  <li onClick={() => openPopUp("delete_book")}>
-                    <div className="flex flex-row items-center justify-start gap-x-3">
-                      <TrashIcon size={18} />
-                      <p>{t("delete-book")}</p>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            {userExists && (
-              <NotesBook
-                classText="sm:hidden w-full flex min-h-full flex-col justify-start items-start gap-y-4 px-6 bg-slate-950 "
-                {...notesProps}
-              />
+              </>
             )}
-          </article>
-          {userExists && (
-            <NotesBook
-              classText="hidden sm:flex w-[700px] flex-col justify-start items-start gap-y-10 mt-10 bg-slate-950"
-              {...notesProps}
-            />
-          )}
-        </>
+          </div>
+
+          <div className="dropdown dropdown-top dropdown-left sm:opacity-80 absolute bottom-0 right-2 sm:right-0">
+            {userLoggedIn && (
+              <>
+                {isLoading ? (
+                  <Skeleton
+                    width={40}
+                    height={40}
+                    baseColor="rgba(33, 30, 33, 0.25)"
+                    highlightColor="rgba(203, 51, 220, 0.391)"
+                  />
+                ) : (
+                  <SettingsSVG />
+                )}
+              </>
+            )}
+            <ul
+              tabIndex={0}
+              className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52 gap-y-1"
+            >
+              <li onClick={() => openPopUp("edit_book")}>
+                <div className="flex flex-row items-center justify-start gap-x-3">
+                  <PencilIcon size={18} />
+                  <p>{t("edit-book")}</p>
+                </div>
+              </li>
+
+              {isLoaned(data?.state ?? "") && (
+                <li onClick={() => openPopUp("thugs")}>
+                  <div className="flex flex-row justify-start items-center gap-x-2">
+                    <ThugsIcon size={18} />
+                    <p>{t("send-thugs")}</p>
+                  </div>
+                </li>
+              )}
+              <li onClick={() => openPopUp("delete_book")}>
+                <div className="flex flex-row items-center justify-start gap-x-3">
+                  <TrashIcon size={18} />
+
+                  <p>{t("delete-book")}</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        {userExists && (
+          <NotesBook
+            classText="sm:hidden w-full flex min-h-full flex-col justify-start items-start gap-y-4 px-6 bg-slate-950 "
+            {...notesProps}
+          />
+        )}
+      </article>
+      {userExists && (
+        <NotesBook
+          classText="hidden sm:flex w-[700px] flex-col justify-start items-start gap-y-10 mt-10 bg-slate-950"
+          {...notesProps}
+        />
       )}
     </section>
   );

@@ -21,6 +21,7 @@
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.4.1",
     "react-i18next": "^14.1.0",
+    "react-loading-skeleton": "^3.4.0",
     "recoil": "^0.7.7",
     "tailwind-merge": "^2.2.1"
   },

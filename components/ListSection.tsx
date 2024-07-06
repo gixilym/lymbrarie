@@ -1,4 +1,3 @@
-//"use client";
 import HomeIcon from "@/components/HomeIcon";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import useSessionExists from "@/utils/hooks/useSessionExists";
@@ -19,15 +18,15 @@ import ListBooks from "./ListBooks";
 import { tLC } from "@/utils/helpers";
 
 const ListSection: MemoComponent = memo(function ListSectionMemo(props: Props) {
-  const { myBooks } = props,
+  const { myBooks, isLoading } = props,
     [inputVal] = useRecoilState(inputSearch),
     [stateVal] = useRecoilState(stateBookValue),
     [listModeOn, setListModeOn] = useLocalStorage("list-mode-on"),
     [animations] = useLocalStorage("animations", "true"),
-    [showDetails, setShowDetails] = useState<boolean>(false),
-    [loadExamples, setLoadExamples] = useState<boolean>(false),
     [scroll, setScroll] = useLocalStorage("scroll", 0),
     [initialBooks, setInitialBooks] = useState<Book[]>([]),
+    [showDetails, setShowDetails] = useState<boolean>(false),
+    [loadExamples, setLoadExamples] = useState<boolean>(false),
     { userLoggedIn, userNotLoggedIn } = useSessionExists();
 
   useEffect(() => {
@@ -117,4 +116,5 @@ async function exampleBooks(): Promise<Book[]> {
 
 interface Props {
   myBooks: Book[];
+  isLoading: boolean;
 }
