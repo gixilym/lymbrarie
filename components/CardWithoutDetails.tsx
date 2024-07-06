@@ -7,6 +7,7 @@ import { useEffect } from "react";
 function CardWithOutDetails(props: Card): Component {
   const { title, formatState, onClick } = props,
     [animations] = useLocalStorage("animations", "true"),
+    [state] = useLocalStorage("state", "true"),
     [styles, animate] = useSpring(() => ({ opacity: animations ? 0 : 1 }));
 
   useEffect(() => {
@@ -28,7 +29,7 @@ function CardWithOutDetails(props: Card): Component {
         >
           {title}
         </p>
-        {formatState()}
+        {state && formatState()}
       </div>
     </animated.li>
   );

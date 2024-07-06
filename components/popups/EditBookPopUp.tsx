@@ -14,7 +14,7 @@ import axios from "axios";
 import {
   UserRoundSearch as BorrowedIcon,
   Type as CustomIcon,
-  Ampersand as GenderIcon,
+  Tag as GenderIcon,
   Image as ImageIcon,
   Library as StateIcon,
   Italic as TitleIcon,

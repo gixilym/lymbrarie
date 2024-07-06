@@ -20,7 +20,7 @@ import { SettingsSVG } from "@/utils/svgs";
 import type { Component, Document } from "@/utils/types";
 import axios from "axios";
 import {
-  Ampersand as AmpersandIcon,
+  Tag as StateIcon,
   Library as LibraryIcon,
   Pencil as PencilIcon,
   MessageSquareWarning as ThugsIcon,
@@ -117,7 +117,7 @@ function BookId(): Component {
 
               {data?.gender && data.gender != "no-gender" && (
                 <div className="flex flex-row justify-start items-center gap-x-2">
-                  <AmpersandIcon size={18} />
+                  <StateIcon size={18} />
                   <p className="text-sm capitalize">{t(data.gender)}</p>
                 </div>
               )}

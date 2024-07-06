@@ -1,5 +1,5 @@
 import type { Component } from "@/utils/types";
-import { Ampersand as GenderIcon, User as UserIcon } from "lucide-react";
+import { Tag as GenderIcon, User as UserIcon } from "lucide-react";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
 import { useSpring, animated } from "@react-spring/web";
@@ -9,6 +9,7 @@ import useLocalStorage from "@/utils/hooks/useLocalStorage";
 function CardWithDetails(props: Card): Component {
   const [t] = useTranslation("global"),
     [animations] = useLocalStorage("animations", "true"),
+    [state] = useLocalStorage("state", "true"),
     [styles, animate] = useSpring(() => ({ opacity: animations ? 0 : 1 })),
     { title, formatState, img, gender, author, onClick } = props;
 
@@ -22,7 +23,7 @@ function CardWithDetails(props: Card): Component {
       style={styles}
       className="mx-4 hover:scale-95 duration-300 cursor-pointer bg-gradient-to-r from-slate-900 to-transparent backdrop-blur-sm border-r-2 border-b-2 border-rose-300/10 hover:border-rose-300/20 flex flex-row justify-start items-start w-full sm:w-[580px] gap-x-4 rounded-xl relative h-28"
     >
-      {formatState()}
+      {state && formatState()}
       {img && (
         <Image
           priority
@@ -50,7 +51,7 @@ function CardWithDetails(props: Card): Component {
           )}
           {gender && (
             <div className="flex flex-row justify-start items-center gap-x-2">
-              <GenderIcon size={16} />
+              <GenderIcon size={15} className="mt-0.5" />
               <p className="capitalize">{t(gender)}</p>
             </div>
           )}

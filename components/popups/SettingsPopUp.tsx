@@ -4,6 +4,7 @@ import {
   Languages as LanguagesIcon,
   Palette as PalletIcon,
   Sparkles as AnimationsIcon,
+  BookOpenCheck as StateIcon,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import ClosePopUpBtn from "../ClosePopUpBtn";
@@ -11,9 +12,10 @@ import DialogContainer from "../DialogContainer";
 import PopUpTitle from "./TitlePopUp";
 
 function SettingsPopUp(): Component {
-  const [t, i18n] = useTranslation("global");
-  const [language, setLanguage] = useLocalStorage("language");
-  const [animations, setAnimations] = useLocalStorage("animations", "true");
+  const [t, i18n] = useTranslation("global"),
+    [language, setLanguage] = useLocalStorage("language", "en"),
+    [animations, setAnimations] = useLocalStorage("animations", "true"),
+    [state, setState] = useLocalStorage("state", "true");
 
   return (
     <DialogContainer divClass="justify-between">
@@ -44,7 +46,7 @@ function SettingsPopUp(): Component {
 
         <div className="w-full sm:w-[90%] flex justify-between items-center gap-x-6 sm:gap-x-0">
           <label
-            htmlFor="select-animations"
+            htmlFor="enabled-animations"
             className="sm:text-xl text-lg flex justify-start items-center gap-x-3"
           >
             <AnimationsIcon size={25} />
@@ -55,7 +57,7 @@ function SettingsPopUp(): Component {
               setAnimations(!animations);
               location.reload();
             }}
-            id="select-animations"
+            id="enabled-animations"
             className="w-[230px] sm:w-full max-w-xs text-lg border border-gray-700 h-11 rounded-xl text-center pr-5"
           >
             {animations ? t("enabled") : t("disabled")}
@@ -63,6 +65,26 @@ function SettingsPopUp(): Component {
         </div>
 
         <div className="w-full sm:w-[90%] flex justify-between items-center gap-x-6 sm:gap-x-0">
+          <label
+            htmlFor="hidden-state"
+            className="sm:text-xl text-lg flex justify-start items-center gap-x-3"
+          >
+            <StateIcon size={25} />
+            {t("show-state")}
+          </label>
+          <button
+            onClick={() => {
+              setState(!state);
+              location.reload();
+            }}
+            id="hidden-state"
+            className="w-[230px] sm:w-full max-w-xs text-lg border border-gray-700 h-11 rounded-xl text-center pr-5"
+          >
+            {state ? t("enabled") : t("disabled")}
+          </button>
+        </div>
+
+        <div className=" w-full sm:w-[90%] flex justify-between items-center gap-x-6 sm:gap-x-0">
           <label
             htmlFor="select-theme"
             className="sm:text-xl text-lg flex justify-start items-center gap-x-3"
@@ -72,7 +94,7 @@ function SettingsPopUp(): Component {
           </label>
           <select
             id="select-theme"
-            className="select select-bordered w-[230px] sm:w-full max-w-xs text-lg text-center"
+            className="capitalize select select-bordered w-[230px] sm:w-full max-w-xs text-lg text-center"
             disabled
             defaultValue="dark"
           >

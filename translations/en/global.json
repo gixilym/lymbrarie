@@ -92,5 +92,6 @@
     "no-gender": "Not assigned",
     "religion": "Religion",
     "limit": "The query limit has been reached. Please report to this email:",
-    "unknown": "An unexpected error occurred, please reload the website and try again. If the error persists, report it to this email:"
+    "unknown": "An unexpected error occurred, please reload the website and try again. If the error persists, report it to this email:",
+    "show-state": "Show state"
 }
