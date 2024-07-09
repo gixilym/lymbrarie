@@ -9,9 +9,8 @@ import {
   type SetStateAction,
 } from "react";
 import { useTranslation } from "react-i18next";
-import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
 import { twMerge } from "tailwind-merge";
+import { NotebookPen as NotesIcon } from "lucide-react";
 
 function NotesBook(props: Notes): Component {
   const [t] = useTranslation("global"),
@@ -26,7 +25,7 @@ function NotesBook(props: Notes): Component {
       router.events.off("routeChangeStart", handleRouteChange);
       removeEventListener("beforeunload", handleBeforeUnload);
     };
-  }, [hasChanges]); // eslint-disable-line
+  }, [hasChanges]);
 
   function handleBeforeUnload(e: BeforeUnloadEvent): string | void {
     if (hasChanges) {
@@ -61,17 +60,10 @@ function NotesBook(props: Notes): Component {
     <div className={classText}>
       <div className="flex flex-col items-center justify-between w-full sm:px-0 px-4">
         <div className="flex justify-between items-end w-full h-10">
-          {isLoading ? (
-            <Skeleton
-              width={100}
-              height={30}
-              baseColor="rgba(33, 30, 33, 0.25)"
-              highlightColor="rgba(203, 51, 220, 0.391)"
-            />
-          ) : (
+          <div className="flex justify-start items-center gap-x-4">
+            <NotesIcon size={26} />
             <p className="text-2xl opacity-90 select-none">{t("notes")}</p>
-          )}
-
+          </div>
           {hasChanges && (
             <button
               className="btn bg-green-400/80 text-black hover:bg-green-300"
@@ -85,26 +77,15 @@ function NotesBook(props: Notes): Component {
       </div>
 
       <div className="sm:px-0 px-4 h-full flex items-center justify-center w-full ">
-        {isLoading ? (
-          <div className="flex justify-start items-center w-full">
-            <Skeleton
-              width={400}
-              height={30}
-              baseColor="rgba(33, 30, 33, 0.25)"
-              highlightColor="rgba(203, 51, 220, 0.391)"
-            />
-          </div>
-        ) : (
-          <textarea
-            placeholder="..."
-            value={notes}
-            onChange={handleChangeContent}
-            className={twMerge(
-              notes?.length > 0 ? "sm:min-h-[300px] max-h-[1200px]" : "h-14",
-              "w-full h-full bg-transparent  text-white/80 resize-none border-none focus:ring-0 focus:outline-none text-md sm:text-lg sm:pr-2 py-4"
-            )}
-          />
-        )}
+        <textarea
+          placeholder="..."
+          value={notes}
+          onChange={handleChangeContent}
+          className={twMerge(
+            notes?.length > 0 ? "sm:min-h-[300px] max-h-[1200px]" : "h-14",
+            "w-full h-full bg-transparent  text-white/80 resize-none border-none focus:ring-0 focus:outline-none text-md sm:text-lg sm:pr-2 py-4"
+          )}
+        />
       </div>
     </div>
   );

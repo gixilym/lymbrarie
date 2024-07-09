@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-function HomeIcon(): Component {
+function HomeBtn(): Component {
   const [t] = useTranslation("global");
   const { openPopUp } = usePopUp();
 
@@ -40,4 +40,4 @@ function HomeIcon(): Component {
   );
 }
 
-export default HomeIcon;
+export default HomeBtn;

@@ -1,10 +1,17 @@
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
-import type { Component } from "@/utils/types";
+import type { Book, Component } from "@/utils/types";
 import { MoveDown as DownIcon, MoveUp as UpIcon } from "lucide-react";
-import { twMerge } from "tailwind-merge";
+import { useEffect, useState } from "react";
 
 function Arrows(): Component {
-  const [animations] = useLocalStorage("animations", "true");
+  const [isClient, setIsClient] = useState<boolean>(false),
+    [animations] = useLocalStorage("animations", true),
+    [cacheBooks] = useLocalStorage("cacheBooks", null) as [Book[] | null],
+    dontShow: boolean = !Array.isArray(cacheBooks) || cacheBooks.length < 12;
+
+  useEffect(() => setIsClient(true), []);
+
+  if (!isClient) return null;
 
   function toTop(): void {
     scrollTo({
@@ -20,14 +27,12 @@ function Arrows(): Component {
     });
   }
 
+  if (dontShow) return <></>;
   return (
     <div className="absolute -top-10 lg:top-80 right-20 lg:-right-40 space-y-12">
       <UpIcon
         size={36}
-        className={twMerge(
-          scrollY > 0 ? "opacity-70 cursor-pointer" : "opacity-0",
-          "fixed bg-gray-800 py-1 rounded-md w-8"
-        )}
+        className="fixed bg-gray-800 py-1 rounded-md w-8 opacity-70 cursor-pointer"
         onClick={toTop}
       />
       <DownIcon

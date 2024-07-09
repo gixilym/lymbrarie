@@ -7,7 +7,7 @@ import {
   Library as StateIcon,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import ClosePopUpBtn from "../ClosePopUpBtn";
+import ClosePopUpBtn from "../btns/ClosePopUpBtn";
 import DialogContainer from "../DialogContainer";
 import PopUpTitle from "./TitlePopUp";
 

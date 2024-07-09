@@ -1,4 +1,4 @@
-import type { DocumentData } from "firebase/firestore";
+import type { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 import type { Session as NextSession } from "next-auth";
 import type {
   ChangeEvent,
@@ -30,6 +30,8 @@ type SelectEvent = ChangeEvent<HTMLSelectElement>;
 
 type Timer = ReturnType<typeof setTimeout>;
 
+type Doc = QueryDocumentSnapshot<DocumentData, DocumentData>;
+
 type PopUpsIds =
   | "add_book"
   | "edit_book"
@@ -41,15 +43,17 @@ type PopUpsIds =
   | "donations";
 
 interface Book {
-  title?: string;
-  author?: string;
-  state?: string;
-  image?: string;
-  pages?: number;
-  gender?: string;
-  showDetails?: boolean;
-  id?: string;
+  id: string;
+  data: BookData;
+}
+
+interface BookData {
   owner?: string;
+  title?: string;
+  state?: string;
+  author?: string;
+  image?: string;
+  gender?: string;
   loaned?: string;
   notes?: string;
 }
@@ -74,6 +78,7 @@ export type {
   Component,
   Document,
   Email,
+  Doc,
   FormRef,
   GoTo,
   InputEvent,
@@ -83,4 +88,5 @@ export type {
   Session,
   Timer,
   User,
+  BookData,
 };

@@ -60,9 +60,9 @@ function translateStateBook(state: string, t: any): string {
   }
 }
 
-function isLoaned(state: string): boolean {
-  return state == "Borrowed";
-}
+const tLC = (val: string): string => val?.toLowerCase().trim();
+
+const isLoaned = (state: string): boolean => state == "Borrowed";
 
 async function ONLY_DEV_getBooks(): Promise<any> {
   const q: Query<Document> = query(collectionDB),
@@ -72,8 +72,6 @@ async function ONLY_DEV_getBooks(): Promise<any> {
 
   console.log(querySnapshot.docs[1].data());
 }
-
-const tLC = (val: string) => val?.toLowerCase().trim();
 
 export {
   ONLY_DEV_getBooks,

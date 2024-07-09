@@ -1,9 +1,9 @@
 import { getSession } from "next-auth/react";
-import { Session, Email } from "../types";
 import { useEffect, useState } from "react";
+import type { Email, Session } from "../types";
 import useSessionExists from "./useSessionExists";
 
-function useUserEmail() {
+function useUserEmail(): { userEmail: Email } {
   const [userEmail, setUserEmail] = useState<Email>(null);
   const { userLoggedIn } = useSessionExists();
 

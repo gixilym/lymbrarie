@@ -13,7 +13,7 @@ function FooterMain(): Component {
   const { openPopUp } = usePopUp();
 
   return (
-    <footer className="select-none footer absolute bottom-0 w-full flex flex-col-reverse sm:flex-row justify-between items-center sm:p-4 bg-slate-300/10 text-neutral-content py-2 sm:py-0 sm:h-14">
+    <footer className="select-none footer fixed bottom-0 w-full flex flex-col-reverse sm:flex-row justify-between items-center sm:p-4 bg-slate-900 border-t-2 border-gray-800 py-2 sm:py-0 sm:h-14 text-gray-400">
       <aside className="items-center grid-flow-col px-4 sm:px-0">
         <Image
           width={30}
@@ -25,17 +25,17 @@ function FooterMain(): Component {
         <p>Copyright © 2024 Lymbrarie - {t("copyright")}</p>
       </aside>
       <div className="flex space-x-4">
-        <div className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline hover:text-slate-300">
+        <div className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline ">
           <p
             onClick={() => openPopUp("profile")}
-            className="text-lg hover:underline duration-75 cursor-pointer hover:text-slate-300"
+            className="text-lg hover:underline duration-75 cursor-pointer "
           >
             {t("profile")}
           </p>
           <UserIcon size={18} />
         </div>
 
-        <div className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline hover:text-slate-300">
+        <div className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline ">
           <p onClick={() => openPopUp("support")} className="text-lg">
             {t("support")}
           </p>
@@ -43,7 +43,7 @@ function FooterMain(): Component {
         </div>
 
         <div
-          className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline hover:text-slate-300"
+          className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline "
           onClick={() => openPopUp("donations")}
         >
           <p className="text-lg">{t("donate")}</p>

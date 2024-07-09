@@ -4,7 +4,7 @@ import type { Component, InputEvent } from "@/utils/types";
 import { useTranslation } from "react-i18next";
 import { useRecoilState } from "recoil";
 import { twMerge } from "tailwind-merge";
-import AddBookBtn from "./AddBookBtn";
+import AddBookBtn from "./btns/AddBookBtn";
 
 function SearchMain(): Component {
   const [value, setValue] = useRecoilState(inputSearch),

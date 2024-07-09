@@ -8,12 +8,12 @@ import SupportPopUp from "./popups/SupportPopUp";
 import DonationsPopUp from "./popups/DonationsPopUp";
 
 function PopUps(props: Props): Component {
-  const { allTitles, accountDetails } = props;
+  const { accountDetails } = props;
   const [popup] = useRecoilState(popupsValue);
 
   return (
     <>
-      {popup.add_book && <NewBookPopUp allTitles={allTitles} />}
+      {popup.add_book && <NewBookPopUp />}
       {popup.profile && <ProfilePopUp accountDetails={accountDetails} />}
       {popup.settings && <SettingsPopUp />}
       {popup.support && <SupportPopUp />}
@@ -25,6 +25,5 @@ function PopUps(props: Props): Component {
 export default PopUps;
 
 interface Props {
-  allTitles: string[];
   accountDetails: AccountDetails;
 }

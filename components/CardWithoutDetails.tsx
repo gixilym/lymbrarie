@@ -12,7 +12,7 @@ function CardWithOutDetails(props: Card): Component {
 
   useEffect(() => {
     if (animations) animate.start({ opacity: 1 });
-  }, [animate, animations]);
+  }, [animate]);
 
   return (
     <animated.li
@@ -21,7 +21,7 @@ function CardWithOutDetails(props: Card): Component {
       style={styles}
       className="sm:mx-4 hover:scale-95 duration-300 cursor-pointer bg-gradient-to-r from-slate-900 to-transparent backdrop-blur-sm border-r-2 border-b-2 border-rose-300/10 hover:border-rose-300/20 flex flex-col justify-center items-start w-full sm:w-[580px] gap-y-1.5 rounded-xl p-4 relative h-16"
     >
-      <div className="flex justify-between sm:justify-center items-center gap-x-4 w-full">
+      <div className="flex justify-start items-center gap-x-4 w-full">
         <BookIcon size={28} />
         <p
           title={title}

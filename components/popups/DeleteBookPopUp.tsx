@@ -15,7 +15,7 @@ import { useRecoilState } from "recoil";
 function DeleteBookPopUp({ documentId, title }: Props): Component {
   const { closePopUp } = usePopUp(),
     [t] = useTranslation("global"),
-    [animations] = useLocalStorage("animations", "true"),
+    [animations] = useLocalStorage("animations", true),
     router: AppRouterInstance = useRouter(),
     [, setSearchVal] = useRecoilState(inputSearch),
     [cacheBooks, setCacheBooks] = useLocalStorage("cacheBooks", null),
@@ -27,12 +27,12 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
 
   useEffect(() => {
     if (animations) animate.start({ transform: "scale(1)" });
-  }, [animate, animations]);
+  }, [animate]);
 
   async function deleteDocument(): Promise<void> {
     startLoading();
     axios.delete(BOOK_HANDLER_URL, { data: documentId });
-    setCacheBooks(cacheBooks?.filter((b: Book) => b.title != title));
+    setCacheBooks(cacheBooks?.filter((b: Book) => b.data.title != title));
     setSearchVal("");
     closePopUp("delete_book");
     finishLoading();

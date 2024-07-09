@@ -4,18 +4,29 @@ import type { AccountDetails, Component } from "@/utils/types";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
 import { twMerge } from "tailwind-merge";
-import ClosePopUpBtn from "../ClosePopUpBtn";
+import ClosePopUpBtn from "../btns/ClosePopUpBtn";
 import DialogContainer from "../DialogContainer";
-import LogInBtn from "../LogInBtn";
-import LogOutBtn from "../LogOut";
+import LogInBtn from "../btns/LogInBtn";
+import LogOutBtn from "../btns/LogOutBtn";
 import PopUpTitle from "./TitlePopUp";
 
 function ProfilePopUp({ accountDetails }: Props): Component {
-  const [t] = useTranslation("global"),
-    { userLoggedIn } = useSessionExists(),
-    { allBooks, reading, read, pending, user } = accountDetails,
-    img: string = user?.image ?? DEFAULT_COVER,
-    name: string = user?.name ?? "";
+  const [t] = useTranslation("global");
+  const { userLoggedIn } = useSessionExists();
+
+  if (accountDetails == null)
+    return (
+      <DialogContainer divClass="justify-between">
+        <NotLogged />
+        <div className="justify-end modal-action w-full flex items-center">
+          <ClosePopUpBtn id="profile" />
+        </div>
+      </DialogContainer>
+    );
+
+  const { allBooks, reading, read, pending, user } = accountDetails;
+  const img: string = user?.image ?? DEFAULT_COVER;
+  const name: string = user?.name ?? "";
 
   function UserData(): Component {
     return (

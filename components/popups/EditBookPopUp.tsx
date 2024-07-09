@@ -1,64 +1,102 @@
 import { GENDERS } from "@/utils/consts";
 import { isLoaned, notification, tLC } from "@/utils/helpers";
 import useLoadContent from "@/utils/hooks/useLoadContent";
+import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import usePopUp from "@/utils/hooks/usePopUp";
 import { BOOK_HANDLER_URL, EMPTY_BOOK } from "@/utils/store";
 import type {
   Book,
+  BookData,
   Component,
   FormRef,
   InputEvent,
   SelectEvent,
+  Timer,
 } from "@/utils/types";
 import axios from "axios";
 import {
-  UserRoundSearch as BorrowedIcon,
-  Type as CustomIcon,
-  Tag as GenderIcon,
-  Image as ImageIcon,
-  Library as StateIcon,
-  Italic as TitleIcon,
-  User as UserIcon,
-} from "lucide-react";
-import Link from "next/link";
-import { type Reference, useEffect, useRef, useState } from "react";
+  type FormEvent,
+  type Reference,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
-import { twMerge } from "tailwind-merge";
 import DialogContainer from "../DialogContainer";
+import FieldsBook from "../FieldsBook";
 import PopUpTitle from "./TitlePopUp";
-import useLocalStorage from "@/utils/hooks/useLocalStorage";
+import { useRouter } from "next/router";
 
-function EditBookPopUp(props: Props): Component {
-  const [t] = useTranslation("global"),
+function EditBookPopUp({ data: dataBook, documentId }: Props): Component {
+  const data = dataBook.data,
+    [t] = useTranslation("global"),
     { closePopUp } = usePopUp(),
-    { data, documentId } = props,
+    router = useRouter(),
+    bookId = router.query.bookId as string,
+    formatBookId: string = bookId.replaceAll("_", " ").replaceAll("@", "?"),
     form: FormRef = useRef<Reference>(null),
     { isLoading, startLoading } = useLoadContent(),
-    [book, setBook] = useState<Book>(EMPTY_BOOK),
-    customVal: boolean = !GENDERS.includes(tLC(data.gender)),
+    [book, setBook] = useState<any>(EMPTY_BOOK),
+    customVal: boolean = !GENDERS.includes(tLC(data?.gender)),
     [isCustomGender, setIsCustomGender] = useState<boolean>(customVal),
-    [customGenderVal, setCustomGenderVal] = useState<string>(data.gender),
+    [customGenderVal, setCustomGenderVal] = useState<string>(data?.gender),
+    [addClicked, setAddClicked] = useState<boolean>(false),
     [cacheBooks, setCacheBooks] = useLocalStorage("cacheBooks", null),
+    [allTitles] = useLocalStorage("allTitles", []),
     [editDisabled, setEditDisabled] = useState<boolean>(true),
+    [errorKey, setErrorKey] = useState<string>(""),
     handleState = (state: string): void => setBook({ ...book, state });
 
-  useEffect(() => loadBookData(), [data]); // eslint-disable-line
+  useEffect(() => loadBookData(), [data]);
+
+  useEffect(() => {
+    const timer: Timer = setTimeout(() => setErrorKey(""), 2300);
+    return () => clearTimeout(timer);
+  }, [addClicked]);
 
   useEffect(() => {
     const noChanges: boolean =
-      book.title == data.title &&
-      book.gender == data.gender &&
-      book.state == data.state &&
-      book.image == data.image &&
-      book.author == data.author &&
-      book.loaned == data.loaned;
+      book.title == data?.title &&
+      book.gender == data?.gender &&
+      book.state == data?.state &&
+      book.image == data?.image &&
+      book.author == data?.author &&
+      book.loaned == data?.loaned;
 
     if (noChanges) return setEditDisabled(true);
     else setEditDisabled(false);
   }, [book, data]);
 
+  useEffect(() => {
+    router.events.on("routeChangeStart", handleRouteChange);
+    addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      router.events.off("routeChangeStart", handleRouteChange);
+      removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [editDisabled]);
+
+  function handleBeforeUnload(e: BeforeUnloadEvent): string | void {
+    if (!editDisabled) {
+      const msg: string = t("unsaved-changes");
+      e.preventDefault();
+      e.returnValue = msg;
+      return msg;
+    }
+  }
+
+  function handleRouteChange(): void {
+    if (!editDisabled) {
+      const msg: boolean = confirm(t("unsaved-changes"));
+      if (!msg) {
+        router.events.emit("routeChangeError");
+        throw "Route change aborted";
+      }
+    }
+  }
+
   function loadBookData(): void {
-    const loadData: Book = {
+    const loadData: BookData = {
       title: data?.title,
       author: data?.author,
       state: data?.state,
@@ -83,195 +121,109 @@ function EditBookPopUp(props: Props): Component {
     setIsCustomGender(gender == "custom");
   }
 
-  async function editBook(): Promise<void> {
-    if (book.title?.includes("@")) return notification("error", t("@"));
-    if (isCustomGender && customGenderVal.length == 0)
-      return notification("error", t("empty-custom-gender"));
-    if (isLoaned(book.state ?? "") && book.loaned?.trim() == "")
-      return notification("error", t("empty-loaned"));
+  async function editBook(e: FormEvent): Promise<void> {
+    e.preventDefault();
+    setAddClicked(!addClicked);
 
-    const loaned: string = !isLoaned(book.state ?? "") ? "" : book.loaned ?? "",
-      updatedBook: Book = { ...book, loaned },
-      bookData: object = { documentId, updatedBook },
-      title: string =
-        book.title?.replaceAll(" ", "_").replaceAll(/\?/g, "@") ?? "";
+    const title: string = tLC(book.title ?? ""),
+      repeteadTitle: boolean = allTitles.some(
+        (t: string) => tLC(t) != tLC(formatBookId) && tLC(t) == title
+      ),
+      maxTitleLength: boolean = title.length > 71,
+      maxAuthorLength: boolean = (book.author?.length ?? 0) > 34,
+      emptyCustomGender: boolean =
+        isCustomGender && customGenderVal.length == 0,
+      maxLengthGender: boolean = isCustomGender && customGenderVal.length > 24,
+      emptyLoaned: boolean =
+        isLoaned(book.state ?? "") && book.loaned?.trim() == "",
+      maxLengthLoaned: boolean =
+        isLoaned(book.state ?? "") && (book.loaned?.length ?? 0) > 24,
+      validateURL: RegExp =
+        /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/,
+      validateImg: boolean =
+        (book.image?.length ?? 0) > 1 && !validateURL.test(book.image ?? "");
+
+    if (!title) {
+      setErrorKey("title-input");
+      return notification("error", t("empty-title"));
+    }
+    if (repeteadTitle) {
+      console.log(repeteadTitle);
+      setErrorKey("title-input");
+      return notification("error", t("repeated-title"));
+    }
+
+    if (maxTitleLength) {
+      setErrorKey("title-input");
+      return notification("error", t("title-too-long"));
+    }
+
+    if (title.includes("@")) {
+      setErrorKey("title-input");
+      return notification("error", t("@"));
+    }
+
+    if (maxAuthorLength) {
+      setErrorKey("author-input");
+      return notification("error", t("author-too-long"));
+    }
+
+    if (emptyCustomGender) {
+      setErrorKey("gender-input");
+      return notification("error", t("empty-custom-gender"));
+    }
+
+    if (maxLengthGender) {
+      setErrorKey("gender-input");
+      return notification("error", t("custom-gender-too-long"));
+    }
+
+    if (emptyLoaned) {
+      setErrorKey("loaned-input");
+      return notification("error", t("empty-loaned"));
+    }
+
+    if (maxLengthLoaned) {
+      setErrorKey("loaned-input");
+      return notification("error", t("loaned-too-long"));
+    }
+
+    if (validateImg) {
+      setErrorKey("image-input");
+      return notification("error", t("invalid-url-image"));
+    }
+
+    const loaned: string = !isLoaned(book.state ?? "") ? "" : book.loaned ?? "";
+    const updatedBook: Book = { ...book, loaned };
+    const bookData: object = { documentId, updatedBook };
+    // const title: string = book.title?.replaceAll(" ", "_").replaceAll(/\?/g, "@") ?? "";
+    // location.href = "/" + title;
     startLoading();
-    const editedBooks = cacheBooks?.filter((b: Book) => b.title != book.title);
-    setCacheBooks([...editedBooks, updatedBook]);
     axios.patch(BOOK_HANDLER_URL, bookData);
-    location.href = `/book/${title}`;
+    setCacheBooks(null);
+    location.href = "/";
   }
 
   return (
     <DialogContainer divClass="justify-between">
       <PopUpTitle title={t("edit-book")} />
 
-      <label
-        htmlFor="title-input"
-        className="input input-bordered flex items-center sm:text-xl text-lg h-14"
-      >
-        <TitleIcon size={18} className="mt-0.5 mr-2" />
-        <input
-          id="title-input"
-          onChange={handleChange}
-          required
-          name="title"
-          type="text"
-          className="grow px-1 placeholder:text-slate-500"
-          defaultValue={data.title}
-          placeholder={t("placeholder-title")}
-        />
-      </label>
-
-      <label
-        htmlFor="author-input"
-        className="input input-bordered flex items-center sm:text-xl text-lg h-14"
-      >
-        <UserIcon size={18} className="mt-0.5 mr-2" />
-        <input
-          id="author-input"
-          onChange={handleChange}
-          name="author"
-          type="text"
-          className="grow px-1 placeholder:text-slate-500"
-          defaultValue={data.author}
-          placeholder={t("placeholder-author")}
-        />
-      </label>
-
-      <div className="join w-full space-x-2">
-        <label
-          htmlFor="gender-select"
-          className="w-full input input-bordered flex items-center sm:text-xl text-lg h-14 sm:w-full"
-        >
-          <GenderIcon size={18} className="mt-0.5 mr-2" />
-          <select
-            id="gender-select"
-            onChange={handleGender}
-            className="select input-bordered border-x-0 rounded-none sm:text-xl -ml-2.5 text-lg w-full text-gray-400 focus:outline-0 h-14"
-            defaultValue={data.gender}
-          >
-            <option value="default" disabled>
-              {t("placeholder-gender")}
-            </option>
-            <option value="custom">{t("custom-gender")}</option>
-            <option value="no-gender">{t("no-gender")}</option>
-            <option value="fiction">{t("fiction")}</option>
-            <option value="non-fiction">{t("non-fiction")}</option>
-            <option value="mystery">{t("mystery")}</option>
-            <option value="novel">{t("novel")}</option>
-            <option value="science">{t("science")}</option>
-            <option value="fantasy">{t("fantasy")}</option>
-            <option value="philosophy">{t("philosophy")}</option>
-            <option value="constabulary">{t("constabulary")}</option>
-            <option value="psychology">{t("psychology")}</option>
-            <option value="religion">{t("religion")}</option>
-            <option value="economy">{t("economy")}</option>
-            <option value="romance">{t("romance")}</option>
-            <option value="horror">{t("horror")}</option>
-            <option value="thriller">{t("thriller")}</option>
-            <option value="history">{t("history")}</option>
-            <option value="biography">{t("biography")}</option>
-            <option value="self-help">{t("self-help")}</option>
-            <option value="poetry">{t("poetry")}</option>
-            <option value="drama">{t("drama")}</option>
-            <option value="adventure">{t("adventure")}</option>
-            <option value="young-adult">{t("young-adult")}</option>
-            <option value="children's">{t("children's")}</option>
-          </select>
-        </label>
-        {isCustomGender && (
-          <label
-            htmlFor="gender-input"
-            className="input input-bordered flex items-center sm:text-xl text-lg h-14 w-2/4 sm:w-full"
-          >
-            <CustomIcon size={18} className="mt-0.5 mr-2" />
-            <input
-              id="gender-input"
-              onChange={(e: InputEvent) => {
-                handleChange(e);
-                setCustomGenderVal(e.target.value);
-              }}
-              defaultValue={data.gender}
-              name="gender"
-              type="text"
-              className="grow px-1 placeholder:text-slate-500"
-              placeholder={t("custom-gender")}
-            />
-          </label>
-        )}
-      </div>
-
-      <div className="join w-full space-x-2">
-        <label
-          htmlFor="state-select"
-          className={twMerge(
-            isLoaned(book.state ?? "") ? "w-2/4" : "w-full",
-            "input input-bordered flex items-center sm:text-xl text-lg h-14 sm:w-full"
-          )}
-        >
-          <StateIcon size={18} className="mt-0.5" />
-          <select
-            id="state-select"
-            onChange={e => handleState(e.target.value)}
-            className="select input-bordered border-x-0 rounded-none sm:text-xl text-lg w-full text-gray-400 focus:outline-0 h-14"
-            defaultValue={data.state}
-          >
-            <option value="default" disabled>
-              {t("state")}
-            </option>
-            <option value="Reading">{t("new-book-reading")}</option>
-            <option value="Read">{t("new-book-read")}</option>
-            <option value="Pending">{t("new-book-pending")}</option>
-            <option value="Borrowed">{t("new-book-borrowed")}</option>
-          </select>
-        </label>
-        {isLoaned(book.state ?? "") && (
-          <label
-            htmlFor="loaned-input"
-            className="input input-bordered flex items-center sm:text-xl text-lg h-14 w-2/4 sm:w-full"
-          >
-            <BorrowedIcon size={18} className="mt-0.5 mr-2" />
-            <input
-              id="loaned-input"
-              onChange={handleChange}
-              name="loaned"
-              type="text"
-              defaultValue={data.loaned}
-              className="grow px-1 placeholder:text-slate-500"
-              placeholder={t("loanedto")}
-            />
-          </label>
-        )}
-      </div>
-
-      <div>
-        <label
-          htmlFor="image-input"
-          className="input input-bordered flex items-center sm:text-xl text-lg h-14"
-        >
-          <ImageIcon size={18} className="mt-0.5 mr-2" />
-          <input
-            id="image-input"
-            onChange={handleChange}
-            name="image"
-            type="text"
-            className="grow px-1 placeholder:text-slate-500 text-md pl-3"
-            defaultValue={data.image}
-            placeholder={
-              t("placeholder-link") +
-              "https://res.cloudinary.com/dgs55s8qh/image/upload/v1711510484/dvjjtuqhfjqtwh3vcf3p.webp"
-            }
-          />
-        </label>
-        <Link
-          href="https://imagen-a-link.netlify.app"
-          target="_blank"
-          className="link text-slate-400 hover:text-slate-300 duration-75 text-md sm:text-lg"
-        >
-          {t("generate-link")}
-        </Link>
-      </div>
+      <FieldsBook
+        errorKey={errorKey}
+        handleChange={handleChange}
+        isLoading={isLoading}
+        setCustomGenderVal={setCustomGenderVal}
+        isCustomGender={isCustomGender}
+        handleGender={handleGender}
+        handleState={handleState}
+        isLoaned={isLoaned(book.data?.state ?? "")}
+        defaultValueTitle={data?.title}
+        defaultValueAuthor={data?.author}
+        defaultValueGender={data?.gender}
+        defaultValueState={data?.state}
+        defaultValueLoaned={data?.loaned}
+        defaultValueImg={data?.image}
+      />
 
       <div className="modal-action pt-1">
         <form
@@ -285,7 +237,7 @@ function EditBookPopUp(props: Props): Component {
             onClick={() => closePopUp("edit_book")}
             className="btn text-lg w-24 px-2 bg-slate-800 hover:bg-slate-700 text-white"
           >
-            {t("close")}
+            {t("cancel")}
           </button>
 
           {isLoading ? (

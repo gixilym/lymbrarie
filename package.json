@@ -2,6 +2,11 @@
   "name": "lymbrarie",
   "version": "1.0.0",
   "private": true,
+  "license": "Apache-2.0",
+  "author": {
+    "name": "gixi",
+    "url": "https://github.com/gixilym/lymbrarie"
+  },
   "scripts": {
     "dev": "next dev --turbo",
     "build": "next build",
@@ -21,8 +26,8 @@
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.4.1",
     "react-i18next": "^14.1.0",
-    "react-loading-skeleton": "^3.4.0",
     "recoil": "^0.7.7",
+    "sharp": "^0.33.4",
     "tailwind-merge": "^2.2.1"
   },
   "devDependencies": {

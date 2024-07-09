@@ -21,8 +21,8 @@ function handlerBook(req: NextApiRequest, res: NextApiResponse): void {
     }
 
     case "PUT": {
-      const { documentId, data, notes }: BookNotes = body;
-      updatedNotesBook(documentId, data, notes);
+      const { updatedNotes }: any = body;
+      updatedNotesBook(updatedNotes);
       break;
     }
 
@@ -48,8 +48,8 @@ function handlerBook(req: NextApiRequest, res: NextApiResponse): void {
     res.status(200).json({ message: "Documento editado correctamente" });
   }
 
-  function updatedNotesBook(id: string, data: Book, notes: string): void {
-    setDoc(doc(collectionDB, id), { ...data, notes });
+  function updatedNotesBook(book: Book): void {
+    setDoc(doc(collectionDB, book.id), book.data);
     res.status(200).json({ message: "Notas actualizadas correctamente" });
   }
 
@@ -72,6 +72,5 @@ interface BookEdited {
 
 interface BookNotes {
   documentId: string;
-  notes: string;
-  data: Book;
+  book: Book;
 }

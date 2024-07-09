@@ -1,7 +1,9 @@
-import { collection, type CollectionReference } from "firebase/firestore";
-import { atom, RecoilState } from "recoil";
 import { db } from "@/database/firebase";
-import type { Book } from "./types";
+import defaultCover from "@/public/cover.webp";
+import { collection, type CollectionReference } from "firebase/firestore";
+import type { StaticImageData } from "next/image";
+import { atom, RecoilState } from "recoil";
+import type { BookData } from "./types";
 
 const inputSearch: RecoilState<string> = atom({
   key: "inputSearch",
@@ -27,8 +29,7 @@ const popupsValue: RecoilState<any> = atom({
   },
 });
 
-const DEFAULT_COVER: string =
-  "https://res.cloudinary.com/dgs55s8qh/image/upload/v1707771560/ycuxmhib7vzjxebqcp5f.jpg";
+const DEFAULT_COVER: StaticImageData | any = defaultCover;
 
 const BOOK_HANDLER_URL: string = "/api/handler/book";
 
@@ -38,23 +39,27 @@ const collectionDB: CollectionReference = collection(db, NAME_DB);
 
 const EXAMPLES_BOOKS: string = "examples";
 
-const EMPTY_BOOK: Book = {
+const EmptyData: BookData = {
   title: "",
   author: "",
   state: "Pending",
   image: "",
-  gender: "",
+  gender: "no-gender",
   notes: "",
   loaned: "",
 };
+const EMPTY_BOOK = {
+  id: "",
+  data: EmptyData,
+};
 
 export {
-  inputSearch,
-  stateBookValue,
-  DEFAULT_COVER,
-  collectionDB,
   BOOK_HANDLER_URL,
+  collectionDB,
+  DEFAULT_COVER,
   EMPTY_BOOK,
-  popupsValue,
   EXAMPLES_BOOKS,
+  inputSearch,
+  popupsValue,
+  stateBookValue,
 };

@@ -2,11 +2,9 @@ import AddYourFirstBook from "@/components/AddYourFirstBook";
 import FooterMain from "@/components/FooterMain";
 import HeaderMain from "@/components/HeaderMain";
 import ListSection from "@/components/ListSection";
-import LoadComponent from "@/components/LoadComponent";
 import Maintenance from "@/components/Maintenance";
 import PopUps from "@/components/PopUps";
 import { MAINTENANCE } from "@/utils/consts";
-import { tLC } from "@/utils/helpers";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import useUserEmail from "@/utils/hooks/useUserEmail";
 import { collectionDB } from "@/utils/store";
@@ -14,9 +12,9 @@ import type {
   AccountDetails,
   Book,
   Component,
+  Doc,
   Email,
   Session,
-  Timer,
   User,
 } from "@/utils/types";
 import {
@@ -29,78 +27,66 @@ import {
 import type { GetServerSidePropsContext as Ctx } from "next";
 import { getSession } from "next-auth/react";
 import Head from "next/head";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
-function Home({ accountDetails }: Props): Component {
-  const { userEmail }: { userEmail: Email } = useUserEmail(),
+function Index({ accountDetails }: Props): Component {
+  const { userEmail } = useUserEmail(),
     [myBooks, setMyBooks] = useState<Book[]>([]),
     [cacheBooks, setCacheBooks] = useLocalStorage("cacheBooks", null),
-    [isLoading, setIsLoading] = useState<boolean>(true),
-    [booksIsEmpty, setBooksIsEmpty] = useState<boolean | null>(null),
-    allTitles: string[] = useMemo(
-      () => myBooks.map((b: Book) => tLC(b.title ?? "")),
-      [myBooks]
-    );
-
-  //! quitar el loading cuando esta cacheado.
-  //! actualizar el caché al editar notas.
+    [, setAllTitles] = useLocalStorage("allTitles", []),
+    [booksIsEmpty, setBooksIsEmpty] = useState<boolean | null>(null);
 
   useEffect(() => {
-    myBooks.length > 0 && setCacheBooks(myBooks);
-  }, [myBooks]); // eslint-disable-line
-
-  const fetchBooks: FetchBooks = useCallback(async () => {
-    const condition: boolean = Array.isArray(cacheBooks);
-    if (condition) {
-      setMyBooks(cacheBooks);
-      cleanTimer();
-    } else {
-      const { booksArr, isEmpty }: ResList = await getListBooks(userEmail);
-      setMyBooks(booksArr);
-      setBooksIsEmpty(isEmpty);
-      cleanTimer();
+    if (myBooks.length > 0) {
+      setCacheBooks(myBooks);
+      setAllTitles(myBooks.map((b: Book) => b.data.title));
     }
-  }, [userEmail]); // eslint-disable-line
+  }, [myBooks]);
 
   useEffect(() => {
     fetchBooks();
-  }, [fetchBooks]);
+  }, [userEmail]);
 
-  function cleanTimer(): () => void {
-    const timer: Timer = setTimeout(() => setIsLoading(false), 1400);
-    return () => clearTimeout(timer);
+  async function fetchBooks(): Promise<void> {
+    if (Array.isArray(cacheBooks)) setMyBooks(cacheBooks);
+    else {
+      const { books, isEmpty }: ResList = await getListBooks(userEmail);
+      setMyBooks(books);
+      setBooksIsEmpty(isEmpty);
+    }
   }
 
   return (
-    <div className="flex flex-col justify-start items-center w-full sm:max-w-[950px] h-full gap-y-10 sm:gap-y-20">
+    <div className="flex flex-col justify-start items-center w-full sm:max-w-[950px] h-full gap-y-6">
       <Head>
         <title>Lymbrarie</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="description"
+          content="Donde cada libro encuentra su lugar"
+        />
       </Head>
       {MAINTENANCE ? (
         <Maintenance />
       ) : (
         <>
           <HeaderMain />
-          <PopUps allTitles={allTitles} accountDetails={accountDetails} />
-          {isLoading && <LoadComponent />}
-          {!isLoading && booksIsEmpty && <AddYourFirstBook />}
-          {!booksIsEmpty && !isLoading && <ListSection myBooks={myBooks} />}
+          <PopUps accountDetails={accountDetails} />
+          {booksIsEmpty && <AddYourFirstBook />}
+          {!booksIsEmpty && <ListSection myBooks={myBooks} />}
           <FooterMain />
         </>
       )}
     </div>
   );
 }
-export default Home;
+export default Index;
 
 export async function getServerSideProps(ctx: Ctx): Promise<ResProp> {
   const session: Session = await getSession(ctx);
   try {
-    const { booksArr } = await getListBooks(session?.user?.email);
-    const accountDetails: AccountDetails = loadAccountDetails(
-      booksArr,
-      session
-    );
+    const { books } = await getListBooks(session?.user?.email);
+    const accountDetails: AccountDetails = loadAccountDetails(books, session);
     return { props: { accountDetails } };
   } catch (err) {
     // @ts-ignore
@@ -109,15 +95,15 @@ export async function getServerSideProps(ctx: Ctx): Promise<ResProp> {
 }
 
 async function getListBooks(email: Email) {
-  const booksArr: object[] = [];
+  const books: Book[] = [];
   let isEmpty: boolean = false;
 
   if (email != null) {
     try {
       const q: Query = query(collectionDB, where("owner", "==", email));
-      const resQuery: QuerySnapshot = await getDocs(q);
-      isEmpty = resQuery.empty;
-      resQuery.forEach(doc => booksArr.push(doc.data()));
+      const res: QuerySnapshot = await getDocs(q);
+      isEmpty = res.empty;
+      res.forEach((doc: Doc) => books.push({ id: doc.id, data: doc.data() }));
     } catch (err: any) {
       if (!MAINTENANCE) {
         const type: string =
@@ -127,13 +113,10 @@ async function getListBooks(email: Email) {
     }
   }
 
-  return { booksArr, isEmpty };
+  return { books, isEmpty };
 }
 
-function loadAccountDetails(
-  myBooks: object[],
-  session: Session
-): AccountDetails {
+function loadAccountDetails(myBooks: Book[], session: Session): AccountDetails {
   const user: User = session?.user ?? null,
     allBooks: number = myBooks.length,
     reading: number = calculateTotal(myBooks, "Reading"),
@@ -144,9 +127,9 @@ function loadAccountDetails(
   return accountDetails;
 }
 
-function calculateTotal(arr: object[], state: string): number {
+function calculateTotal(arr: Book[], state: string): number {
   const total: number = arr.reduce(
-    (acc: number, b: Book) => (b.state == state ? ++acc : acc),
+    (acc: number, b: Book) => (b.data.state == state ? ++acc : acc),
     0
   );
 
@@ -158,5 +141,4 @@ interface Props {
 }
 
 type ResProp = { props: { accountDetails: AccountDetails } };
-type FetchBooks = () => Promise<void>;
-type ResList = { booksArr: Book[]; isEmpty: boolean };
+type ResList = { books: Book[]; isEmpty: boolean };

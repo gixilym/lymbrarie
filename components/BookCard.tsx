@@ -1,6 +1,6 @@
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import { DEFAULT_COVER } from "@/utils/store";
-import type { Book, Component, GoTo } from "@/utils/types";
+import type { BookData, Component, GoTo } from "@/utils/types";
 import type { NextRouter } from "next/router";
 import { useRouter } from "next/router";
 import { flushSync } from "react-dom";
@@ -16,7 +16,7 @@ function BookCard(props: Props): Component {
     title = data.title?.replaceAll(" ", "_").replaceAll(/\?/g, "@") ?? "",
     img: string = data.image || DEFAULT_COVER,
     [t] = useTranslation("global"),
-    path: string = `/book/${title}`,
+    path: string = `/book/${encodeURIComponent(title)}`,
     withProps: Details = {
       onClick: goTo,
       title: data.title ?? "",
@@ -105,7 +105,7 @@ function BookState({ showDetails, text, bg }: State): Component {
 }
 
 interface Props {
-  data: Book;
+  data: BookData;
   showDetails: boolean;
 }
 

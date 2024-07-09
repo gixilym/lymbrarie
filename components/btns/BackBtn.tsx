@@ -6,7 +6,7 @@ import { flushSync } from "react-dom";
 
 function BackBtn(): Component {
   const { push } = useRouter();
-  const [animations] = useLocalStorage("animations", "true");
+  const [animations] = useLocalStorage("animations", true);
 
   function goTo(): GoTo {
     const condition: boolean =
@@ -24,8 +24,8 @@ function BackBtn(): Component {
       <BackIcon
         onClick={goTo}
         size={50}
-        color="white"
-        className="z-30 cursor-pointer hover:scale-110 duration-100"
+        color="#dad8d8"
+        className="z-30 cursor-pointer hover:scale-110 duration-150"
       />
     </div>
   );

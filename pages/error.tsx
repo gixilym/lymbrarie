@@ -23,7 +23,7 @@ function Error(): Component {
         {t(router.query.err ?? "")}
       </p>
       <address className="text-xl md:text-2xl text-center w-full font-bold">
-        gixipixel@gmail.com
+        gixi.tsx@gmail.com
       </address>
     </div>
   );

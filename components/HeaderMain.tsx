@@ -1,7 +1,7 @@
 import SearchMain from "@/components/SearchMain";
 import useSessionExists from "@/utils/hooks/useSessionExists";
 import type { Component } from "@/utils/types";
-import LogInBtn from "./LogInBtn";
+import LogInBtn from "./btns/LogInBtn";
 import HardwareAccelerationPopUp from "./popups/HardwareAccelerationPopUp";
 
 function HeaderMain(): Component {

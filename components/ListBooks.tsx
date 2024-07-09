@@ -1,5 +1,5 @@
 import type { Component } from "@/utils/types";
-import Arrows from "./Arrows";
+import Arrows from "./btns/ArrowsBtn";
 
 function ListBooks({ listBooks }: Props): Component {
   return (

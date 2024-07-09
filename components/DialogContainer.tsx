@@ -14,10 +14,10 @@ function DialogContainer(props: Props) {
 
   useEffect(() => {
     if (animations) animate.start({ transform: "scale(1)" });
-  }, [animate, animations]);
+  }, [animate]);
 
   return (
-    <dialog className="select-none w-full h-full absolute top-0 z-40 flex justify-center items-start bg-transparent backdrop-blur-md">
+    <dialog className="w-full h-full absolute top-0 z-40 flex justify-center items-start bg-transparent backdrop-blur-md">
       <animated.div
         style={styles}
         className={twJoin(

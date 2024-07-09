@@ -15,7 +15,7 @@ function CardWithDetails(props: Card): Component {
 
   useEffect(() => {
     if (animations) animate.start({ opacity: 1 });
-  }, [animate, animations]);
+  }, [animate]);
 
   return (
     <animated.li
@@ -27,7 +27,7 @@ function CardWithDetails(props: Card): Component {
       {img && (
         <Image
           priority
-          src={img || ""}
+          src={img}
           width={60}
           height={100}
           alt="cover"
@@ -46,13 +46,17 @@ function CardWithDetails(props: Card): Component {
           {author && (
             <div className="flex flex-row justify-start items-center gap-x-2">
               <UserIcon size={16} />
-              <p className="capitalize">{author}</p>
+              <p className="w-11/12 capitalize overflow-ellipsis overflow-hidden whitespace-nowrap">
+                {author}
+              </p>
             </div>
           )}
-          {gender && (
+          {gender && gender != "no-gender" && (
             <div className="flex flex-row justify-start items-center gap-x-2">
               <GenderIcon size={15} className="mt-0.5" />
-              <p className="capitalize">{t(gender || "")}</p>
+              <p className="w-11/12 capitalize overflow-ellipsis overflow-hidden whitespace-nowrap">
+                {t(gender)}
+              </p>
             </div>
           )}
         </div>
@@ -70,4 +74,15 @@ interface Card {
   img?: string;
   gender?: string;
   author?: string;
+}
+
+{
+  /* <Image
+priority
+src={img || ""}
+width={60}
+height={100}
+alt="cover"
+className="w-[70px] h-full aspect-[3/5] rounded-tl-lg rounded-bl-lg select-none"
+/> */
 }

@@ -34,7 +34,7 @@
     "copyright": "Todos los derechos reservados (y los izquierdos también)",
     "donate": "Donar",
     "support": "Soporte",
-    "text-support": "Contacta con este email para cualquier pregunta sobre ",
+    "text-support": "Si tienes alguna consulta sobre Lymbrarie, o deseas reportar un error, contacta con este correo.",
     "donations": "Donaciones",
     "coming-soon": "Proximamente...",
     "books": "libros",
@@ -82,7 +82,7 @@
     "constabulary": "Policial",
     "science": "Ciencia",
     "economy": "Economía",
-    "custom-gender": "Personalizado",
+    "custom": "Personalizado",
     "lymbrarie-is-under-maintenance": "Lymbrarie está en mantenimiento",
     "performing-maintenance-tasks": "Estoy realizando tareas de mantenimiento para mejorar tu experiencia.",
     "please-come-back-later": "Por favor, vuelve más tarde. ¡Prometo no tardar!",
@@ -93,5 +93,14 @@
     "religion": "Religión",
     "limit": "Se ha alcanzado el límite de consultas. Por favor, informa a este email:",
     "unknown": "Ocurrió un error inesperado, recarga la web y vuelve a intentarlo. Si el error persiste, informa a este email:",
-    "show-state": "Mostrar estado"
+    "show-state": "Mostrar estado",
+    "title-too-long": "Titulo muy largo",
+    "author-too-long": "Autor muy largo",
+    "custom-gender-too-long": "Género personalizado muy largo",
+    "loaned-too-long": "Prestado a... muy largo",
+    "invalid-url-image": "URL de imagen inválida",
+    "hardware-msg": "Si desea disfrutar de las animaciones, por favor, active la aceleración por hardware del navegador.",
+    "donations-text": "Este proyecto es el esfuerzo de una sola persona. Si disfrutas usando Lymbarie y quieres ver más mejoras, considera hacer una donación. ¡Tu contribución hace la diferencia!",
+    "thanks": "¡Gracias!",
+    "paypal": "Donar através de PayPal"
 }

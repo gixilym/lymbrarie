@@ -1,4 +1,5 @@
-import HomeIcon from "@/components/HomeIcon";
+import HomeBtn from "@/components/btns/HomeBtn";
+import { tLC } from "@/utils/helpers";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import useSessionExists from "@/utils/hooks/useSessionExists";
 import {
@@ -7,37 +8,54 @@ import {
   inputSearch,
   stateBookValue,
 } from "@/utils/store";
-import { ToggleDetailsIcon } from "@/utils/svgs";
-import type { Book, Component, Document, MemoComponent } from "@/utils/types";
+import type {
+  Book,
+  BookData,
+  Component,
+  Doc,
+  Document,
+  MemoComponent,
+} from "@/utils/types";
 import { getDocs, Query, query, where as whereFB } from "firebase/firestore";
 import { memo, useEffect, useMemo, useState } from "react";
 import { useRecoilState } from "recoil";
 import BookCard from "./BookCard";
-import NoMatchesText from "./NoMatchesText";
 import ListBooks from "./ListBooks";
-import { tLC } from "@/utils/helpers";
+import NoMatchesText from "./NoMatchesText";
+import SortBtn from "./btns/SortBtn";
+import ToggleDetailsBtn from "./btns/ToggleDetailsBtn";
 
-const ListSection: MemoComponent = memo(function ListSectionMemo(props: Props) {
-  const { myBooks, isLoading } = props,
-    [inputVal] = useRecoilState(inputSearch),
+const ListSection: MemoComponent = memo(function L({ myBooks }: Props) {
+  const [inputVal] = useRecoilState(inputSearch),
     [stateVal] = useRecoilState(stateBookValue),
-    [listModeOn, setListModeOn] = useLocalStorage("list-mode-on"),
-    [animations] = useLocalStorage("animations", "true"),
+    [listModeOn, setListModeOn] = useLocalStorage("list-mode-on", true),
     [scroll, setScroll] = useLocalStorage("scroll", 0),
+    [sortAToZ, setSortAToZ] = useLocalStorage("sort", true),
+    [aToZ, setAToZ] = useState<boolean>(false),
     [initialBooks, setInitialBooks] = useState<Book[]>([]),
     [showDetails, setShowDetails] = useState<boolean>(false),
     [loadExamples, setLoadExamples] = useState<boolean>(false),
     { userLoggedIn, userNotLoggedIn } = useSessionExists();
 
   useEffect(() => {
-    scrollTo({ top: scroll, behavior: animations ? "smooth" : "instant" });
+    const resetScroll = (): void => setScroll(0);
+    addEventListener("beforeunload", resetScroll);
+    return () => removeEventListener("beforeunload", resetScroll);
+  }, []);
+
+  useEffect(() => {
+    scrollTo({ top: scroll, behavior: "instant" });
     addEventListener("scroll", handleScroll);
     return () => removeEventListener("scroll", handleScroll);
-  }, [myBooks]); // eslint-disable-line
+  }, [myBooks]);
 
   useEffect(() => {
     if (userNotLoggedIn) loadExampleBooks();
   }, [userNotLoggedIn]);
+
+  useEffect(() => {
+    if (sortAToZ) setAToZ(true);
+  }, [sortAToZ]);
 
   useEffect(() => {
     if (listModeOn) setShowDetails(true);
@@ -54,6 +72,12 @@ const ListSection: MemoComponent = memo(function ListSectionMemo(props: Props) {
     setListModeOn(!showDetails);
   }
 
+  function alternateSort(): void {
+    setAToZ(!aToZ);
+    setSortAToZ(!aToZ);
+    location.reload();
+  }
+
   function renderBooks(books: Book[]): Component {
     const condition =
       (books.length == 0 && loadExamples && inputVal) ||
@@ -61,20 +85,29 @@ const ListSection: MemoComponent = memo(function ListSectionMemo(props: Props) {
 
     if (condition) return <NoMatchesText />;
 
-    return books.map((b: Book) => (
-      <BookCard key={b.title} data={b} showDetails={showDetails} />
+    const sortedBooks: Book[] = aToZ
+      ? books.sort((a: Book, b: Book) => {
+          const titleA = a.data.title ?? "";
+          const titleB = b.data.title ?? "";
+          return titleA.localeCompare(titleB);
+        })
+      : books;
+
+    return sortedBooks.map((b: Book) => (
+      <BookCard key={b.id} data={b.data} showDetails={showDetails} />
     ));
   }
 
   function where(value: string, state: string): Book[] {
     const books: Book[] = userLoggedIn ? myBooks : initialBooks,
-      checkState = (b: Book) => !state || b.state == stateVal,
-      checkTitle = (b: Book) =>
+      checkState = (b: BookData) => !state || b.state == stateVal,
+      checkTitle = (b: BookData) =>
         normalizeText(tLC(b.title ?? ""))?.includes(normalizeText(tLC(value))),
-      checkAuthor = (b: Book) => tLC(b.author ?? "")?.includes(tLC(value));
+      checkAuthor = (b: BookData) => tLC(b.author ?? "")?.includes(tLC(value));
 
     return books.filter(
-      (b: Book) => checkState(b) && (checkTitle(b) || checkAuthor(b))
+      (b: Book) =>
+        checkState(b.data) && (checkTitle(b.data) || checkAuthor(b.data))
     );
   }
 
@@ -89,16 +122,16 @@ const ListSection: MemoComponent = memo(function ListSectionMemo(props: Props) {
 
   const listBooks: Component = useMemo(
     () => renderBooks(where(inputVal, stateVal)),
-    [inputVal, stateVal, myBooks, showDetails, initialBooks] // eslint-disable-line
+    [inputVal, stateVal, myBooks, showDetails, initialBooks]
   );
 
   return (
     <section className="w-full px-4 sm:px-0 sm:w-[620px] flex flex-col justify-between items-center gap-y-7 relative">
-      <div className="flex justify-start w-full items-center px-3">
-        <HomeIcon />
-        <ToggleDetailsIcon showDetails={showDetails} onClick={changeDetails} />
+      <div className="flex justify-start w-full items-end px-2.5">
+        <HomeBtn />
+        <ToggleDetailsBtn showDetails={showDetails} onClick={changeDetails} />
+        <SortBtn alternateSort={alternateSort} atoz={aToZ} />
       </div>
-
       <ListBooks listBooks={listBooks} />
     </section>
   );
@@ -107,14 +140,15 @@ const ListSection: MemoComponent = memo(function ListSectionMemo(props: Props) {
 export default ListSection;
 
 async function exampleBooks(): Promise<Book[]> {
-  const booksArr: Array<Book> = [];
+  const books: Array<Book> = [];
   const q: Query = query(collectionDB, whereFB("owner", "==", EXAMPLES_BOOKS));
-  const querySnapshot: Document = await getDocs(q);
-  querySnapshot.forEach((b: Document) => booksArr.push(b?.data()));
-  return booksArr;
+  const res: Document = await getDocs(q);
+  res.forEach((doc: Doc) =>
+    books.push({ id: String(Math.random()), data: doc.data() })
+  );
+  return books;
 }
 
 interface Props {
   myBooks: Book[];
-  isLoading: boolean;
 }
