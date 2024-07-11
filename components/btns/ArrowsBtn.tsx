@@ -7,12 +7,11 @@ import { useEffect, useState } from "react";
 function Arrows(): Component {
   const [animations] = useLocalStorage("animations", true),
     [showDownBtn, setShowDownBtn] = useState<boolean>(true),
-    [showUpBtn, setShowUpBtn] = useState<boolean>(false);
+    [cacheBooks] = useLocalStorage("cacheBooks", null),
+    [showUpBtn, setShowUpBtn] = useState<boolean>(false),
+    [isClient, setIsClient] = useState<boolean>(false);
 
-  useEffect(() => {
-    addEventListener("scroll", handleScroll);
-    return () => removeEventListener("scroll", handleScroll);
-  }, []);
+  useEffect(() => setIsClient(true), []);
 
   const handleScroll = throttle(() => {
     const isFarDown: boolean = scrollY > 600,
@@ -21,6 +20,13 @@ function Arrows(): Component {
     setShowDownBtn(!isNearBottom);
     setShowUpBtn(isFarDown);
   }, 700);
+
+  useEffect(() => {
+    addEventListener("scroll", handleScroll);
+    return () => removeEventListener("scroll", handleScroll);
+  }, []);
+
+  if (!isClient) return <></>;
 
   function toTop(): void {
     scrollTo({
@@ -47,7 +53,7 @@ function Arrows(): Component {
       ) : (
         <div className="fixed w-8 h-10" />
       )}
-      {showDownBtn ? (
+      {showDownBtn && (cacheBooks?.length ?? 0) > 8 ? (
         <DownIcon
           size={36}
           className="fixed cursor-pointer opacity-70 bg-gray-800 py-1 rounded-md w-8"
