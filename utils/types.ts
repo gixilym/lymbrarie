@@ -16,15 +16,13 @@ type InputEvent = ChangeEvent<HTMLInputElement>;
 
 type FormRef = RefObject<any>;
 
-type Email = string | undefined | null;
-
 type Document = DocumentData | void;
 
 type User = UserData | null;
 
 type MemoComponent = MemoExoticComponent<(arg0: any) => Component>;
 
-type GoTo = Promise<boolean> | any;
+type GoTo = Promise<boolean>;
 
 type SelectEvent = ChangeEvent<HTMLSelectElement>;
 
@@ -57,14 +55,6 @@ interface BookData {
   notes?: string;
 }
 
-interface AccountDetails {
-  allBooks: number;
-  reading: number;
-  read: number;
-  pending: number;
-  user: User;
-}
-
 interface UserData {
   name?: string | null | undefined;
   email?: string | null | undefined;
@@ -73,12 +63,11 @@ interface UserData {
 }
 
 export type {
-  AccountDetails,
   Book,
+  BookData,
   Component,
-  Document,
-  Email,
   Doc,
+  Document,
   FormRef,
   GoTo,
   InputEvent,
@@ -88,5 +77,4 @@ export type {
   Session,
   Timer,
   User,
-  BookData,
 };

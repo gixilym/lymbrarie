@@ -77,8 +77,6 @@ function Index({ user, isLogged }: Props): Component {
     }
   }
 
-  //! hay que recargar al añadir libro (arreglar)
-
   return (
     <animated.div
       style={styles}
@@ -105,8 +103,11 @@ function Index({ user, isLogged }: Props): Component {
             <LoadComponent />
           ) : (
             <>
-              {booksIsEmpty && <AddYourFirstBook />}
-              <ListSection myBooks={myBooks} isLogged={isLogged} />
+              {booksIsEmpty ? (
+                <AddYourFirstBook />
+              ) : (
+                <ListSection myBooks={myBooks} isLogged={isLogged} />
+              )}
             </>
           )}
           <FooterIndex isLogged={isLogged} />

@@ -27,24 +27,23 @@ function FooterIndex({ isLogged }: { isLogged: boolean }): Component {
       <div className="flex space-x-4">
         {isLogged && (
           <div
+            onClick={() => openPopUp("profile")}
             className={
               "flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline"
             }
           >
-            <p
-              onClick={() => (isLogged ? openPopUp("profile") : null)}
-              className="text-lg hover:underline duration-75 cursor-pointer "
-            >
+            <p className="text-lg hover:underline duration-75 cursor-pointer ">
               {t("profile")}
             </p>
             <UserIcon size={18} />
           </div>
         )}
 
-        <div className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline ">
-          <p onClick={() => openPopUp("support")} className="text-lg">
-            {t("support")}
-          </p>
+        <div
+          onClick={() => openPopUp("support")}
+          className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline "
+        >
+          <p className="text-lg">{t("support")}</p>
           <SupportIcon size={18} />
         </div>
 

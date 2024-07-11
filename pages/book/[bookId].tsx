@@ -14,7 +14,7 @@ import useLoadContent from "@/utils/hooks/useLoadContent";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import usePopUp from "@/utils/hooks/usePopUp";
 import { popupsValue } from "@/utils/store";
-import type { Book, Component, Session, Timer } from "@/utils/types";
+import type { Book, Component, Session } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
 import axios from "axios";
 import {
@@ -48,7 +48,6 @@ function BookId({ isLogged }: Props): Component {
     [animations] = useLocalStorage("animations", true),
     notesProps = { updateNotes, notes, setNotes, isLoading },
     guest: string = JSON.parse((router.query.guest as string) ?? "false"),
-    [showImage, setShowImage] = useState<boolean>(false),
     [popup] = useRecoilState(popupsValue),
     [styles, animate] = useSpring(() => ({
       opacity: animations ? 0 : 1,
@@ -66,11 +65,6 @@ function BookId({ isLogged }: Props): Component {
   useEffect(() => {
     if (animations) animate.start({ opacity: 1 });
   }, [animate]);
-
-  useEffect(() => {
-    const timer: Timer = setTimeout(() => setShowImage(true), 230);
-    return () => clearTimeout(timer);
-  }, []);
 
   useEffect(() => {
     if (!bookTitle) return;
@@ -123,18 +117,15 @@ function BookId({ isLogged }: Props): Component {
 
       <BackBtn />
       <article className="w-full sm:w-[700px] h-[315px] flex flex-col sm:flex-row gap-y-12 justify-start items-center sm:items-start backdrop-blur-[2.5px] relative mt-20 xl:mt-0 sm:mt-12">
-        {showImage ? (
-          <Image
-            priority
-            className="select-none aspect-[200/300] w-[200px] h-[300px] object-center object-fill rounded-sm"
-            src={book?.data?.image || DEFAULT_COVER}
-            width={200}
-            height={300}
-            alt="cover"
-          />
-        ) : (
-          <div className="w-[200px] h-[300px]" />
-        )}
+        <Image
+          priority
+          className="select-none aspect-[200/300] w-[200px] h-[300px] object-center object-fill rounded-sm"
+          src={book?.data?.image || DEFAULT_COVER}
+          width={200}
+          height={300}
+          alt="cover"
+        />
+
         <div className="flex flex-col justify-between items-start w-[100vw] sm:w-full max-w-[500px] sm:h-full px-10 sm:px-4 pb-2.5">
           <div className="flex flex-col justify-start items-start w-full h-full gap-y-2">
             <h4 className="text-2xl sm:text-3xl font-bold tracking-tight sm:min-h-20 h-auto overflow-ellipsis overflow-hidden whitespace-wrap w-full">
@@ -210,10 +201,6 @@ function BookId({ isLogged }: Props): Component {
 
 export default BookId;
 
-interface Props {
-  isLogged: boolean;
-}
-
 export async function getServerSideProps(ctx: Ctx): Promise<SideProps> {
   const session: Session = await getSession(ctx);
   const guest: string = JSON.parse((ctx.query.guest as string) ?? "false");
@@ -230,6 +217,10 @@ export async function getServerSideProps(ctx: Ctx): Promise<SideProps> {
   }
 
   return { props: { isLogged: session != null } };
+}
+
+interface Props {
+  isLogged: boolean;
 }
 
 type SideProps =
