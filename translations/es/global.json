@@ -98,7 +98,16 @@
     "loaned-too-long": "Prestado a... muy largo",
     "invalid-url-image": "URL de imagen inválida",
     "hardware-msg": "Si desea disfrutar de las animaciones, por favor, active la aceleración por hardware del navegador.",
-    "donations-text": "Este proyecto es el esfuerzo de una sola persona. Si disfrutas usando Lymbarie y quieres ver más mejoras, considera hacer una donación. ¡Tu contribución hace la diferencia!",
+    "donations-text": "Este proyecto es el esfuerzo de una sola persona. Si disfrutas usando Lymbrarie y quieres ver más mejoras, considera hacer una donación. ¡Tu contribución hace la diferencia!",
     "thanks": "¡Gracias!",
-    "paypal": "Donar através de PayPal"
+    "paypal": "Donar através de PayPal",
+    "welcome": "¡Bienvenido a Lymbrarie!",
+    "with-google": "Iniciar sesión con Google",
+    "ghost-mode": "como invitado",
+    "continue": "Continuar",
+    "enter": "Ingresar",
+    "see-you-soon": "¡Hasta pronto!",
+    "sign-in-to-add": "¡Inicia sesión para agregar libros!",
+    "with-github": "Iniciar sesión con Github",
+    "go-out": "Salir"
 }

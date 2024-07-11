@@ -1,6 +1,6 @@
 import logo from "@/public/favicon.ico";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
-import { GoogleIcon } from "@/utils/svgs";
+import { GoogleIcon, GithubIcon } from "@/utils/svgs";
 import type { Component } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
 import { Ghost as GuestIcon } from "lucide-react";
@@ -9,9 +9,11 @@ import Head from "next/head";
 import Image from "next/image";
 import { NextRouter, useRouter } from "next/router";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 function LoginPage(): Component {
   const { push, query }: NextRouter = useRouter(),
+    [t] = useTranslation("global"),
     book: string = JSON.parse((query.book as string) ?? "false"),
     ghost: string = JSON.parse((query.ghost as string) ?? "false"),
     [animations] = useLocalStorage("animations", true),
@@ -25,9 +27,9 @@ function LoginPage(): Component {
   }, [animate]);
 
   return (
-    <section className="absolute top-0 right-0 min-h-screen w-full flex items-start justify-center bg-transparent pt-16 sm:pt-24">
+    <section className="absolute top-0 right-0 min-h-screen w-full flex items-start justify-center bg-transparent pt-12 sm:pt-20">
       <Head>
-        <title>¡Bienvenido a Lymbrarie!</title>
+        <title>{t("welcome")}</title>
       </Head>
       <animated.div
         style={styles}
@@ -39,31 +41,35 @@ function LoginPage(): Component {
             src={logo}
             alt="logo"
           />
-          <h4 className="text-2xl sm:text-3xl tracking-tight font-pop w-full text-center">
-            {book
-              ? "¡Inicia sesión para añadir un libro!"
-              : "¡Bienvenido a Lymbrarie!"}
+          <h4 className="text-2xl sm:text-3xl tracking-tight font-pop w-full text-center text-slate-200">
+            {book ? t("sign-in-to-add") : t("welcome")}
           </h4>
         </div>
         <div className="w-full flex flex-col justify-start items-center gap-y-3.5">
           <button
             onClick={() => signIn("google", { callbackUrl: "/?guest=false" })}
-            className="bg-slate-100/10 justify-center sm:justify-start sm:pl-12 hover:bg-slate-100/20
- flex items-center w-[330px] sm:w-full max-w-[400px] h-14 sm:h-[58px] gap-x-6 rounded-lg border-2 border-slate-300/40 duration-150 "
+            className="bg-slate-100/10 justify-center sm:justify-start sm:pl-12 hover:bg-slate-400/10
+ flex items-center w-[330px] sm:w-full max-w-[400px] h-14 sm:h-[58px] gap-x-6 rounded-lg border border-slate-500/40 duration-150 "
           >
-            <GoogleIcon className="w-8 h-8" />
-            <p className="text-lg sm:text-xl text-white">
-              Iniciar sesión con Google
-            </p>
+            <GoogleIcon className="w-7 h-7" />
+            <p className="text-lg sm:text-xl text-white">{t("with-google")}</p>
+          </button>
+          <button
+            onClick={() => signIn("github", { callbackUrl: "/?guest=false" })}
+            className="bg-black/90 border border-slate-800 justify-center sm:justify-start sm:pl-12 hover:bg-black/50
+ flex items-center w-[330px] sm:w-full max-w-[400px] h-14 sm:h-[58px] gap-x-6 rounded-lg  duration-150"
+          >
+            <GithubIcon className="w-7 h-7" />
+            <p className="text-lg sm:text-xl text-white">{t("with-github")}</p>
           </button>
           <button
             onClick={() => push("/?guest=true&ghost=true")}
             className="justify-center sm:justify-start pr-3 sm:pr-0 sm:pl-12
-              bg-slate-100/10 flex items-center w-[330px] sm:w-full max-w-[400px] h-14 sm:h-[58px] gap-x-6 rounded-lg duration-150 hover:bg-blue-300/30"
+              bg-slate-950/50 flex items-center w-[330px] sm:w-full max-w-[400px] h-14 sm:h-[58px] gap-x-6 rounded-lg duration-150 hover:bg-slate-950/80"
           >
-            <GuestIcon className="w-8 h-8" />
+            <GuestIcon className="w-8 h-8 text-slate-200" />
             <p className="text-lg sm:text-xl text-slate-100">
-              {ghost ? "Seguir" : "Acceder"} como invitado
+              {ghost ? t("continue") : t("enter")} {t("ghost-mode")}
             </p>
           </button>
         </div>

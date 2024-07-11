@@ -21,7 +21,7 @@ function LogOutBtn(): Component {
       border-red-600 border-b-[4px] hover:brightness-110 hover:-translate-y-[1px] hover:scale-95 hover:outline-b-[6px]
       active:border-b-[2px] active:brightness-90 active:translate-y-[2px] sm:text-lg text-sm font-semibold tracking-wider opacity-85 flex flex-row justify-start items-center gap-x-3"
     >
-      <p>{t("logout")}</p>
+      <p>{t("go-out")}</p>
       <LogOutIcon size={28} />
     </button>
   );

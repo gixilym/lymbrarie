@@ -4,9 +4,6 @@ import { collection, CollectionReference } from "firebase/firestore";
 import { db } from "@/database/firebase";
 import defaultCover from "@/public/cover.webp";
 
-// ! no mostrar flechita si no hay mas de 8 libros
-//! al crear libro hay recargar
-
 const MAINTENANCE: boolean = false;
 
 const GENDERS: string[] = [

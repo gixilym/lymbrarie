@@ -42,6 +42,7 @@ function Index({ user, isLogged }: Props): Component {
       config: { duration: 1000 },
     }));
 
+
   useEffect(() => {
     if (isLogged && guest) {
       setAllTitles([]);
@@ -99,11 +100,13 @@ function Index({ user, isLogged }: Props): Component {
             profileName={profileName}
             userID={userID}
           />
-          {booksIsEmpty && <AddYourFirstBook />}
           {loading ? (
             <LoadComponent />
           ) : (
-            <ListSection myBooks={myBooks} isLogged={isLogged} />
+            <>
+              {booksIsEmpty && <AddYourFirstBook />}
+              <ListSection myBooks={myBooks} isLogged={isLogged} />
+            </>
           )}
           <FooterIndex isLogged={isLogged} />
         </>

@@ -1,10 +1,21 @@
 import NextAuth, { type NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import GithubProvider from "next-auth/providers/github";
 
 const options: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET as string,
   pages: { signIn: "/login" },
   session: { strategy: "jwt" },
+  providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_SECRET as string,
+    }),
+    GithubProvider({
+      clientId: process.env.GITHUB_ID as string,
+      clientSecret: process.env.GITHUB_SECRET as string,
+    }),
+  ],
   callbacks: {
     async jwt({ token, account }: any): Promise<any> {
       if (account) {
@@ -17,12 +28,6 @@ const options: NextAuthOptions = {
       return session;
     },
   },
-  providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_SECRET as string,
-    }),
-  ],
 };
 
 export default NextAuth(options);
