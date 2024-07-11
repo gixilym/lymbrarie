@@ -12,8 +12,8 @@ import { useEffect } from "react";
 
 function LoginPage(): Component {
   const { push, query }: NextRouter = useRouter(),
-    book: string = (query.book as string) ?? "",
-    ghost: string = (query.ghost as string) ?? "",
+    book: string = JSON.parse((query.book as string) ?? "false"),
+    ghost: string = JSON.parse((query.ghost as string) ?? "false"),
     [animations] = useLocalStorage("animations", true),
     [styles, animate] = useSpring(() => ({
       opacity: animations ? 0 : 1,

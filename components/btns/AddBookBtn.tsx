@@ -5,7 +5,7 @@ import { NextRouter, useRouter } from "next/router";
 function AddBookBtn({ text, isLogged }: Props): Component {
   const { openPopUp } = usePopUp();
   const { push, query }: NextRouter = useRouter();
-  const ghost: string = (query?.ghost as string) ?? "";
+  const ghost: string = (query?.ghost as string) ?? "false";
 
   function goTo(): void {
     if (isLogged) openPopUp("add_book");
