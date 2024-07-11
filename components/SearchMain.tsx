@@ -1,4 +1,3 @@
-//"use client";
 import { inputSearch, stateBookValue } from "@/utils/store";
 import type { Component, InputEvent } from "@/utils/types";
 import { useTranslation } from "react-i18next";
@@ -6,7 +5,7 @@ import { useRecoilState } from "recoil";
 import { twMerge } from "tailwind-merge";
 import AddBookBtn from "./btns/AddBookBtn";
 
-function SearchMain(): Component {
+function SearchMain({ isLogged }: { isLogged: boolean }): Component {
   const [value, setValue] = useRecoilState(inputSearch),
     handleChangeInput = (e: InputEvent) => setValue(e.target.value),
     [selectVal, setSelectStateValue] = useRecoilState<string>(stateBookValue),
@@ -55,7 +54,7 @@ function SearchMain(): Component {
             </option>
           </select>
         </div>
-        <AddBookBtn text={t("new-book")} />
+        <AddBookBtn isLogged={isLogged} text={t("new-book")} />
       </div>
     </form>
   );

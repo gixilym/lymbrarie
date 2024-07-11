@@ -1,18 +1,15 @@
-//"use client";
 import usePopUp from "@/utils/hooks/usePopUp";
-import useSessionExists from "@/utils/hooks/useSessionExists";
 import type { Component } from "@/utils/types";
-import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { useRouter } from "next/navigation";
+import { NextRouter, useRouter } from "next/router";
 
-function AddBookBtn({ text }: { text: string }): Component {
-  const { userLoggedIn } = useSessionExists();
-  const router: AppRouterInstance = useRouter();
+function AddBookBtn({ text, isLogged }: Props): Component {
   const { openPopUp } = usePopUp();
+  const { push, query }: NextRouter = useRouter();
+  const ghost: string = (query?.ghost as string) ?? "";
 
   function goTo(): void {
-    if (userLoggedIn) return openPopUp("add_book");
-    else router.push("/api/auth/signin");
+    if (isLogged) openPopUp("add_book");
+    else push(`/login?book=true&ghost=${ghost}`);
   }
 
   return (
@@ -27,3 +24,8 @@ function AddBookBtn({ text }: { text: string }): Component {
 }
 
 export default AddBookBtn;
+
+interface Props {
+  text: string;
+  isLogged: boolean;
+}

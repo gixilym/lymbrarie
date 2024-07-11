@@ -1,9 +1,8 @@
-import { GENDERS } from "@/utils/consts";
+import { BOOK_HANDLER_URL, EMPTY_BOOK, GENDERS } from "@/utils/consts";
 import { isLoaned, notification, tLC } from "@/utils/helpers";
 import useLoadContent from "@/utils/hooks/useLoadContent";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import usePopUp from "@/utils/hooks/usePopUp";
-import { BOOK_HANDLER_URL, EMPTY_BOOK } from "@/utils/store";
 import type {
   Book,
   BookData,
@@ -14,6 +13,7 @@ import type {
   Timer,
 } from "@/utils/types";
 import axios from "axios";
+import { useRouter } from "next/router";
 import {
   type FormEvent,
   type Reference,
@@ -25,7 +25,6 @@ import { useTranslation } from "react-i18next";
 import DialogContainer from "../DialogContainer";
 import FieldsBook from "../FieldsBook";
 import PopUpTitle from "./TitlePopUp";
-import { useRouter } from "next/router";
 
 function EditBookPopUp({ data: dataBook, documentId }: Props): Component {
   const data = dataBook.data,
@@ -67,6 +66,7 @@ function EditBookPopUp({ data: dataBook, documentId }: Props): Component {
     else setEditDisabled(false);
   }, [book, data]);
 
+  /*
   useEffect(() => {
     router.events.on("routeChangeStart", handleRouteChange);
     addEventListener("beforeunload", handleBeforeUnload);
@@ -94,7 +94,7 @@ function EditBookPopUp({ data: dataBook, documentId }: Props): Component {
       }
     }
   }
-
+*/
   function loadBookData(): void {
     const loadData: BookData = {
       title: data?.title,
@@ -143,65 +143,70 @@ function EditBookPopUp({ data: dataBook, documentId }: Props): Component {
       validateImg: boolean =
         (book.image?.length ?? 0) > 1 && !validateURL.test(book.image ?? "");
 
-    if (!title) {
-      setErrorKey("title-input");
-      return notification("error", t("empty-title"));
-    }
-    if (repeteadTitle) {
-      console.log(repeteadTitle);
-      setErrorKey("title-input");
-      return notification("error", t("repeated-title"));
+    validateFields();
+    function validateFields(): void {
+      if (!title) {
+        setErrorKey("title-input");
+        return notification("error", t("empty-title"));
+      }
+      if (repeteadTitle) {
+        setErrorKey("title-input");
+        return notification("error", t("repeated-title"));
+      }
+
+      if (maxTitleLength) {
+        setErrorKey("title-input");
+        return notification("error", t("title-too-long"));
+      }
+
+      if (title.includes("@")) {
+        setErrorKey("title-input");
+        return notification("error", t("@"));
+      }
+
+      if (maxAuthorLength) {
+        setErrorKey("author-input");
+        return notification("error", t("author-too-long"));
+      }
+
+      if (emptyCustomGender) {
+        setErrorKey("gender-input");
+        return notification("error", t("empty-custom-gender"));
+      }
+
+      if (maxLengthGender) {
+        setErrorKey("gender-input");
+        return notification("error", t("custom-gender-too-long"));
+      }
+
+      if (emptyLoaned) {
+        setErrorKey("loaned-input");
+        return notification("error", t("empty-loaned"));
+      }
+
+      if (maxLengthLoaned) {
+        setErrorKey("loaned-input");
+        return notification("error", t("loaned-too-long"));
+      }
+
+      if (validateImg) {
+        setErrorKey("image-input");
+        return notification("error", t("invalid-url-image"));
+      }
     }
 
-    if (maxTitleLength) {
-      setErrorKey("title-input");
-      return notification("error", t("title-too-long"));
-    }
+    const loaned: string = isLoaned(book.state) ? book.loaned : "",
+      updatedBook: Book = { ...book, loaned } as const,
+      bookData = { documentId, updatedBook } as const,
+      oldVersion = cacheBooks.filter((b: Book) => b.id != documentId),
+      newVersion = [...oldVersion, { id: documentId, data: updatedBook }],
+      titlePage: string = book.title.replaceAll(" ", "_").replaceAll("?", "@"),
+      newPath: string = `/book/${titlePage}?guest=false`;
 
-    if (title.includes("@")) {
-      setErrorKey("title-input");
-      return notification("error", t("@"));
-    }
-
-    if (maxAuthorLength) {
-      setErrorKey("author-input");
-      return notification("error", t("author-too-long"));
-    }
-
-    if (emptyCustomGender) {
-      setErrorKey("gender-input");
-      return notification("error", t("empty-custom-gender"));
-    }
-
-    if (maxLengthGender) {
-      setErrorKey("gender-input");
-      return notification("error", t("custom-gender-too-long"));
-    }
-
-    if (emptyLoaned) {
-      setErrorKey("loaned-input");
-      return notification("error", t("empty-loaned"));
-    }
-
-    if (maxLengthLoaned) {
-      setErrorKey("loaned-input");
-      return notification("error", t("loaned-too-long"));
-    }
-
-    if (validateImg) {
-      setErrorKey("image-input");
-      return notification("error", t("invalid-url-image"));
-    }
-
-    const loaned: string = !isLoaned(book.state ?? "") ? "" : book.loaned ?? "";
-    const updatedBook: Book = { ...book, loaned };
-    const bookData: object = { documentId, updatedBook };
-    // const title: string = book.title?.replaceAll(" ", "_").replaceAll(/\?/g, "@") ?? "";
-    // location.href = "/" + title;
     startLoading();
     axios.patch(BOOK_HANDLER_URL, bookData);
-    setCacheBooks(null);
-    location.href = "/";
+    setCacheBooks(newVersion);
+    router.replace(newPath).then(() => router.reload());
   }
 
   return (
@@ -216,7 +221,7 @@ function EditBookPopUp({ data: dataBook, documentId }: Props): Component {
         isCustomGender={isCustomGender}
         handleGender={handleGender}
         handleState={handleState}
-        isLoaned={isLoaned(book.data?.state ?? "")}
+        isLoaned={isLoaned(book?.state)}
         defaultValueTitle={data?.title}
         defaultValueAuthor={data?.author}
         defaultValueGender={data?.gender}

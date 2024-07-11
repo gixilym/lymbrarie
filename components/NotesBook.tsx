@@ -10,13 +10,24 @@ import {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { twMerge } from "tailwind-merge";
-import { NotebookPen as NotesIcon } from "lucide-react";
+import { Notebook as NotesIcon } from "lucide-react";
+import { useSpring, animated } from "@react-spring/web";
+import useLocalStorage from "@/utils/hooks/useLocalStorage";
 
 function NotesBook(props: Notes): Component {
   const [t] = useTranslation("global"),
     router: NextRouter = useRouter(),
+    { notes, updateNotes, setNotes, classText } = props,
     [hasChanges, setHasChanges] = useState<boolean>(false),
-    { notes, updateNotes, setNotes, classText, isLoading } = props;
+    [animations] = useLocalStorage("animations", true),
+    [styles, animate] = useSpring(() => ({
+      opacity: animations ? 0 : 1,
+      config: { duration: 600 },
+    }));
+
+  useEffect(() => {
+    if (animations) animate.start({ opacity: 1 });
+  }, [animate]);
 
   useEffect(() => {
     router.events.on("routeChangeStart", handleRouteChange);
@@ -60,9 +71,9 @@ function NotesBook(props: Notes): Component {
     <div className={classText}>
       <div className="flex flex-col items-center justify-between w-full sm:px-0 px-4">
         <div className="flex justify-between items-end w-full h-10">
-          <div className="flex justify-start items-center gap-x-4">
-            <NotesIcon size={26} />
-            <p className="text-2xl opacity-90 select-none">{t("notes")}</p>
+          <div className="flex justify-start items-center gap-x-2">
+            <NotesIcon size={26} className="opacity-90" />
+            <p className="text-2xl select-none">{t("notes")}</p>
           </div>
           {hasChanges && (
             <button
@@ -76,7 +87,10 @@ function NotesBook(props: Notes): Component {
         </div>
       </div>
 
-      <div className="sm:px-0 px-4 h-full flex items-center justify-center w-full ">
+      <animated.div
+        style={styles}
+        className="sm:px-0 px-4 h-full flex items-center justify-center w-full "
+      >
         <textarea
           placeholder="..."
           value={notes}
@@ -86,7 +100,7 @@ function NotesBook(props: Notes): Component {
             "w-full h-full bg-transparent  text-white/80 resize-none border-none focus:ring-0 focus:outline-none text-md sm:text-lg sm:pr-2 py-4"
           )}
         />
-      </div>
+      </animated.div>
     </div>
   );
 }

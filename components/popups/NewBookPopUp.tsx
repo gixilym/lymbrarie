@@ -1,9 +1,8 @@
+import { BOOK_HANDLER_URL, EMPTY_BOOK } from "@/utils/consts";
 import { isLoaned, notification, tLC } from "@/utils/helpers";
 import useLoadContent from "@/utils/hooks/useLoadContent";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import usePopUp from "@/utils/hooks/usePopUp";
-import useUserEmail from "@/utils/hooks/useUserEmail";
-import { BOOK_HANDLER_URL, EMPTY_BOOK } from "@/utils/store";
 import type {
   Book,
   BookData,
@@ -14,8 +13,7 @@ import type {
   Timer,
 } from "@/utils/types";
 import axios from "axios";
-import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { useRouter } from "next/navigation";
+import { NextRouter, useRouter } from "next/router";
 import {
   type FormEvent,
   type Reference,
@@ -28,15 +26,14 @@ import DialogContainer from "../DialogContainer";
 import FieldsBook from "../FieldsBook";
 import PopUpTitle from "./TitlePopUp";
 
-function NewBookPopUp(): Component {
+function NewBookPopUp({ userID }: { userID: string }): Component {
   const [t] = useTranslation("global"),
-    { userEmail } = useUserEmail(),
     { closePopUp } = usePopUp(),
-    { refresh }: AppRouterInstance = useRouter(),
+    router: NextRouter = useRouter(),
     formRef: FormRef = useRef<Reference>(null),
     [book, setBook] = useState<Book>(EMPTY_BOOK),
-    { isLoading, startLoading, finishLoading } = useLoadContent(),
-    [cacheBooks, setCacheBooks] = useLocalStorage("cacheBooks", null),
+    { isLoading, startLoading } = useLoadContent(),
+    [, setCacheBooks] = useLocalStorage("cacheBooks", null),
     [allTitles] = useLocalStorage("allTitles", []),
     [errorKey, setErrorKey] = useState<string>(""),
     [addClicked, setAddClicked] = useState<boolean>(false),
@@ -94,62 +91,63 @@ function NewBookPopUp(): Component {
         (book.data.image?.length ?? 0) > 1 &&
         !validateURL.test(book.data.image ?? "");
 
-    if (!title) {
-      setErrorKey("title-input");
-      return notification("error", t("empty-title"));
-    }
-    if (repeteadTitle) {
-      setErrorKey("title-input");
-      return notification("error", t("repeated-title"));
+    validateFields();
+    function validateFields(): void {
+      if (!title) {
+        setErrorKey("title-input");
+        return notification("error", t("empty-title"));
+      }
+      if (repeteadTitle) {
+        setErrorKey("title-input");
+        return notification("error", t("repeated-title"));
+      }
+
+      if (maxTitleLength) {
+        setErrorKey("title-input");
+        return notification("error", t("title-too-long"));
+      }
+
+      if (title.includes("@")) {
+        setErrorKey("title-input");
+        return notification("error", t("@"));
+      }
+
+      if (maxAuthorLength) {
+        setErrorKey("author-input");
+        return notification("error", t("author-too-long"));
+      }
+
+      if (emptyCustomGender) {
+        setErrorKey("gender-input");
+        return notification("error", t("empty-custom-gender"));
+      }
+
+      if (maxLengthGender) {
+        setErrorKey("gender-input");
+        return notification("error", t("custom-gender-too-long"));
+      }
+
+      if (emptyLoaned) {
+        setErrorKey("loaned-input");
+        return notification("error", t("empty-loaned"));
+      }
+
+      if (maxLengthLoaned) {
+        setErrorKey("loaned-input");
+        return notification("error", t("loaned-too-long"));
+      }
+
+      if (validateImg) {
+        setErrorKey("image-input");
+        return notification("error", t("invalid-url-image"));
+      }
     }
 
-    if (maxTitleLength) {
-      setErrorKey("title-input");
-      return notification("error", t("title-too-long"));
-    }
-
-    if (title.includes("@")) {
-      setErrorKey("title-input");
-      return notification("error", t("@"));
-    }
-
-    if (maxAuthorLength) {
-      setErrorKey("author-input");
-      return notification("error", t("author-too-long"));
-    }
-
-    if (emptyCustomGender) {
-      setErrorKey("gender-input");
-      return notification("error", t("empty-custom-gender"));
-    }
-
-    if (maxLengthGender) {
-      setErrorKey("gender-input");
-      return notification("error", t("custom-gender-too-long"));
-    }
-
-    if (emptyLoaned) {
-      setErrorKey("loaned-input");
-      return notification("error", t("empty-loaned"));
-    }
-
-    if (maxLengthLoaned) {
-      setErrorKey("loaned-input");
-      return notification("error", t("loaned-too-long"));
-    }
-
-    if (validateImg) {
-      setErrorKey("image-input");
-      return notification("error", t("invalid-url-image"));
-    }
-
-    const bookData: BookData = { ...book.data, owner: userEmail ?? "" };
+    const bookData: BookData = { ...book.data, owner: userID as string };
     startLoading();
     await axios.post(BOOK_HANDLER_URL, bookData);
-    finishLoading();
     setCacheBooks(null);
-    closePopUp("add_book");
-    refresh();
+    router.reload();
   }
 
   return (

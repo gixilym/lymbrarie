@@ -5,7 +5,14 @@
   "license": "Apache-2.0",
   "author": {
     "name": "gixi",
-    "url": "https://github.com/gixilym/lymbrarie"
+    "url": "https://gixi.dev",
+    "email": "gixi.tsx@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gixi/lymbrarie",
+    "directory": ".",
+    "branch": "trunk"
   },
   "scripts": {
     "dev": "next dev --turbo",
@@ -15,10 +22,12 @@
   },
   "dependencies": {
     "@fontsource-variable/public-sans": "^5.0.18",
+    "@fontsource/poppins": "^5.0.14",
     "@react-spring/web": "^9.7.3",
     "axios": "^1.6.8",
     "firebase": "^10.8.1",
     "i18next": "^23.11.1",
+    "lodash": "^4.17.21",
     "lucide-react": "^0.368.0",
     "next": "^14.2.3",
     "next-auth": "^4.24.6",

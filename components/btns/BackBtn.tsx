@@ -5,8 +5,9 @@ import { useRouter } from "next/router";
 import { flushSync } from "react-dom";
 
 function BackBtn(): Component {
-  const { push } = useRouter();
+  const { push, query } = useRouter();
   const [animations] = useLocalStorage("animations", true);
+  const guest: string = query.guest as string;
 
   function goTo(): GoTo {
     const condition: boolean =
@@ -15,8 +16,10 @@ function BackBtn(): Component {
 
     return condition
       ? // @ts-ignore
-        document.startViewTransition(() => flushSync(() => push("/")))
-      : push("/");
+        document.startViewTransition(() =>
+          flushSync(() => push(`/?guest=${guest}`))
+        )
+      : push(`/?guest=${guest}`);
   }
 
   return (

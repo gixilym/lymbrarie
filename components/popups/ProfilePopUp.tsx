@@ -1,32 +1,44 @@
-import useSessionExists from "@/utils/hooks/useSessionExists";
-import { DEFAULT_COVER } from "@/utils/store";
-import type { AccountDetails, Component } from "@/utils/types";
+import useLocalStorage from "@/utils/hooks/useLocalStorage";
+import type { Book, Component } from "@/utils/types";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { twMerge } from "tailwind-merge";
 import ClosePopUpBtn from "../btns/ClosePopUpBtn";
-import DialogContainer from "../DialogContainer";
-import LogInBtn from "../btns/LogInBtn";
 import LogOutBtn from "../btns/LogOutBtn";
+import DialogContainer from "../DialogContainer";
 import PopUpTitle from "./TitlePopUp";
+import { DEFAULT_COVER } from "@/utils/consts";
 
-function ProfilePopUp({ accountDetails }: Props): Component {
-  const [t] = useTranslation("global");
-  const { userLoggedIn } = useSessionExists();
+function ProfilePopUp({ profileImg, profileName }: Props): Component {
+  const [t] = useTranslation("global"),
+    [stateCounts, setStateCounts] = useState<States>({
+      Read: 0,
+      Reading: 0,
+      Pending: 0,
+      Borrowed: 0,
+    }),
+    { Read, Reading, Pending, Borrowed }: States = stateCounts,
+    [cacheBooks] = useLocalStorage("cacheBooks", null);
 
-  if (accountDetails == null)
-    return (
-      <DialogContainer divClass="justify-between">
-        <NotLogged />
-        <div className="justify-end modal-action w-full flex items-center">
-          <ClosePopUpBtn id="profile" />
-        </div>
-      </DialogContainer>
-    );
+  useEffect(() => {
+    if (Array.isArray(cacheBooks)) {
+      const counts: States = {
+        Read: 0,
+        Reading: 0,
+        Pending: 0,
+        Borrowed: 0,
+      };
 
-  const { allBooks, reading, read, pending, user } = accountDetails;
-  const img: string = user?.image ?? DEFAULT_COVER;
-  const name: string = user?.name ?? "";
+      cacheBooks.forEach((b: Book) => {
+        const state: string = b.data.state as BookState;
+        if (counts[state] !== undefined) {
+          counts[state]++;
+        }
+      });
+
+      setStateCounts(counts);
+    }
+  }, [cacheBooks]);
 
   function UserData(): Component {
     return (
@@ -37,12 +49,12 @@ function ProfilePopUp({ accountDetails }: Props): Component {
             <Image
               alt="Avatar"
               className="rounded-full sm:w-24 w-20 sm:h-24 h-20 object-cover object-center"
-              src={img}
+              src={profileImg ?? DEFAULT_COVER}
               width={50}
               height={50}
             />
             <p className="sm:text-xl text-lg font-semibold text-center w-full mt-2">
-              {name}
+              {profileName}
             </p>
           </div>
 
@@ -57,10 +69,10 @@ function ProfilePopUp({ accountDetails }: Props): Component {
             </thead>
             <tbody className="sm:text-xl text-lg border-y-[1.5px] border-white/10 text-white/60">
               <tr>
-                <td>{allBooks}</td>
-                <td>{reading}</td>
-                <td>{pending}</td>
-                <td>{read}</td>
+                <td>{Read + Borrowed + Reading + Pending}</td>
+                <td>{Reading}</td>
+                <td>{Pending}</td>
+                <td>{Read}</td>
               </tr>
             </tbody>
           </table>
@@ -69,27 +81,11 @@ function ProfilePopUp({ accountDetails }: Props): Component {
     );
   }
 
-  function NotLogged(): Component {
-    return (
-      <div className="flex flex-col justify-start items-center gap-y-8 mt-10">
-        <p className="sm:text-3xl text-2xl text-center text-pretty">
-          {t("access")}
-        </p>
-        <LogInBtn />
-      </div>
-    );
-  }
-
   return (
     <DialogContainer divClass="justify-between">
-      {name ? <UserData /> : <NotLogged />}
-      <div
-        className={twMerge(
-          name ? "justify-between" : "justify-end",
-          "modal-action w-full flex items-center"
-        )}
-      >
-        {userLoggedIn && <LogOutBtn />}
+      <UserData />
+      <div className="justify-between modal-action w-full flex items-center">
+        <LogOutBtn />
         <ClosePopUpBtn id="profile" />
       </div>
     </DialogContainer>
@@ -99,5 +95,14 @@ function ProfilePopUp({ accountDetails }: Props): Component {
 export default ProfilePopUp;
 
 interface Props {
-  accountDetails: AccountDetails;
+  profileImg: string;
+  profileName: string;
 }
+
+type States = { [key: string]: number };
+
+type BookState = "Read" | "Reading" | "Pending" | "Borrowed";
+
+// { allBooks, reading, read, pending, user } = accountDetails,
+// img: string = user?.image ?? DEFAULT_COVER,
+// name: string = user?.name ?? "";

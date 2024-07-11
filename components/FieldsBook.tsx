@@ -10,6 +10,7 @@ import {
   User as UserIcon,
 } from "lucide-react";
 import Link from "next/link";
+import type { ChangeEventHandler } from "react";
 import { useTranslation } from "react-i18next";
 import { twMerge } from "tailwind-merge";
 
@@ -24,13 +25,14 @@ function FieldsBook(props: Props): Component {
     handleGender,
     handleState,
     isLoaned,
-    defaultValueTitle,
-    defaultValueAuthor,
+    defaultValueTitle = "",
+    defaultValueAuthor = "",
     defaultValueGender,
-    defaultValueState,
-    defaultValueLoaned,
-    defaultValueImg,
+    defaultValueState = "default",
+    defaultValueLoaned = "",
+    defaultValueImg = "",
   } = props;
+
   return (
     <>
       <label
@@ -43,9 +45,10 @@ function FieldsBook(props: Props): Component {
         <TitleIcon size={18} className="mt-0.5 mr-2" />
         <input
           id="title-input"
+          autoFocus
           disabled={isLoading}
           onChange={handleChange}
-          defaultValue={defaultValueTitle || ""}
+          defaultValue={defaultValueTitle}
           name="title"
           type="text"
           className="grow px-1 h-14"
@@ -65,7 +68,7 @@ function FieldsBook(props: Props): Component {
           id="author-input"
           disabled={isLoading}
           onChange={handleChange}
-          defaultValue={defaultValueAuthor || ""}
+          defaultValue={defaultValueAuthor}
           name="author"
           type="text"
           className="grow px-1 h-14"
@@ -82,6 +85,7 @@ function FieldsBook(props: Props): Component {
           <select
             id="gender-select"
             onChange={handleGender}
+            disabled={isLoading}
             className="select input-bordered pl-1.5 border-x-0 rounded-none sm:text-xl text-lg w-full focus:outline-0 h-14"
             defaultValue={defaultValueGender ?? "default"}
           >
@@ -134,7 +138,7 @@ function FieldsBook(props: Props): Component {
             disabled={isLoading}
             onChange={e => handleState(e.target.value)}
             className="select input-bordered border-x-0 rounded-none sm:text-xl text-lg w-full focus:outline-0 h-14"
-            defaultValue={defaultValueState || "default"}
+            defaultValue={defaultValueState}
           >
             <option value="default" disabled>
               {t("state")}
@@ -159,7 +163,7 @@ function FieldsBook(props: Props): Component {
               disabled={isLoading}
               onChange={handleChange}
               name="loaned"
-              defaultValue={defaultValueLoaned || ""}
+              defaultValue={defaultValueLoaned}
               type="text"
               className="grow px-1"
               placeholder={t("loanedto")}
@@ -181,7 +185,7 @@ function FieldsBook(props: Props): Component {
             id="image-input"
             disabled={isLoading}
             onChange={handleChange}
-            defaultValue={defaultValueImg || ""}
+            defaultValue={defaultValueImg}
             name="image"
             type="text"
             className="grow px-1 text-md"
@@ -211,7 +215,7 @@ interface Props {
   isLoading?: boolean;
   setCustomGenderVal: (value: string) => void;
   isCustomGender: boolean;
-  handleGender: (e: any) => void;
+  handleGender: ChangeEventHandler<HTMLSelectElement>;
   handleState: (state: string) => void;
   isLoaned: boolean;
   defaultValueTitle?: string;

@@ -1,7 +1,8 @@
 import useLoadContent from "@/utils/hooks/useLoadContent";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import usePopUp from "@/utils/hooks/usePopUp";
-import { BOOK_HANDLER_URL, inputSearch } from "@/utils/store";
+import { inputSearch } from "@/utils/store";
+import { BOOK_HANDLER_URL } from "@/utils/consts";
 import type { Book, Component } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
 import axios from "axios";

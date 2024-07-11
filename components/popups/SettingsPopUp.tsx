@@ -14,8 +14,8 @@ import PopUpTitle from "./TitlePopUp";
 function SettingsPopUp(): Component {
   const [t, i18n] = useTranslation("global"),
     [language, setLanguage] = useLocalStorage("language", "en"),
-    [animations, setAnimations] = useLocalStorage("animations", "true"),
-    [state, setState] = useLocalStorage("state", "true");
+    [animations, setAnimations] = useLocalStorage("animations", true),
+    [state, setState] = useLocalStorage("state", true);
 
   return (
     <DialogContainer divClass="justify-between">

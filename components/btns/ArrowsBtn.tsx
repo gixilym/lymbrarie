@@ -1,17 +1,26 @@
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
-import type { Book, Component } from "@/utils/types";
+import type { Component } from "@/utils/types";
+import { throttle } from "lodash";
 import { MoveDown as DownIcon, MoveUp as UpIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
 function Arrows(): Component {
-  const [isClient, setIsClient] = useState<boolean>(false),
-    [animations] = useLocalStorage("animations", true),
-    [cacheBooks] = useLocalStorage("cacheBooks", null) as [Book[] | null],
-    dontShow: boolean = !Array.isArray(cacheBooks) || cacheBooks.length < 12;
+  const [animations] = useLocalStorage("animations", true),
+    [showDownBtn, setShowDownBtn] = useState<boolean>(true),
+    [showUpBtn, setShowUpBtn] = useState<boolean>(false);
 
-  useEffect(() => setIsClient(true), []);
+  useEffect(() => {
+    addEventListener("scroll", handleScroll);
+    return () => removeEventListener("scroll", handleScroll);
+  }, []);
 
-  if (!isClient) return null;
+  const handleScroll = throttle(() => {
+    const isFarDown: boolean = scrollY > 600,
+      h: number = document.documentElement.scrollHeight,
+      isNearBottom: boolean = innerHeight + scrollY >= h - 700;
+    setShowDownBtn(!isNearBottom);
+    setShowUpBtn(isFarDown);
+  }, 700);
 
   function toTop(): void {
     scrollTo({
@@ -27,19 +36,26 @@ function Arrows(): Component {
     });
   }
 
-  if (dontShow) return <></>;
   return (
     <div className="absolute -top-10 lg:top-80 right-20 lg:-right-40 space-y-12">
-      <UpIcon
-        size={36}
-        className="fixed bg-gray-800 py-1 rounded-md w-8 opacity-70 cursor-pointer"
-        onClick={toTop}
-      />
-      <DownIcon
-        size={36}
-        className="fixed cursor-pointer opacity-70 bg-gray-800 py-1 rounded-md w-8"
-        onClick={toBottom}
-      />
+      {showUpBtn ? (
+        <UpIcon
+          size={36}
+          className="fixed bg-gray-800 py-1 rounded-md w-8 opacity-70 cursor-pointer"
+          onClick={toTop}
+        />
+      ) : (
+        <div className="fixed w-8 h-10" />
+      )}
+      {showDownBtn ? (
+        <DownIcon
+          size={36}
+          className="fixed cursor-pointer opacity-70 bg-gray-800 py-1 rounded-md w-8"
+          onClick={toBottom}
+        />
+      ) : (
+        <div className="fixed w-8 h-10" />
+      )}
     </div>
   );
 }

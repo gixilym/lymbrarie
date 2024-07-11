@@ -1,6 +1,6 @@
-import { addDoc, setDoc, doc, deleteDoc } from "firebase/firestore";
-import { collectionDB } from "@/utils/store";
+import { collectionDB } from "@/utils/consts";
 import type { Book } from "@/utils/types";
+import { addDoc, deleteDoc, doc, setDoc } from "firebase/firestore";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 function handlerBook(req: NextApiRequest, res: NextApiResponse): void {
@@ -21,13 +21,13 @@ function handlerBook(req: NextApiRequest, res: NextApiResponse): void {
     }
 
     case "PUT": {
-      const { updatedNotes }: any = body;
+      const { updatedNotes }: { updatedNotes: Book } = body;
       updatedNotesBook(updatedNotes);
       break;
     }
 
     case "DELETE": {
-      const documentId = req.body;
+      const documentId = body;
       deleteBook(documentId);
       break;
     }

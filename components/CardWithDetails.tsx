@@ -8,8 +8,8 @@ import useLocalStorage from "@/utils/hooks/useLocalStorage";
 
 function CardWithDetails(props: Card): Component {
   const [t] = useTranslation("global"),
-    [animations] = useLocalStorage("animations", "true"),
-    [state] = useLocalStorage("state", "true"),
+    [state] = useLocalStorage("state", true),
+    [animations] = useLocalStorage("animations", true),
     [styles, animate] = useSpring(() => ({ opacity: animations ? 0 : 1 })),
     { title, formatState, img, gender, author, onClick } = props;
 

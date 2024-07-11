@@ -39,7 +39,6 @@ type PopUpsIds =
   | "profile"
   | "support"
   | "settings"
-  | "thugs"
   | "donations";
 
 interface Book {
@@ -70,6 +69,7 @@ interface UserData {
   name?: string | null | undefined;
   email?: string | null | undefined;
   image?: string | null | undefined;
+  id: string;
 }
 
 export type {

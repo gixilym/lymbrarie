@@ -1,5 +1,5 @@
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
-import { DEFAULT_COVER } from "@/utils/store";
+import { DEFAULT_COVER } from "@/utils/consts";
 import type { BookData, Component, GoTo } from "@/utils/types";
 import type { NextRouter } from "next/router";
 import { useRouter } from "next/router";
@@ -16,7 +16,8 @@ function BookCard(props: Props): Component {
     title = data.title?.replaceAll(" ", "_").replaceAll(/\?/g, "@") ?? "",
     img: string = data.image || DEFAULT_COVER,
     [t] = useTranslation("global"),
-    path: string = `/book/${encodeURIComponent(title)}`,
+    guest: string = (useRouter().query.guest as string) ?? "false",
+    path: string = `/book/${title}?guest=${guest}`,
     withProps: Details = {
       onClick: goTo,
       title: data.title ?? "",

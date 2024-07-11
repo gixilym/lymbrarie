@@ -1,8 +1,4 @@
-import { collectionDB } from "@/utils/store";
-import type { Document, Email } from "@/utils/types";
-import { Query, getDocs, query, where } from "firebase/firestore";
 import { toast } from "react-hot-toast";
-import { MAINTENANCE } from "./consts";
 
 function notification(type: "success" | "error", msg: string): void {
   toast[type](msg, {
@@ -14,31 +10,6 @@ function notification(type: "success" | "error", msg: string): void {
       zIndex: 50,
     },
   });
-}
-
-async function getBookData(bookTitle: string, user: Email): Promise<Res> {
-  try {
-    const q: Query<Document> = query(
-        collectionDB,
-        where("owner", "==", user),
-        where("title", "==", bookTitle)
-      ),
-      querySnapshot: Document = await getDocs(q),
-      docData: Document = querySnapshot.docs[0].data(),
-      docId: Document = querySnapshot.docs[0].id,
-      documentsExist: boolean = !querySnapshot.empty;
-
-    return documentsExist
-      ? { data: docData, id: docId }
-      : { data: null, id: null };
-  } catch (err: any) {
-    if (!MAINTENANCE) {
-      const type: string =
-        err.message == "Quota exceeded." ? "limit" : "unknown";
-      location.href = `/error?err=${type}`;
-    }
-    return { data: null, id: null };
-  }
 }
 
 function translateStateBook(state: string, t: any): string {
@@ -64,22 +35,4 @@ const tLC = (val: string): string => val?.toLowerCase().trim();
 
 const isLoaned = (state: string): boolean => state == "Borrowed";
 
-async function ONLY_DEV_getBooks(): Promise<any> {
-  const q: Query<Document> = query(collectionDB),
-    querySnapshot: Document = await getDocs(q),
-    docData: Document = querySnapshot?.docs[0]?.data(),
-    docId: Document = querySnapshot?.docs[0]?.id;
-
-  console.log(querySnapshot.docs[1].data());
-}
-
-export {
-  ONLY_DEV_getBooks,
-  getBookData,
-  isLoaned,
-  notification,
-  translateStateBook,
-  tLC,
-};
-
-type Res = { data: Document | null; id: Document | null };
+export { isLoaned, notification, tLC, translateStateBook };
