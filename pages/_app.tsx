@@ -4,7 +4,6 @@ import { MAINTENANCE } from "@/utils/consts";
 import type { Component } from "@/utils/types";
 import "@fontsource-variable/public-sans";
 import "@fontsource/poppins";
-import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import { type NextRouter, useRouter } from "next/router";
 import { useEffect } from "react";
@@ -21,19 +20,11 @@ function App({
   }, [pathname]);
 
   return (
-    <SessionProvider
-      session={session}
-      basePath="/api/auth"
-      refetchInterval={0}
-      refetchOnWindowFocus={false}
-      refetchWhenOffline={false}
-    >
-      <I18Provider>
-        <RecoilProvider>
-          <Component {...pageProps} />
-        </RecoilProvider>
-      </I18Provider>
-    </SessionProvider>
+    <I18Provider>
+      <RecoilProvider>
+        <Component {...pageProps} />
+      </RecoilProvider>
+    </I18Provider>
   );
 }
 

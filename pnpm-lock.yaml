@@ -90,9 +90,6 @@ importers:
       typescript:
         specifier: ^5
         version: 5.5.2
-      view-transitions-api-types:
-        specifier: ^0.1.1
-        version: 0.1.1
 
 packages:
 
@@ -2174,9 +2171,6 @@ packages:
   uuid@8.3.2:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
     hasBin: true
-
-  view-transitions-api-types@0.1.1:
-    resolution: {integrity: sha512-rYNK+5px8sPfTMiWvRuh02JciNOfZN1kQp+uQNG+jv3D8DcCJ9MYkgTpou4sXc9YXLbV5Px4B+KN33A7/2ba9g==}
 
   void-elements@3.1.0:
     resolution: {integrity: sha512-Dhxzh5HZuiHQhbvTW9AMetFfBHDMYpo23Uo9btPXgdYP+3T5S+p+jgNy7spra+veYhBP2dCSgxR/i2Y02h5/6w==}
@@ -4699,8 +4693,6 @@ snapshots:
   util-deprecate@1.0.2: {}
 
   uuid@8.3.2: {}
-
-  view-transitions-api-types@0.1.1: {}
 
   void-elements@3.1.0: {}
 

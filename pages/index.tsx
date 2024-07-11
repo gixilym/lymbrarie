@@ -42,7 +42,6 @@ function Index({ user, isLogged }: Props): Component {
       config: { duration: 1000 },
     }));
 
-
   useEffect(() => {
     if (isLogged && guest) {
       setAllTitles([]);
@@ -77,6 +76,8 @@ function Index({ user, isLogged }: Props): Component {
       setLoading(false);
     }
   }
+
+  //! hay que recargar al añadir libro (arreglar)
 
   return (
     <animated.div

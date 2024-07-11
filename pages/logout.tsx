@@ -1,9 +1,8 @@
 import logo from "@/public/favicon.ico";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
-import type { Component, Session } from "@/utils/types";
+import type { Component } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
-import type { GetServerSidePropsContext as Ctx } from "next";
-import { getSession, signOut } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
 import { NextRouter, useRouter } from "next/router";
@@ -70,18 +69,3 @@ function LogoutPage(): Component {
 }
 
 export default LogoutPage;
-
-export async function getServerSideProps(ctx: Ctx) {
-  const session: Session = await getSession(ctx);
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  }
-
-  return { props: {} };
-}
