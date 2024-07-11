@@ -127,7 +127,7 @@ export default Index;
 
 export async function getServerSideProps(ctx: Ctx): Promise<Result<SideProps>> {
   const session: any = await getSession(ctx);
-  const user: any = { ...session.user, id: session.userId ?? null } ?? null;
+  const user: any = { ...session?.user, id: session?.userId ?? null };
   const guest: boolean = JSON.parse((ctx.query.guest as string) ?? "false");
 
   if (!session && !guest) {
