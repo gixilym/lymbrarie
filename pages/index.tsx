@@ -16,15 +16,14 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { getSession, signOut } from "next-auth/react";
-import Head from "next/head";
-import { NextRouter, useRouter } from "next/router";
-import { useEffect, useState } from "react";
 import {
   GetServerSidePropsContext,
   GetServerSidePropsResult as Result,
 } from "next";
-import { DEV_changeOwner } from "@/utils/onlydev";
+import { getSession, signOut } from "next-auth/react";
+import Head from "next/head";
+import { NextRouter, useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 function Index({ user, isLogged }: Props): Component {
   const [myBooks, setMyBooks] = useState<Book[]>([]),
@@ -91,15 +90,6 @@ function Index({ user, isLogged }: Props): Component {
           content="donde cada libro encuentra su lugar"
         />
       </Head>
-
-      {user?.email == "vitto.jsx@gmail.com" && (
-        <button
-          onClick={() => DEV_changeOwner("vitto.jsx@gmail.com", userID)}
-          className="border font-semibold rounded-md text-black px-6 py-2 bg-green-500"
-        >
-          TOCÁ ESTE BOTÓN VITTO
-        </button>
-      )}
 
       {!MAINTENANCE ? (
         <>

@@ -4,7 +4,7 @@ import { collection, CollectionReference } from "firebase/firestore";
 import { db } from "@/database/firebase";
 import defaultCover from "@/public/cover.webp";
 
-const MAINTENANCE: boolean = false;
+const MAINTENANCE: boolean = true;
 
 const GENDERS: string[] = [
   "no-gender",

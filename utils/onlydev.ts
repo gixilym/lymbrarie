@@ -29,10 +29,7 @@ async function DEV_changeOwner(
 
 async function DEV_getEveryBooks(): Promise<void> {
   let books: Book[] = [];
-  const q: Query = query(
-    collectionDB,
-    where("owner", "==", "vitto.jsx@gmail.com")
-  );
+  const q: Query = query(collectionDB, where("data", "==", "lol"));
   const res: QuerySnapshot = await getDocs(q);
 
   res.forEach((document: Doc) => {
