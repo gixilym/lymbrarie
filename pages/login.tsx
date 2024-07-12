@@ -55,7 +55,7 @@ function LoginPage(): Component {
             <p className="text-lg sm:text-xl text-white">{t("with-google")}</p>
           </button>
           <button
-            onClick={() => signIn("github", { callbackUrl: "/?guest=false" })}
+            onClick={() => signIn("github", { callbackUrl: "/" })}
             className="bg-black/90 border border-slate-800 justify-center sm:justify-start sm:pl-12 hover:bg-black/50
  flex items-center w-[330px] sm:w-full max-w-[400px] h-14 sm:h-[58px] gap-x-6 rounded-lg  duration-150"
           >

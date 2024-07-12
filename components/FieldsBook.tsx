@@ -53,7 +53,7 @@ function FieldsBook(props: Props): Component {
           defaultValue={defaultValueTitle}
           name="title"
           type="text"
-          className="grow px-1 h-14"
+          className="grow px-1 h-14  placeholder:text-slate-100"
           placeholder={t("placeholder-title")}
         />
       </label>
@@ -73,7 +73,7 @@ function FieldsBook(props: Props): Component {
           defaultValue={defaultValueAuthor}
           name="author"
           type="text"
-          className="grow px-1 h-14"
+          className="grow px-1 h-14 placeholder:text-slate-100"
           placeholder={t("placeholder-author")}
         />
       </label>
