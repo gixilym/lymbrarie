@@ -1,6 +1,6 @@
 import { COLLECTION } from "@/utils/consts";
 import type { Book } from "@/utils/types";
-import { addDoc, deleteDoc, doc, setDoc } from "firebase/firestore";
+import { addDoc, deleteDoc, doc, setDoc } from "firebase/firestore/lite";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 function handlerBook(req: NextApiRequest, res: NextApiResponse): void {

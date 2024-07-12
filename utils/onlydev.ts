@@ -7,7 +7,7 @@ import {
   QuerySnapshot,
   setDoc,
   where,
-} from "firebase/firestore";
+} from "firebase/firestore/lite";
 import { COLLECTION } from "./consts";
 import type { Book, Doc } from "./types";
 
@@ -32,7 +32,7 @@ async function DEV_changeOwner(
 
 async function DEV_getEveryBooks(): Promise<void> {
   let books: Book[] = [];
-  const q: Query = query(COLLECTION, where("data", "==", "lol"));
+  const q: Query = query(COLLECTION);
   const res: QuerySnapshot = await getDocs(q);
 
   res.forEach((document: Doc) => {
@@ -48,3 +48,4 @@ async function DEV_deleteBook(documentID: string): Promise<void> {
 }
 
 export { DEV_changeOwner, DEV_deleteBook, DEV_getEveryBooks };
+

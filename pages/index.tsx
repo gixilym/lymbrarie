@@ -5,7 +5,7 @@ import ListSection from "@/components/ListSection";
 import LoadComponent from "@/components/LoadComponent";
 import Maintenance from "@/components/Maintenance";
 import PopUps from "@/components/PopUps";
-import { EXAMPLES_BOOKS, MAINTENANCE, COLLECTION } from "@/utils/consts";
+import { COLLECTION, EXAMPLES_BOOKS, MAINTENANCE } from "@/utils/consts";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import type { Book, Component, Doc } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
@@ -15,7 +15,7 @@ import {
   getDocs,
   query,
   where,
-} from "firebase/firestore";
+} from "firebase/firestore/lite";
 import {
   GetServerSidePropsContext,
   GetServerSidePropsResult as Result,

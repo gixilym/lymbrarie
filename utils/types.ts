@@ -1,4 +1,7 @@
-import type { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
+import type {
+  DocumentData,
+  QueryDocumentSnapshot,
+} from "firebase/firestore/lite";
 import type { Session as NextSession } from "next-auth";
 import type {
   ChangeEvent,

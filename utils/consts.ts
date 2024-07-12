@@ -1,10 +1,10 @@
-import { StaticImageData } from "next/image";
+import type { StaticImageData } from "next/image";
 import type { Book, BookData } from "./types";
-import { collection, CollectionReference } from "firebase/firestore";
+import { collection, type CollectionReference } from "firebase/firestore/lite";
 import { DB } from "@/database/firebase";
 import defaultCover from "@/public/cover.webp";
 
-const MAINTENANCE: boolean = true;
+const MAINTENANCE: boolean = false;
 
 const GENDERS: string[] = [
   "no-gender",
@@ -79,7 +79,7 @@ const DEFAULT_COVER: StaticImageData | any = defaultCover;
 
 const BOOK_HANDLER_URL: string = "/api/handler/book";
 
-const NAME_DB: string = "books";
+const NAME_DB: string = "lymbrarie_books";
 
 const COLLECTION: CollectionReference = collection(DB, NAME_DB);
 
