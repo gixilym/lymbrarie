@@ -5,7 +5,7 @@ import useLocalStorage from "./useLocalStorage";
 
 function usePopUp() {
   const [modal, setModals] = useRecoilState(popupsValue);
-  const [animations] = useLocalStorage("animations", "true");
+  const [animations] = useLocalStorage("animations", true);
 
   function closePopUp(id: PopUpsIds): void {
     setModals({ ...modal, [id]: false });

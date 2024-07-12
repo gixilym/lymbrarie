@@ -18,7 +18,7 @@
     "new-book": "New book",
     "placeholder-title": "Title: The Shining",
     "placeholder-author": "Author: Stephen King",
-    "placeholder-link": "Cover URL: ",
+    "placeholder-link": "Cover URL",
     "placeholder-gender": "Gender",
     "add": "Add",
     "cancel": "Cancel",
@@ -27,7 +27,7 @@
     "new-book-reading": "Reading",
     "new-book-pending": "Pending",
     "new-book-borrowed": "Borrowed",
-    "generate-link": "generate the link of your cover here",
+    "generate-link": "generate the URL of your cover here",
     "loanedto": "Loaned to",
     "charging": "Charging",
     "profile": "Profile",
@@ -109,5 +109,6 @@
     "see-you-soon": "See you soon!",
     "sign-in-to-add": "Sign in to add a book!",
     "with-github": "Log In with Github",
-    "go-out": "Go out"
+    "go-out": "Go out",
+    "my-gender": "My gender"
 }

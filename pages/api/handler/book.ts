@@ -1,4 +1,4 @@
-import { collectionDB } from "@/utils/consts";
+import { COLLECTION } from "@/utils/consts";
 import type { Book } from "@/utils/types";
 import { addDoc, deleteDoc, doc, setDoc } from "firebase/firestore";
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -39,22 +39,22 @@ function handlerBook(req: NextApiRequest, res: NextApiResponse): void {
   }
 
   function addNewBook(data: Book): void {
-    addDoc(collectionDB, data);
+    addDoc(COLLECTION, data);
     res.status(200).json({ message: "Documento creado correctamente" });
   }
 
   function editBook(id: string, data: Book): void {
-    setDoc(doc(collectionDB, id), data);
+    setDoc(doc(COLLECTION, id), data);
     res.status(200).json({ message: "Documento editado correctamente" });
   }
 
   function updatedNotesBook(book: Book): void {
-    setDoc(doc(collectionDB, book.id), book.data);
+    setDoc(doc(COLLECTION, book.id), book.data);
     res.status(200).json({ message: "Notas actualizadas correctamente" });
   }
 
   function deleteBook(id: string): void {
-    deleteDoc(doc(collectionDB, id));
+    deleteDoc(doc(COLLECTION, id));
     res.status(200).json({ message: "Documento eliminado correctamente" });
   }
 

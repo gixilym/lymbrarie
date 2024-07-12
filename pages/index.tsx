@@ -5,7 +5,7 @@ import ListSection from "@/components/ListSection";
 import LoadComponent from "@/components/LoadComponent";
 import Maintenance from "@/components/Maintenance";
 import PopUps from "@/components/PopUps";
-import { EXAMPLES_BOOKS, MAINTENANCE, collectionDB } from "@/utils/consts";
+import { EXAMPLES_BOOKS, MAINTENANCE, COLLECTION } from "@/utils/consts";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import type { Book, Component, Doc } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
@@ -143,7 +143,7 @@ async function getListBooks(userID: string): Promise<ResList> {
 
   if (userID) {
     try {
-      const q: Query = query(collectionDB, where("owner", "==", userID));
+      const q: Query = query(COLLECTION, where("owner", "==", userID));
       const res: QuerySnapshot = await getDocs(q);
       isEmpty = res.empty;
       res.forEach((doc: Doc) => books.push({ id: doc.id, data: doc.data() }));

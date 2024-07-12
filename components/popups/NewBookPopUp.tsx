@@ -38,7 +38,7 @@ function NewBookPopUp({ userID }: { userID: string }): Component {
     [errorKey, setErrorKey] = useState<string>(""),
     [addClicked, setAddClicked] = useState<boolean>(false),
     [isCustomGender, setIsCustomGender] = useState<boolean>(false),
-    [customGenderVal, setCustomGenderVal] = useState<string>("");
+    [cusGenderVal, setCusGenderVal] = useState<string>("");
 
   useEffect(() => {
     const timer: Timer = setTimeout(() => setErrorKey(""), 2300);
@@ -74,80 +74,93 @@ function NewBookPopUp({ userID }: { userID: string }): Component {
     e.preventDefault();
     setAddClicked(!addClicked);
 
-    const title: string = tLC(book.data.title ?? ""),
-      repeteadTitle: boolean = allTitles.includes(title),
-      maxTitleLength: boolean = title.length > 71,
-      maxAuthorLength: boolean = (book.data.author?.length ?? 0) > 34,
-      emptyCustomGender: boolean =
-        isCustomGender && customGenderVal.length == 0,
-      maxLengthGender: boolean = isCustomGender && customGenderVal.length > 24,
-      emptyLoaned: boolean =
-        isLoaned(book.data.state ?? "") && book.data.loaned?.trim() == "",
-      maxLengthLoaned: boolean =
-        isLoaned(book.data.state ?? "") && (book.data.loaned?.length ?? 0) > 24,
-      validateURL: RegExp =
-        /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/,
-      validateImg: boolean =
-        (book.data.image?.length ?? 0) > 1 &&
-        !validateURL.test(book.data.image ?? "");
-
-    validateFields();
-    function validateFields(): void {
-      if (!title) {
-        setErrorKey("title-input");
-        return notification("error", t("empty-title"));
-      }
-      if (repeteadTitle) {
-        setErrorKey("title-input");
-        return notification("error", t("repeated-title"));
-      }
-
-      if (maxTitleLength) {
-        setErrorKey("title-input");
-        return notification("error", t("title-too-long"));
-      }
-
-      if (title.includes("@")) {
-        setErrorKey("title-input");
-        return notification("error", t("@"));
-      }
-
-      if (maxAuthorLength) {
-        setErrorKey("author-input");
-        return notification("error", t("author-too-long"));
-      }
-
-      if (emptyCustomGender) {
-        setErrorKey("gender-input");
-        return notification("error", t("empty-custom-gender"));
-      }
-
-      if (maxLengthGender) {
-        setErrorKey("gender-input");
-        return notification("error", t("custom-gender-too-long"));
-      }
-
-      if (emptyLoaned) {
-        setErrorKey("loaned-input");
-        return notification("error", t("empty-loaned"));
-      }
-
-      if (maxLengthLoaned) {
-        setErrorKey("loaned-input");
-        return notification("error", t("loaned-too-long"));
-      }
-
-      if (validateImg) {
-        setErrorKey("image-input");
-        return notification("error", t("invalid-url-image"));
-      }
-    }
+    if (!validateFields()) return;
 
     const bookData: BookData = { ...book.data, owner: userID as string };
     startLoading();
     await axios.post(BOOK_HANDLER_URL, bookData);
     setCacheBooks(null);
     router.reload();
+  }
+
+  function validateFields(): boolean {
+    const title: string = tLC(book?.data?.title ?? ""),
+      repeteadTitle: boolean = allTitles.includes(title),
+      maxTitleLength: boolean = title.length > 71,
+      maxAuthorLength: boolean = (book?.data?.author?.length ?? 0) > 34,
+      emptyCustomGender: boolean = isCustomGender && cusGenderVal.length == 0,
+      maxLengthGender: boolean = isCustomGender && cusGenderVal.length > 24,
+      emptyLoaned: boolean =
+        isLoaned(book?.data?.state ?? "") && book?.data?.loaned?.trim() == "",
+      maxLengthLoaned: boolean =
+        isLoaned(book?.data?.state ?? "") &&
+        (book?.data?.loaned?.length ?? 0) > 24,
+      validateURL: RegExp =
+        /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/,
+      validateImg: boolean =
+        (book?.data?.image?.length ?? 0) > 0 &&
+        !validateURL.test(book?.data?.image ?? "");
+
+    if (!title) {
+      setErrorKey("title-input");
+      notification("error", t("empty-title"));
+      return false;
+    }
+    if (repeteadTitle) {
+      setErrorKey("title-input");
+      notification("error", t("repeated-title"));
+      return false;
+    }
+
+    if (maxTitleLength) {
+      setErrorKey("title-input");
+      notification("error", t("title-too-long"));
+      return false;
+    }
+
+    if (title.includes("@")) {
+      setErrorKey("title-input");
+      notification("error", t("@"));
+      return false;
+    }
+
+    if (maxAuthorLength) {
+      setErrorKey("author-input");
+      notification("error", t("author-too-long"));
+      return false;
+    }
+
+    if (emptyCustomGender) {
+      setErrorKey("gender-input");
+      notification("error", t("empty-custom-gender"));
+      return false;
+    }
+
+    if (maxLengthGender) {
+      setErrorKey("gender-input");
+      notification("error", t("custom-gender-too-long"));
+      return false;
+    }
+
+    if (emptyLoaned) {
+      setErrorKey("loaned-input");
+      notification("error", t("empty-loaned"));
+      return false;
+    }
+
+    if (maxLengthLoaned) {
+      setErrorKey("loaned-input");
+      notification("error", t("loaned-too-long"));
+      return false;
+    }
+
+    if (validateImg) {
+      setErrorKey("image-input");
+      notification("error", t("invalid-url-image"));
+      return false;
+    }
+
+    return true;
   }
 
   return (
@@ -158,7 +171,7 @@ function NewBookPopUp({ userID }: { userID: string }): Component {
         errorKey={errorKey}
         handleChange={handleChange}
         isLoading={isLoading}
-        setCustomGenderVal={setCustomGenderVal}
+        setCusGenderVal={setCusGenderVal}
         isCustomGender={isCustomGender}
         handleGender={handleGender}
         handleState={handleState}
@@ -203,3 +216,21 @@ function NewBookPopUp({ userID }: { userID: string }): Component {
 }
 
 export default NewBookPopUp;
+
+/*
+    const title: string = tLC(book.data.title ?? ""),
+      repeteadTitle: boolean = allTitles.includes(title),
+      maxTitleLength: boolean = title.length > 71,
+      maxAuthorLength: boolean = (book.data.author?.length ?? 0) > 34,
+      emptyCustomGender: boolean = isCustomGender && cusGenderVal.length == 0,
+      maxLengthGender: boolean = isCustomGender && cusGenderVal.length > 24,
+      emptyLoaned: boolean =
+        isLoaned(book.data.state ?? "") && book.data.loaned?.trim() == "",
+      maxLengthLoaned: boolean =
+        isLoaned(book.data.state ?? "") && (book.data.loaned?.length ?? 0) > 24,
+      validateURL: RegExp =
+        /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/,
+      validateImg: boolean =
+        (book.data.image?.length ?? 0) > 1 &&
+        !validateURL.test(book.data.image ?? "");
+        */

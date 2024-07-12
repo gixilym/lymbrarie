@@ -8,12 +8,13 @@ import { useTranslation } from "react-i18next";
 import { twMerge } from "tailwind-merge";
 import CardWithDetails from "./CardWithDetails";
 import CardWithOutDetails from "./CardWithoutDetails";
+import { formatTitle } from "@/utils/helpers";
 
 function BookCard(props: Props): Component {
   const { data, showDetails } = props,
     { push }: NextRouter = useRouter(),
-    [animations] = useLocalStorage("animations", "true"),
-    title = data.title?.replaceAll(" ", "_").replaceAll(/\?/g, "@") ?? "",
+    [animations] = useLocalStorage("animations", true),
+    title = formatTitle(data.title ?? ""),
     img: string = data.image || DEFAULT_COVER,
     [t] = useTranslation("global"),
     guest: string = (useRouter().query.guest as string) ?? "false",

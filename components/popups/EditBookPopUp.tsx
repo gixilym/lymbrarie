@@ -1,5 +1,11 @@
 import { BOOK_HANDLER_URL, EMPTY_BOOK, GENDERS } from "@/utils/consts";
-import { isLoaned, notification, tLC } from "@/utils/helpers";
+import {
+  deformatTitle,
+  formatTitle,
+  isLoaned,
+  notification,
+  tLC,
+} from "@/utils/helpers";
 import useLoadContent from "@/utils/hooks/useLoadContent";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import usePopUp from "@/utils/hooks/usePopUp";
@@ -13,7 +19,7 @@ import type {
   Timer,
 } from "@/utils/types";
 import axios from "axios";
-import { useRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
 import {
   type FormEvent,
   type Reference,
@@ -26,25 +32,26 @@ import DialogContainer from "../DialogContainer";
 import FieldsBook from "../FieldsBook";
 import PopUpTitle from "./TitlePopUp";
 
-function EditBookPopUp({ data: dataBook, documentId }: Props): Component {
-  const data = dataBook.data,
+function EditBookPopUp(props: Props): Component {
+  const { data: dataBook, documentId } = props,
+    data: BookData = dataBook.data,
     [t] = useTranslation("global"),
     { closePopUp } = usePopUp(),
-    router = useRouter(),
-    bookId = router.query.bookId as string,
-    formatBookId: string = bookId.replaceAll("_", " ").replaceAll("@", "?"),
+    router: NextRouter = useRouter(),
+    bookId: string = router.query.bookId as string,
+    formatBookId: string = deformatTitle(bookId),
     form: FormRef = useRef<Reference>(null),
     { isLoading, startLoading } = useLoadContent(),
     [book, setBook] = useState<any>(EMPTY_BOOK),
-    customVal: boolean = !GENDERS.includes(tLC(data?.gender)),
+    customVal: boolean = !GENDERS.includes(tLC(data?.gender ?? "")),
     [isCustomGender, setIsCustomGender] = useState<boolean>(customVal),
-    [customGenderVal, setCustomGenderVal] = useState<string>(data?.gender),
     [addClicked, setAddClicked] = useState<boolean>(false),
     [cacheBooks, setCacheBooks] = useLocalStorage("cacheBooks", null),
     [allTitles] = useLocalStorage("allTitles", []),
     [editDisabled, setEditDisabled] = useState<boolean>(true),
     [errorKey, setErrorKey] = useState<string>(""),
-    handleState = (state: string): void => setBook({ ...book, state });
+    handleState = (state: string): void => setBook({ ...book, state }),
+    [cusGenderVal, setCusGenderVal] = useState<string>(data?.gender ?? "");
 
   useEffect(() => loadBookData(), [data]);
 
@@ -62,39 +69,10 @@ function EditBookPopUp({ data: dataBook, documentId }: Props): Component {
       book.author == data?.author &&
       book.loaned == data?.loaned;
 
-    if (noChanges) return setEditDisabled(true);
+    if (noChanges) setEditDisabled(true);
     else setEditDisabled(false);
   }, [book, data]);
 
-  /*
-  useEffect(() => {
-    router.events.on("routeChangeStart", handleRouteChange);
-    addEventListener("beforeunload", handleBeforeUnload);
-    return () => {
-      router.events.off("routeChangeStart", handleRouteChange);
-      removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, [editDisabled]);
-
-  function handleBeforeUnload(e: BeforeUnloadEvent): string | void {
-    if (!editDisabled) {
-      const msg: string = t("unsaved-changes");
-      e.preventDefault();
-      e.returnValue = msg;
-      return msg;
-    }
-  }
-
-  function handleRouteChange(): void {
-    if (!editDisabled) {
-      const msg: boolean = confirm(t("unsaved-changes"));
-      if (!msg) {
-        router.events.emit("routeChangeError");
-        throw "Route change aborted";
-      }
-    }
-  }
-*/
   function loadBookData(): void {
     const loadData: BookData = {
       title: data?.title,
@@ -125,6 +103,23 @@ function EditBookPopUp({ data: dataBook, documentId }: Props): Component {
     e.preventDefault();
     setAddClicked(!addClicked);
 
+    if (!validateFields()) return;
+
+    const loaned: string = isLoaned(book.state) ? book.loaned : "",
+      updatedBook: Book = { ...book, loaned } as const,
+      bookData = { documentId, updatedBook } as const,
+      oldVersion = cacheBooks.filter((b: Book) => b.id != documentId),
+      newVersion = [...oldVersion, { id: documentId, data: updatedBook }],
+      titlePage: string = formatTitle(book.title),
+      newPath: string = `/book/${titlePage}?guest=false`;
+
+    startLoading();
+    await axios.patch(BOOK_HANDLER_URL, bookData);
+    setCacheBooks(newVersion);
+    router.replace(newPath).then(() => router.reload());
+  }
+
+  function validateFields(): boolean {
     const title: string = tLC(book.title ?? ""),
       repeteadTitle: boolean = allTitles.some(
         (t: string) => tLC(t) != tLC(formatBookId) && tLC(t) == title
@@ -132,81 +127,78 @@ function EditBookPopUp({ data: dataBook, documentId }: Props): Component {
       maxTitleLength: boolean = title.length > 71,
       maxAuthorLength: boolean = (book.author?.length ?? 0) > 34,
       emptyCustomGender: boolean =
-        isCustomGender && customGenderVal.length == 0,
-      maxLengthGender: boolean = isCustomGender && customGenderVal.length > 24,
+        isCustomGender && (cusGenderVal.length ?? 0) == 0,
+      maxLengthGender: boolean =
+        isCustomGender && (cusGenderVal.length ?? 0) > 24,
       emptyLoaned: boolean =
         isLoaned(book.state ?? "") && book.loaned?.trim() == "",
       maxLengthLoaned: boolean =
         isLoaned(book.state ?? "") && (book.loaned?.length ?? 0) > 24,
       validateURL: RegExp =
-        /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/,
+        /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/,
       validateImg: boolean =
-        (book.image?.length ?? 0) > 1 && !validateURL.test(book.image ?? "");
+        (book?.image?.length ?? 0) > 0 && !validateURL.test(book.image ?? "");
 
-    validateFields();
-    function validateFields(): void {
-      if (!title) {
-        setErrorKey("title-input");
-        return notification("error", t("empty-title"));
-      }
-      if (repeteadTitle) {
-        setErrorKey("title-input");
-        return notification("error", t("repeated-title"));
-      }
-
-      if (maxTitleLength) {
-        setErrorKey("title-input");
-        return notification("error", t("title-too-long"));
-      }
-
-      if (title.includes("@")) {
-        setErrorKey("title-input");
-        return notification("error", t("@"));
-      }
-
-      if (maxAuthorLength) {
-        setErrorKey("author-input");
-        return notification("error", t("author-too-long"));
-      }
-
-      if (emptyCustomGender) {
-        setErrorKey("gender-input");
-        return notification("error", t("empty-custom-gender"));
-      }
-
-      if (maxLengthGender) {
-        setErrorKey("gender-input");
-        return notification("error", t("custom-gender-too-long"));
-      }
-
-      if (emptyLoaned) {
-        setErrorKey("loaned-input");
-        return notification("error", t("empty-loaned"));
-      }
-
-      if (maxLengthLoaned) {
-        setErrorKey("loaned-input");
-        return notification("error", t("loaned-too-long"));
-      }
-
-      if (validateImg) {
-        setErrorKey("image-input");
-        return notification("error", t("invalid-url-image"));
-      }
+    if (!title) {
+      setErrorKey("title-input");
+      notification("error", t("empty-title"));
+      return false;
+    }
+    if (repeteadTitle) {
+      setErrorKey("title-input");
+      notification("error", t("repeated-title"));
+      return false;
     }
 
-    const loaned: string = isLoaned(book.state) ? book.loaned : "",
-      updatedBook: Book = { ...book, loaned } as const,
-      bookData = { documentId, updatedBook } as const,
-      oldVersion = cacheBooks.filter((b: Book) => b.id != documentId),
-      newVersion = [...oldVersion, { id: documentId, data: updatedBook }],
-      titlePage: string = book.title.replaceAll(" ", "_").replaceAll("?", "@"),
-      newPath: string = `/book/${titlePage}?guest=false`;
+    if (maxTitleLength) {
+      setErrorKey("title-input");
+      notification("error", t("title-too-long"));
+      return false;
+    }
 
-    startLoading();
-    axios.patch(BOOK_HANDLER_URL, bookData);
-    setCacheBooks(newVersion);
-    router.replace(newPath).then(() => router.reload());
+    if (title.includes("@")) {
+      setErrorKey("title-input");
+      notification("error", t("@"));
+      return false;
+    }
+
+    if (maxAuthorLength) {
+      setErrorKey("author-input");
+      notification("error", t("author-too-long"));
+      return false;
+    }
+
+    if (emptyCustomGender) {
+      setErrorKey("gender-input");
+      notification("error", t("empty-custom-gender"));
+      return false;
+    }
+
+    if (maxLengthGender) {
+      setErrorKey("gender-input");
+      notification("error", t("custom-gender-too-long"));
+      return false;
+    }
+
+    if (emptyLoaned) {
+      setErrorKey("loaned-input");
+      notification("error", t("empty-loaned"));
+      return false;
+    }
+
+    if (maxLengthLoaned) {
+      setErrorKey("loaned-input");
+      notification("error", t("loaned-too-long"));
+      return false;
+    }
+
+    if (validateImg) {
+      setErrorKey("image-input");
+      notification("error", t("invalid-url-image"));
+      return false;
+    }
+
+    return true;
   }
 
   return (
@@ -217,7 +209,7 @@ function EditBookPopUp({ data: dataBook, documentId }: Props): Component {
         errorKey={errorKey}
         handleChange={handleChange}
         isLoading={isLoading}
-        setCustomGenderVal={setCustomGenderVal}
+        setCusGenderVal={setCusGenderVal}
         isCustomGender={isCustomGender}
         handleGender={handleGender}
         handleState={handleState}
@@ -238,6 +230,7 @@ function EditBookPopUp({ data: dataBook, documentId }: Props): Component {
           className="space-x-2 font-public"
         >
           <button
+            disabled={isLoading}
             type="button"
             onClick={() => closePopUp("edit_book")}
             className="btn text-lg w-24 px-2 bg-slate-800 hover:bg-slate-700 text-white"
@@ -271,6 +264,6 @@ function EditBookPopUp({ data: dataBook, documentId }: Props): Component {
 export default EditBookPopUp;
 
 interface Props {
-  data: any;
+  data: Book;
   documentId: string;
 }

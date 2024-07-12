@@ -18,7 +18,7 @@
     "new-book": "Nuevo libro",
     "placeholder-title": "Titulo: Don Quijote de la Mancha",
     "placeholder-author": "Autor: Miguel de Cervantes",
-    "placeholder-link": "URL de portada: ",
+    "placeholder-link": "URL de portada",
     "placeholder-gender": "Género",
     "cancel": "Cancelar",
     "add": "Añadir",
@@ -27,7 +27,7 @@
     "new-book-reading": "Leyendo",
     "new-book-pending": "Pendiente",
     "new-book-borrowed": "Prestado",
-    "generate-link": "genera el link de tu portada aquí",
+    "generate-link": "genera el URL de tu portada aquí",
     "loanedto": "Prestado a",
     "charging": "Cargando",
     "profile": "Perfil",
@@ -109,5 +109,6 @@
     "see-you-soon": "¡Hasta pronto!",
     "sign-in-to-add": "¡Inicia sesión para agregar libros!",
     "with-github": "Iniciar sesión con Github",
-    "go-out": "Salir"
+    "go-out": "Salir",
+    "my-gender": "Mi género"
 }

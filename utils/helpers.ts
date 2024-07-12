@@ -31,8 +31,24 @@ function translateStateBook(state: string, t: any): string {
   }
 }
 
-const tLC = (val: string): string => val?.toLowerCase().trim();
+const isLoaned: (state: string) => boolean = (state: string): boolean =>
+  state == "Borrowed";
 
-const isLoaned = (state: string): boolean => state == "Borrowed";
+const tLC: Format = (val: string): string => val?.toLowerCase().trim();
 
-export { isLoaned, notification, tLC, translateStateBook };
+const formatTitle: Format = (title: string): string =>
+  title.replaceAll(" ", "_").replaceAll("?", "@");
+
+const deformatTitle: Format = (title: string): string =>
+  title.replaceAll("_", " ").replaceAll("@", "?");
+
+export {
+  isLoaned,
+  notification,
+  tLC,
+  translateStateBook,
+  formatTitle,
+  deformatTitle,
+};
+
+type Format = (title: string) => string;

@@ -6,7 +6,7 @@ import { twJoin } from "tailwind-merge";
 
 function DialogContainer(props: Props) {
   const { children, divClass } = props,
-    [animations] = useLocalStorage("animations", "true"),
+    [animations] = useLocalStorage("animations", true),
     [styles, animate] = useSpring(() => ({
       transform: animations ? "scale(0.5)" : "scale(1)",
       config: { duration: 100 },

@@ -6,8 +6,8 @@ import { useEffect } from "react";
 
 function CardWithOutDetails(props: Card): Component {
   const { title, formatState, onClick } = props,
-    [animations] = useLocalStorage("animations", "true"),
-    [state] = useLocalStorage("state", "true"),
+    [animations] = useLocalStorage("animations", true),
+    [state] = useLocalStorage("state", true),
     [styles, animate] = useSpring(() => ({ opacity: animations ? 0 : 1 }));
 
   useEffect(() => {

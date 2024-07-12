@@ -1,9 +1,9 @@
-import { type Firestore, getFirestore } from "firebase/firestore";
 import {
   type FirebaseApp,
   type FirebaseOptions,
   initializeApp,
 } from "firebase/app";
+import { type Firestore, getFirestore } from "firebase/firestore";
 
 const firebaseConfig: FirebaseOptions = {
   apiKey: process.env.FB_API_KEY as string,
@@ -16,4 +16,4 @@ const firebaseConfig: FirebaseOptions = {
 };
 
 const app: FirebaseApp = initializeApp(firebaseConfig);
-export const db: Firestore = getFirestore(app);
+export const DB: Firestore = getFirestore(app);

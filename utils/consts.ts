@@ -1,10 +1,10 @@
 import { StaticImageData } from "next/image";
 import type { Book, BookData } from "./types";
 import { collection, CollectionReference } from "firebase/firestore";
-import { db } from "@/database/firebase";
+import { DB } from "@/database/firebase";
 import defaultCover from "@/public/cover.webp";
 
-const MAINTENANCE: boolean = false;
+const MAINTENANCE: boolean = true;
 
 const GENDERS: string[] = [
   "no-gender",
@@ -81,7 +81,7 @@ const BOOK_HANDLER_URL: string = "/api/handler/book";
 
 const NAME_DB: string = "books";
 
-const collectionDB: CollectionReference = collection(db, NAME_DB);
+const COLLECTION: CollectionReference = collection(DB, NAME_DB);
 
 const EmptyData: BookData = {
   title: "",
@@ -102,7 +102,7 @@ export {
   GENDERS,
   EXAMPLES_BOOKS,
   EMPTY_BOOK,
-  collectionDB,
+  COLLECTION,
   BOOK_HANDLER_URL,
   DEFAULT_COVER,
 };

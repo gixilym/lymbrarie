@@ -1,4 +1,5 @@
 import { GENDERS } from "@/utils/consts";
+import { tLC } from "@/utils/helpers";
 import type { Component, InputEvent } from "@/utils/types";
 import {
   UserRoundSearch as BorrowedIcon,
@@ -15,23 +16,24 @@ import { useTranslation } from "react-i18next";
 import { twMerge } from "tailwind-merge";
 
 function FieldsBook(props: Props): Component {
-  const [t] = useTranslation("global");
   const {
-    errorKey,
-    handleChange,
-    isLoading,
-    setCustomGenderVal,
-    isCustomGender,
-    handleGender,
-    handleState,
-    isLoaned,
-    defaultValueTitle = "",
-    defaultValueAuthor = "",
-    defaultValueGender,
-    defaultValueState = "default",
-    defaultValueLoaned = "",
-    defaultValueImg = "",
-  } = props;
+      errorKey,
+      handleChange,
+      isLoading,
+      setCusGenderVal,
+      isCustomGender,
+      handleGender,
+      handleState,
+      isLoaned,
+      defaultValueTitle = "",
+      defaultValueAuthor = "",
+      defaultValueGender = "",
+      defaultValueState = "default",
+      defaultValueLoaned = "",
+      defaultValueImg = "",
+    } = props,
+    [t] = useTranslation("global"),
+    applyGender: boolean = GENDERS.includes(tLC(defaultValueGender));
 
   return (
     <>
@@ -79,15 +81,30 @@ function FieldsBook(props: Props): Component {
       <div className="join w-full space-x-2">
         <label
           htmlFor="gender-select"
-          className="w-full input input-bordered flex items-center sm:text-xl text-lg h-14 sm:w-full"
+          className={twMerge(
+            isLoading ? "bg-base-200" : "bg-transparent input-bordered",
+            "w-full input flex items-center sm:text-xl text-lg h-14 sm:w-full"
+          )}
         >
-          <GenderIcon size={18} className="mt-0.5 mr-2" />
+          <GenderIcon
+            size={18}
+            className={twMerge(
+              isLoading ? "opacity-20" : "opacity-100",
+              "mt-0.5 mr-2"
+            )}
+          />
           <select
             id="gender-select"
             onChange={handleGender}
             disabled={isLoading}
             className="select input-bordered pl-1.5 border-x-0 rounded-none sm:text-xl text-lg w-full focus:outline-0 h-14"
-            defaultValue={defaultValueGender ?? "default"}
+            defaultValue={
+              applyGender
+                ? defaultValueGender
+                : !defaultValueGender
+                ? "default"
+                : "custom"
+            }
           >
             <option value="default" disabled>
               {t("placeholder-gender")}
@@ -112,13 +129,14 @@ function FieldsBook(props: Props): Component {
               id="gender-input"
               onChange={(e: InputEvent) => {
                 handleChange(e);
-                setCustomGenderVal(e.target.value);
+                setCusGenderVal(e.target.value);
               }}
               name="gender"
+              disabled={isLoading}
               type="text"
               className="grow px-1 placeholder:text-slate-500"
               placeholder={t("custom")}
-              defaultValue={t(defaultValueGender as string) || ""}
+              defaultValue={applyGender ? t("my-gender") : defaultValueGender}
             />
           </label>
         )}
@@ -129,10 +147,17 @@ function FieldsBook(props: Props): Component {
           htmlFor="state-select"
           className={twMerge(
             isLoaned ? "w-2/4" : "w-full",
-            "input input-bordered flex items-center sm:text-xl text-lg sm:w-full h-14"
+            isLoading ? "bg-base-200" : "bg-transparent input-bordered",
+            "input flex items-center sm:text-xl text-lg sm:w-full h-14"
           )}
         >
-          <StateIcon size={18} className="mt-0.5" />
+          <StateIcon
+            size={18}
+            className={twMerge(
+              isLoading ? "opacity-20" : "opacity-100",
+              "mt-0.5"
+            )}
+          />
           <select
             id="state-select"
             disabled={isLoading}
@@ -188,17 +213,24 @@ function FieldsBook(props: Props): Component {
             defaultValue={defaultValueImg}
             name="image"
             type="text"
-            className="grow px-1 text-md"
-            placeholder={
-              t("placeholder-link") +
-              "https://res.cloudinary.com/dgs55s8qh/image/upload/v1711510484/dvjjtuqhfjqtwh3vcf3p.webp"
-            }
+            className={twMerge(
+              isLoading
+                ? "placeholder:text-slate-700"
+                : "placeholder:text-slate-100",
+              "grow px-1 text-md"
+            )}
+            placeholder={t("placeholder-link")}
           />
         </label>
         <Link
           href="https://imagen-a-link.netlify.app"
           target="_blank"
-          className="link text-slate-300 hover:text-slate-200 duration-75 text-md sm:text-lg"
+          className={twMerge(
+            isLoading
+              ? "text-slate-600 cursor-default"
+              : "link text-slate-300 hover:text-slate-200",
+            " duration-75 text-md sm:text-lg"
+          )}
         >
           {t("generate-link")}
         </Link>
@@ -213,7 +245,7 @@ interface Props {
   errorKey: string;
   handleChange: (e: InputEvent) => void;
   isLoading?: boolean;
-  setCustomGenderVal: (value: string) => void;
+  setCusGenderVal: (value: string) => void;
   isCustomGender: boolean;
   handleGender: ChangeEventHandler<HTMLSelectElement>;
   handleState: (state: string) => void;

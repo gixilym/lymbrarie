@@ -9,7 +9,7 @@ import {
   EMPTY_BOOK,
   EXAMPLES_BOOKS,
 } from "@/utils/consts";
-import { isLoaned, translateStateBook } from "@/utils/helpers";
+import { deformatTitle, isLoaned, translateStateBook } from "@/utils/helpers";
 import useLoadContent from "@/utils/hooks/useLoadContent";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import usePopUp from "@/utils/hooks/usePopUp";
@@ -37,13 +37,13 @@ function BookId({ isLogged }: Props): Component {
   const router: NextRouter = useRouter(),
     { openPopUp } = usePopUp(),
     bookTitle: string = router.query.bookId?.toString() ?? "",
-    title: string = bookTitle.replaceAll("_", " ").replaceAll("@", "?"),
+    title: string = deformatTitle(bookTitle),
     { isLoading, finishLoading } = useLoadContent(),
     [book, setBook] = useState<any>(EMPTY_BOOK),
     [documentId, setDocumentId] = useState<string>(""),
     [notes, setNotes] = useState<string>(""),
     [t] = useTranslation("global"),
-    [cacheBooks, setCacheBooks] = useLocalStorage("cacheBooks", []),
+    [cacheBooks, setCacheBooks] = useLocalStorage("cacheBooks", null),
     [, setAllTitles] = useLocalStorage("allTitles", []),
     [animations] = useLocalStorage("animations", true),
     notesProps = { updateNotes, notes, setNotes, isLoading },
@@ -78,6 +78,7 @@ function BookId({ isLogged }: Props): Component {
       newVersion: Book[] = [...oldVersion, updatedNotes];
     setCacheBooks(newVersion);
     axios.put(BOOK_HANDLER_URL, { updatedNotes });
+    router.push("/");
   }
 
   function getExampleBook(): void {

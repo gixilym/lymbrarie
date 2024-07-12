@@ -13,7 +13,7 @@ i18next.init({
 });
 
 function I18Provider({ children }: PropsWithChildren): Component {
-  const [lng] = useLocalStorage("language");
+  const [lng] = useLocalStorage("language", "en");
 
   useEffect(() => {
     i18next.changeLanguage(lng);

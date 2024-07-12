@@ -6,7 +6,7 @@ function NotFound(): Component {
   const [t] = useTranslation("global");
 
   return (
-    <section className="grid place-items-center text-white">
+    <section className="grid place-items-center text-slate-100">
       <div className="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6 mt-20">
         <div className="mx-auto max-w-screen-sm text-center">
           <p className="mb-4 text-7xl tracking-tight font-extrabold lg:text-9xl">

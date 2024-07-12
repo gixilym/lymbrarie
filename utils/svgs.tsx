@@ -1,6 +1,8 @@
 import type { SVGProps } from "react";
+import { Component } from "./types";
+import { Rows3 as LayoutIconn, List as ListIconn } from "lucide-react";
 
-const GoogleIcon = (props: SVGProps<SVGSVGElement>) => (
+const GoogleIcon = (props: SVG): Component => (
   <svg
     width="1em"
     height="1em"
@@ -28,7 +30,7 @@ const GoogleIcon = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-const GithubIcon = (props: SVGProps<SVGSVGElement>) => (
+const GithubIcon = (props: SVG): Component => (
   <svg
     viewBox="0 0 256 250"
     width="1em"
@@ -42,4 +44,32 @@ const GithubIcon = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-export { GoogleIcon, GithubIcon };
+const ListIcon = (props: SVG): Component => (
+  <svg
+    className="mb-1.5 duration-300 cursor-pointer"
+    viewBox="0 0 24 24"
+    fill="none"
+    width={30}
+    height={30}
+    {...props}
+  >
+    <ListIconn size={25} />
+  </svg>
+);
+
+const LayoutIcon = (props: SVG): Component => (
+  <svg
+    className="mt-1 duration-300 cursor-pointer"
+    viewBox="0 0 24 24"
+    fill="none"
+    width={30}
+    height={30}
+    {...props}
+  >
+    <LayoutIconn size={22} />
+  </svg>
+);
+
+export { GoogleIcon, GithubIcon, ListIcon, LayoutIcon };
+
+type SVG = SVGProps<SVGSVGElement>;
