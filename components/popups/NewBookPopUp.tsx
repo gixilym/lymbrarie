@@ -25,6 +25,7 @@ import { useTranslation } from "react-i18next";
 import DialogContainer from "../DialogContainer";
 import FieldsBook from "../FieldsBook";
 import PopUpTitle from "./TitlePopUp";
+import ReCaptcha from "../ReCaptcha";
 
 function NewBookPopUp({ userID }: { userID: string }): Component {
   const [t] = useTranslation("global"),
@@ -79,7 +80,7 @@ function NewBookPopUp({ userID }: { userID: string }): Component {
     const bookData: BookData = { ...book.data, owner: userID as string };
     startLoading();
     await axios.post(BOOK_HANDLER_URL, bookData);
-    setCacheBooks(null);
+    // setCacheBooks(null);
     router.reload();
   }
 
@@ -183,32 +184,37 @@ function NewBookPopUp({ userID }: { userID: string }): Component {
           onSubmit={newBook}
           ref={formRef}
           method="dialog"
-          className="space-x-2 font-public"
+          className="flex justify-center items-center font-public w-full"
         >
-          <button
-            type="button"
-            onClick={() => closePopUp("add_book")}
-            className="btn text-lg w-24 px-2 bg-slate-800 hover:bg-slate-700 text-white"
-          >
-            {t("close")}
-          </button>
+          <div className="w-full justify-end gap-x-4 items-center flex flex-col md:flex-row h-10">
+            <ReCaptcha />
+            <div className="flex gap-x-2">
+              <button
+                type="button"
+                onClick={() => closePopUp("add_book")}
+                className="btn text-lg w-24 px-2 bg-slate-800 hover:bg-slate-700 text-white"
+              >
+                {t("close")}
+              </button>
 
-          {isLoading ? (
-            <button
-              disabled
-              type="button"
-              className="btn bg-red-500 text-black hover:bg-red-400 duration-100 text-lg w-24 px-2"
-            >
-              {t("charging")}
-            </button>
-          ) : (
-            <button
-              type="submit"
-              className="btn bg-blue-500 text-black hover:bg-blue-400 duration-100 text-lg w-24 px-2"
-            >
-              {t("add")}
-            </button>
-          )}
+              {isLoading ? (
+                <button
+                  disabled
+                  type="button"
+                  className="btn bg-red-500 text-black hover:bg-red-400 duration-100 text-lg w-24 px-2"
+                >
+                  {t("charging")}
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  className="btn bg-blue-500 text-black hover:bg-blue-400 duration-100 text-lg w-24 px-2"
+                >
+                  {t("add")}
+                </button>
+              )}
+            </div>
+          </div>
         </form>
       </div>
     </DialogContainer>
@@ -216,21 +222,3 @@ function NewBookPopUp({ userID }: { userID: string }): Component {
 }
 
 export default NewBookPopUp;
-
-/*
-    const title: string = tLC(book.data.title ?? ""),
-      repeteadTitle: boolean = allTitles.includes(title),
-      maxTitleLength: boolean = title.length > 71,
-      maxAuthorLength: boolean = (book.data.author?.length ?? 0) > 34,
-      emptyCustomGender: boolean = isCustomGender && cusGenderVal.length == 0,
-      maxLengthGender: boolean = isCustomGender && cusGenderVal.length > 24,
-      emptyLoaned: boolean =
-        isLoaned(book.data.state ?? "") && book.data.loaned?.trim() == "",
-      maxLengthLoaned: boolean =
-        isLoaned(book.data.state ?? "") && (book.data.loaned?.length ?? 0) > 24,
-      validateURL: RegExp =
-        /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/,
-      validateImg: boolean =
-        (book.data.image?.length ?? 0) > 1 &&
-        !validateURL.test(book.data.image ?? "");
-        */

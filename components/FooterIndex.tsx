@@ -13,8 +13,8 @@ function FooterIndex({ isLogged }: { isLogged: boolean }): Component {
   const { openPopUp } = usePopUp();
 
   return (
-    <footer className="select-none footer fixed bottom-0 w-full flex flex-col-reverse sm:flex-row justify-between items-center sm:p-4 bg-slate-900 border-t-2 border-gray-800 py-2 sm:py-0 sm:h-14 text-gray-400">
-      <aside className="items-center grid-flow-col px-4 sm:px-0">
+    <footer className="select-none footer absolute bottom-0 w-full flex flex-col-reverse sm:flex-row justify-between items-center sm:p-4 bg-slate-900 border-t-2 border-gray-800 py-2 sm:py-0 sm:h-14 text-gray-400">
+      <aside className="hidden sm:grid items-center grid-flow-col px-4 sm:px-0">
         <Image
           width={30}
           height={30}
@@ -24,7 +24,7 @@ function FooterIndex({ isLogged }: { isLogged: boolean }): Component {
         />
         <p>Copyright © 2024 Lymbrarie - {t("copyright")}</p>
       </aside>
-      <div className="flex space-x-4">
+      <div className="flex items-center justify-evenly w-full h-10 sm:h-auto sm:w-auto sm:gap-x-6">
         {isLogged && (
           <div
             onClick={() => openPopUp("profile")}

@@ -1,4 +1,4 @@
-import { Component } from "@/utils/types";
+import type { Component } from "@/utils/types";
 import { useTranslation } from "react-i18next";
 
 function AddYourFirstBook(): Component {

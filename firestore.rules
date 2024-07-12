@@ -1,0 +1,10 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+   match /lymbrarie_books/{book} {
+      allow read, write: if true;
+   }
+  }
+}
+

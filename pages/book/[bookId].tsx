@@ -128,7 +128,7 @@ function BookId({ isLogged }: Props): Component {
         />
 
         <div className="flex flex-col justify-between items-start w-[100vw] sm:w-full max-w-[500px] sm:h-full px-10 sm:px-4 pb-2.5">
-          <div className="flex flex-col justify-start items-start w-full h-full gap-y-2">
+          <div className="flex flex-col justify-start items-start w-full h-full gap-y-2.5">
             <h4 className="text-2xl sm:text-3xl font-bold tracking-tight sm:min-h-20 h-auto overflow-ellipsis overflow-hidden whitespace-wrap w-full">
               {book?.data?.title}
             </h4>

@@ -31,9 +31,10 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
   }, [animate]);
 
   async function deleteDocument(): Promise<void> {
+    const arr: Book[] = cacheBooks?.filter((b: Book) => b.data.title != title);
     startLoading();
     axios.delete(BOOK_HANDLER_URL, { data: documentId });
-    setCacheBooks(cacheBooks?.filter((b: Book) => b.data.title != title));
+    setCacheBooks(arr.length == 0 ? null : arr);
     setSearchVal("");
     closePopUp("delete_book");
     finishLoading();
