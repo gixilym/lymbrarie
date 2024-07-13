@@ -33,7 +33,7 @@ function NewBookPopUp({ userID }: { userID: string }): Component {
     router: NextRouter = useRouter(),
     formRef: FormRef = useRef<Reference>(null),
     [book, setBook] = useState<Book>(EMPTY_BOOK),
-    { isLoading, startLoading } = useLoadContent(),
+    { isLoading, startLoading, finishLoading } = useLoadContent(),
     [, setCacheBooks] = useLocalStorage("cacheBooks", null),
     [allTitles] = useLocalStorage("allTitles", []),
     [errorKey, setErrorKey] = useState<string>(""),
@@ -82,6 +82,16 @@ function NewBookPopUp({ userID }: { userID: string }): Component {
     await axios.post(BOOK_HANDLER_URL, bookData);
     setCacheBooks(null);
     router.reload();
+
+    try {
+      await axios.post(BOOK_HANDLER_URL, bookData);
+      setCacheBooks(null);
+      router.reload();
+    } catch (error) {
+      console.error("Error adding book:", error);
+    } finally {
+      finishLoading();
+    }
   }
 
   function validateFields(): boolean {

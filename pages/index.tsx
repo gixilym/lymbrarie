@@ -23,7 +23,7 @@ import {
 } from "next";
 import { getSession, signOut } from "next-auth/react";
 import Head from "next/head";
-import { type NextRouter, useRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
@@ -66,14 +66,18 @@ function Index({ user, isLogged }: Props): Component {
   }, [myBooks, isLogged, zeroBooks]);
 
   useEffect(() => {
-    if (isLogged) fetchBooks();
-    else setMyBooks(EXAMPLES_BOOKS);
+    if (isLogged) {
+      fetchBooks();
+    } else {
+      setMyBooks(EXAMPLES_BOOKS);
+    }
   }, [isLogged]);
 
   async function fetchBooks(): Promise<void> {
     if (zeroBooks) return;
-    if (Array.isArray(cacheBooks)) return setMyBooks(cacheBooks);
-    else {
+    if (Array.isArray(cacheBooks)) {
+      setMyBooks(cacheBooks);
+    } else {
       setLoading(true);
       const { books, isEmpty }: ResList = await getListBooks(userID);
       setMyBooks(books);

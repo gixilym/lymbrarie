@@ -25,7 +25,7 @@ const popupsValue: RecoilState<any> = atom({
 
 const zeroBooksValue: RecoilState<boolean> = atom({
   key: "zeroBooksValue",
-  default: true,
+  default: false,
 });
 
 export { inputSearch, popupsValue, stateBookValue, zeroBooksValue };
