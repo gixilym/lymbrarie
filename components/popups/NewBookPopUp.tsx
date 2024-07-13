@@ -24,7 +24,7 @@ import {
 import { useTranslation } from "react-i18next";
 import DialogContainer from "../DialogContainer";
 import FieldsBook from "../FieldsBook";
-import PopUpTitle from "./TitlePopUp";
+import PopUpTitle from "../TitlePopUp";
 import ReCaptcha from "../ReCaptcha";
 
 function NewBookPopUp({ userID }: { userID: string }): Component {
@@ -80,7 +80,7 @@ function NewBookPopUp({ userID }: { userID: string }): Component {
     const bookData: BookData = { ...book.data, owner: userID as string };
     startLoading();
     await axios.post(BOOK_HANDLER_URL, bookData);
-    // setCacheBooks(null);
+    setCacheBooks(null);
     router.reload();
   }
 
@@ -187,7 +187,7 @@ function NewBookPopUp({ userID }: { userID: string }): Component {
           className="flex justify-center items-center font-public w-full"
         >
           <div className="w-full justify-end gap-x-4 items-center flex flex-col md:flex-row h-10">
-            <ReCaptcha />
+            {/* <ReCaptcha /> */}
             <div className="flex gap-x-2">
               <button
                 type="button"

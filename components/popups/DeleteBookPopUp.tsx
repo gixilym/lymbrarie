@@ -20,6 +20,7 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
     router: AppRouterInstance = useRouter(),
     [, setSearchVal] = useRecoilState(inputSearch),
     [cacheBooks, setCacheBooks] = useLocalStorage("cacheBooks", null),
+    [allTitles, setAllTitles] = useLocalStorage("allTitles", []),
     { isLoading, startLoading, finishLoading } = useLoadContent(),
     [styles, animate] = useSpring(() => ({
       transform: animations ? "scale(0.5)" : "scale(1)",
@@ -32,9 +33,11 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
 
   async function deleteDocument(): Promise<void> {
     const arr: Book[] = cacheBooks?.filter((b: Book) => b.data.title != title);
+    console.log(arr);
     startLoading();
     axios.delete(BOOK_HANDLER_URL, { data: documentId });
-    setCacheBooks(arr.length == 0 ? null : arr);
+    setCacheBooks(arr);
+    setAllTitles(arr.map((b: Book) => b.data.title));
     setSearchVal("");
     closePopUp("delete_book");
     finishLoading();
@@ -54,19 +57,19 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
             <button
               disabled={isLoading}
               onClick={() => closePopUp("delete_book")}
-              className="btn font-public bg-slate-700 hover:bg-slate-600 text-white text-lg w-24"
+              className="btn font-pop bg-slate-700 hover:bg-slate-600 text-white text-lg w-24"
             >
               {t("cancel")}
             </button>
             {isLoading ? (
-              <button className="btn font-public text-white text-lg w-26">
+              <button className="btn font-pop text-white text-lg w-26">
                 {t("deleting")}
               </button>
             ) : (
               <button
                 onClick={deleteDocument}
                 type="button"
-                className="btn font-public bg-red-700 hover:bg-red-500 text-white text-lg w-26"
+                className="btn font-pop bg-red-700 hover:bg-red-500 text-white text-lg w-26"
               >
                 {t("delete-book")}
               </button>

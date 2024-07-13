@@ -37,7 +37,7 @@ function CardWithDetails(props: Card): Component {
       <div className="flex flex-col justify-between items-start gap-y-1 h-full w-[200px] sm:w-[490px] py-2">
         <p
           title={title}
-          className="w-full font-public text-lg sm:text-xl font-ligth overflow-ellipsis overflow-hidden whitespace-nowrap"
+          className="w-full font-pop text-lg sm:text-xl font-ligth overflow-ellipsis overflow-hidden whitespace-nowrap"
         >
           {title}
         </p>
@@ -74,15 +74,4 @@ interface Card {
   img?: string;
   gender?: string;
   author?: string;
-}
-
-{
-  /* <Image
-priority
-src={img || ""}
-width={60}
-height={100}
-alt="cover"
-className="w-[70px] h-full aspect-[3/5] rounded-tl-lg rounded-bl-lg select-none"
-/> */
 }

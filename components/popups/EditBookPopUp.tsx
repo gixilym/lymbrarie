@@ -30,7 +30,7 @@ import {
 import { useTranslation } from "react-i18next";
 import DialogContainer from "../DialogContainer";
 import FieldsBook from "../FieldsBook";
-import PopUpTitle from "./TitlePopUp";
+import PopUpTitle from "../TitlePopUp";
 
 function EditBookPopUp(props: Props): Component {
   const { data: dataBook, documentId } = props,
@@ -227,7 +227,7 @@ function EditBookPopUp(props: Props): Component {
           onSubmit={editBook}
           ref={form}
           method="dialog"
-          className="space-x-2 font-public"
+          className="space-x-2 font-pop"
         >
           <button
             disabled={isLoading}

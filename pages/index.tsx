@@ -155,7 +155,6 @@ async function getListBooks(userID: string): Promise<ResList> {
       }
     }
   }
-
   return { books, isEmpty };
 }
 

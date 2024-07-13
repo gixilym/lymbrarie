@@ -25,7 +25,7 @@ function CardWithOutDetails(props: Card): Component {
         <BookIcon size={28} />
         <p
           title={title}
-          className="sm:w-full w-[200px] font-public text-xl font-ligth overflow-ellipsis overflow-hidden whitespace-nowrap bg-gradient-to-r from-[#cdc7ff] via-[#8678f9] to-[#c7d2fe] bg-[200%_auto] bg-clip-text text-transparent"
+          className="sm:w-full w-[200px] font-pop text-xl font-ligth overflow-ellipsis overflow-hidden whitespace-nowrap bg-gradient-to-r from-[#cdc7ff] via-[#8678f9] to-[#c7d2fe] bg-[200%_auto] bg-clip-text text-transparent"
         >
           {title}
         </p>

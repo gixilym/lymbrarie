@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import ClosePopUpBtn from "../btns/ClosePopUpBtn";
 import LogOutBtn from "../btns/LogOutBtn";
 import DialogContainer from "../DialogContainer";
-import PopUpTitle from "./TitlePopUp";
+import PopUpTitle from "../TitlePopUp";
 import { DEFAULT_COVER } from "@/utils/consts";
 
 function ProfilePopUp({ profileImg, profileName }: Props): Component {

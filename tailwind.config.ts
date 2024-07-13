@@ -16,7 +16,6 @@ const config: Config = {
       },
     },
     fontFamily: {
-      public: ["Public Sans Variable", "mono"],
       pop: ["Poppins", "mono"],
     },
   },

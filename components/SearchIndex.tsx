@@ -25,14 +25,14 @@ function SearchIndex({ isLogged }: { isLogged: boolean }): Component {
           <input
             value={value}
             onChange={handleChangeInput}
-            className="focus:outline-0 font-public backdrop-blur-[2px] input join-item w-[260px] h-14 bg-slate-800/60 border-2 border-rose-300/10 placeholder:text-slate-300 text-lg text-slate-300"
+            className="focus:outline-0 font-pop backdrop-blur-[2px] input join-item w-[270px] h-14 bg-slate-800/60 border-2 border-rose-300/10 placeholder:text-slate-300 text-lg text-slate-300 placeholder:w-full"
             placeholder={t("placeholder-search")}
             type="search"
           />
           <select
             value={selectVal}
             onChange={e => handleChangeSelect(e.target.value)}
-            className="w-full focus:outline-0 font-public backdrop-blur-[2px] select join-item h-14 sm:w-[160px] text-[17px] bg-slate-800/60 border-2 border-rose-300/10 text-slate-300 "
+            className="w-full focus:outline-0 font-pop backdrop-blur-[2px] select join-item h-14 sm:w-[160px] text-[17px] bg-slate-800/60 border-2 border-rose-300/10 text-slate-300 "
           >
             <option
               className={twMerge(selectedState(""), "border-t-2")}

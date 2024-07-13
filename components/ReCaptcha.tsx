@@ -1,5 +1,4 @@
-import { Component } from "@/utils/types";
-import axios from "axios";
+import type { Component } from "@/utils/types";
 import RECAPTCHA from "react-google-recaptcha";
 import { useTranslation } from "react-i18next";
 
@@ -7,20 +6,14 @@ function ReCaptcha(): Component {
   const lang: string = useTranslation().i18n.language;
 
   //* si el usuario ingresa muchos libros en poco tiempo mostrar captcha.
-  
-  //! NO MOSTRAR KEY
 
   function onChange(val: string): void {
     if (val) {
-      console.log("CORRECTO");
+      console.log("pase sin miedo");
     } else {
-      
-      axios.post("/api/recaptcha", {
-        data: "ladron-de-gatos",
-      });
+      console.log("¡Robot!");
     }
   }
-
 
   return (
     <RECAPTCHA
@@ -29,7 +22,7 @@ function ReCaptcha(): Component {
       type="image"
       hl={lang}
       onChange={onChange}
-      sitekey="6LcXXw4qAAAAAJ0uMDSV61LcPCWlK0afeGWJ2yMM"
+      sitekey="lol"
     />
   );
 }

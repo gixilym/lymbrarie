@@ -9,7 +9,7 @@ import {
 import { useTranslation } from "react-i18next";
 import ClosePopUpBtn from "../btns/ClosePopUpBtn";
 import DialogContainer from "../DialogContainer";
-import PopUpTitle from "./TitlePopUp";
+import PopUpTitle from "../TitlePopUp";
 
 function SettingsPopUp(): Component {
   const [t, i18n] = useTranslation("global"),

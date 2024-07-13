@@ -21,7 +21,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@fontsource-variable/public-sans": "^5.0.18",
     "@fontsource/poppins": "^5.0.14",
     "@react-spring/web": "^9.7.3",
     "axios": "^1.6.8",

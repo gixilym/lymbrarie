@@ -2,7 +2,6 @@ import I18Provider from "@/components/I18Provider";
 import "@/globals.css";
 import { MAINTENANCE } from "@/utils/consts";
 import type { Component } from "@/utils/types";
-import "@fontsource-variable/public-sans";
 import "@fontsource/poppins";
 import type { AppProps } from "next/app";
 import { type NextRouter, useRouter } from "next/router";
