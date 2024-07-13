@@ -1,7 +1,7 @@
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import { DEFAULT_COVER } from "@/utils/consts";
 import type { BookData, Component, GoTo } from "@/utils/types";
-import type { NextRouter } from "next/router";
+import { type NextRouter } from "next/router";
 import { useRouter } from "next/router";
 import { flushSync } from "react-dom";
 import { useTranslation } from "react-i18next";

@@ -1,7 +1,7 @@
 import type { Component } from "@/utils/types";
 import { OctagonAlert as Icon } from "lucide-react";
 import Head from "next/head";
-import { NextRouter, useRouter } from "next/router";
+import { type NextRouter, useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 
 function Error(): Component {

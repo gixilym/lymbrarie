@@ -1,13 +1,13 @@
 import logo from "@/public/favicon.ico";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
-import { GoogleIcon, GithubIcon } from "@/utils/svgs";
+import { GithubIcon, GoogleIcon } from "@/utils/svgs";
 import type { Component } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
 import { Ghost as GuestIcon } from "lucide-react";
 import { signIn } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
-import { NextRouter, useRouter } from "next/router";
+import { type NextRouter, useRouter } from "next/router";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -16,6 +16,8 @@ function LoginPage(): Component {
     [t] = useTranslation("global"),
     book: string = JSON.parse((query.book as string) ?? "false"),
     ghost: string = JSON.parse((query.ghost as string) ?? "false"),
+    [, setCacheBooks] = useLocalStorage("cacheBooks", null),
+    [, setAllTitles] = useLocalStorage("allTitles", []),
     [animations] = useLocalStorage("animations", true),
     [styles, animate] = useSpring(() => ({
       opacity: animations ? 0 : 1,
@@ -47,7 +49,11 @@ function LoginPage(): Component {
         </div>
         <div className="w-full flex flex-col justify-start items-center gap-y-3.5">
           <button
-            onClick={() => signIn("google", { callbackUrl: "/?guest=false" })}
+            onClick={() => {
+              setCacheBooks(null);
+              setAllTitles([]);
+              signIn("google", { callbackUrl: "/?guest=false" });
+            }}
             className="bg-slate-100/10 justify-center sm:justify-start sm:pl-12 hover:bg-slate-400/10
  flex items-center w-[330px] sm:w-full max-w-[400px] h-14 sm:h-[58px] gap-x-6 rounded-lg border border-slate-500/40 duration-150 "
           >
@@ -55,7 +61,11 @@ function LoginPage(): Component {
             <p className="text-lg sm:text-xl text-white">{t("with-google")}</p>
           </button>
           <button
-            onClick={() => signIn("github", { callbackUrl: "/" })}
+            onClick={() => {
+              setCacheBooks(null);
+              setAllTitles([]);
+              signIn("github", { callbackUrl: "/" });
+            }}
             className="bg-black/90 border border-slate-800 justify-center sm:justify-start sm:pl-12 hover:bg-black/50
  flex items-center w-[330px] sm:w-full max-w-[400px] h-14 sm:h-[58px] gap-x-6 rounded-lg  duration-150"
           >

@@ -19,7 +19,7 @@ import type {
   Timer,
 } from "@/utils/types";
 import axios from "axios";
-import { NextRouter, useRouter } from "next/router";
+import { type NextRouter, useRouter } from "next/router";
 import {
   type FormEvent,
   type Reference,

@@ -4,7 +4,7 @@ import { tLC } from "@/utils/helpers";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import { inputSearch, stateBookValue } from "@/utils/store";
 import type { Book, BookData, Component, MemoComponent } from "@/utils/types";
-import { NextRouter, useRouter } from "next/router";
+import { type NextRouter, useRouter } from "next/router";
 import { memo, useEffect, useMemo, useState } from "react";
 import { useRecoilState } from "recoil";
 import BookCard from "./BookCard";

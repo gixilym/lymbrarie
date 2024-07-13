@@ -1,6 +1,6 @@
 import usePopUp from "@/utils/hooks/usePopUp";
 import type { Component } from "@/utils/types";
-import { NextRouter, useRouter } from "next/router";
+import { type NextRouter, useRouter } from "next/router";
 
 function AddBookBtn({ text, isLogged }: Props): Component {
   const { openPopUp } = usePopUp();
