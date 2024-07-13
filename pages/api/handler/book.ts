@@ -3,64 +3,99 @@ import type { Book } from "@/utils/types";
 import { addDoc, deleteDoc, doc, setDoc } from "firebase/firestore/lite";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-function handlerBook(req: NextApiRequest, res: NextApiResponse): void {
+async function handlerBook(
+  req: NextApiRequest,
+  res: NextApiResponse
+): Promise<void> {
   const body = req.body;
   const method: string = req.method ?? "INVALID_REQUEST";
 
   switch (method) {
     case "POST": {
       const bookData: Book = body;
-      addNewBook(bookData);
+      await addNewBook(bookData, res);
       break;
     }
 
     case "PATCH": {
       const { documentId, updatedBook }: BookEdited = body;
-      editBook(documentId, updatedBook);
+      await editBook(documentId, updatedBook, res);
       break;
     }
 
     case "PUT": {
       const { updatedNotes }: { updatedNotes: Book } = body;
-      updatedNotesBook(updatedNotes);
+      await updatedNotesBook(updatedNotes, res);
       break;
     }
 
     case "DELETE": {
       const documentId = body;
-      deleteBook(documentId);
+      await deleteBook(documentId, res);
       break;
     }
 
     default: {
-      invalidRequest();
+      invalidRequest(res);
       break;
     }
   }
+}
 
-  function addNewBook(data: Book): void {
-    addDoc(COLLECTION, data);
+async function addNewBook(data: Book, res: NextApiResponse): Promise<void> {
+  try {
+    await addDoc(COLLECTION, data);
     res.status(200).json({ message: "Documento creado correctamente" });
+  } catch (err: any) {
+    res
+      .status(500)
+      .json({ message: "Error al crear el documento", error: err.message });
   }
+}
 
-  function editBook(id: string, data: Book): void {
-    setDoc(doc(COLLECTION, id), data);
+async function editBook(
+  id: string,
+  data: Book,
+  res: NextApiResponse
+): Promise<void> {
+  try {
+    await setDoc(doc(COLLECTION, id), data);
     res.status(200).json({ message: "Documento editado correctamente" });
+  } catch (err: any) {
+    res
+      .status(500)
+      .json({ message: "Error al editar el documento", error: err.message });
   }
+}
 
-  function updatedNotesBook(book: Book): void {
-    setDoc(doc(COLLECTION, book.id), book.data);
+async function updatedNotesBook(
+  book: Book,
+  res: NextApiResponse
+): Promise<void> {
+  try {
+    await setDoc(doc(COLLECTION, book.id), book.data);
     res.status(200).json({ message: "Notas actualizadas correctamente" });
+  } catch (err: any) {
+    res
+      .status(500)
+      .json({ message: "Error al actualizar las notas", error: err.message });
   }
+}
 
-  function deleteBook(id: string): void {
-    deleteDoc(doc(COLLECTION, id));
+async function deleteBook(id: string, res: NextApiResponse): Promise<void> {
+  try {
+    await deleteDoc(doc(COLLECTION, id));
     res.status(200).json({ message: "Documento eliminado correctamente" });
+  } catch (err: any) {
+    res
+      .status(500)
+      .json({ message: "Error al eliminar el documento", error: err.message });
   }
+}
 
-  function invalidRequest(): void {
-    res.status(400).json({ message: "Petición inválida" });
-  }
+function invalidRequest(res: NextApiResponse): void {
+  res.setHeader("Allow", ["POST", "PATCH", "PUT", "DELETE"]);
+  res.status(405).json({ message: "Método no permitido" });
 }
 
 export default handlerBook;

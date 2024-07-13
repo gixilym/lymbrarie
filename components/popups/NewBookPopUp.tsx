@@ -25,7 +25,6 @@ import { useTranslation } from "react-i18next";
 import DialogContainer from "../DialogContainer";
 import FieldsBook from "../FieldsBook";
 import PopUpTitle from "../TitlePopUp";
-import ReCaptcha from "../ReCaptcha";
 
 function NewBookPopUp({ userID }: { userID: string }): Component {
   const [t] = useTranslation("global"),
@@ -33,7 +32,7 @@ function NewBookPopUp({ userID }: { userID: string }): Component {
     router: NextRouter = useRouter(),
     formRef: FormRef = useRef<Reference>(null),
     [book, setBook] = useState<Book>(EMPTY_BOOK),
-    { isLoading, startLoading, finishLoading } = useLoadContent(),
+    { isLoading, startLoading } = useLoadContent(),
     [, setCacheBooks] = useLocalStorage("cacheBooks", null),
     [allTitles] = useLocalStorage("allTitles", []),
     [errorKey, setErrorKey] = useState<string>(""),
@@ -84,10 +83,8 @@ function NewBookPopUp({ userID }: { userID: string }): Component {
       await axios.post(BOOK_HANDLER_URL, bookData);
       setCacheBooks(null);
       router.reload();
-    } catch (error) {
-      console.error("Error adding book:", error);
-    } finally {
-      finishLoading();
+    } catch (err: any) {
+      console.error("Error adding book: ", err.message);
     }
   }
 
