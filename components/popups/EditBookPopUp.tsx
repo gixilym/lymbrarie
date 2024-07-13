@@ -162,6 +162,12 @@ function EditBookPopUp(props: Props): Component {
       return false;
     }
 
+    if (title.includes("_")) {
+      setErrorKey("title-input");
+      notification("error", t("_"));
+      return false;
+    }
+
     if (maxAuthorLength) {
       setErrorKey("author-input");
       notification("error", t("author-too-long"));
@@ -233,7 +239,7 @@ function EditBookPopUp(props: Props): Component {
             disabled={isLoading}
             type="button"
             onClick={() => closePopUp("edit_book")}
-            className="btn text-lg w-24 px-2 bg-slate-800 hover:bg-slate-700 text-white"
+            className="btn text-lg w-auto font-thin bg-slate-800 hover:bg-slate-700 text-white"
           >
             {t("cancel")}
           </button>

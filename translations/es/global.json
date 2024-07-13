@@ -85,6 +85,7 @@
     "performing-maintenance-tasks": "Estoy realizando tareas de mantenimiento para mejorar tu experiencia.",
     "please-come-back-later": "Por favor, vuelve más tarde. ¡Prometo no tardar!",
     "@": "El titulo no puede contener '@'",
+    "_": "El titulo no puede contener '_'",
     "empty-custom-gender": "Ingresa un género",
     "empty-loaned": "Prestado a...",
     "no-gender": "Sin asignar",

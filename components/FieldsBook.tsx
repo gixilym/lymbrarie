@@ -73,7 +73,12 @@ function FieldsBook(props: Props): Component {
           defaultValue={defaultValueAuthor}
           name="author"
           type="text"
-          className="grow px-1 h-14 placeholder:text-slate-100"
+          className={twMerge(
+            isLoading
+              ? "placeholder:!text-slate-700"
+              : "placeholder:text-slate-100",
+            "grow px-1 h-14"
+          )}
           placeholder={t("placeholder-author")}
         />
       </label>

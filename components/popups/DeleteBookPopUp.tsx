@@ -1,8 +1,8 @@
+import { BOOK_HANDLER_URL } from "@/utils/consts";
 import useLoadContent from "@/utils/hooks/useLoadContent";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import usePopUp from "@/utils/hooks/usePopUp";
-import { inputSearch } from "@/utils/store";
-import { BOOK_HANDLER_URL } from "@/utils/consts";
+import { inputSearch, zeroBooksValue } from "@/utils/store";
 import type { Book, Component } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
 import axios from "axios";
@@ -19,6 +19,7 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
     [animations] = useLocalStorage("animations", true),
     router: AppRouterInstance = useRouter(),
     [, setSearchVal] = useRecoilState(inputSearch),
+    [zeroBooks, setZeroBooks] = useRecoilState(zeroBooksValue),
     [cacheBooks, setCacheBooks] = useLocalStorage("cacheBooks", null),
     [allTitles, setAllTitles] = useLocalStorage("allTitles", []),
     { isLoading, startLoading, finishLoading } = useLoadContent(),
@@ -32,13 +33,23 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
   }, [animate]);
 
   async function deleteDocument(): Promise<void> {
-    const arr: Book[] = cacheBooks?.filter((b: Book) => b.data.title != title);
-    console.log(arr);
     startLoading();
-    axios.delete(BOOK_HANDLER_URL, { data: documentId });
-    setCacheBooks(arr);
-    setAllTitles(arr.map((b: Book) => b.data.title));
     setSearchVal("");
+    setZeroBooks(cacheBooks.length == 1);
+    axios.delete(BOOK_HANDLER_URL, { data: documentId });
+
+    if (cacheBooks?.length == 1) {
+      setCacheBooks(null);
+      setAllTitles([]);
+      redirectToHome();
+    } else {
+      setCacheBooks(cacheBooks?.filter((b: Book) => b.data.title != title));
+      setAllTitles(cacheBooks.map((b: Book) => b.data.title));
+      redirectToHome();
+    }
+  }
+
+  function redirectToHome(): void {
     closePopUp("delete_book");
     finishLoading();
     router.push("/");

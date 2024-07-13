@@ -85,6 +85,7 @@
     "performing-maintenance-tasks": "I am performing maintenance tasks to improve your experience.",
     "please-come-back-later": "Please come back later. I promise not to take long!",
     "@": "Title cannot contain '@'",
+    "_": "Title cannot contain '_'",
     "empty-custom-gender": "Enter a gender",
     "empty-loaned": "Loaned to ...",
     "no-gender": "Not assigned",

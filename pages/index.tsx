@@ -7,6 +7,7 @@ import Maintenance from "@/components/Maintenance";
 import PopUps from "@/components/PopUps";
 import { COLLECTION, EXAMPLES_BOOKS, MAINTENANCE } from "@/utils/consts";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
+import { zeroBooksValue } from "@/utils/store";
 import type { Book, Component, Doc } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
 import {
@@ -24,6 +25,7 @@ import { getSession, signOut } from "next-auth/react";
 import Head from "next/head";
 import { NextRouter, useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
 
 function Index({ user, isLogged }: Props): Component {
   const [myBooks, setMyBooks] = useState<Book[]>([]),
@@ -35,6 +37,7 @@ function Index({ user, isLogged }: Props): Component {
     [booksIsEmpty, setBooksIsEmpty] = useState<boolean | null>(null),
     [animations] = useLocalStorage("animations", true),
     [loading, setLoading] = useState<boolean>(false),
+    [zeroBooks] = useRecoilState(zeroBooksValue),
     router: NextRouter = useRouter(),
     guest: string = JSON.parse((router.query.guest as string) ?? "false"),
     [styles, animate] = useSpring(() => ({
@@ -55,11 +58,12 @@ function Index({ user, isLogged }: Props): Component {
   }, [animate]);
 
   useEffect(() => {
+    if (zeroBooks) return;
     if (isLogged && myBooks.length > 0) {
       setCacheBooks(myBooks);
       setAllTitles(myBooks.map((b: Book) => b.data.title));
     }
-  }, [myBooks, isLogged]);
+  }, [myBooks, isLogged, zeroBooks]);
 
   useEffect(() => {
     if (isLogged) fetchBooks();
@@ -67,7 +71,8 @@ function Index({ user, isLogged }: Props): Component {
   }, [isLogged]);
 
   async function fetchBooks(): Promise<void> {
-    if (Array.isArray(cacheBooks)) setMyBooks(cacheBooks);
+    if (zeroBooks) return;
+    if (Array.isArray(cacheBooks)) return setMyBooks(cacheBooks);
     else {
       setLoading(true);
       const { books, isEmpty }: ResList = await getListBooks(userID);
@@ -103,7 +108,7 @@ function Index({ user, isLogged }: Props): Component {
             <LoadComponent />
           ) : (
             <>
-              {booksIsEmpty ? (
+              {booksIsEmpty || zeroBooks ? (
                 <AddYourFirstBook />
               ) : (
                 <ListSection myBooks={myBooks} isLogged={isLogged} />

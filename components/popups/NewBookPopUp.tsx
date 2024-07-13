@@ -125,6 +125,12 @@ function NewBookPopUp({ userID }: { userID: string }): Component {
       return false;
     }
 
+    if (title.includes("_")) {
+      setErrorKey("title-input");
+      notification("error", t("_"));
+      return false;
+    }
+
     if (maxAuthorLength) {
       setErrorKey("author-input");
       notification("error", t("author-too-long"));
@@ -190,6 +196,7 @@ function NewBookPopUp({ userID }: { userID: string }): Component {
             {/* <ReCaptcha /> */}
             <div className="flex gap-x-2">
               <button
+                disabled={isLoading}
                 type="button"
                 onClick={() => closePopUp("add_book")}
                 className="btn text-lg w-24 px-2 bg-slate-800 hover:bg-slate-700 text-white"

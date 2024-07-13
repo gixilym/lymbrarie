@@ -1,13 +1,11 @@
 import type { Component } from "@/utils/types";
-import { Pencil as SettingsIcon } from "lucide-react";
+import { Pencil as Icon } from "lucide-react";
 
 function SettingsBtn(): Component {
   return (
-    <div tabIndex={0} role="button">
-      <button className="btn btn-square btn-ghost mt-4 sm:mt-0">
-        <SettingsIcon className="w-6 h-6 sm:w-9 sm:h-9" />
-      </button>
-    </div>
+    <button className="btn btn-square btn-ghost mt-4 sm:mt-0 mb-1">
+      <Icon className="w-6 h-6 sm:w-8 sm:h-8" />
+    </button>
   );
 }
 

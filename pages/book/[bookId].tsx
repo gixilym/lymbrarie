@@ -44,7 +44,7 @@ function BookId({ isLogged }: Props): Component {
     [notes, setNotes] = useState<string>(""),
     [t] = useTranslation("global"),
     [cacheBooks, setCacheBooks] = useLocalStorage("cacheBooks", null),
-    [, setAllTitles] = useLocalStorage("allTitles", []),
+    [allTitles, setAllTitles] = useLocalStorage("allTitles", []),
     [animations] = useLocalStorage("animations", true),
     notesProps = { updateNotes, notes, setNotes, isLoading },
     guest: string = JSON.parse((router.query.guest as string) ?? "false"),
@@ -53,6 +53,10 @@ function BookId({ isLogged }: Props): Component {
       opacity: animations ? 0 : 1,
       config: { duration: 500 },
     }));
+
+  useEffect(() => {
+    if (!allTitles.includes(title)) router.push("/");
+  }, [allTitles]);
 
   useEffect(() => {
     if (isLogged && guest) {
