@@ -79,9 +79,6 @@ function NewBookPopUp({ userID }: { userID: string }): Component {
 
     const bookData: BookData = { ...book.data, owner: userID as string };
     startLoading();
-    await axios.post(BOOK_HANDLER_URL, bookData);
-    setCacheBooks(null);
-    router.reload();
 
     try {
       await axios.post(BOOK_HANDLER_URL, bookData);
