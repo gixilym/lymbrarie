@@ -55,7 +55,7 @@ function BookId({ isLogged }: Props): Component {
     }));
 
   useEffect(() => {
-    if (!allTitles.includes(title)) router.push("/");
+    if (isLogged && !allTitles.includes(title)) router.push("/");
   }, [allTitles]);
 
   useEffect(() => {
