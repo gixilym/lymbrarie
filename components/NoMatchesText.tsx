@@ -18,7 +18,7 @@ function NoMatchesText(): Component {
   return (
     <animated.p
       style={styles}
-      className=" text-gray-200/70 text-2xl font-pop font-normal w-full text-center mt-8 h-12"
+      className=" text-gray-200/70 text-2xl  font-normal w-full text-center mt-8 h-12"
     >
       {t("no-matches")}
     </animated.p>

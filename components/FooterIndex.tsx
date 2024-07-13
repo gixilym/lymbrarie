@@ -22,7 +22,7 @@ function FooterIndex({ isLogged }: { isLogged: boolean }): Component {
           src="https://res.cloudinary.com/dgs55s8qh/image/upload/v1711605978/ppwljpmujdgqzuskudws.ico"
           alt="logo"
         />
-        <p>Copyright © 2024 Lymbrarie - {t("copyright")}</p>
+        <p className="">Copyright © 2024 Lymbrarie - {t("copyright")}</p>
       </aside>
       <div className="flex items-center justify-evenly w-full h-10 sm:h-auto sm:w-auto sm:gap-x-6">
         {isLogged && (

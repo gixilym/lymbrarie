@@ -233,7 +233,7 @@ function EditBookPopUp(props: Props): Component {
           onSubmit={editBook}
           ref={form}
           method="dialog"
-          className="space-x-2 font-pop"
+          className="space-x-2 "
         >
           <button
             disabled={isLoading}

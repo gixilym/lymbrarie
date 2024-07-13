@@ -47,7 +47,7 @@ function ProfilePopUp({ profileImg, profileName }: Props): Component {
         <div className="w-full flex flex-col justify-center items-center gap-y-6">
           <div className="flex flex-col justify-center items-center w-full">
             <Image
-              alt="Avatar"
+              alt="avatar"
               className="rounded-full sm:w-24 w-20 sm:h-24 h-20 object-cover object-center"
               src={profileImg ?? DEFAULT_COVER}
               width={50}

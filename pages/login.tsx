@@ -41,7 +41,7 @@ function LoginPage(): Component {
             src={logo}
             alt="logo"
           />
-          <h4 className="text-2xl sm:text-3xl tracking-tight font-pop w-full text-center text-slate-200">
+          <h4 className="text-2xl sm:text-3xl tracking-tight  w-full text-center text-slate-200">
             {book ? t("sign-in-to-add") : t("welcome")}
           </h4>
         </div>

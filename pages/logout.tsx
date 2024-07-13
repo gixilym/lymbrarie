@@ -5,7 +5,7 @@ import { animated, useSpring } from "@react-spring/web";
 import { signOut } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
-import { NextRouter, useRouter } from "next/router";
+import { type NextRouter, useRouter } from "next/router";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -45,14 +45,14 @@ function LogoutPage(): Component {
             src={logo}
             alt="logo"
           />
-          <h4 className="text-2xl sm:text-3xl tracking-tight font-pop w-full text-center">
+          <h4 className="text-2xl sm:text-3xl tracking-tight w-full text-center">
             {t("see-you-soon")}
           </h4>
         </div>
         <div className="w-full flex flex-col justify-start items-center gap-y-3.5">
           <button
             onClick={forgetSession}
-            className="bg-red-600 justify-center hover:bg-red-700 flex items-center w-[330px] sm:w-full max-w-[400px] h-14 sm:h-[58px] gap-x-6 rounded-lg border-2 border-red-300/40 duration-150 "
+            className="bg-red-800/90 justify-center hover:bg-red-700 flex items-center w-[330px] sm:w-full max-w-[400px] h-14 sm:h-[58px] gap-x-6 rounded-lg border-2 border-red-300/40 duration-150 "
           >
             <p className="text-lg sm:text-xl text-white">{t("logout")}</p>
           </button>
