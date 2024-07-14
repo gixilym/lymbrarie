@@ -104,8 +104,3 @@ interface BookEdited {
   documentId: string;
   updatedBook: Book;
 }
-
-interface BookNotes {
-  documentId: string;
-  book: Book;
-}

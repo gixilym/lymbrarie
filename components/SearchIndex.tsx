@@ -6,7 +6,7 @@ import { twMerge } from "tailwind-merge";
 import AddBookBtn from "./btns/AddBookBtn";
 
 function SearchIndex({ isLogged }: { isLogged: boolean }): Component {
-  const [value, setValue] = useRecoilState(inputSearch),
+  const [value, setValue] = useRecoilState<string>(inputSearch),
     handleChangeInput = (e: InputEvent) => setValue(e.target.value),
     [selectVal, setSelectStateValue] = useRecoilState<string>(stateBookValue),
     handleChangeSelect = (value: string) => setSelectStateValue(value),

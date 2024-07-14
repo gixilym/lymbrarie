@@ -1,6 +1,6 @@
 import NextAuth, { type NextAuthOptions } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
+import GoogleProvider from "next-auth/providers/google";
 
 const options: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET as string,

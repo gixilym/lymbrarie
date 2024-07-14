@@ -111,5 +111,7 @@
     "sign-in-to-add": "¡Inicia sesión para agregar libros!",
     "with-github": "Iniciar sesión con Github",
     "go-out": "Salir",
-    "my-gender": "Mi género"
+    "my-gender": "Mi género",
+    "offline": "Estás desconectado",
+    "text-offline": "Necesitas conexión a internet para añadir, editar o eliminar un libro."
 }

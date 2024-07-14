@@ -1,18 +1,18 @@
+import useLocalStorage from "@/utils/hooks/useLocalStorage";
+import usePopUp from "@/utils/hooks/usePopUp";
 import type { Component } from "@/utils/types";
-import { Save as SaveIcon } from "lucide-react";
+import { animated, useSpring } from "@react-spring/web";
+import { Notebook as NotesIcon, Save as SaveIcon } from "lucide-react";
 import { useRouter, type NextRouter } from "next/router";
 import {
-  ChangeEvent,
   useEffect,
   useState,
+  type ChangeEvent,
   type Dispatch,
   type SetStateAction,
 } from "react";
 import { useTranslation } from "react-i18next";
 import { twMerge } from "tailwind-merge";
-import { Notebook as NotesIcon } from "lucide-react";
-import { useSpring, animated } from "@react-spring/web";
-import useLocalStorage from "@/utils/hooks/useLocalStorage";
 
 function NotesBook(props: Notes): Component {
   const [t] = useTranslation("global"),
@@ -20,6 +20,7 @@ function NotesBook(props: Notes): Component {
     { notes, updateNotes, setNotes, classText } = props,
     [hasChanges, setHasChanges] = useState<boolean>(false),
     [animations] = useLocalStorage("animations", true),
+    { openPopUp } = usePopUp(),
     [styles, animate] = useSpring(() => ({
       opacity: animations ? 0 : 1,
       config: { duration: 600 },
@@ -63,8 +64,10 @@ function NotesBook(props: Notes): Component {
   }
 
   function saveContent(): void {
-    setHasChanges(false);
-    updateNotes();
+    if (navigator.onLine) {
+      setHasChanges(false);
+      updateNotes();
+    } else openPopUp("offline");
   }
 
   return (

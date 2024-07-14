@@ -25,8 +25,6 @@ type User = UserData | null;
 
 type MemoComponent = MemoExoticComponent<(arg0: any) => Component>;
 
-type GoTo = Promise<boolean>;
-
 type SelectEvent = ChangeEvent<HTMLSelectElement>;
 
 type Timer = ReturnType<typeof setTimeout>;
@@ -40,7 +38,8 @@ type PopUpsIds =
   | "profile"
   | "support"
   | "settings"
-  | "donations";
+  | "donations"
+  | "offline";
 
 interface Book {
   id: string;
@@ -72,7 +71,6 @@ export type {
   Doc,
   Document,
   FormRef,
-  GoTo,
   InputEvent,
   MemoComponent,
   PopUpsIds,

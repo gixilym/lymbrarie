@@ -1,10 +1,11 @@
 import type { Component } from "@/utils/types";
 import { OctagonAlert as Icon } from "lucide-react";
 import Head from "next/head";
+import Link from "next/link";
 import { type NextRouter, useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 
-function Error(): Component {
+function ErrorPage(): Component {
   const router: NextRouter = useRouter();
   const [t] = useTranslation("global");
 
@@ -19,14 +20,20 @@ function Error(): Component {
       <p className="text-4xl tracking-tight font-bold lg:text-6xl text-center">
         Error 505
       </p>
-      <p className="text-xl md:text-2xl text-center w-full max-w-[700px] text-pretty px-2 md:px-0">
+      <p className="text-xl md:text-2xl text-center w-full max-w-[650px] text-pretty px-2 md:px-0">
         {t(router.query.err ?? "")}
       </p>
       <address className="text-xl md:text-2xl text-center w-full font-bold">
         gixi.tsx@gmail.com
       </address>
+      <Link
+        href="/"
+        className="text-2xl sm:text-3xl underline w-full text-center"
+      >
+        Recargar
+      </Link>
     </div>
   );
 }
 
-export default Error;
+export default ErrorPage;

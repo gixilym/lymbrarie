@@ -3,6 +3,7 @@ import SettingsBtn from "@/components/btns/SettingsBtn";
 import NotesBook from "@/components/NotesBook";
 import DeleteBookPopUp from "@/components/popups/DeleteBookPopUp";
 import EditBookPopUp from "@/components/popups/EditBookPopUp";
+import OfflinePopUp from "@/components/popups/OfflinePopUp";
 import {
   BOOK_HANDLER_URL,
   DEFAULT_COVER,
@@ -48,7 +49,7 @@ function BookId({ isLogged }: Props): Component {
     [animations] = useLocalStorage("animations", true),
     notesProps = { updateNotes, notes, setNotes, isLoading },
     guest: string = JSON.parse((router.query.guest as string) ?? "false"),
-    [popup] = useRecoilState(popupsValue),
+    [popup] = useRecoilState<any>(popupsValue),
     [styles, animate] = useSpring(() => ({
       opacity: animations ? 0 : 1,
       config: { duration: 500 },
@@ -113,6 +114,7 @@ function BookId({ isLogged }: Props): Component {
       </Head>
 
       {popup.edit_book && <EditBookPopUp data={book} documentId={documentId} />}
+      {popup.offline && <OfflinePopUp />}
       {popup.delete_book && (
         <DeleteBookPopUp
           documentId={documentId}
@@ -170,14 +172,26 @@ function BookId({ isLogged }: Props): Component {
               tabIndex={0}
               className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52 gap-y-1"
             >
-              <li onClick={() => openPopUp("edit_book")}>
+              <li
+                onClick={() =>
+                  navigator.onLine
+                    ? openPopUp("edit_book")
+                    : openPopUp("offline")
+                }
+              >
                 <div className="flex flex-row items-center justify-start gap-x-3">
                   <EditIcon size={18} />
                   <p>{t("edit-book")}</p>
                 </div>
               </li>
 
-              <li onClick={() => openPopUp("delete_book")}>
+              <li
+                onClick={() =>
+                  navigator.onLine
+                    ? openPopUp("delete_book")
+                    : openPopUp("offline")
+                }
+              >
                 <div className="flex flex-row items-center justify-start gap-x-3">
                   <DeleteIcon size={18} />
                   <p>{t("delete-book")}</p>

@@ -1,6 +1,6 @@
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import { DEFAULT_COVER } from "@/utils/consts";
-import type { BookData, Component, GoTo } from "@/utils/types";
+import type { BookData, Component } from "@/utils/types";
 import { type NextRouter } from "next/router";
 import { useRouter } from "next/router";
 import { flushSync } from "react-dom";
@@ -33,7 +33,7 @@ function BookCard(props: Props): Component {
       formatState,
     };
 
-  function goTo(): GoTo {
+  function goTo(): Promise<boolean> {
     const condition: boolean =
       // @ts-ignore
       typeof document.startViewTransition == "function" && animations;

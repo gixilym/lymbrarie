@@ -37,7 +37,7 @@ function Index({ user, isLogged }: Props): Component {
     [booksIsEmpty, setBooksIsEmpty] = useState<boolean | null>(null),
     [animations] = useLocalStorage("animations", true),
     [loading, setLoading] = useState<boolean>(false),
-    [zeroBooks] = useRecoilState(zeroBooksValue),
+    [zeroBooks] = useRecoilState<boolean>(zeroBooksValue),
     router: NextRouter = useRouter(),
     guest: string = JSON.parse((router.query.guest as string) ?? "false"),
     [styles, animate] = useSpring(() => ({
@@ -160,7 +160,8 @@ async function getListBooks(userID: string): Promise<ResList> {
       if (!MAINTENANCE) {
         const type: string =
           err.message == "Quota exceeded." ? "limit" : "unknown";
-        location.href = `/error?err=${type}`;
+        console.error(err);
+        // location.href = `/error?err=${type}`;
       }
     }
   }

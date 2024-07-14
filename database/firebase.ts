@@ -15,5 +15,5 @@ const firebaseConfig: FirebaseOptions = {
   storageBucket: "lymbrarie-oficial.appspot.com",
 };
 
-const app: FirebaseApp = initializeApp(firebaseConfig);
-export const DB: Firestore = getFirestore(app);
+const APP: FirebaseApp = initializeApp(firebaseConfig);
+export const DB: Firestore = getFirestore(APP);

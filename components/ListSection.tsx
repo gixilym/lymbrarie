@@ -16,16 +16,15 @@ const ListSection: MemoComponent = memo(function L({
   myBooks,
   isLogged,
 }: Props) {
-  const [inputVal] = useRecoilState(inputSearch),
-    [stateVal] = useRecoilState(stateBookValue),
+  const [inputVal] = useRecoilState<string>(inputSearch),
+    [stateVal] = useRecoilState<string>(stateBookValue),
     [listModeOn, setListModeOn] = useLocalStorage("list-mode-on", true),
     [scroll, setScroll] = useLocalStorage("scroll", 0),
     router: NextRouter = useRouter(),
     [sortAToZ, setSortAToZ] = useLocalStorage("sort", true),
     [aToZ, setAToZ] = useState<boolean>(false),
     [initialBooks, setInitialBooks] = useState<Book[]>([]),
-    [showDetails, setShowDetails] = useState<boolean>(false),
-    [loadExamples, setLoadExamples] = useState<boolean>(false);
+    [showDetails, setShowDetails] = useState<boolean>(false);
 
   useEffect(() => {
     const resetScroll = (): void => setScroll(0);
@@ -64,8 +63,8 @@ const ListSection: MemoComponent = memo(function L({
 
   const renderBooks = (books: Book[]): Component => {
     const condition =
-      (books.length == 0 && loadExamples && inputVal) ||
-      (books.length == 0 && !loadExamples && isLogged && inputVal);
+      (books.length == 0 && inputVal) ||
+      (books.length == 0 && isLogged && inputVal);
 
     if (condition) return <NoMatchesText />;
 

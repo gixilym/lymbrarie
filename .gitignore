@@ -3,6 +3,7 @@
 .pnp.js
 .yarn/install-state.gz
 /libs
+/admin-sdk.json
 
 # testing
 /coverage
