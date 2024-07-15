@@ -6,7 +6,6 @@ import type { Component } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
 import { type Auth, getAuth } from "firebase/auth";
 import { AuthAction, withUser } from "next-firebase-auth";
-import Head from "next/head";
 import Image from "next/image";
 import { type NextRouter, useRouter } from "next/router";
 import { useEffect } from "react";
@@ -46,9 +45,6 @@ function LogoutPage(): Component {
 
   return (
     <section className="absolute top-0 right-0 min-h-screen w-full flex items-start justify-center bg-transparent pt-16 sm:pt-24">
-      <Head>
-        <title>{t("see-you-soon")}</title>
-      </Head>
       <animated.div
         style={styles}
         className="border-2 border-slate-700/70 py-14 sm:rounded-lg bg-slate-900 flex flex-col gap-y-14 justify-center items-center w-full max-w-[580px]"

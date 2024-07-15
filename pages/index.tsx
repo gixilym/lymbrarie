@@ -95,7 +95,6 @@ function Index(): Component {
       className="flex flex-col justify-start items-center w-full sm:max-w-[950px] h-full gap-y-6"
     >
       <Head>
-        <title>Lymbrarie</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta
           name="description"

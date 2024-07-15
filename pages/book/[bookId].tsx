@@ -122,7 +122,7 @@ function BookId(): Component {
       className="flex flex-col justify-center items-center w-full gap-y-6 sm:py-10 h-full"
     >
       <Head>
-        <title>{book?.data?.title}</title>
+        <title>{book?.data?.title || "Lymbrarie"}</title>
       </Head>
 
       {popup.offline && <OfflinePopUp />}

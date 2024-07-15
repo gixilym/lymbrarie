@@ -8,6 +8,7 @@ import { type NextRouter, useRouter } from "next/router";
 import { useEffect } from "react";
 import { RecoilRoot as RecoilProvider } from "recoil";
 import initAuth from "@/database/initAuth";
+import Head from "next/head";
 
 initAuth();
 
@@ -24,6 +25,9 @@ function App({
   return (
     <I18Provider>
       <RecoilProvider>
+        <Head>
+          <title>Lymbrarie</title>
+        </Head>
         <Component {...pageProps} />
       </RecoilProvider>
     </I18Provider>

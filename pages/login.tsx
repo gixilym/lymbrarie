@@ -12,7 +12,6 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { AuthAction, withUser } from "next-firebase-auth";
-import Head from "next/head";
 import Image from "next/image";
 import { type NextRouter, useRouter } from "next/router";
 import { useEffect } from "react";
@@ -27,9 +26,8 @@ export default withUser({
 
 function LoginPage(): Component {
   const [t] = useTranslation("global"),
-    { push, query }: NextRouter = useRouter(),
+    { push }: NextRouter = useRouter(),
     [animations] = useLocalStorage("animations", true),
-    book: string = JSON.parse((query.book as string) ?? "false"),
     auth: Auth = getAuth(),
     [styles, animate] = useSpring(() => ({
       opacity: animations ? 0 : 1,
@@ -61,9 +59,6 @@ function LoginPage(): Component {
 
   return (
     <section className="absolute top-0 right-0 min-h-screen w-full flex items-start justify-center bg-transparent pt-12 sm:pt-20">
-      <Head>
-        <title>Lymbrarie</title>
-      </Head>
       <animated.div
         style={styles}
         className="border-2 border-slate-700/70 py-14 sm:rounded-lg bg-slate-900 flex flex-col gap-y-14 justify-center items-center w-full max-w-[580px]"
@@ -75,7 +70,7 @@ function LoginPage(): Component {
             alt="logo"
           />
           <h4 className="text-2xl sm:text-3xl tracking-tight  w-full text-center text-slate-200">
-            {book ? t("sign-in-to-add") : t("welcome")}
+            {t("welcome")}
           </h4>
           <p className="text-lg  text-center text-slate-400">
             {t("book-find")}

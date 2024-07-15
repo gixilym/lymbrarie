@@ -53,7 +53,7 @@ function ProfilePopUp({ profileImg, profileName }: Props): Component {
               width={50}
               height={50}
             />
-            <p className="sm:text-xl text-lg font-semibold text-center w-full mt-2">
+            <p className="sm:text-xl text-lg font-normal text-center w-full mt-2">
               {profileName}
             </p>
           </div>

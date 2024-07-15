@@ -1,6 +1,5 @@
 import type { Component } from "@/utils/types";
 import { OctagonAlert as Icon } from "lucide-react";
-import Head from "next/head";
 import Link from "next/link";
 import { type NextRouter, useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
@@ -11,9 +10,6 @@ function ErrorPage(): Component {
 
   return (
     <div className="w-full min-h-screen justify-start items-center flex flex-col pt-10 gap-y-10">
-      <Head>
-        <title>Lymbrarie</title>
-      </Head>
       <div className="w-full justify-center items-center flex">
         <Icon size={100} />
       </div>
