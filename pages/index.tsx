@@ -17,14 +17,16 @@ import {
   query,
   where,
 } from "firebase/firestore/lite";
-import { AuthAction, useUser, withUser, withUserSSR } from "next-firebase-auth";
+import { AuthAction, useUser, withUser } from "next-firebase-auth";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
 export default withUser({
   whenAuthed: AuthAction.RENDER,
+  whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
   whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
+  LoaderComponent: LoadComponent,
 })(Index);
 
 function Index(): Component {

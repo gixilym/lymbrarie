@@ -4,7 +4,12 @@ import { inputSearch } from "@/utils/store";
 import type { Component } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
 import { type Auth, getAuth } from "firebase/auth";
-import { AuthAction, withUser, withUserTokenSSR } from "next-firebase-auth";
+import {
+  AuthAction,
+  withUser,
+  withUserSSR,
+  withUserTokenSSR,
+} from "next-firebase-auth";
 import Head from "next/head";
 import Image from "next/image";
 import { type NextRouter, useRouter } from "next/router";
@@ -78,6 +83,6 @@ export default withUser({
   whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
 })(LogoutPage);
 
-export const getServerSideProps = withUserTokenSSR({
-  whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
-})();
+// export const getServerSideProps = withUserSSR({
+//   whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
+// })();

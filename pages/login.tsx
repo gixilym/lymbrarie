@@ -1,4 +1,3 @@
-import LoadComponent from "@/components/LoadComponent";
 import logo from "@/public/favicon.ico";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import { GithubIcon, GoogleIcon } from "@/utils/svgs";
@@ -11,13 +10,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
-// import { Ghost as GuestIcon } from "lucide-react";
-import {
-  AuthAction,
-  withUser,
-  withUserSSR,
-  withUserTokenSSR,
-} from "next-firebase-auth";
+import { AuthAction, withUser } from "next-firebase-auth";
 import Head from "next/head";
 import Image from "next/image";
 import { type NextRouter, useRouter } from "next/router";
@@ -120,12 +113,14 @@ flex items-center w-[330px] sm:w-full max-w-[400px] h-14 sm:h-[61px] gap-x-6 rou
   );
 }
 
-export const getServerSideProps = withUserTokenSSR({
-  whenAuthed: AuthAction.REDIRECT_TO_APP,
-})();
-
 export default withUser({
   whenAuthed: AuthAction.REDIRECT_TO_APP,
+  whenUnauthedBeforeInit: AuthAction.RETURN_NULL,
+  whenUnauthedAfterInit: AuthAction.RENDER,
 })(LoginPage);
+
+// export const getServerSideProps = withUserSSR({
+//   whenAuthed: AuthAction.REDIRECT_TO_APP,
+// })();
 
 type Providers = GithubAuthProvider | GoogleAuthProvider;
