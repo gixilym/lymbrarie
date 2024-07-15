@@ -22,7 +22,10 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
-export default withUser<Props>()(Index);
+export default withUser<Props>({
+  whenUnauthedBeforeInit: AuthAction.REDIRECT_TO_LOGIN,
+  whenAuthed: AuthAction.RENDER,
+})(Index);
 
 function Index({ user }: Props): Component {
   const [myBooks, setMyBooks] = useState<Book[]>([]),
@@ -122,21 +125,20 @@ function Index({ user }: Props): Component {
   );
 }
 
-export const getServerSideProps = withUserSSR({
-  whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
-  whenAuthed: AuthAction.RENDER,
-})<Props>(async ({ user: data }) => {
-  if (!data) return { props: { user: null } };
+export const getServerSideProps = withUserSSR()<Props>(
+  async ({ user: data }) => {
+    if (!data) return { props: { user: null } };
 
-  const user: User = {
-    UID: data.id,
-    email: data.email,
-    name: data.displayName,
-    img: data.photoURL,
-  };
+    const user: User = {
+      UID: data.id,
+      email: data.email,
+      name: data.displayName,
+      img: data.photoURL,
+    };
 
-  return { props: { user } };
-});
+    return { props: { user } };
+  }
+);
 
 async function getListBooks(UID: string): Promise<List> {
   const books: Book[] = [];
