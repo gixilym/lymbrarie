@@ -46,7 +46,6 @@ function Index(): Component {
       opacity: animations ? 0 : 1,
       config: { duration: 1000 },
     }));
-  console.log(UID);
 
   /* [, setSearch] = useRecoilState<string>(inputSearch),
     auth: Auth = getAuth(),
@@ -129,21 +128,6 @@ function Index(): Component {
   );
 }
 
-// export const getServerSideProps = withUserSSR({
-//   whenAuthed: AuthAction.RENDER,
-//   whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
-// })<Props>(async ({ user: data }) => {
-//   // if (!data) return { props: { user: null } };
-//   const user: User = {
-//     UID: data?.id ?? null,
-//     email: data?.email ?? null,
-//     name: data?.displayName ?? null,
-//     img: data?.photoURL ?? null,
-//   };
-
-//   return { props: { user } };
-// });
-
 async function getListBooks(UID: string): Promise<List> {
   const books: Book[] = [];
   let isEmpty: boolean = false;
@@ -156,25 +140,13 @@ async function getListBooks(UID: string): Promise<List> {
       res.forEach((doc: Doc) => books.push({ id: doc.id, data: doc.data() }));
     } catch (err: any) {
       if (!MAINTENANCE) {
-        console.error(err.message);
-        // const type: string =
-        //   err.message == "Quota exceeded." ? "limit" : "unknown";
-        // location.href = `/error?err=${type}`;
+        const type: string =
+          err.message == "Quota exceeded." ? "limit" : "unknown";
+        location.href = `/error?err=${type}`;
       }
     }
   }
   return { books, isEmpty };
-}
-
-interface Props {
-  user: User | null;
-}
-
-interface User {
-  UID: string | null;
-  email: string | null;
-  name: string | null;
-  img: string | null;
 }
 
 type List = { books: Book[]; isEmpty: boolean };

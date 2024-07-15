@@ -1,3 +1,4 @@
+import LoadComponent from "@/components/LoadComponent";
 import logo from "@/public/favicon.ico";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import { GithubIcon, GoogleIcon } from "@/utils/svgs";
@@ -17,12 +18,18 @@ import { type NextRouter, useRouter } from "next/router";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
+export default withUser({
+  whenAuthed: AuthAction.REDIRECT_TO_APP,
+  whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
+  whenUnauthedAfterInit: AuthAction.RENDER,
+  LoaderComponent: LoadComponent,
+})(LoginPage);
+
 function LoginPage(): Component {
   const [t] = useTranslation("global"),
     { push, query }: NextRouter = useRouter(),
     [animations] = useLocalStorage("animations", true),
     book: string = JSON.parse((query.book as string) ?? "false"),
-    // ghost: string = JSON.parse((query.ghost as string) ?? "false"),
     auth: Auth = getAuth(),
     [styles, animate] = useSpring(() => ({
       opacity: animations ? 0 : 1,
@@ -83,44 +90,18 @@ function LoginPage(): Component {
             <GoogleIcon className="w-7 h-7" />
             <p className="text-lg sm:text-xl text-white">{t("with-google")}</p>
           </button>
-
           <button
             onClick={withGithub}
-            className="bg-black/90 border border-slate-800 justify-center sm:justify-start sm:pl-12 hover:bg-black/50
-flex items-center w-[330px] sm:w-full max-w-[400px] h-14 sm:h-[61px] gap-x-6 rounded-lg  duration-150"
+            className="bg-black/60 border border-slate-800 justify-center sm:justify-start sm:pl-12 hover:bg-black/50
+flex items-center w-[330px] sm:w-full max-w-[400px] h-14 sm:h-[62px] gap-x-6 rounded-lg  duration-150"
           >
             <GithubIcon className="w-7 h-7" />
             <p className="text-lg sm:text-xl text-white">{t("with-github")}</p>
           </button>
-
-          {/*
-
-      
-          
-          <button
-            onClick={() => push("/?guest=true&ghost=true")}
-            className="justify-center sm:justify-start pr-3 sm:pr-0 sm:pl-12
-              bg-slate-950/50 flex items-center w-[330px] sm:w-full max-w-[400px] h-14 sm:h-[58px] gap-x-6 rounded-lg duration-150 hover:bg-slate-950/80"
-          >
-            <GuestIcon className="w-8 h-8 text-slate-200" />
-            <p className="text-lg sm:text-xl text-slate-100">
-              {ghost ? t("continue") : t("enter")} {t("ghost-mode")}
-            </p>
-          </button> */}
         </div>
       </animated.div>
     </section>
   );
 }
-
-export default withUser({
-  whenAuthed: AuthAction.REDIRECT_TO_APP,
-  whenUnauthedBeforeInit: AuthAction.RETURN_NULL,
-  whenUnauthedAfterInit: AuthAction.RENDER,
-})(LoginPage);
-
-// export const getServerSideProps = withUserSSR({
-//   whenAuthed: AuthAction.REDIRECT_TO_APP,
-// })();
 
 type Providers = GithubAuthProvider | GoogleAuthProvider;

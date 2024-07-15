@@ -1,21 +1,24 @@
+import LoadComponent from "@/components/LoadComponent";
 import logo from "@/public/favicon.ico";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import { inputSearch } from "@/utils/store";
 import type { Component } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
 import { type Auth, getAuth } from "firebase/auth";
-import {
-  AuthAction,
-  withUser,
-  withUserSSR,
-  withUserTokenSSR,
-} from "next-firebase-auth";
+import { AuthAction, withUser } from "next-firebase-auth";
 import Head from "next/head";
 import Image from "next/image";
 import { type NextRouter, useRouter } from "next/router";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilState } from "recoil";
+
+export default withUser({
+  whenAuthed: AuthAction.RENDER,
+  whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
+  whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
+  LoaderComponent: LoadComponent,
+})(LogoutPage);
 
 function LogoutPage(): Component {
   const auth: Auth = getAuth(),
@@ -78,11 +81,3 @@ function LogoutPage(): Component {
     </section>
   );
 }
-
-export default withUser({
-  whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
-})(LogoutPage);
-
-// export const getServerSideProps = withUserSSR({
-//   whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
-// })();
