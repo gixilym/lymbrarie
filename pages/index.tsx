@@ -124,13 +124,12 @@ function Index({ user }: Props): Component {
 
 export const getServerSideProps = withUserSSR()<Props>(
   async ({ user: data }) => {
-    if (!data) return { props: { user: null } };
-
+    // if (!data) return { props: { user: null } };
     const user: User = {
-      UID: data.id,
-      email: data.email,
-      name: data.displayName,
-      img: data.photoURL,
+      UID: data?.id ?? null,
+      email: data?.email ?? null,
+      name: data?.displayName ?? null,
+      img: data?.photoURL ?? null,
     };
 
     return { props: { user } };
@@ -149,10 +148,10 @@ async function getListBooks(UID: string): Promise<List> {
       res.forEach((doc: Doc) => books.push({ id: doc.id, data: doc.data() }));
     } catch (err: any) {
       if (!MAINTENANCE) {
-        // console.error(err.message);
-        const type: string =
-          err.message == "Quota exceeded." ? "limit" : "unknown";
-        location.href = `/error?err=${type}`;
+        console.error(err.message);
+        // const type: string =
+        //   err.message == "Quota exceeded." ? "limit" : "unknown";
+        // location.href = `/error?err=${type}`;
       }
     }
   }
