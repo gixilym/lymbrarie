@@ -71,7 +71,7 @@ function LogoutPage(): Component {
             <p className="text-lg sm:text-xl text-white">{t("logout")}</p>
           </button>
           <button
-            onClick={() => router.push("/?guest=false")}
+            onClick={() => router.push("/")}
             className="bg-slate-100/10 flex items-center justify-center w-[330px] sm:w-full max-w-[400px] h-14 sm:h-[58px] gap-x-6 rounded-lg duration-150 hover:bg-blue-300/30"
           >
             <p className="text-lg sm:text-xl text-slate-100">{t("cancel")}</p>

@@ -105,15 +105,14 @@ function EditBookPopUp(props: Props): Component {
 
     if (!validateFields()) return;
 
+    startLoading();
+
     const loaned: string = isLoaned(book.state) ? book.loaned : "",
       updatedBook: Book = { ...book, loaned } as const,
-      bookData = { documentId, updatedBook } as const,
       oldVersion = cacheBooks.filter((b: Book) => b.id != documentId),
       newVersion = [...oldVersion, { id: documentId, data: updatedBook }],
       titlePage: string = formatTitle(book.title),
-      newPath: string = `/book/${titlePage}?guest=false`;
-
-    startLoading();
+      newPath: string = `/book/${titlePage}`;
 
     try {
       await setDoc(doc(COLLECTION, documentId), updatedBook);

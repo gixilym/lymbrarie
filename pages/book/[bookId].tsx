@@ -20,7 +20,7 @@ import {
   Tag as StateIcon,
   User as UserIcon,
 } from "lucide-react";
-import { withUser, withUserSSR } from "next-firebase-auth";
+import { AuthAction, User, useUser, withUser } from "next-firebase-auth";
 import Head from "next/head";
 import Image from "next/image";
 import { type NextRouter, useRouter } from "next/router";
@@ -28,9 +28,17 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilState } from "recoil";
 import defaultCover from "@/public/cover.webp";
+import { Auth, getAuth, onAuthStateChanged, Unsubscribe } from "firebase/auth";
 
-function BookId({ isLogged }: Props): Component {
+export default withUser({
+  whenAuthed: AuthAction.RENDER,
+})(BookId);
+
+function BookId(): Component {
   const { openPopUp } = usePopUp(),
+    auth: Auth = getAuth(),
+    user: User = useUser(),
+    isLogged: boolean = user.id != null,
     [t] = useTranslation("global"),
     router: NextRouter = useRouter(),
     bookTitle: string = router.query.bookId?.toString() ?? "",
@@ -43,7 +51,6 @@ function BookId({ isLogged }: Props): Component {
     [allTitles] = useLocalStorage("allTitles", []),
     [animations] = useLocalStorage("animations", true),
     notesProps = { updateNotes, notes, setNotes, isLoading },
-    guest: string = ((router.query.guest as string) ??= "false"),
     [popup] = useRecoilState<any>(popupsValue),
     [styles, animate] = useSpring(() => ({
       opacity: animations ? 0 : 1,
@@ -51,12 +58,18 @@ function BookId({ isLogged }: Props): Component {
     }));
 
   useEffect(() => {
+    const unsubscribe: Unsubscribe = onAuthStateChanged(
+      auth,
+      () => console.log("auth actualizado"),
+      err => console.error(`error actualizando auth: ${err.message}`)
+    );
+
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
     if (isLogged && !allTitles.includes(title)) router.push("/");
   }, [allTitles]);
-
-  // useEffect(() => {
-  //   if (isLogged && guest != "false") router.push("/");
-  // }, [guest]);
 
   useEffect(() => {
     if (animations) animate.start({ opacity: 1 });
@@ -70,7 +83,8 @@ function BookId({ isLogged }: Props): Component {
 
   async function updateNotes(): Promise<void> {
     try {
-      await setDoc(doc(COLLECTION, book.id), { ...book?.data, notes });
+      const bookToDB = { ...book?.data, notes };
+      await setDoc(doc(COLLECTION, book.id), bookToDB);
       const updatedNotes: Book = { ...book, data: { ...book?.data, notes } },
         oldVersion: Book[] = cacheBooks.filter(
           (b: Book) => b?.id != documentId
@@ -111,8 +125,8 @@ function BookId({ isLogged }: Props): Component {
         <title>{book?.data?.title}</title>
       </Head>
 
-      {popup.edit_book && <EditBookPopUp data={book} documentId={documentId} />}
       {popup.offline && <OfflinePopUp />}
+      {popup.edit_book && <EditBookPopUp data={book} documentId={documentId} />}
       {popup.delete_book && (
         <DeleteBookPopUp
           documentId={documentId}
@@ -215,33 +229,3 @@ function BookId({ isLogged }: Props): Component {
     </animated.section>
   );
 }
-
-export default withUser<Props>()(BookId);
-
-export const getServerSideProps = withUserSSR()<Props>(
-  async ({ user, query }): Promise<SideProps> => {
-    const isLogged: boolean = !!user;
-    // const guest: string = ((query.guest as string) ??= "false");
-
-    // if (guest && !isLogged) return { props: { isLogged: false } };
-
-    if (!user) {
-      return {
-        redirect: {
-          destination: "/login",
-          permanent: false,
-        },
-      };
-    }
-
-    return { props: { isLogged } };
-  }
-);
-
-interface Props {
-  isLogged: boolean;
-}
-
-type SideProps =
-  | { props: { isLogged: boolean } }
-  | { redirect: { destination: string; permanent: boolean } };

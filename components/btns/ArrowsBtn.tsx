@@ -1,6 +1,6 @@
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import type { Component } from "@/utils/types";
-import { throttle } from "lodash";
+import { throttle } from "es-toolkit";
 import { MoveDown as DownIcon, MoveUp as UpIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 

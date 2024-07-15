@@ -1,13 +1,12 @@
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import type { Component } from "@/utils/types";
 import { CircleChevronLeft as Icon } from "lucide-react";
-import { useRouter } from "next/router";
+import { type NextRouter, useRouter } from "next/router";
 import { flushSync } from "react-dom";
 
 function BackBtn(): Component {
-  const { push, query } = useRouter();
+  const { push }: NextRouter = useRouter();
   const [animations] = useLocalStorage("animations", true);
-  const guest: string = query.guest as string;
 
   function goTo(): Promise<boolean> {
     const condition: boolean =
@@ -16,10 +15,8 @@ function BackBtn(): Component {
 
     return condition
       ? // @ts-ignore
-        document.startViewTransition(() =>
-          flushSync(() => push(`/?guest=${guest}`))
-        )
-      : push(`/?guest=${guest}`);
+        document.startViewTransition(() => flushSync(() => push("/")))
+      : push("/");
   }
 
   return (

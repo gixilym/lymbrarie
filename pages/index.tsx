@@ -10,6 +10,8 @@ import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import { zeroBooksValue } from "@/utils/store";
 import type { Book, Component, Doc } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
+import { Auth, getAuth, Unsubscribe } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import {
   Query,
   QuerySnapshot,
@@ -17,7 +19,7 @@ import {
   query,
   where,
 } from "firebase/firestore/lite";
-import { AuthAction, useUser, withUser } from "next-firebase-auth";
+import { AuthAction, User, useUser, withUser } from "next-firebase-auth";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
@@ -30,7 +32,8 @@ export default withUser({
 })(Index);
 
 function Index(): Component {
-  const user = useUser(),
+  const user: User = useUser(),
+    auth: Auth = getAuth(),
     [myBooks, setMyBooks] = useState<Book[]>([]),
     isLogged: boolean = user != null,
     UID: string = user.id as string,
@@ -47,19 +50,15 @@ function Index(): Component {
       config: { duration: 1000 },
     }));
 
-  /* [, setSearch] = useRecoilState<string>(inputSearch),
-    auth: Auth = getAuth(),
-    router: NextRouter = useRouter(),
-    guest: boolean = JSON.parse((router.query.guest as string) ?? "false"),
-
   useEffect(() => {
-    if (isLogged && guest) {  
-      setSearch("");
-      setAllTitles([]);
-      setCacheBooks(null);
-      auth.signOut().then(() => router.push("/login"));
-    }
-  }, [guest]);*/
+    const unsubscribe: Unsubscribe = onAuthStateChanged(
+      auth,
+      () => console.log("auth actualizado"),
+      err => console.error(`error actualizando auth: ${err.message}`)
+    );
+
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     if (animations) animate.start({ opacity: 1 });
@@ -140,9 +139,10 @@ async function getListBooks(UID: string): Promise<List> {
       res.forEach((doc: Doc) => books.push({ id: doc.id, data: doc.data() }));
     } catch (err: any) {
       if (!MAINTENANCE) {
-        const type: string =
-          err.message == "Quota exceeded." ? "limit" : "unknown";
-        location.href = `/error?err=${type}`;
+        // const type: string =
+        //   err.message == "Quota exceeded." ? "limit" : "unknown";
+        // location.href = `/error?err=${type}`;
+        console.error(`Error en getListBooks: ${err.message}`);
       }
     }
   }

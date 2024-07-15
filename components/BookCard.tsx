@@ -17,8 +17,7 @@ function BookCard(props: Props): Component {
     title = formatTitle(data.title ?? ""),
     img: string = data.image || defaultCover.src,
     [t] = useTranslation("global"),
-    guest: string = (useRouter().query.guest as string) ?? "false",
-    path: string = `/book/${title}?guest=${guest}`,
+    path: string = `/book/${title}`,
     withProps: Details = {
       onClick: goTo,
       title: data.title ?? "",
