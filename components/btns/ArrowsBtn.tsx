@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 function Arrows(): Component {
   const [animations] = useLocalStorage("animations", true),
     [showDownBtn, setShowDownBtn] = useState<boolean>(true),
-    [cacheBooks] = useLocalStorage("cacheBooks", null),
     [showUpBtn, setShowUpBtn] = useState<boolean>(false),
     [isClient, setIsClient] = useState<boolean>(false);
 
@@ -53,7 +52,7 @@ function Arrows(): Component {
       ) : (
         <div className="fixed w-8 h-10" />
       )}
-      {showDownBtn && (cacheBooks?.length ?? 0) > 8 ? (
+      {showDownBtn ? (
         <DownIcon
           size={36}
           className="fixed cursor-pointer opacity-70 bg-gray-800 py-1 rounded-md w-8"

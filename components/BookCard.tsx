@@ -1,5 +1,4 @@
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
-import { DEFAULT_COVER } from "@/utils/consts";
 import type { BookData, Component } from "@/utils/types";
 import { type NextRouter } from "next/router";
 import { useRouter } from "next/router";
@@ -9,13 +8,14 @@ import { twMerge } from "tailwind-merge";
 import CardWithDetails from "./CardWithDetails";
 import CardWithOutDetails from "./CardWithoutDetails";
 import { formatTitle } from "@/utils/helpers";
+import defaultCover from "@/public/cover.webp";
 
 function BookCard(props: Props): Component {
   const { data, showDetails } = props,
     { push }: NextRouter = useRouter(),
     [animations] = useLocalStorage("animations", true),
     title = formatTitle(data.title ?? ""),
-    img: string = data.image || DEFAULT_COVER,
+    img: string = data.image || defaultCover.src,
     [t] = useTranslation("global"),
     guest: string = (useRouter().query.guest as string) ?? "false",
     path: string = `/book/${title}?guest=${guest}`,

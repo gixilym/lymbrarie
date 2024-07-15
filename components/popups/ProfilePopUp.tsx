@@ -1,3 +1,4 @@
+import defaultCover from "@/public/cover.webp";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import type { Book, Component } from "@/utils/types";
 import Image from "next/image";
@@ -7,7 +8,6 @@ import ClosePopUpBtn from "../btns/ClosePopUpBtn";
 import LogOutBtn from "../btns/LogOutBtn";
 import DialogContainer from "../DialogContainer";
 import PopUpTitle from "../TitlePopUp";
-import { DEFAULT_COVER } from "@/utils/consts";
 
 function ProfilePopUp({ profileImg, profileName }: Props): Component {
   const [t] = useTranslation("global"),
@@ -49,7 +49,7 @@ function ProfilePopUp({ profileImg, profileName }: Props): Component {
             <Image
               alt="avatar"
               className="rounded-full sm:w-24 w-20 sm:h-24 h-20 object-cover object-center"
-              src={profileImg ?? DEFAULT_COVER}
+              src={profileImg ?? defaultCover}
               width={50}
               height={50}
             />
@@ -102,7 +102,3 @@ interface Props {
 type States = { [key: string]: number };
 
 type BookState = "Read" | "Reading" | "Pending" | "Borrowed";
-
-// { allBooks, reading, read, pending, user } = accountDetails,
-// img: string = user?.image ?? DEFAULT_COVER,
-// name: string = user?.name ?? "";

@@ -1,11 +1,11 @@
-import { BOOK_HANDLER_URL } from "@/utils/consts";
+import { COLLECTION } from "@/utils/consts";
 import useLoadContent from "@/utils/hooks/useLoadContent";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import usePopUp from "@/utils/hooks/usePopUp";
 import { inputSearch, zeroBooksValue } from "@/utils/store";
 import type { Book, Component } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
-import axios from "axios";
+import { deleteDoc, doc } from "firebase/firestore/lite";
 import { TriangleAlert as WarningIcon } from "lucide-react";
 import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
@@ -14,8 +14,8 @@ import { useTranslation } from "react-i18next";
 import { useRecoilState } from "recoil";
 
 function DeleteBookPopUp({ documentId, title }: Props): Component {
-  const { closePopUp } = usePopUp(),
-    [t] = useTranslation("global"),
+  const [t] = useTranslation("global"),
+    { closePopUp } = usePopUp(),
     [animations] = useLocalStorage("animations", true),
     router: AppRouterInstance = useRouter(),
     [, setSearchVal] = useRecoilState<string>(inputSearch),
@@ -34,18 +34,23 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
 
   async function deleteDocument(): Promise<void> {
     startLoading();
-    setSearchVal("");
-    setZeroBooks(cacheBooks.length == 1);
-    axios.delete(BOOK_HANDLER_URL, { data: documentId });
 
-    if (cacheBooks?.length == 1) {
-      setCacheBooks(null);
-      setAllTitles([]);
-      redirectToHome();
-    } else {
-      setCacheBooks(cacheBooks?.filter((b: Book) => b.data.title != title));
-      setAllTitles(cacheBooks.map((b: Book) => b.data.title));
-      redirectToHome();
+    try {
+      await deleteDoc(doc(COLLECTION, documentId));
+      setSearchVal("");
+      setZeroBooks(cacheBooks.length == 1);
+      if (cacheBooks?.length == 1) {
+        setCacheBooks(null);
+        setAllTitles([]);
+        redirectToHome();
+      } else {
+        setCacheBooks(cacheBooks?.filter((b: Book) => b.data.title != title));
+        setAllTitles(cacheBooks.map((b: Book) => b.data.title));
+        redirectToHome();
+      }
+    } catch (err: any) {
+      console.error(`Error en deleteDocument: ${err.message}`);
+      router.push("/error?err=unknown");
     }
   }
 
@@ -68,12 +73,12 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
             <button
               disabled={isLoading}
               onClick={() => closePopUp("delete_book")}
-              className="btn  font-thin bg-slate-700 hover:bg-slate-600 text-white text-lg w-24"
+              className="btn font-thin bg-slate-700 hover:bg-slate-600 text-white text-lg w-24"
             >
               {t("cancel")}
             </button>
             {isLoading ? (
-              <button className="btn  font-thin text-white text-lg w-26">
+              <button className="btn font-thin text-white text-lg w-26">
                 {t("deleting")}
               </button>
             ) : (

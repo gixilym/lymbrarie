@@ -1,8 +1,6 @@
-import type { StaticImageData } from "next/image";
-import type { Book, BookData } from "./types";
+import { DB } from "@/database/initAuth";
 import { collection, type CollectionReference } from "firebase/firestore/lite";
-import { DB } from "@/database/firebase";
-import defaultCover from "@/public/cover.webp";
+import type { Book, BookData } from "./types";
 
 const MAINTENANCE: boolean = false;
 
@@ -75,13 +73,7 @@ const EXAMPLES_BOOKS: Book[] = [
   },
 ] as const;
 
-const DEFAULT_COVER: StaticImageData | any = defaultCover;
-
-const BOOK_HANDLER_URL: string = "/api/handler/book";
-
-const NAME_DB: string = "lymbrarie_books";
-
-const COLLECTION: CollectionReference = collection(DB, NAME_DB);
+const COLLECTION: CollectionReference = collection(DB, "lymbrarie_books");
 
 const EmptyData: BookData = {
   title: "",
@@ -97,12 +89,4 @@ const EMPTY_BOOK = {
   data: EmptyData,
 };
 
-export {
-  MAINTENANCE,
-  GENDERS,
-  EXAMPLES_BOOKS,
-  EMPTY_BOOK,
-  COLLECTION,
-  BOOK_HANDLER_URL,
-  DEFAULT_COVER,
-};
+export { COLLECTION, EMPTY_BOOK, EXAMPLES_BOOKS, GENDERS, MAINTENANCE };

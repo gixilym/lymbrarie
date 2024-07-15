@@ -1,10 +1,20 @@
 rules_version = '2';
 
 service cloud.firestore {
+
   match /databases/{database}/documents {
     match /lymbrarie_books/{book} {
-      allow read, write: if request.auth != null;
+      allow list, delete, update: if isAuthenticated() && isOwner();
+      allow create: if isAuthenticated();
     }
   }
-}
 
+  function isAuthenticated() {
+    return request.auth != null;
+  }
+
+  function isOwner() {
+    return request.auth.uid == resource.data.owner;
+  }
+
+}

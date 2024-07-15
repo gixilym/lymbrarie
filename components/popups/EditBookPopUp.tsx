@@ -1,4 +1,4 @@
-import { BOOK_HANDLER_URL, EMPTY_BOOK, GENDERS } from "@/utils/consts";
+import { COLLECTION, EMPTY_BOOK, GENDERS } from "@/utils/consts";
 import {
   deformatTitle,
   formatTitle,
@@ -18,7 +18,7 @@ import type {
   SelectEvent,
   Timer,
 } from "@/utils/types";
-import axios from "axios";
+import { doc, setDoc } from "firebase/firestore/lite";
 import { type NextRouter, useRouter } from "next/router";
 import {
   type FormEvent,
@@ -114,9 +114,15 @@ function EditBookPopUp(props: Props): Component {
       newPath: string = `/book/${titlePage}?guest=false`;
 
     startLoading();
-    await axios.patch(BOOK_HANDLER_URL, bookData);
-    setCacheBooks(newVersion);
-    router.replace(newPath).then(() => router.reload());
+
+    try {
+      await setDoc(doc(COLLECTION, documentId), updatedBook);
+      setCacheBooks(newVersion);
+      router.replace(newPath).then(() => router.reload());
+    } catch (err: any) {
+      console.error(`Error en editBook: ${err.message}`);
+      router.push("/error?err=unknown");
+    }
   }
 
   function validateFields(): boolean {

@@ -91,7 +91,7 @@
     "no-gender": "Sin asignar",
     "religion": "Religión",
     "limit": "Se ha alcanzado el límite de consultas. Por favor, informa a este email:",
-    "unknown": "Ocurrió un error inesperado, recarga la web y vuelve a intentarlo. Si el error persiste, informa a este email:",
+    "unknown": "Ocurrió un error inesperado, recarga la web y verifica tu conexion. Si el error persiste, informa a este email:",
     "show-state": "Mostrar estado",
     "title-too-long": "Titulo muy largo",
     "author-too-long": "Autor muy largo",
@@ -113,5 +113,6 @@
     "go-out": "Salir",
     "my-gender": "Mi género",
     "offline": "Estás desconectado",
-    "text-offline": "Necesitas conexión a internet para añadir, editar o eliminar un libro."
+    "text-offline": "Necesitas conexión a internet para añadir, editar o eliminar un libro.",
+    "book-find": "donde cada libro encuentra su lugar"
 }

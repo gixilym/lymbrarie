@@ -1,20 +1,25 @@
 import logo from "@/public/favicon.ico";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
+import { inputSearch } from "@/utils/store";
 import type { Component } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
-import { signOut } from "next-auth/react";
+import { type Auth, getAuth } from "firebase/auth";
+import { AuthAction, withUser, withUserTokenSSR } from "next-firebase-auth";
 import Head from "next/head";
 import Image from "next/image";
 import { type NextRouter, useRouter } from "next/router";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useRecoilState } from "recoil";
 
 function LogoutPage(): Component {
-  const { push }: NextRouter = useRouter(),
-    [animations] = useLocalStorage("animations", true),
+  const auth: Auth = getAuth(),
     [t] = useTranslation("global"),
+    router: NextRouter = useRouter(),
+    [animations] = useLocalStorage("animations", true),
     [, setCacheBooks] = useLocalStorage("cacheBooks", null),
     [, setAllTitles] = useLocalStorage("allTitles", []),
+    [, setSearch] = useRecoilState<string>(inputSearch),
     [styles, animate] = useSpring(() => ({
       opacity: animations ? 0 : 1,
       config: { duration: 400 },
@@ -25,9 +30,10 @@ function LogoutPage(): Component {
   }, [animate]);
 
   function forgetSession(): void {
+    setSearch("");
     setCacheBooks(null);
     setAllTitles([]);
-    signOut({ callbackUrl: "/login" });
+    auth.signOut();
   }
 
   return (
@@ -57,7 +63,7 @@ function LogoutPage(): Component {
             <p className="text-lg sm:text-xl text-white">{t("logout")}</p>
           </button>
           <button
-            onClick={() => push("/?guest=false")}
+            onClick={() => router.push("/?guest=false")}
             className="bg-slate-100/10 flex items-center justify-center w-[330px] sm:w-full max-w-[400px] h-14 sm:h-[58px] gap-x-6 rounded-lg duration-150 hover:bg-blue-300/30"
           >
             <p className="text-lg sm:text-xl text-slate-100">{t("cancel")}</p>
@@ -68,4 +74,10 @@ function LogoutPage(): Component {
   );
 }
 
-export default LogoutPage;
+export default withUser({
+  whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
+})(LogoutPage);
+
+export const getServerSideProps = withUserTokenSSR({
+  whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
+})();

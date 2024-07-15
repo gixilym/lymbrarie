@@ -91,7 +91,7 @@
     "no-gender": "Not assigned",
     "religion": "Religion",
     "limit": "The query limit has been reached. Please report to this email:",
-    "unknown": "An unexpected error occurred, please reload the website and try again. If the error persists, report it to this email:",
+    "unknown": "An unexpected error occurred, please reload the website and verify your connection. If the error persists, report it to this email:",
     "show-state": "Show state",
     "title-too-long": "Title too long",
     "author-too-long": "Author too long",
@@ -113,5 +113,6 @@
     "go-out": "Go out",
     "my-gender": "My gender",
     "offline": "You're offline",
-    "text-offline": "You need an internet connection to add, edit, or delete a book."
+    "text-offline": "You need an internet connection to add, edit, or delete a book.",
+    "book-find": "where every book finds its place"
 }

@@ -1,5 +1,5 @@
 import type { SVGProps } from "react";
-import { Component } from "./types";
+import type { Component } from "./types";
 import { Rows3 as LayoutIconn, List as ListIconn } from "lucide-react";
 
 const GoogleIcon = (props: SVG): Component => (

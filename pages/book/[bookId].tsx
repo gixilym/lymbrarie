@@ -5,8 +5,7 @@ import DeleteBookPopUp from "@/components/popups/DeleteBookPopUp";
 import EditBookPopUp from "@/components/popups/EditBookPopUp";
 import OfflinePopUp from "@/components/popups/OfflinePopUp";
 import {
-  BOOK_HANDLER_URL,
-  DEFAULT_COVER,
+  COLLECTION,
   EMPTY_BOOK,
   EXAMPLES_BOOKS,
 } from "@/utils/consts";
@@ -15,9 +14,9 @@ import useLoadContent from "@/utils/hooks/useLoadContent";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import usePopUp from "@/utils/hooks/usePopUp";
 import { popupsValue } from "@/utils/store";
-import type { Book, Component, Session } from "@/utils/types";
+import type { Book, Component } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
-import axios from "axios";
+import { doc, setDoc } from "firebase/firestore/lite";
 import {
   Trash as DeleteIcon,
   SquarePen as EditIcon,
@@ -25,30 +24,30 @@ import {
   Tag as StateIcon,
   User as UserIcon,
 } from "lucide-react";
-import type { GetServerSidePropsContext as Ctx } from "next";
-import { getSession, signOut } from "next-auth/react";
+import { withUser, withUserSSR } from "next-firebase-auth";
 import Head from "next/head";
 import Image from "next/image";
 import { type NextRouter, useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilState } from "recoil";
+import defaultCover from "@/public/cover.webp";
 
 function BookId({ isLogged }: Props): Component {
-  const router: NextRouter = useRouter(),
-    { openPopUp } = usePopUp(),
+  const { openPopUp } = usePopUp(),
+    [t] = useTranslation("global"),
+    router: NextRouter = useRouter(),
     bookTitle: string = router.query.bookId?.toString() ?? "",
     title: string = deformatTitle(bookTitle),
     { isLoading, finishLoading } = useLoadContent(),
     [book, setBook] = useState<any>(EMPTY_BOOK),
     [documentId, setDocumentId] = useState<string>(""),
     [notes, setNotes] = useState<string>(""),
-    [t] = useTranslation("global"),
     [cacheBooks, setCacheBooks] = useLocalStorage("cacheBooks", null),
-    [allTitles, setAllTitles] = useLocalStorage("allTitles", []),
+    [allTitles] = useLocalStorage("allTitles", []),
     [animations] = useLocalStorage("animations", true),
     notesProps = { updateNotes, notes, setNotes, isLoading },
-    guest: string = JSON.parse((router.query.guest as string) ?? "false"),
+    guest: string = ((router.query.guest as string) ??= "false"),
     [popup] = useRecoilState<any>(popupsValue),
     [styles, animate] = useSpring(() => ({
       opacity: animations ? 0 : 1,
@@ -60,11 +59,7 @@ function BookId({ isLogged }: Props): Component {
   }, [allTitles]);
 
   useEffect(() => {
-    if (isLogged && guest) {
-      setAllTitles([]);
-      setCacheBooks(null);
-      signOut({ callbackUrl: "/login" });
-    }
+    if (isLogged && guest != "false") router.push("/");
   }, [guest]);
 
   useEffect(() => {
@@ -77,13 +72,20 @@ function BookId({ isLogged }: Props): Component {
     else getExampleBook();
   }, [isLogged]);
 
-  function updateNotes(): void {
-    const updatedNotes: Book = { ...book, data: { ...book?.data, notes } },
-      oldVersion: Book[] = cacheBooks.filter((b: Book) => b?.id != documentId),
-      newVersion: Book[] = [...oldVersion, updatedNotes];
-    setCacheBooks(newVersion);
-    axios.put(BOOK_HANDLER_URL, { updatedNotes });
-    router.push("/");
+  async function updateNotes(): Promise<void> {
+    try {
+      await setDoc(doc(COLLECTION, book.id), { ...book?.data, notes });
+      const updatedNotes: Book = { ...book, data: { ...book?.data, notes } },
+        oldVersion: Book[] = cacheBooks.filter(
+          (b: Book) => b?.id != documentId
+        ),
+        newVersion: Book[] = [...oldVersion, updatedNotes];
+      setCacheBooks(newVersion);
+      router.reload();
+    } catch (err: any) {
+      console.error(`Error en updateNotes: ${err.message}`);
+      router.push("/error?err=unknown");
+    }
   }
 
   function getExampleBook(): void {
@@ -127,7 +129,7 @@ function BookId({ isLogged }: Props): Component {
         <Image
           priority
           className="select-none aspect-[200/300] w-[200px] h-[300px] object-center object-fill rounded-sm"
-          src={book?.data?.image || DEFAULT_COVER}
+          src={book?.data?.image || defaultCover}
           width={200}
           height={300}
           alt="cover"
@@ -218,25 +220,27 @@ function BookId({ isLogged }: Props): Component {
   );
 }
 
-export default BookId;
+export default withUser<Props>()(BookId);
 
-export async function getServerSideProps(ctx: Ctx): Promise<SideProps> {
-  const session: Session = await getSession(ctx);
-  const guest: string = JSON.parse((ctx.query.guest as string) ?? "false");
+export const getServerSideProps = withUserSSR()<Props>(
+  async ({ user, query }): Promise<SideProps> => {
+    const isLogged: boolean = !!user;
+    const guest: string = ((query.guest as string) ??= "false");
 
-  if (guest) return { props: { isLogged: session != null } };
+    if (guest && !isLogged) return { props: { isLogged: false } };
 
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
+    if (!user) {
+      return {
+        redirect: {
+          destination: "/login",
+          permanent: false,
+        },
+      };
+    }
+
+    return { props: { isLogged } };
   }
-
-  return { props: { isLogged: session != null } };
-}
+);
 
 interface Props {
   isLogged: boolean;

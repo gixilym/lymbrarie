@@ -1,4 +1,4 @@
-import { BOOK_HANDLER_URL, EMPTY_BOOK } from "@/utils/consts";
+import { COLLECTION, EMPTY_BOOK } from "@/utils/consts";
 import { isLoaned, notification, tLC } from "@/utils/helpers";
 import useLoadContent from "@/utils/hooks/useLoadContent";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
@@ -12,7 +12,7 @@ import type {
   SelectEvent,
   Timer,
 } from "@/utils/types";
-import axios from "axios";
+import { doc, setDoc } from "firebase/firestore/lite";
 import { type NextRouter, useRouter } from "next/router";
 import {
   type FormEvent,
@@ -26,14 +26,14 @@ import DialogContainer from "../DialogContainer";
 import FieldsBook from "../FieldsBook";
 import PopUpTitle from "../TitlePopUp";
 
-function NewBookPopUp({ userID }: { userID: string }): Component {
+function NewBookPopUp({ UID }: { UID: string }): Component {
   const [t] = useTranslation("global"),
     { closePopUp } = usePopUp(),
     router: NextRouter = useRouter(),
     formRef: FormRef = useRef<Reference>(null),
     [book, setBook] = useState<Book>(EMPTY_BOOK),
     { isLoading, startLoading } = useLoadContent(),
-    [, setCacheBooks] = useLocalStorage("cacheBooks", null),
+    [cacheBooks, setCacheBooks] = useLocalStorage("cacheBooks", null),
     [allTitles] = useLocalStorage("allTitles", []),
     [errorKey, setErrorKey] = useState<string>(""),
     [addClicked, setAddClicked] = useState<boolean>(false),
@@ -75,16 +75,19 @@ function NewBookPopUp({ userID }: { userID: string }): Component {
     setAddClicked(!addClicked);
 
     if (!validateFields()) return;
-
-    const bookData: BookData = { ...book.data, owner: userID as string };
     startLoading();
 
     try {
-      await axios.post(BOOK_HANDLER_URL, bookData);
-      setCacheBooks(null);
+      const newID: string = crypto.randomUUID();
+      const bookData: BookData = { ...book.data, owner: UID };
+      await setDoc(doc(COLLECTION, newID), bookData);
+      const newBookData: Book = { id: newID, data: bookData };
+      const newVersion: Book[] = [...(cacheBooks ?? []), newBookData];
+      setCacheBooks(newVersion);
       router.reload();
     } catch (err: any) {
-      console.error("Error adding book: ", err.message);
+      console.error(`Error en newBook: ${err.message}`);
+      router.push("/error?err=unknown");
     }
   }
 

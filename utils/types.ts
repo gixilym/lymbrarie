@@ -2,7 +2,6 @@ import type {
   DocumentData,
   QueryDocumentSnapshot,
 } from "firebase/firestore/lite";
-import type { Session as NextSession } from "next-auth";
 import type {
   ChangeEvent,
   JSX,
@@ -12,8 +11,6 @@ import type {
 } from "react";
 
 type Component = JSX.Element | JSX.Element[] | ReactNode;
-
-type Session = NextSession | null;
 
 type InputEvent = ChangeEvent<HTMLInputElement>;
 
@@ -75,7 +72,6 @@ export type {
   MemoComponent,
   PopUpsIds,
   SelectEvent,
-  Session,
   Timer,
   User,
 };

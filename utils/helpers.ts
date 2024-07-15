@@ -1,7 +1,4 @@
-import { useEffect } from "react";
 import { toast } from "react-hot-toast";
-import { useRecoilState } from "recoil";
-import { isOnlineValue } from "./store";
 
 function notification(type: "success" | "error", msg: string): void {
   toast[type](msg, {
@@ -34,25 +31,6 @@ function translateStateBook(state: string, t: any): string {
   }
 }
 
-function IsOnline(): void {
-  const [isOnline, setIsOnline] = useRecoilState<boolean>(isOnlineValue);
-
-  useEffect(() => console.info("isOnline: " + isOnline), [isOnline]);
-
-  useEffect(() => {
-    const handleOnline = (): void => setIsOnline(true);
-    const handleOffline = (): void => setIsOnline(false);
-
-    addEventListener("online", handleOnline);
-    addEventListener("offline", handleOffline);
-
-    return () => {
-      removeEventListener("online", handleOnline);
-      removeEventListener("offline", handleOffline);
-    };
-  }, []);
-}
-
 const isLoaned: (state: string) => boolean = (state: string): boolean =>
   state == "Borrowed";
 
@@ -64,8 +42,6 @@ const formatTitle: Format = (title: string): string =>
 const deformatTitle: Format = (title: string): string =>
   title.replaceAll("_", " ").replaceAll("@", "?");
 
-const userIsOnline: () => void = IsOnline;
-
 export {
   deformatTitle,
   formatTitle,
@@ -73,7 +49,6 @@ export {
   notification,
   tLC,
   translateStateBook,
-  userIsOnline,
 };
 
 type Format = (title: string) => string;

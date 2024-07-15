@@ -7,9 +7,10 @@ import Maintenance from "@/components/Maintenance";
 import PopUps from "@/components/PopUps";
 import { COLLECTION, EXAMPLES_BOOKS, MAINTENANCE } from "@/utils/consts";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
-import { zeroBooksValue } from "@/utils/store";
+import { inputSearch, zeroBooksValue } from "@/utils/store";
 import type { Book, Component, Doc } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
+import { type Auth, getAuth } from "firebase/auth";
 import {
   Query,
   QuerySnapshot,
@@ -17,20 +18,19 @@ import {
   query,
   where,
 } from "firebase/firestore/lite";
-import {
-  GetServerSidePropsContext,
-  GetServerSidePropsResult as Result,
-} from "next";
-import { getSession, signOut } from "next-auth/react";
+import { AuthAction, withUser, withUserSSR } from "next-firebase-auth";
 import Head from "next/head";
-import { NextRouter, useRouter } from "next/router";
+import { type NextRouter, useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
-function Index({ user, isLogged }: Props): Component {
+export default withUser<Props>()(Index);
+
+function Index({ user }: Props): Component {
   const [myBooks, setMyBooks] = useState<Book[]>([]),
-    userID: string = user?.id,
-    profileImg: string = user?.image as string,
+    isLogged: boolean = user != null,
+    UID: string = user?.UID as string,
+    profileImg: string = user?.img as string,
     profileName: string = user?.name as string,
     [cacheBooks, setCacheBooks] = useLocalStorage("cacheBooks", null),
     [, setAllTitles] = useLocalStorage("allTitles", []),
@@ -38,8 +38,10 @@ function Index({ user, isLogged }: Props): Component {
     [animations] = useLocalStorage("animations", true),
     [loading, setLoading] = useState<boolean>(false),
     [zeroBooks] = useRecoilState<boolean>(zeroBooksValue),
+    [, setSearch] = useRecoilState<string>(inputSearch),
+    auth: Auth = getAuth(),
     router: NextRouter = useRouter(),
-    guest: string = JSON.parse((router.query.guest as string) ?? "false"),
+    guest: boolean = JSON.parse((router.query.guest as string) ?? "false"),
     [styles, animate] = useSpring(() => ({
       opacity: animations ? 0 : 1,
       config: { duration: 1000 },
@@ -47,9 +49,10 @@ function Index({ user, isLogged }: Props): Component {
 
   useEffect(() => {
     if (isLogged && guest) {
+      setSearch("");
       setAllTitles([]);
       setCacheBooks(null);
-      signOut({ callbackUrl: "/login" });
+      auth.signOut().then(() => router.push("/login"));
     }
   }, [guest]);
 
@@ -63,23 +66,19 @@ function Index({ user, isLogged }: Props): Component {
       setCacheBooks(myBooks);
       setAllTitles(myBooks.map((b: Book) => b.data.title));
     }
-  }, [myBooks, isLogged, zeroBooks]);
+  }, [myBooks, user, zeroBooks]);
 
   useEffect(() => {
-    if (isLogged) {
-      fetchBooks();
-    } else {
-      setMyBooks(EXAMPLES_BOOKS);
-    }
-  }, [isLogged]);
+    if (isLogged) fetchBooks();
+    else setMyBooks(EXAMPLES_BOOKS);
+  }, [user]);
 
   async function fetchBooks(): Promise<void> {
     if (zeroBooks) return;
-    if (Array.isArray(cacheBooks)) {
-      setMyBooks(cacheBooks);
-    } else {
+    if (Array.isArray(cacheBooks)) setMyBooks(cacheBooks);
+    else {
       setLoading(true);
-      const { books, isEmpty }: ResList = await getListBooks(userID);
+      const { books, isEmpty } = await getListBooks(UID);
       setMyBooks(books);
       setBooksIsEmpty(isEmpty);
       setLoading(false);
@@ -103,11 +102,7 @@ function Index({ user, isLogged }: Props): Component {
       {!MAINTENANCE ? (
         <>
           <HeaderIndex isLogged={isLogged} />
-          <PopUps
-            profileImg={profileImg}
-            profileName={profileName}
-            userID={userID}
-          />
+          <PopUps profileImg={profileImg} profileName={profileName} UID={UID} />
           {loading ? (
             <LoadComponent />
           ) : (
@@ -127,32 +122,29 @@ function Index({ user, isLogged }: Props): Component {
     </animated.div>
   );
 }
-export default Index;
 
-export async function getServerSideProps(ctx: Ctx): Promise<Result<SideProps>> {
-  const session: any = await getSession(ctx);
-  const user: any = { ...session?.user, id: session?.userId ?? null };
-  const guest: boolean = JSON.parse((ctx.query.guest as string) ?? "false");
+export const getServerSideProps = withUserSSR({
+  whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
+})<Props>(async ({ user: data }) => {
+  if (!data) return { props: { user: null } };
 
-  if (!session && !guest) {
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  }
+  const user: User = {
+    UID: data.id,
+    email: data.email,
+    name: data.displayName,
+    img: data.photoURL,
+  };
 
-  return { props: { user, isLogged: session != null } };
-}
+  return { props: { user } };
+});
 
-async function getListBooks(userID: string): Promise<ResList> {
+async function getListBooks(UID: string): Promise<List> {
   const books: Book[] = [];
   let isEmpty: boolean = false;
 
-  if (userID) {
+  if (UID) {
     try {
-      const q: Query = query(COLLECTION, where("owner", "==", userID));
+      const q: Query = query(COLLECTION, where("owner", "==", UID));
       const res: QuerySnapshot = await getDocs(q);
       isEmpty = res.empty;
       res.forEach((doc: Doc) => books.push({ id: doc.id, data: doc.data() }));
@@ -160,8 +152,7 @@ async function getListBooks(userID: string): Promise<ResList> {
       if (!MAINTENANCE) {
         const type: string =
           err.message == "Quota exceeded." ? "limit" : "unknown";
-        console.error(err);
-        // location.href = `/error?err=${type}`;
+        location.href = `/error?err=${type}`;
       }
     }
   }
@@ -169,26 +160,14 @@ async function getListBooks(userID: string): Promise<ResList> {
 }
 
 interface Props {
-  user: User | any;
-  isLogged: boolean;
-}
-
-interface Ctx extends GetServerSidePropsContext {
-  query: {
-    guest?: string;
-  };
+  user: User | null;
 }
 
 interface User {
-  name?: string;
-  email?: string;
-  image?: string;
-  id: string | null;
+  UID: string | null;
+  email: string | null;
+  name: string | null;
+  img: string | null;
 }
 
-interface SideProps {
-  user: User | null;
-  isLogged: boolean;
-}
-
-type ResList = { books: Book[]; isEmpty: boolean };
+type List = { books: Book[]; isEmpty: boolean };

@@ -7,6 +7,9 @@ import type { AppProps } from "next/app";
 import { type NextRouter, useRouter } from "next/router";
 import { useEffect } from "react";
 import { RecoilRoot as RecoilProvider } from "recoil";
+import initAuth from "@/database/initAuth";
+
+initAuth();
 
 function App({
   Component,
