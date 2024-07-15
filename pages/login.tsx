@@ -24,7 +24,7 @@ function LoginPage(): Component {
     { push, query }: NextRouter = useRouter(),
     [animations] = useLocalStorage("animations", true),
     book: string = JSON.parse((query.book as string) ?? "false"),
-    ghost: string = JSON.parse((query.ghost as string) ?? "false"),
+    // ghost: string = JSON.parse((query.ghost as string) ?? "false"),
     auth: Auth = getAuth(),
     [styles, animate] = useSpring(() => ({
       opacity: animations ? 0 : 1,
@@ -117,9 +117,9 @@ flex items-center w-[330px] sm:w-full max-w-[400px] h-14 sm:h-[61px] gap-x-6 rou
 
 export default withUser({
   whenAuthed: AuthAction.REDIRECT_TO_APP,
-  whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
-  whenUnauthedAfterInit: AuthAction.RENDER,
-  LoaderComponent: LoadComponent,
+  // whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
+  // whenUnauthedAfterInit: AuthAction.RENDER,
+  // LoaderComponent: LoadComponent,
 })(LoginPage);
 
 type Providers = GithubAuthProvider | GoogleAuthProvider;
