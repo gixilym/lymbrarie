@@ -22,7 +22,10 @@ function initAuth(): void {
       credential: {
         projectId: "lymbrarie-oficial",
         clientEmail: process.env.FIREBASE_CLIENT_EMAIL as string,
-        privateKey: process.env.FIREBASE_PRIVATE_KEY as string,
+        // @ts-ignore
+        privateKey: process.env.FIREBASE_PRIVATE_KEY
+          ? process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/gm, "\n")
+          : undefined,
       },
     },
     firebaseClientInitConfig,
