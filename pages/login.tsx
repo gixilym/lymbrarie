@@ -116,10 +116,10 @@ flex items-center w-[330px] sm:w-full max-w-[400px] h-14 sm:h-[61px] gap-x-6 rou
 }
 
 export default withUser({
-  whenAuthed: AuthAction.REDIRECT_TO_APP,
-  whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
-  whenUnauthedAfterInit: AuthAction.RENDER,
-  LoaderComponent: LoadComponent,
+  // whenAuthed: AuthAction.REDIRECT_TO_APP,
+  // whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
+  // whenUnauthedAfterInit: AuthAction.RENDER,
+  // LoaderComponent: LoadComponent,
 })(LoginPage);
 
 type Providers = GithubAuthProvider | GoogleAuthProvider;
