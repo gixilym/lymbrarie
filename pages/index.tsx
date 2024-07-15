@@ -150,6 +150,7 @@ async function getListBooks(UID: string): Promise<List> {
       res.forEach((doc: Doc) => books.push({ id: doc.id, data: doc.data() }));
     } catch (err: any) {
       if (!MAINTENANCE) {
+        // console.error(err.message);
         const type: string =
           err.message == "Quota exceeded." ? "limit" : "unknown";
         location.href = `/error?err=${type}`;
