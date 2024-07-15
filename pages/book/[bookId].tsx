@@ -4,11 +4,7 @@ import NotesBook from "@/components/NotesBook";
 import DeleteBookPopUp from "@/components/popups/DeleteBookPopUp";
 import EditBookPopUp from "@/components/popups/EditBookPopUp";
 import OfflinePopUp from "@/components/popups/OfflinePopUp";
-import {
-  COLLECTION,
-  EMPTY_BOOK,
-  EXAMPLES_BOOKS,
-} from "@/utils/consts";
+import { COLLECTION, EMPTY_BOOK, EXAMPLES_BOOKS } from "@/utils/consts";
 import { deformatTitle, isLoaned, translateStateBook } from "@/utils/helpers";
 import useLoadContent from "@/utils/hooks/useLoadContent";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
@@ -58,9 +54,9 @@ function BookId({ isLogged }: Props): Component {
     if (isLogged && !allTitles.includes(title)) router.push("/");
   }, [allTitles]);
 
-  useEffect(() => {
-    if (isLogged && guest != "false") router.push("/");
-  }, [guest]);
+  // useEffect(() => {
+  //   if (isLogged && guest != "false") router.push("/");
+  // }, [guest]);
 
   useEffect(() => {
     if (animations) animate.start({ opacity: 1 });
@@ -225,9 +221,9 @@ export default withUser<Props>()(BookId);
 export const getServerSideProps = withUserSSR()<Props>(
   async ({ user, query }): Promise<SideProps> => {
     const isLogged: boolean = !!user;
-    const guest: string = ((query.guest as string) ??= "false");
+    // const guest: string = ((query.guest as string) ??= "false");
 
-    if (guest && !isLogged) return { props: { isLogged: false } };
+    // if (guest && !isLogged) return { props: { isLogged: false } };
 
     if (!user) {
       return {

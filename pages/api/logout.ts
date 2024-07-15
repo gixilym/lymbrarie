@@ -8,7 +8,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  // if (req.method != "POST") return res.redirect(307, "/");
+  if (req.method != "POST") return res.redirect(307, "/");
   try {
     await unsetAuthCookies(req, res);
   } catch (err: any) {

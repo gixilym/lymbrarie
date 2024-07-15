@@ -7,10 +7,9 @@ import Maintenance from "@/components/Maintenance";
 import PopUps from "@/components/PopUps";
 import { COLLECTION, EXAMPLES_BOOKS, MAINTENANCE } from "@/utils/consts";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
-import { inputSearch, zeroBooksValue } from "@/utils/store";
+import { zeroBooksValue } from "@/utils/store";
 import type { Book, Component, Doc } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
-import { type Auth, getAuth } from "firebase/auth";
 import {
   Query,
   QuerySnapshot,
@@ -20,7 +19,6 @@ import {
 } from "firebase/firestore/lite";
 import { AuthAction, withUser, withUserSSR } from "next-firebase-auth";
 import Head from "next/head";
-import { type NextRouter, useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
@@ -38,23 +36,24 @@ function Index({ user }: Props): Component {
     [animations] = useLocalStorage("animations", true),
     [loading, setLoading] = useState<boolean>(false),
     [zeroBooks] = useRecoilState<boolean>(zeroBooksValue),
-    [, setSearch] = useRecoilState<string>(inputSearch),
-    auth: Auth = getAuth(),
-    router: NextRouter = useRouter(),
-    guest: boolean = JSON.parse((router.query.guest as string) ?? "false"),
     [styles, animate] = useSpring(() => ({
       opacity: animations ? 0 : 1,
       config: { duration: 1000 },
     }));
 
+  /* [, setSearch] = useRecoilState<string>(inputSearch),
+    auth: Auth = getAuth(),
+    router: NextRouter = useRouter(),
+    guest: boolean = JSON.parse((router.query.guest as string) ?? "false"),
+
   useEffect(() => {
-    if (isLogged && guest) {
+    if (isLogged && guest) {  
       setSearch("");
       setAllTitles([]);
       setCacheBooks(null);
       auth.signOut().then(() => router.push("/login"));
     }
-  }, [guest]);
+  }, [guest]);*/
 
   useEffect(() => {
     if (animations) animate.start({ opacity: 1 });
@@ -125,6 +124,7 @@ function Index({ user }: Props): Component {
 
 export const getServerSideProps = withUserSSR({
   whenUnauthed: AuthAction.REDIRECT_TO_LOGIN,
+  whenAuthed: AuthAction.RENDER,
 })<Props>(async ({ user: data }) => {
   if (!data) return { props: { user: null } };
 
