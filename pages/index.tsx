@@ -22,10 +22,7 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
-export default withUser<Props>({
-  whenUnauthedBeforeInit: AuthAction.REDIRECT_TO_LOGIN,
-  whenAuthed: AuthAction.RENDER,
-})(Index);
+export default withUser<Props>()(Index);
 
 function Index({ user }: Props): Component {
   const [myBooks, setMyBooks] = useState<Book[]>([]),
