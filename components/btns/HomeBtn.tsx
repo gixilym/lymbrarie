@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-function HomeBtn({ isLogged }: { isLogged: boolean }): Component {
+function HomeBtn(): Component {
   const [t] = useTranslation("global");
   const { openPopUp } = usePopUp();
 
@@ -22,14 +22,12 @@ function HomeBtn({ isLogged }: { isLogged: boolean }): Component {
         tabIndex={0}
         className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52 gap-y-1"
       >
-        {isLogged && (
-          <li onClick={() => openPopUp("profile")}>
-            <div className="flex flex-row items-center justify-start gap-x-3">
-              <UserIcon size={20} />
-              <p>{t("profile")}</p>
-            </div>
-          </li>
-        )}
+        <li onClick={() => openPopUp("profile")}>
+          <div className="flex flex-row items-center justify-start gap-x-3">
+            <UserIcon size={20} />
+            <p>{t("profile")}</p>
+          </div>
+        </li>
 
         <li onClick={() => openPopUp("settings")}>
           <div className="flex flex-row items-center justify-start gap-x-3">

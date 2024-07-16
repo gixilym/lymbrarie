@@ -42,8 +42,11 @@ function LoginPage(): Component {
     try {
       await signInWithPopup(auth, provider);
     } catch (err: any) {
-      console.error(`Error en logIn: ${err.message}`);
-      push("/error?err=unknown");
+      const production: boolean = JSON.parse(
+        process.env.NEXT_PUBLIC_PRODUCTION as string
+      );
+      if (production) push("/error?err=unknown");
+      else console.error(`error en logIn: ${err.message}`);
     }
   }
 

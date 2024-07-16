@@ -1,8 +1,11 @@
 import { COLLECTION, EMPTY_BOOK, GENDERS } from "@/utils/consts";
 import {
+  decrypt,
   deformatTitle,
+  encrypt,
   formatTitle,
   isLoaned,
+  normalizeText,
   notification,
   tLC,
 } from "@/utils/helpers";
@@ -47,7 +50,7 @@ function EditBookPopUp(props: Props): Component {
     [isCustomGender, setIsCustomGender] = useState<boolean>(customVal),
     [addClicked, setAddClicked] = useState<boolean>(false),
     [cacheBooks, setCacheBooks] = useLocalStorage("cacheBooks", null),
-    [allTitles] = useLocalStorage("allTitles", []),
+    [allTitles, setAllTitles] = useLocalStorage("allTitles", []),
     [editDisabled, setEditDisabled] = useState<boolean>(true),
     [errorKey, setErrorKey] = useState<string>(""),
     handleState = (state: string): void => setBook({ ...book, state }),
@@ -109,25 +112,37 @@ function EditBookPopUp(props: Props): Component {
 
     const loaned: string = isLoaned(book.state) ? book.loaned : "",
       updatedBook: Book = { ...book, loaned } as const,
-      oldVersion = cacheBooks.filter((b: Book) => b.id != documentId),
-      newVersion = [...oldVersion, { id: documentId, data: updatedBook }],
+      oldVersion: any[] = decrypt(cacheBooks).filter(
+        (b: Book) => b.id != documentId
+      ),
+      newVersion: Book[] = [
+        ...oldVersion,
+        { id: documentId, data: updatedBook },
+      ],
       titlePage: string = formatTitle(book.title),
-      newPath: string = `/book/${titlePage}`;
+      newPath: string = `/book/${titlePage}`,
+      newTitles: string = encrypt([...decrypt(allTitles), book.title ?? ""]);
 
     try {
       await setDoc(doc(COLLECTION, documentId), updatedBook);
-      setCacheBooks(newVersion);
+      setCacheBooks(encrypt(newVersion));
+      setAllTitles(newTitles);
       router.replace(newPath).then(() => router.reload());
     } catch (err: any) {
-      console.error(`Error en editBook: ${err.message}`);
-      router.push("/error?err=unknown");
+      const production: boolean = JSON.parse(
+        process.env.NEXT_PUBLIC_PRODUCTION as string
+      );
+      if (production) router.push("/error?err=unknown");
+      else console.error(`error en editBook: ${err.message}`);
     }
   }
 
   function validateFields(): boolean {
     const title: string = tLC(book.title ?? ""),
-      repeteadTitle: boolean = allTitles.some(
-        (t: string) => tLC(t) != tLC(formatBookId) && tLC(t) == title
+      repeteadTitle: boolean = decrypt(allTitles).some(
+        (t: string) =>
+          normalizeText(tLC(t)) != normalizeText(tLC(formatBookId)) &&
+          normalizeText(tLC(t)) == normalizeText(tLC(title))
       ),
       maxTitleLength: boolean = title.length > 71,
       maxAuthorLength: boolean = (book.author?.length ?? 0) > 34,

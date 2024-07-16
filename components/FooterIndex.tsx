@@ -8,7 +8,7 @@ import {
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
 
-function FooterIndex({ isLogged }: { isLogged: boolean }): Component {
+function FooterIndex(): Component {
   const [t] = useTranslation("global");
   const { openPopUp } = usePopUp();
 
@@ -25,19 +25,17 @@ function FooterIndex({ isLogged }: { isLogged: boolean }): Component {
         <p className="">Copyright © 2024 Lymbrarie - {t("copyright")}</p>
       </aside>
       <div className="flex items-center justify-evenly w-full h-10 sm:h-auto sm:w-auto sm:gap-x-6">
-        {isLogged && (
-          <div
-            onClick={() => openPopUp("profile")}
-            className={
-              "flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline"
-            }
-          >
-            <p className="text-lg hover:underline duration-75 cursor-pointer ">
-              {t("profile")}
-            </p>
-            <UserIcon size={18} />
-          </div>
-        )}
+        <div
+          onClick={() => openPopUp("profile")}
+          className={
+            "flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline"
+          }
+        >
+          <p className="text-lg hover:underline duration-75 cursor-pointer ">
+            {t("profile")}
+          </p>
+          <UserIcon size={18} />
+        </div>
 
         <div
           onClick={() => openPopUp("support")}

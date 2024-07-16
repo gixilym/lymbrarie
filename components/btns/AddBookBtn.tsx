@@ -1,18 +1,12 @@
 import usePopUp from "@/utils/hooks/usePopUp";
 import type { Component } from "@/utils/types";
-import { type NextRouter, useRouter } from "next/router";
 
-function AddBookBtn({ text, isLogged }: Props): Component {
-  const { openPopUp } = usePopUp(),
-    { push, query }: NextRouter = useRouter(),
-    ghost: string = JSON.parse((query?.ghost as string) ?? "false");
+function AddBookBtn({ text }: { text: string }): Component {
+  const { openPopUp } = usePopUp();
 
   function action(): void {
-    if (navigator.onLine) {
-      isLogged
-        ? openPopUp("add_book")
-        : push(`/login?book=true&ghost=${ghost}`);
-    } else openPopUp("offline");
+    if (navigator.onLine) openPopUp("add_book");
+    else openPopUp("offline");
   }
 
   return (
@@ -27,8 +21,3 @@ function AddBookBtn({ text, isLogged }: Props): Component {
 }
 
 export default AddBookBtn;
-
-interface Props {
-  text: string;
-  isLogged: boolean;
-}

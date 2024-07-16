@@ -6,7 +6,10 @@ function useLocalStorage(key: any, initialValue?: any) {
       const item = window.localStorage.getItem(key);
       return item ? JSON.parse(item) : initialValue;
     } catch (err: any) {
-      console.error(err.message);
+      const production: boolean = JSON.parse(
+        process.env.NEXT_PUBLIC_PRODUCTION as string
+      );
+      console.error(production ? "" : err.message);
       return initialValue;
     }
   });
@@ -18,7 +21,10 @@ function useLocalStorage(key: any, initialValue?: any) {
       setStoredValue(valueToStore);
       window.localStorage.setItem(key, JSON.stringify(valueToStore));
     } catch (err: any) {
-      console.error(err.message);
+      const production: boolean = JSON.parse(
+        process.env.NEXT_PUBLIC_PRODUCTION as string
+      );
+      console.error(production ? "" : err.message);
     }
   };
   return [storedValue, setValue];

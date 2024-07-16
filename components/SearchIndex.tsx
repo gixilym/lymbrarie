@@ -5,7 +5,7 @@ import { useRecoilState } from "recoil";
 import { twMerge } from "tailwind-merge";
 import AddBookBtn from "./btns/AddBookBtn";
 
-function SearchIndex({ isLogged }: { isLogged: boolean }): Component {
+function SearchIndex(): Component {
   const [value, setValue] = useRecoilState<string>(inputSearch),
     handleChangeInput = (e: InputEvent) => setValue(e.target.value),
     [selectVal, setSelectStateValue] = useRecoilState<string>(stateBookValue),
@@ -54,7 +54,7 @@ function SearchIndex({ isLogged }: { isLogged: boolean }): Component {
             </option>
           </select>
         </div>
-        <AddBookBtn isLogged={isLogged} text={t("new-book")} />
+        <AddBookBtn text={t("new-book")} />
       </div>
     </form>
   );

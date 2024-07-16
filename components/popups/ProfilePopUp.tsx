@@ -1,4 +1,5 @@
 import defaultCover from "@/public/cover.webp";
+import { decrypt } from "@/utils/helpers";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import type { Book, Component } from "@/utils/types";
 import Image from "next/image";
@@ -21,7 +22,7 @@ function ProfilePopUp({ profileImg, profileName }: Props): Component {
     [cacheBooks] = useLocalStorage("cacheBooks", null);
 
   useEffect(() => {
-    if (Array.isArray(cacheBooks)) {
+    if (Array.isArray(decrypt(cacheBooks))) {
       const counts: States = {
         Read: 0,
         Reading: 0,
@@ -29,7 +30,7 @@ function ProfilePopUp({ profileImg, profileName }: Props): Component {
         Borrowed: 0,
       };
 
-      cacheBooks.forEach((b: Book) => {
+      decrypt(cacheBooks).forEach((b: Book) => {
         const state: string = b.data.state as BookState;
         if (counts[state] !== undefined) {
           counts[state]++;

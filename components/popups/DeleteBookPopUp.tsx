@@ -1,4 +1,5 @@
 import { COLLECTION } from "@/utils/consts";
+import { decrypt, encrypt } from "@/utils/helpers";
 import useLoadContent from "@/utils/hooks/useLoadContent";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import usePopUp from "@/utils/hooks/usePopUp";
@@ -34,23 +35,29 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
 
   async function deleteDocument(): Promise<void> {
     startLoading();
+    const decryptedBooks: Book[] = decrypt(cacheBooks);
 
     try {
       await deleteDoc(doc(COLLECTION, documentId));
       setSearchVal("");
-      setZeroBooks(cacheBooks.length == 1);
-      if (cacheBooks?.length == 1) {
+      setZeroBooks(decryptedBooks?.length == 1);
+      if (decryptedBooks?.length == 1) {
         setCacheBooks(null);
         setAllTitles([]);
         redirectToHome();
       } else {
-        setCacheBooks(cacheBooks?.filter((b: Book) => b.data.title != title));
-        setAllTitles(cacheBooks.map((b: Book) => b.data.title));
+        setCacheBooks(
+          encrypt(decryptedBooks?.filter((b: Book) => b?.data?.title != title))
+        );
+        setAllTitles(encrypt(decryptedBooks?.map((b: Book) => b?.data?.title)));
         redirectToHome();
       }
     } catch (err: any) {
-      console.error(`Error en deleteDocument: ${err.message}`);
-      router.push("/error?err=unknown");
+      const production: boolean = JSON.parse(
+        process.env.NEXT_PUBLIC_PRODUCTION as string
+      );
+      if (production) router.push("/error?err=unknown");
+      else console.error(`error en deleteDocument: ${err.message}`);
     }
   }
 
@@ -78,7 +85,7 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
               {t("cancel")}
             </button>
             {isLoading ? (
-              <button className="btn font-thin text-white text-lg w-26">
+              <button className="btn font-thin cursor-default text-white text-lg w-26">
                 {t("deleting")}
               </button>
             ) : (

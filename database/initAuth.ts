@@ -1,16 +1,8 @@
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore/lite";
+import { type FirebaseApp, initializeApp } from "firebase/app";
+import { type Firestore, getFirestore } from "firebase/firestore/lite";
 import { init } from "next-firebase-auth";
 
-const firebaseClientInitConfig = {
-  apiKey: process.env.FIREBASE_API_KEY as string,
-  authDomain: "lymbrarie-oficial.firebaseapp.com",
-  projectId: "lymbrarie-oficial",
-};
-
-const app = initializeApp(firebaseClientInitConfig);
-
-function initAuth(): void {
+export default function initAuth(): void {
   init({
     authPageURL: "/login",
     appPageURL: "/",
@@ -40,7 +32,7 @@ function initAuth(): void {
       overwrite: true,
       path: "/",
       sameSite: "strict",
-      secure: true, //! Debe ser true en producción.
+      secure: true,
       signed: true,
     },
     onVerifyTokenError: err => console.error(err),
@@ -48,5 +40,18 @@ function initAuth(): void {
   });
 }
 
-export const DB = getFirestore(app);
-export default initAuth;
+const firebaseClientInitConfig: FirebaseConfig = {
+  apiKey: process.env.FIREBASE_API_KEY as string,
+  authDomain: "lymbrarie-oficial.firebaseapp.com",
+  projectId: "lymbrarie-oficial",
+};
+
+const app: FirebaseApp = initializeApp(firebaseClientInitConfig);
+
+export const DB: Firestore = getFirestore(app);
+
+interface FirebaseConfig {
+  apiKey: string;
+  authDomain: string;
+  projectId: string;
+}

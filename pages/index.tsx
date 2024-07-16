@@ -5,24 +5,36 @@ import ListSection from "@/components/ListSection";
 import LoadComponent from "@/components/LoadComponent";
 import Maintenance from "@/components/Maintenance";
 import PopUps from "@/components/PopUps";
-import { COLLECTION, EXAMPLES_BOOKS, MAINTENANCE } from "@/utils/consts";
+import { COLLECTION } from "@/utils/consts";
+import { decrypt, encrypt } from "@/utils/helpers";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import { zeroBooksValue } from "@/utils/store";
 import type { Book, Component, Doc } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
-import { Auth, getAuth, Unsubscribe } from "firebase/auth";
-import { onAuthStateChanged } from "firebase/auth";
 import {
-  Query,
-  QuerySnapshot,
+  type Auth,
+  getAuth,
+  onAuthStateChanged,
+  type Unsubscribe,
+} from "firebase/auth";
+import {
   getDocs,
+  Query,
   query,
+  QuerySnapshot,
   where,
 } from "firebase/firestore/lite";
-import { AuthAction, User, useUser, withUser } from "next-firebase-auth";
+import { AuthAction, type User, useUser, withUser } from "next-firebase-auth";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
+
+const maintenance: boolean = JSON.parse(
+  process.env.NEXT_PUBLIC_MAINTENANCE as string
+);
+const production: boolean = JSON.parse(
+  process.env.NEXT_PUBLIC_PRODUCTION as string
+);
 
 export default withUser({
   whenAuthed: AuthAction.RENDER,
@@ -35,7 +47,6 @@ function Index(): Component {
   const user: User = useUser(),
     auth: Auth = getAuth(),
     [myBooks, setMyBooks] = useState<Book[]>([]),
-    isLogged: boolean = user != null,
     UID: string = user.id as string,
     profileImg: string = user?.photoURL as string,
     profileName: string = user?.displayName as string,
@@ -51,12 +62,7 @@ function Index(): Component {
     }));
 
   useEffect(() => {
-    const unsubscribe: Unsubscribe = onAuthStateChanged(
-      auth,
-      () => console.log("auth actualizado"),
-      err => console.error(`error actualizando auth: ${err.message}`)
-    );
-
+    const unsubscribe: Unsubscribe = onAuthStateChanged(auth, () => {});
     return () => unsubscribe();
   }, []);
 
@@ -66,20 +72,23 @@ function Index(): Component {
 
   useEffect(() => {
     if (zeroBooks) return;
-    if (isLogged && myBooks.length > 0) {
-      setCacheBooks(myBooks);
-      setAllTitles(myBooks.map((b: Book) => b.data.title));
+    if (myBooks.length > 0) {
+      const encryptTitles: string = encrypt(
+        myBooks.map((b: Book) => b.data.title)
+      );
+      setCacheBooks(encrypt(myBooks));
+      setAllTitles(encryptTitles);
     }
   }, [myBooks, user, zeroBooks]);
 
   useEffect(() => {
-    if (isLogged) fetchBooks();
-    else setMyBooks(EXAMPLES_BOOKS);
+    fetchBooks();
   }, [user]);
 
   async function fetchBooks(): Promise<void> {
     if (zeroBooks) return;
-    if (Array.isArray(cacheBooks)) setMyBooks(cacheBooks);
+    const decryptedBooks: Book[] = decrypt(cacheBooks);
+    if (Array.isArray(decryptedBooks)) setMyBooks(decryptedBooks);
     else {
       setLoading(true);
       const { books, isEmpty } = await getListBooks(UID);
@@ -102,9 +111,11 @@ function Index(): Component {
         />
       </Head>
 
-      {!MAINTENANCE ? (
+      {maintenance ? (
+        <Maintenance />
+      ) : (
         <>
-          <HeaderIndex isLogged={isLogged} />
+          <HeaderIndex />
           <PopUps profileImg={profileImg} profileName={profileName} UID={UID} />
           {loading ? (
             <LoadComponent />
@@ -113,14 +124,12 @@ function Index(): Component {
               {booksIsEmpty || zeroBooks ? (
                 <AddYourFirstBook />
               ) : (
-                <ListSection myBooks={myBooks} isLogged={isLogged} />
+                <ListSection myBooks={myBooks} />
               )}
             </>
           )}
-          <FooterIndex isLogged={isLogged} />
+          <FooterIndex />
         </>
-      ) : (
-        <Maintenance />
       )}
     </animated.div>
   );
@@ -134,17 +143,17 @@ async function getListBooks(UID: string): Promise<List> {
     try {
       const q: Query = query(COLLECTION, where("owner", "==", UID));
       const res: QuerySnapshot = await getDocs(q);
-      isEmpty = res.empty;
       res.forEach((doc: Doc) => books.push({ id: doc.id, data: doc.data() }));
+      isEmpty = res.empty;
     } catch (err: any) {
-      if (!MAINTENANCE) {
-        // const type: string =
-        //   err.message == "Quota exceeded." ? "limit" : "unknown";
-        // location.href = `/error?err=${type}`;
-        console.error(`Error en getListBooks: ${err.message}`);
+      if (maintenance) {
+        const e = err.message == "Quota exceeded." ? "limit" : "unknown";
+        if (production) location.href = `/error?err=${e}`;
+        else console.error(`error en getListBooks: ${err.message}`);
       }
     }
   }
+
   return { books, isEmpty };
 }
 

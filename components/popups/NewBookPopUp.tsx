@@ -1,5 +1,12 @@
 import { COLLECTION, EMPTY_BOOK } from "@/utils/consts";
-import { isLoaned, notification, tLC } from "@/utils/helpers";
+import {
+  decrypt,
+  encrypt,
+  isLoaned,
+  normalizeText,
+  notification,
+  tLC,
+} from "@/utils/helpers";
 import useLoadContent from "@/utils/hooks/useLoadContent";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import usePopUp from "@/utils/hooks/usePopUp";
@@ -82,18 +89,23 @@ function NewBookPopUp({ UID }: { UID: string }): Component {
       const bookData: BookData = { ...book.data, owner: UID };
       await setDoc(doc(COLLECTION, newID), bookData);
       const newBookData: Book = { id: newID, data: bookData };
-      const newVersion: Book[] = [...(cacheBooks ?? []), newBookData];
-      setCacheBooks(newVersion);
+      const newVersion: Book[] = [...(decrypt(cacheBooks) ?? []), newBookData];
+      setCacheBooks(encrypt(newVersion));
       router.reload();
     } catch (err: any) {
-      console.error(`Error en newBook: ${err.message}`);
-      router.push("/error?err=unknown");
+      const production: boolean = JSON.parse(
+        process.env.NEXT_PUBLIC_PRODUCTION as string
+      );
+      if (production) router.push("/error?err=unknown");
+      else console.error(`error en newBook: ${err.message}`);
     }
   }
 
   function validateFields(): boolean {
     const title: string = tLC(book?.data?.title ?? ""),
-      repeteadTitle: boolean = allTitles.includes(title),
+      repeteadTitle: boolean = decrypt(allTitles).some(
+        (t: string) => normalizeText(tLC(t)) == normalizeText(tLC(title))
+      ),
       maxTitleLength: boolean = title.length > 71,
       maxAuthorLength: boolean = (book?.data?.author?.length ?? 0) > 34,
       emptyCustomGender: boolean = isCustomGender && cusGenderVal.length == 0,
@@ -200,13 +212,12 @@ function NewBookPopUp({ UID }: { UID: string }): Component {
           className="flex justify-center items-center font-public w-full"
         >
           <div className="w-full justify-end gap-x-4 items-center flex flex-col md:flex-row h-10">
-            {/* <ReCaptcha /> */}
             <div className="flex gap-x-2">
               <button
                 disabled={isLoading}
                 type="button"
                 onClick={() => closePopUp("add_book")}
-                className="btn text-lg w-24 px-2 bg-slate-800 hover:bg-slate-700 text-white"
+                className="btn text-lg w-24 px-2 font-normal bg-slate-800 hover:bg-slate-700 text-white"
               >
                 {t("close")}
               </button>
@@ -222,7 +233,7 @@ function NewBookPopUp({ UID }: { UID: string }): Component {
               ) : (
                 <button
                   type="submit"
-                  className="btn bg-blue-500 text-black hover:bg-blue-400 duration-100 text-lg w-24 px-2"
+                  className="btn bg-blue-500 font-semibold text-black hover:bg-blue-400 duration-100 text-lg w-24 px-2"
                 >
                   {t("add")}
                 </button>
