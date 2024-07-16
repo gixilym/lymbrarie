@@ -26,7 +26,7 @@ function CardWithDetails(props: Card): Component {
       {state && formatState()}
       {img && (
         <Image
-          priority
+          loading="lazy"
           src={img}
           width={60}
           height={100}

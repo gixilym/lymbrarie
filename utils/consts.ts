@@ -2,6 +2,9 @@ import { DB } from "@/database/initAuth";
 import { collection, type CollectionReference } from "firebase/firestore/lite";
 import type { Book, BookData } from "./types";
 
+const MAINTENANCE: boolean = false;
+
+const PRODUCTION: boolean = true;
 
 const GENDERS: string[] = [
   "no-gender",
@@ -83,9 +86,17 @@ const EmptyData: BookData = {
   notes: "",
   loaned: "",
 };
+
 const EMPTY_BOOK = {
   id: "",
   data: EmptyData,
 };
 
-export { COLLECTION, EMPTY_BOOK, EXAMPLES_BOOKS, GENDERS };
+export {
+  COLLECTION,
+  EMPTY_BOOK,
+  EXAMPLES_BOOKS,
+  GENDERS,
+  MAINTENANCE,
+  PRODUCTION,
+};

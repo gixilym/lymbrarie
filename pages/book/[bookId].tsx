@@ -6,7 +6,7 @@ import DeleteBookPopUp from "@/components/popups/DeleteBookPopUp";
 import EditBookPopUp from "@/components/popups/EditBookPopUp";
 import OfflinePopUp from "@/components/popups/OfflinePopUp";
 import defaultCover from "@/public/cover.webp";
-import { COLLECTION, EMPTY_BOOK } from "@/utils/consts";
+import { COLLECTION, EMPTY_BOOK, PRODUCTION } from "@/utils/consts";
 import {
   decrypt,
   deformatTitle,
@@ -99,10 +99,7 @@ function BookId(): Component {
       setCacheBooks(encrypt(newVersion));
       router.reload();
     } catch (err: any) {
-      const production: boolean = JSON.parse(
-        process.env.NEXT_PUBLIC_PRODUCTION as string
-      );
-      if (production) router.push("/error?err=unknown");
+      if (PRODUCTION) router.push("/error?err=unknown");
       else console.error(`Error en updateNotes: ${err.message}`);
     }
   }
@@ -139,7 +136,7 @@ function BookId(): Component {
 
       <article className="w-full sm:w-[700px] h-[315px] flex flex-col sm:flex-row gap-y-12 justify-start items-center sm:items-start backdrop-blur-[2.5px] relative mt-20 xl:mt-0 sm:mt-12">
         <Image
-          priority
+          loading="lazy"
           className="select-none aspect-[200/300] w-[200px] h-[300px] object-center object-fill rounded-sm"
           src={book?.data?.image || defaultCover}
           width={200}

@@ -1,4 +1,4 @@
-import { COLLECTION } from "@/utils/consts";
+import { COLLECTION, PRODUCTION } from "@/utils/consts";
 import { decrypt, encrypt } from "@/utils/helpers";
 import useLoadContent from "@/utils/hooks/useLoadContent";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
@@ -53,10 +53,7 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
         redirectToHome();
       }
     } catch (err: any) {
-      const production: boolean = JSON.parse(
-        process.env.NEXT_PUBLIC_PRODUCTION as string
-      );
-      if (production) router.push("/error?err=unknown");
+      if (PRODUCTION) router.push("/error?err=unknown");
       else console.error(`error en deleteDocument: ${err.message}`);
     }
   }

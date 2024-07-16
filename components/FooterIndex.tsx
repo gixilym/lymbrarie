@@ -16,6 +16,7 @@ function FooterIndex(): Component {
     <footer className="select-none footer absolute bottom-0 w-full flex flex-col-reverse sm:flex-row justify-between items-center sm:p-4 bg-slate-900 border-t-2 border-gray-800 py-2 sm:py-0 sm:h-14 text-gray-400">
       <aside className="hidden sm:grid items-center grid-flow-col px-4 sm:px-0">
         <Image
+          loading="lazy"
           width={30}
           height={30}
           className="border rounded-full border-gray-700"

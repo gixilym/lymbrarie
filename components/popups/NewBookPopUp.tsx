@@ -1,4 +1,4 @@
-import { COLLECTION, EMPTY_BOOK } from "@/utils/consts";
+import { COLLECTION, EMPTY_BOOK, PRODUCTION } from "@/utils/consts";
 import {
   decrypt,
   encrypt,
@@ -93,10 +93,7 @@ function NewBookPopUp({ UID }: { UID: string }): Component {
       setCacheBooks(encrypt(newVersion));
       router.reload();
     } catch (err: any) {
-      const production: boolean = JSON.parse(
-        process.env.NEXT_PUBLIC_PRODUCTION as string
-      );
-      if (production) router.push("/error?err=unknown");
+      if (PRODUCTION) router.push("/error?err=unknown");
       else console.error(`error en newBook: ${err.message}`);
     }
   }

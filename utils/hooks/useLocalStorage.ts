@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { PRODUCTION } from "../consts";
 
 function useLocalStorage(key: any, initialValue?: any) {
   const [storedValue, setStoredValue] = useState<any>(() => {
@@ -6,10 +7,7 @@ function useLocalStorage(key: any, initialValue?: any) {
       const item = window.localStorage.getItem(key);
       return item ? JSON.parse(item) : initialValue;
     } catch (err: any) {
-      const production: boolean = JSON.parse(
-        process.env.NEXT_PUBLIC_PRODUCTION as string
-      );
-      console.error(production ? "" : err.message);
+      console.error(PRODUCTION ? "" : err.message);
       return initialValue;
     }
   });
@@ -21,10 +19,7 @@ function useLocalStorage(key: any, initialValue?: any) {
       setStoredValue(valueToStore);
       window.localStorage.setItem(key, JSON.stringify(valueToStore));
     } catch (err: any) {
-      const production: boolean = JSON.parse(
-        process.env.NEXT_PUBLIC_PRODUCTION as string
-      );
-      console.error(production ? "" : err.message);
+      console.error(PRODUCTION ? "" : err.message);
     }
   };
   return [storedValue, setValue];

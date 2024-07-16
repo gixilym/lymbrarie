@@ -5,7 +5,7 @@ import ListSection from "@/components/ListSection";
 import LoadComponent from "@/components/LoadComponent";
 import Maintenance from "@/components/Maintenance";
 import PopUps from "@/components/PopUps";
-import { COLLECTION } from "@/utils/consts";
+import { COLLECTION, MAINTENANCE, PRODUCTION } from "@/utils/consts";
 import { decrypt, encrypt } from "@/utils/helpers";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import { zeroBooksValue } from "@/utils/store";
@@ -28,13 +28,6 @@ import { AuthAction, type User, useUser, withUser } from "next-firebase-auth";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-
-const maintenance: boolean = JSON.parse(
-  process.env.NEXT_PUBLIC_MAINTENANCE as string
-);
-const production: boolean = JSON.parse(
-  process.env.NEXT_PUBLIC_PRODUCTION as string
-);
 
 export default withUser({
   whenAuthed: AuthAction.RENDER,
@@ -111,7 +104,7 @@ function Index(): Component {
         />
       </Head>
 
-      {maintenance ? (
+      {MAINTENANCE ? (
         <Maintenance />
       ) : (
         <>
@@ -146,9 +139,9 @@ async function getListBooks(UID: string): Promise<List> {
       res.forEach((doc: Doc) => books.push({ id: doc.id, data: doc.data() }));
       isEmpty = res.empty;
     } catch (err: any) {
-      if (maintenance) {
+      if (MAINTENANCE) {
         const e = err.message == "Quota exceeded." ? "limit" : "unknown";
-        if (production) location.href = `/error?err=${e}`;
+        if (PRODUCTION) location.href = `/error?err=${e}`;
         else console.error(`error en getListBooks: ${err.message}`);
       }
     }

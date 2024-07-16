@@ -1,5 +1,6 @@
 import LoadComponent from "@/components/LoadComponent";
 import logo from "@/public/favicon.ico";
+import { PRODUCTION } from "@/utils/consts";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import { GithubIcon, GoogleIcon } from "@/utils/svgs";
 import type { Component } from "@/utils/types";
@@ -42,10 +43,7 @@ function LoginPage(): Component {
     try {
       await signInWithPopup(auth, provider);
     } catch (err: any) {
-      const production: boolean = JSON.parse(
-        process.env.NEXT_PUBLIC_PRODUCTION as string
-      );
-      if (production) push("/error?err=unknown");
+      if (PRODUCTION) push("/error?err=unknown");
       else console.error(`error en logIn: ${err.message}`);
     }
   }
@@ -68,6 +66,7 @@ function LoginPage(): Component {
       >
         <div className="w-full flex flex-col justify-start items-center gap-y-4">
           <Image
+            loading="lazy"
             className="w-20 h-20 border-2 border-slate-500/70 rounded-full"
             src={logo}
             alt="logo"

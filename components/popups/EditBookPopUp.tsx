@@ -1,4 +1,4 @@
-import { COLLECTION, EMPTY_BOOK, GENDERS } from "@/utils/consts";
+import { COLLECTION, EMPTY_BOOK, GENDERS, PRODUCTION } from "@/utils/consts";
 import {
   decrypt,
   deformatTitle,
@@ -129,10 +129,7 @@ function EditBookPopUp(props: Props): Component {
       setAllTitles(newTitles);
       router.replace(newPath).then(() => router.reload());
     } catch (err: any) {
-      const production: boolean = JSON.parse(
-        process.env.NEXT_PUBLIC_PRODUCTION as string
-      );
-      if (production) router.push("/error?err=unknown");
+      if (PRODUCTION) router.push("/error?err=unknown");
       else console.error(`error en editBook: ${err.message}`);
     }
   }
