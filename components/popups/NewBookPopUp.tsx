@@ -1,7 +1,6 @@
 import { COLLECTION, EMPTY_BOOK, PRODUCTION } from "@/utils/consts";
 import {
-  decrypt,
-  encrypt,
+  dismissNoti,
   isLoaned,
   normalizeText,
   notification,
@@ -32,6 +31,7 @@ import { useTranslation } from "react-i18next";
 import DialogContainer from "../DialogContainer";
 import FieldsBook from "../FieldsBook";
 import PopUpTitle from "../TitlePopUp";
+import toast from "react-hot-toast";
 
 function NewBookPopUp({ UID }: { UID: string }): Component {
   const [t] = useTranslation("global"),
@@ -42,6 +42,7 @@ function NewBookPopUp({ UID }: { UID: string }): Component {
     { isLoading, startLoading } = useLoadContent(),
     [cacheBooks, setCacheBooks] = useLocalStorage("cacheBooks", null),
     [allTitles] = useLocalStorage("allTitles", []),
+    [, setShowNoti] = useLocalStorage("added", false),
     [errorKey, setErrorKey] = useState<string>(""),
     [addClicked, setAddClicked] = useState<boolean>(false),
     [isCustomGender, setIsCustomGender] = useState<boolean>(false),
@@ -83,24 +84,28 @@ function NewBookPopUp({ UID }: { UID: string }): Component {
 
     if (!validateFields()) return;
     startLoading();
+    notification("loading", t("adding"));
 
     try {
       const newID: string = crypto.randomUUID();
       const bookData: BookData = { ...book.data, owner: UID };
       await setDoc(doc(COLLECTION, newID), bookData);
       const newBookData: Book = { id: newID, data: bookData };
-      const newVersion: Book[] = [...(decrypt(cacheBooks) ?? []), newBookData];
-      setCacheBooks(encrypt(newVersion));
+      const newVersion: Book[] = [...(cacheBooks ?? []), newBookData];
+      setCacheBooks(newVersion);
+      setShowNoti(true);
       router.reload();
     } catch (err: any) {
       if (PRODUCTION) router.push("/error?err=unknown");
       else console.error(`error en newBook: ${err.message}`);
+    } finally {
+      dismissNoti();
     }
   }
 
   function validateFields(): boolean {
     const title: string = tLC(book?.data?.title ?? ""),
-      repeteadTitle: boolean = decrypt(allTitles).some(
+      repeteadTitle: boolean = allTitles.some(
         (t: string) => normalizeText(tLC(t)) == normalizeText(tLC(title))
       ),
       maxTitleLength: boolean = title.length > 71,

@@ -18,8 +18,7 @@
     "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "rules": "firebase deploy --only firestore:rules"
+    "lint": "next lint"
   },
   "dependencies": {
     "@fontsource/poppins": "^5.0.14",

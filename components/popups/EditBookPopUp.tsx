@@ -1,8 +1,7 @@
 import { COLLECTION, EMPTY_BOOK, GENDERS, PRODUCTION } from "@/utils/consts";
 import {
-  decrypt,
   deformatTitle,
-  encrypt,
+  dismissNoti,
   formatTitle,
   isLoaned,
   normalizeText,
@@ -109,34 +108,35 @@ function EditBookPopUp(props: Props): Component {
     if (!validateFields()) return;
 
     startLoading();
+    notification("loading", t("editing"));
 
     const loaned: string = isLoaned(book.state) ? book.loaned : "",
       updatedBook: Book = { ...book, loaned } as const,
-      oldVersion: any[] = decrypt(cacheBooks).filter(
-        (b: Book) => b.id != documentId
-      ),
+      oldVersion: any[] = cacheBooks.filter((b: Book) => b.id != documentId),
       newVersion: Book[] = [
         ...oldVersion,
         { id: documentId, data: updatedBook },
       ],
       titlePage: string = formatTitle(book.title),
       newPath: string = `/book/${titlePage}`,
-      newTitles: string = encrypt([...decrypt(allTitles), book.title ?? ""]);
+      newTitles: string[] = [...allTitles, book.title ?? ""];
 
     try {
       await setDoc(doc(COLLECTION, documentId), updatedBook);
-      setCacheBooks(encrypt(newVersion));
+      setCacheBooks(newVersion);
       setAllTitles(newTitles);
       router.replace(newPath).then(() => router.reload());
     } catch (err: any) {
       if (PRODUCTION) router.push("/error?err=unknown");
       else console.error(`error en editBook: ${err.message}`);
+    } finally {
+      dismissNoti();
     }
   }
 
   function validateFields(): boolean {
     const title: string = tLC(book.title ?? ""),
-      repeteadTitle: boolean = decrypt(allTitles).some(
+      repeteadTitle: boolean = allTitles.some(
         (t: string) =>
           normalizeText(tLC(t)) != normalizeText(tLC(formatBookId)) &&
           normalizeText(tLC(t)) == normalizeText(tLC(title))

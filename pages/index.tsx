@@ -6,7 +6,7 @@ import LoadComponent from "@/components/LoadComponent";
 import Maintenance from "@/components/Maintenance";
 import PopUps from "@/components/PopUps";
 import { COLLECTION, MAINTENANCE, PRODUCTION } from "@/utils/consts";
-import { decrypt, encrypt } from "@/utils/helpers";
+import { dismissNoti, notification, removeItem } from "@/utils/helpers";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import { zeroBooksValue } from "@/utils/store";
 import type { Book, Component, Doc } from "@/utils/types";
@@ -27,6 +27,7 @@ import {
 import { AuthAction, type User, useUser, withUser } from "next-firebase-auth";
 import Head from "next/head";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useRecoilState } from "recoil";
 
 export default withUser({
@@ -39,6 +40,7 @@ export default withUser({
 function Index(): Component {
   const user: User = useUser(),
     auth: Auth = getAuth(),
+    [t] = useTranslation("global"),
     [myBooks, setMyBooks] = useState<Book[]>([]),
     UID: string = user.id as string,
     profileImg: string = user?.photoURL as string,
@@ -48,16 +50,42 @@ function Index(): Component {
     [booksIsEmpty, setBooksIsEmpty] = useState<boolean | null>(null),
     [animations] = useLocalStorage("animations", true),
     [loading, setLoading] = useState<boolean>(false),
+    [newBookNoti] = useLocalStorage("added", false),
+    [deletedNoti] = useLocalStorage("deleted", false),
     [zeroBooks] = useRecoilState<boolean>(zeroBooksValue),
     [styles, animate] = useSpring(() => ({
       opacity: animations ? 0 : 1,
       config: { duration: 1000 },
     }));
 
+  useEffect(() => showNotifications(), []);
+
+  function showNotifications(): () => void {
+    switch (true) {
+      case newBookNoti:
+        return () => {
+          notification("success", t("book-added"));
+          removeItem("added");
+        };
+
+      case deletedNoti:
+        return () => {
+          notification("success", t("book-deleted"));
+          removeItem("deleted");
+        };
+
+      default:
+        return () => {
+          removeItem("added");
+          removeItem("deleted");
+        };
+    }
+  }
+
   useEffect(() => {
     const unsubscribe: Unsubscribe = onAuthStateChanged(auth, () => {});
     return () => unsubscribe();
-  }, []);
+  }, [auth]);
 
   useEffect(() => {
     if (animations) animate.start({ opacity: 1 });
@@ -66,11 +94,8 @@ function Index(): Component {
   useEffect(() => {
     if (zeroBooks) return;
     if (myBooks.length > 0) {
-      const encryptTitles: string = encrypt(
-        myBooks.map((b: Book) => b.data.title)
-      );
-      setCacheBooks(encrypt(myBooks));
-      setAllTitles(encryptTitles);
+      setCacheBooks(myBooks);
+      setAllTitles(myBooks.map((b: Book) => b.data.title));
     }
   }, [myBooks, user, zeroBooks]);
 
@@ -80,7 +105,7 @@ function Index(): Component {
 
   async function fetchBooks(): Promise<void> {
     if (zeroBooks) return;
-    const decryptedBooks: Book[] = decrypt(cacheBooks);
+    const decryptedBooks: Book[] = cacheBooks;
     if (Array.isArray(decryptedBooks)) setMyBooks(decryptedBooks);
     else {
       setLoading(true);

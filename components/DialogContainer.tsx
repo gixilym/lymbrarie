@@ -1,7 +1,6 @@
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import { animated, useSpring } from "@react-spring/web";
 import { useEffect } from "react";
-import { Toaster as ToastNotification } from "react-hot-toast";
 import { twJoin } from "tailwind-merge";
 
 function DialogContainer(props: Props) {
@@ -27,7 +26,6 @@ function DialogContainer(props: Props) {
       >
         {children}
       </animated.div>
-      <ToastNotification reverseOrder={false} position="top-right" />
     </dialog>
   );
 }

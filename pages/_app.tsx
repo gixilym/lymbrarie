@@ -8,6 +8,7 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import { type NextRouter, useRouter } from "next/router";
 import { useEffect } from "react";
+import { Toaster as Notifications } from "react-hot-toast";
 import { RecoilRoot as RecoilProvider } from "recoil";
 
 initAuth();
@@ -28,6 +29,7 @@ function App({
         <Head>
           <title>Lymbrarie</title>
         </Head>
+        <Notifications reverseOrder={false} position="top-right" />
         <Component {...pageProps} />
       </RecoilProvider>
     </I18Provider>

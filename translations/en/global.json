@@ -114,5 +114,9 @@
     "my-gender": "My gender",
     "offline": "You're offline",
     "text-offline": "You need an internet connection to add, edit, or delete a book.",
-    "book-find": "where every book finds its place"
+    "book-find": "where every book finds its place",
+    "editing": "Editing...",
+    "adding": "Adding...",
+    "book-added": "Book added",
+    "book-deleted": "Book deleted"
 }

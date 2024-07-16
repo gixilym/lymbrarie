@@ -1,5 +1,5 @@
 import { COLLECTION, PRODUCTION } from "@/utils/consts";
-import { decrypt, encrypt } from "@/utils/helpers";
+import { dismissNoti, notification } from "@/utils/helpers";
 import useLoadContent from "@/utils/hooks/useLoadContent";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import usePopUp from "@/utils/hooks/usePopUp";
@@ -24,6 +24,7 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
     [cacheBooks, setCacheBooks] = useLocalStorage("cacheBooks", null),
     [, setAllTitles] = useLocalStorage("allTitles", []),
     { isLoading, startLoading, finishLoading } = useLoadContent(),
+    [, setShowNoti] = useLocalStorage("deleted", []),
     [styles, animate] = useSpring(() => ({
       transform: animations ? "scale(0.5)" : "scale(1)",
       config: { duration: 100 },
@@ -35,30 +36,31 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
 
   async function deleteDocument(): Promise<void> {
     startLoading();
-    const decryptedBooks: Book[] = decrypt(cacheBooks);
+    notification("loading", t("deleting"));
 
     try {
       await deleteDoc(doc(COLLECTION, documentId));
       setSearchVal("");
-      setZeroBooks(decryptedBooks?.length == 1);
-      if (decryptedBooks?.length == 1) {
+      setZeroBooks(cacheBooks?.length == 1);
+      if (cacheBooks?.length == 1) {
         setCacheBooks(null);
         setAllTitles([]);
         redirectToHome();
       } else {
-        setCacheBooks(
-          encrypt(decryptedBooks?.filter((b: Book) => b?.data?.title != title))
-        );
-        setAllTitles(encrypt(decryptedBooks?.map((b: Book) => b?.data?.title)));
+        setCacheBooks(cacheBooks?.filter((b: Book) => b?.data?.title != title));
+        setAllTitles(cacheBooks?.map((b: Book) => b?.data?.title));
         redirectToHome();
       }
     } catch (err: any) {
       if (PRODUCTION) router.push("/error?err=unknown");
       else console.error(`error en deleteDocument: ${err.message}`);
+    } finally {
+      dismissNoti();
     }
   }
 
   function redirectToHome(): void {
+    setShowNoti(true);
     closePopUp("delete_book");
     finishLoading();
     router.push("/");

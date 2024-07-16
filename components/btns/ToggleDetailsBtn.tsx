@@ -4,7 +4,7 @@ import type { MouseEventHandler } from "react";
 
 function ToggleDetailsBtn({ showDetails, onClick }: Props): Component {
   return (
-    <div className="btn btn-ghost btn-square pt-1" onClick={onClick}>
+    <div className="btn btn-ghost btn-square" onClick={onClick}>
       {showDetails ? <LayoutIcon /> : <ListIcon />}
     </div>
   );

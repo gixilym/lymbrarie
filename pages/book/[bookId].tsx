@@ -8,10 +8,10 @@ import OfflinePopUp from "@/components/popups/OfflinePopUp";
 import defaultCover from "@/public/cover.webp";
 import { COLLECTION, EMPTY_BOOK, PRODUCTION } from "@/utils/consts";
 import {
-  decrypt,
   deformatTitle,
-  encrypt,
+  dismissNoti,
   isLoaned,
+  notification,
   translateStateBook,
 } from "@/utils/helpers";
 import useLoadContent from "@/utils/hooks/useLoadContent";
@@ -39,6 +39,7 @@ import Head from "next/head";
 import Image from "next/image";
 import { type NextRouter, useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { useRecoilState } from "recoil";
 
@@ -63,7 +64,7 @@ function BookId(): Component {
     [cacheBooks, setCacheBooks] = useLocalStorage("cacheBooks", null),
     [animations] = useLocalStorage("animations", true),
     [allTitles] = useLocalStorage("allTitles", []),
-    notExist: boolean = !decrypt(allTitles).includes(title),
+    notExist: boolean = !allTitles.includes(title),
     notesProps = { updateNotes, notes, setNotes, isLoading },
     [popup] = useRecoilState<any>(popupsValue),
     [styles, animate] = useSpring(() => ({
@@ -74,6 +75,7 @@ function BookId(): Component {
   useEffect(() => {
     const unsubscribe: Unsubscribe = onAuthStateChanged(auth, () => {});
     return () => {
+      toast.remove();
       unsubscribe();
       getCacheBook();
     };
@@ -88,26 +90,27 @@ function BookId(): Component {
   }, [animate]);
 
   async function updateNotes(): Promise<void> {
+    notification("loading", t("editing"));
     try {
       const bookToDB = { ...book?.data, notes };
       await setDoc(doc(COLLECTION, book.id), bookToDB);
       const updatedNotes: Book = { ...book, data: { ...book?.data, notes } },
-        oldVersion: Book[] = decrypt(cacheBooks).filter(
+        oldVersion: Book[] = cacheBooks.filter(
           (b: Book) => b?.id != documentId
         ),
         newVersion: Book[] = [...oldVersion, updatedNotes];
-      setCacheBooks(encrypt(newVersion));
+      setCacheBooks(newVersion);
       router.reload();
     } catch (err: any) {
       if (PRODUCTION) router.push("/error?err=unknown");
       else console.error(`Error en updateNotes: ${err.message}`);
+    } finally {
+      dismissNoti();
     }
   }
 
   function getCacheBook(): void {
-    const book: Book = decrypt(cacheBooks).find(
-      (b: Book) => b?.data?.title == title
-    );
+    const book: Book = cacheBooks.find((b: Book) => b?.data?.title == title);
     setBook(book);
     setNotes(book?.data?.notes ?? "");
     setDocumentId(book?.id);
@@ -136,7 +139,7 @@ function BookId(): Component {
 
       <article className="w-full sm:w-[700px] h-[315px] flex flex-col sm:flex-row gap-y-12 justify-start items-center sm:items-start backdrop-blur-[2.5px] relative mt-20 xl:mt-0 sm:mt-12">
         <Image
-          loading="lazy"
+          priority
           className="select-none aspect-[200/300] w-[200px] h-[300px] object-center object-fill rounded-sm"
           src={book?.data?.image || defaultCover}
           width={200}

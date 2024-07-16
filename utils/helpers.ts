@@ -1,22 +1,8 @@
-import Crypto from "crypto-js";
 import { toast } from "react-hot-toast";
 
-function decrypt(data: any): any {
-  if (data == null) return null;
-  const key: string = process.env.NEXT_PUBLIC_DECRYPT as string;
-  const bytes = Crypto.AES.decrypt(data, key);
-  const res: any[] = JSON.parse(bytes.toString(Crypto.enc.Utf8));
-  return res;
-}
-
-function encrypt(data: any): string {
-  const key: string = process.env.NEXT_PUBLIC_DECRYPT as string;
-  const res: string = Crypto.AES.encrypt(JSON.stringify(data), key).toString();
-  return res;
-}
-
-function notification(type: "success" | "error", msg: string): void {
-  toast[type](msg, {
+function notification(noti: Notis, msg: string): void {
+  toast[noti](msg, {
+    id: msg,
     duration: 2000,
     style: {
       backgroundColor: "#202020",
@@ -25,6 +11,10 @@ function notification(type: "success" | "error", msg: string): void {
       zIndex: 50,
     },
   });
+}
+
+function dismissNoti(id?: string): void {
+  return id ? toast.dismiss(id) : toast.dismiss();
 }
 
 function translateStateBook(state: string, t: any): string {
@@ -46,12 +36,12 @@ function translateStateBook(state: string, t: any): string {
   }
 }
 
-function normalizeText(text: string): string {
-  return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-}
+const normalizeText = (text: string): string =>
+  text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-const isLoaned: (state: string) => boolean = (state: string): boolean =>
-  state == "Borrowed";
+const removeItem = (item: string) => localStorage?.removeItem(item);
+
+const isLoaned = (state: string): boolean => state == "Borrowed";
 
 const tLC: Format = (val: string): string => val?.toLowerCase().trim();
 
@@ -65,12 +55,14 @@ export {
   deformatTitle,
   formatTitle,
   isLoaned,
+  normalizeText,
   notification,
   tLC,
+  removeItem,
   translateStateBook,
-  decrypt,
-  encrypt,
-  normalizeText,
+  dismissNoti,
 };
 
 type Format = (title: string) => string;
+
+type Notis = "success" | "error" | "loading";

@@ -114,5 +114,9 @@
     "my-gender": "Mi género",
     "offline": "Estás desconectado",
     "text-offline": "Necesitas conexión a internet para añadir, editar o eliminar un libro.",
-    "book-find": "donde cada libro encuentra su lugar"
+    "book-find": "donde cada libro encuentra su lugar",
+    "editing": "Editando...",
+    "adding": "Añadiendo",
+    "book-added": "Libro añadido",
+    "book-deleted": "Libro eliminado"
 }
