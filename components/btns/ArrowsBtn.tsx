@@ -20,15 +20,15 @@ function Arrows(): Component {
   }
 
   return (
-    <div className="absolute -top-10 lg:top-80 right-20 lg:-right-40 space-y-10 opacity-60">
+    <div className="absolute -top-10 lg:top-80 right-20 lg:-right-40 space-y-10 opacity-70">
       <UpIcon
         size={36}
-        className="fixed bg-gray-800 py-1 rounded-md w-8 cursor-pointer"
+        className="fixed bg-gray-800 hover:bg-gray-800/80 duration-100 py-1 rounded-md w-8 cursor-pointer"
         onClick={toTop}
       />
       <DownIcon
         size={36}
-        className="fixed cursor-pointer bg-gray-800 py-1 rounded-md w-8"
+        className="fixed cursor-pointer bg-gray-800 hover:bg-gray-800/80 duration-100 py-1 rounded-md w-8"
         onClick={toBottom}
       />
     </div>

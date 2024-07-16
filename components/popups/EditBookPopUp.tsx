@@ -32,7 +32,10 @@ import {
 import { useTranslation } from "react-i18next";
 import DialogContainer from "../DialogContainer";
 import FieldsBook from "../FieldsBook";
-import PopUpTitle from "../TitlePopUp";
+import HeaderPopUp from "../HeaderPopUp";
+import { PencilIcon as Icon } from "lucide-react";
+
+
 
 function EditBookPopUp(props: Props): Component {
   const { data: dataBook, documentId } = props,
@@ -226,7 +229,7 @@ function EditBookPopUp(props: Props): Component {
 
   return (
     <DialogContainer divClass="justify-between">
-      <PopUpTitle title={t("edit-book")} />
+      <HeaderPopUp icon={<Icon size={25} />} title={t("edit-book")} />
 
       <FieldsBook
         errorKey={errorKey}

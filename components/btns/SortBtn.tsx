@@ -5,17 +5,17 @@ import {
 } from "lucide-react";
 import type { MouseEventHandler } from "react";
 
-function SortBtn({ alternateSort, atoz }: Props): Component {
+function SortBtn({ alternateSort, ascToDesc }: Props): Component {
   return (
-    <div onClick={alternateSort} className="btn btn-ghost btn-square">
-      {atoz ? <SortZAIcon size={29} /> : <SortAZIcon size={29} />}
-    </div>
+    <button onClick={alternateSort} className="btn btn-ghost btn-square">
+      {ascToDesc ? <SortAZIcon size={29} /> : <SortZAIcon size={29} />}
+    </button>
   );
 }
 
 export default SortBtn;
 
 interface Props {
-  atoz: boolean;
-  alternateSort: MouseEventHandler<HTMLDivElement> | undefined;
+  ascToDesc: boolean;
+  alternateSort: MouseEventHandler<HTMLButtonElement>;
 }

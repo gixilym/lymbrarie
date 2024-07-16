@@ -3,15 +3,16 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import ClosePopUpBtn from "../btns/ClosePopUpBtn";
 import DialogContainer from "../DialogContainer";
-import PopUpTitle from "../TitlePopUp";
+import HeaderPopUp from "../HeaderPopUp";
+import { Heart as Icon } from "lucide-react";
 
 function DonationsPopUp(): Component {
   const [t] = useTranslation("global");
 
   return (
     <DialogContainer divClass="justify-between">
-      <PopUpTitle title={t("donations")} />
-      <p className="text-lg sm:text-xl text-center w-full text-pretty sm:px-4">
+      <HeaderPopUp icon={<Icon size={25} />} title={t("donations")} />
+      <p className="text-lg sm:text-xl text-center w-full text-pretty sm:px-4 text-slate-200">
         {t("donations-text")}
       </p>
       <Link

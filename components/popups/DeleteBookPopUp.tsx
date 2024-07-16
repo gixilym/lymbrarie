@@ -67,11 +67,11 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
   }
 
   return (
-    <dialog className="select-none backdrop-blur-md w-full h-full absolute top-0 z-50 flex justify-center items-start pt-10 bg-transparent">
+    <dialog className="select-none backdrop-blur-md w-full h-full fixed top-10 z-50 flex justify-center items-start pt-10 bg-transparent">
       <animated.div style={styles} className="modal-box">
-        <div className="flex flex-row justify-start items-center gap-x-4">
+        <div className="flex flex-row justify-start items-start gap-x-4">
           <WarningIcon size={25} />
-          <p className="font-bold text-lg">{t("warning")}</p>
+          <p className="font-bold tracking-wide text-lg">{t("warning")}</p>
         </div>
         <p className="py-4 text-xl">{t("delete-message")}</p>
         <div className="modal-action">
@@ -79,7 +79,7 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
             <button
               disabled={isLoading}
               onClick={() => closePopUp("delete_book")}
-              className="btn font-thin bg-slate-700 hover:bg-slate-600 text-white text-lg w-24"
+              className="btn font-thin bg-slate-700 hover:bg-slate-600 text-white text-lg"
             >
               {t("cancel")}
             </button>

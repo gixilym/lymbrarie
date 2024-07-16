@@ -7,7 +7,8 @@ import { useTranslation } from "react-i18next";
 import ClosePopUpBtn from "../btns/ClosePopUpBtn";
 import LogOutBtn from "../btns/LogOutBtn";
 import DialogContainer from "../DialogContainer";
-import PopUpTitle from "../TitlePopUp";
+import HeaderPopUp from "../HeaderPopUp";
+import { UserRound as Icon } from "lucide-react";
 
 function ProfilePopUp({ profileImg, profileName }: Props): Component {
   const [t] = useTranslation("global"),
@@ -43,11 +44,10 @@ function ProfilePopUp({ profileImg, profileName }: Props): Component {
   function UserData(): Component {
     return (
       <>
-        <PopUpTitle title={t("profile")} />
-        <div className="w-full flex flex-col justify-center items-center gap-y-6">
+        <HeaderPopUp icon={<Icon size={25} />} title={t("profile")} />
+        <div className="w-full flex flex-col justify-center items-center gap-y-6 text-slate-300">
           <div className="flex flex-col justify-center items-center w-full">
             <Image
-              loading="lazy"
               alt="avatar"
               className="rounded-full sm:w-24 w-20 sm:h-24 h-20 object-cover object-center"
               src={profileImg ?? defaultCover}
@@ -59,17 +59,17 @@ function ProfilePopUp({ profileImg, profileName }: Props): Component {
             </p>
           </div>
 
-          <table className="table">
+          <table className="table w-full max-w-[550px] ">
             <thead className="sm:text-xl text-lg">
-              <tr className="capitalize">
+              <tr className="capitalize text-slate-500 border-0 border-slate-600/30 border-b-0">
                 <th>{t("books")}</th>
                 <th>{t("add-book-reading")}</th>
                 <th>{t("add-book-pending")}</th>
                 <th>{t("add-book-read")}</th>
               </tr>
             </thead>
-            <tbody className="sm:text-xl text-lg border-y-[1.5px] border-white/10 text-white/60">
-              <tr>
+            <tbody className="sm:text-xl text-lg">
+              <tr className="border-0 border-slate-600/30 ">
                 <td>{Read + Borrowed + Reading + Pending}</td>
                 <td>{Reading}</td>
                 <td>{Pending}</td>

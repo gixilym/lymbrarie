@@ -3,7 +3,7 @@ import type { Component } from "@/utils/types";
 import { WifiOff as Icon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import DialogContainer from "../DialogContainer";
-import PopUpTitle from "../TitlePopUp";
+import HeaderPopUp from "../HeaderPopUp";
 
 function OfflinePopUp(): Component {
   const [t] = useTranslation("global");
@@ -11,10 +11,7 @@ function OfflinePopUp(): Component {
 
   return (
     <DialogContainer divClass="justify-between items-center">
-      <div className="flex w-full justify-start gap-x-6 items-center">
-        <Icon size={30} className="mb-2" />
-        <PopUpTitle title={t("offline")} />
-      </div>
+      <HeaderPopUp icon={<Icon size={30} />} title={t("offline")} />
       <p className="text-xl sm:text-2xl tracking-wide text-center sm:px-6 text-pretty text-slate-300">
         {t("text-offline")}
       </p>

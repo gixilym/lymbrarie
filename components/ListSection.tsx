@@ -3,18 +3,21 @@ import { normalizeText, tLC } from "@/utils/helpers";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import { inputSearch, stateBookValue } from "@/utils/store";
 import type { Book, BookData, Component, MemoComponent } from "@/utils/types";
-import { memo, useEffect, useMemo, useState } from "react";
+import { orderBy } from "es-toolkit";
+import { memo, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import BookCard from "./BookCard";
 import ListBooks from "./ListBooks";
 import NoMatchesText from "./NoMatchesText";
-import ToggleDetailsBtn from "./btns/ToggleDetailsBtn";
+import DetailsBtn from "./btns/DetailsBtn";
+import SortBtn from "./btns/SortBtn";
 
 const ListSection: MemoComponent = memo(function B({ myBooks }: Props) {
   const [inputVal] = useRecoilState<string>(inputSearch),
     [stateVal] = useRecoilState<string>(stateBookValue),
     [listModeOn, setListModeOn] = useLocalStorage("list-mode-on", true),
     [scroll, setScroll] = useLocalStorage("scroll", 0),
+    [ascToDesc, setAscToDesc] = useState<boolean>(true),
     [showDetails, setShowDetails] = useState<boolean>(false);
 
   useEffect(() => {
@@ -33,24 +36,16 @@ const ListSection: MemoComponent = memo(function B({ myBooks }: Props) {
     if (listModeOn) setShowDetails(true);
   }, [listModeOn]);
 
-  function changeDetails(): void {
-    setShowDetails(!showDetails);
-    setListModeOn(!showDetails);
-  }
-
-  const renderBooks = (books: Book[]): Component => {
-    const condition: boolean = books.length == 0 && inputVal != "";
+  const renderBooks = (arr: Book[]): Component => {
+    const condition: boolean = arr.length == 0 && inputVal != "",
+      data: BookData[] = arr.map((b: Book) => b.data),
+      order: any[] = ascToDesc ? ["asc", "desc"] : ["desc", "asc"],
+      sorted: BookData[] = orderBy(data, ["title", "author"], order);
 
     if (condition) return <NoMatchesText />;
 
-    const sortedBooks: Book[] = books.sort((a: Book, b: Book) => {
-      const titleA = a.data.title ?? "";
-      const titleB = b.data.title ?? "";
-      return titleA.localeCompare(titleB);
-    });
-
-    return sortedBooks.map((b: Book) => (
-      <BookCard key={b.id} data={b.data} showDetails={showDetails} />
+    return sorted.map((b: BookData) => (
+      <BookCard key={b.title} data={b} showDetails={showDetails} />
     ));
   };
 
@@ -71,16 +66,21 @@ const ListSection: MemoComponent = memo(function B({ myBooks }: Props) {
     setScroll(position);
   }
 
-  const listBooks: Component = useMemo(
-    () => renderBooks(where(inputVal, stateVal)),
-    [inputVal, stateVal, myBooks, showDetails]
-  );
+  function changeDetails(): void {
+    setShowDetails(!showDetails);
+    setListModeOn(!showDetails);
+  }
+
+  const alternateSort = (): void => setAscToDesc(!ascToDesc);
+
+  const listBooks: Component = renderBooks(where(inputVal, stateVal));
 
   return (
     <section className="w-full px-4 sm:px-0 sm:w-[620px] flex flex-col justify-between items-center gap-y-7 relative">
       <div className="flex justify-start w-full items-end px-2.5">
         <HomeBtn />
-        <ToggleDetailsBtn showDetails={showDetails} onClick={changeDetails} />
+        <DetailsBtn showDetails={showDetails} onClick={changeDetails} />
+        <SortBtn ascToDesc={ascToDesc} alternateSort={alternateSort} />
       </div>
       <ListBooks listBooks={listBooks} />
     </section>

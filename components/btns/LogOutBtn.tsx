@@ -15,7 +15,7 @@ function LogOutBtn(): Component {
         push("/logout");
         closePopUp("profile");
       }}
-      className="-z-1 cursor-pointer transition-all font-thin bg-red-700/90 hover:bg-red-700 text-white px-4 py-2 rounded-xl
+      className="-z-1 cursor-pointer transition-all font-thin bg-red-700 hover:bg-red-700/80 text-white px-4 py-2 rounded-xl
       border-red-600 border-b-[4px]
       active:border-b-[2px] active:brightness-90 active:translate-y-[2px] sm:text-lg text-sm tracking-wider opacity-85 flex flex-row justify-start items-center gap-x-3"
     >

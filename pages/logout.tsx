@@ -51,7 +51,6 @@ function LogoutPage(): Component {
       >
         <div className="w-full flex flex-col justify-start items-center gap-y-4">
           <Image
-            loading="lazy"
             className="w-20 h-20 border-2 border-slate-500/70 rounded-full"
             src={logo}
             alt="logo"

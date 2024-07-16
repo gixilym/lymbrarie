@@ -9,7 +9,7 @@ function ClosePopUpBtn({ id }: { id: PopUpsIds }): Component {
     <button
       type="button"
       onClick={() => closePopUp(id)}
-      className="btn btn-ghost"
+      className="btn btn-ghost btn-square w-12 h-12 rounded-full"
     >
       <CloseIcon size={38} />
     </button>

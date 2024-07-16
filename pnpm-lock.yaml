@@ -17,6 +17,9 @@ importers:
       crypto-js:
         specifier: ^4.2.0
         version: 4.2.0
+      es-toolkit:
+        specifier: ^1.10.1
+        version: 1.10.1
       firebase:
         specifier: ^10.12.2
         version: 10.12.2
@@ -1118,6 +1121,9 @@ packages:
   es-to-primitive@1.2.1:
     resolution: {integrity: sha512-QCOllgZJtaUo9miYBcLChTUaHNjJF3PYs1VidD7AwiEj1kYxKeQTctLAezAOH5ZKRH0g2IgPn6KwB4IT8iRpvA==}
     engines: {node: '>= 0.4'}
+
+  es-toolkit@1.10.1:
+    resolution: {integrity: sha512-Xh/sqYQFPWXr/d+tFNULPcFUrpGrZMMqhu+6rDRhZd7N7uw53ZWXE17sbZZ0x7d5BTZfRJG+ItDI1y1vux1izQ==}
 
   escalade@3.1.2:
     resolution: {integrity: sha512-ErCHMCae19vR8vQGe50xIsVomy19rg6gFu3+r3jkEO46suLMWBksvVyoGgQV+jOfl84ZSOSlmv6Gxa89PmTGmA==}
@@ -3796,6 +3802,8 @@ snapshots:
       is-callable: 1.2.7
       is-date-object: 1.0.5
       is-symbol: 1.0.4
+
+  es-toolkit@1.10.1: {}
 
   escalade@3.1.2: {}
 

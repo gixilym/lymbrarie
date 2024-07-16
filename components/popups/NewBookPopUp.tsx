@@ -30,8 +30,8 @@ import {
 import { useTranslation } from "react-i18next";
 import DialogContainer from "../DialogContainer";
 import FieldsBook from "../FieldsBook";
-import PopUpTitle from "../TitlePopUp";
-import toast from "react-hot-toast";
+import HeaderPopUp from "../HeaderPopUp";
+import { CircleFadingPlus as Icon } from "lucide-react";
 
 function NewBookPopUp({ UID }: { UID: string }): Component {
   const [t] = useTranslation("global"),
@@ -193,7 +193,7 @@ function NewBookPopUp({ UID }: { UID: string }): Component {
 
   return (
     <DialogContainer>
-      <PopUpTitle title={t("new-book")} />
+      <HeaderPopUp icon={<Icon size={25} />} title={t("new-book")} />
 
       <FieldsBook
         errorKey={errorKey}

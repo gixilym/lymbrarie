@@ -118,5 +118,6 @@
     "editing": "Editing...",
     "adding": "Adding...",
     "book-added": "Book added",
-    "book-deleted": "Book deleted"
+    "book-deleted": "Book deleted",
+    "alert": "Alert"
 }

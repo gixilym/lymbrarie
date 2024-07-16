@@ -5,11 +5,12 @@ import {
   Palette as PalletIcon,
   Sparkles as AnimationsIcon,
   Library as StateIcon,
+  Settings as SettingsIcon,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import ClosePopUpBtn from "../btns/ClosePopUpBtn";
 import DialogContainer from "../DialogContainer";
-import PopUpTitle from "../TitlePopUp";
+import HeaderPopUp from "../HeaderPopUp";
 
 function SettingsPopUp(): Component {
   const [t, i18n] = useTranslation("global"),
@@ -19,10 +20,10 @@ function SettingsPopUp(): Component {
 
   return (
     <DialogContainer divClass="justify-between">
-      <PopUpTitle title={t("settings")} />
+      <HeaderPopUp icon={<SettingsIcon size={25} />} title={t("settings")} />
 
-      <div className="w-full flex flex-col justify-start items-center gap-y-10">
-        <div className="w-full sm:w-[90%] flex justify-between items-center gap-x-6 sm:gap-x-0">
+      <div className="w-full flex flex-col justify-start items-center gap-y-10 text-slate-200">
+        <div className="w-full sm:w-[90%] flex justify-between items-center gap-x-6 sm:gap-x-0 ">
           <label
             htmlFor="select-language"
             className="sm:text-xl text-lg flex justify-start items-center gap-x-3"

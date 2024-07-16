@@ -1,14 +1,13 @@
+import defaultCover from "@/public/cover.webp";
+import { formatTitle } from "@/utils/helpers";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import type { BookData, Component } from "@/utils/types";
-import { type NextRouter } from "next/router";
-import { useRouter } from "next/router";
+import { useRouter, type NextRouter } from "next/router";
 import { flushSync } from "react-dom";
 import { useTranslation } from "react-i18next";
 import { twMerge } from "tailwind-merge";
 import CardWithDetails from "./CardWithDetails";
 import CardWithOutDetails from "./CardWithoutDetails";
-import { formatTitle } from "@/utils/helpers";
-import defaultCover from "@/public/cover.webp";
 
 function BookCard(props: Props): Component {
   const { data, showDetails } = props,
@@ -86,8 +85,11 @@ function BookCard(props: Props): Component {
     }
   }
 
-  if (showDetails) return <CardWithDetails {...withProps} />;
-  return <CardWithOutDetails {...withOutProps} />;
+  return showDetails ? (
+    <CardWithDetails {...withProps} />
+  ) : (
+    <CardWithOutDetails {...withOutProps} />
+  );
 }
 
 export default BookCard;

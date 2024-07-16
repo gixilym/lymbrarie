@@ -6,7 +6,7 @@ import LoadComponent from "@/components/LoadComponent";
 import Maintenance from "@/components/Maintenance";
 import PopUps from "@/components/PopUps";
 import { COLLECTION, MAINTENANCE, PRODUCTION } from "@/utils/consts";
-import { dismissNoti, notification, removeItem } from "@/utils/helpers";
+import { notification, removeItem } from "@/utils/helpers";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import { zeroBooksValue } from "@/utils/store";
 import type { Book, Component, Doc } from "@/utils/types";
