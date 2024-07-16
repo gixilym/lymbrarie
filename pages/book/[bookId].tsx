@@ -75,10 +75,8 @@ function BookId(): Component {
   useEffect(() => {
     const unsubscribe: Unsubscribe = onAuthStateChanged(auth, () => {});
     getCacheBook();
-    return () => {
-      toast.remove();
-      unsubscribe();
-    };
+    toast.remove();
+    return () => unsubscribe();
   }, [bookTitle, auth]);
 
   useEffect(() => {
