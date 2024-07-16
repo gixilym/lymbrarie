@@ -4,7 +4,7 @@ import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import { inputSearch, stateBookValue } from "@/utils/store";
 import type { Book, BookData, Component, MemoComponent } from "@/utils/types";
 import { isEqual, orderBy, round } from "es-toolkit";
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import { useRecoilState } from "recoil";
 import BookCard from "./BookCard";
 import ListBooks from "./ListBooks";
@@ -77,7 +77,10 @@ const ListSection: MemoComponent = memo(function B({ myBooks }: Props) {
     else setAscToDesc(true);*/
   }
 
-  const listBooks: Component = renderBooks(where(inputVal, stateVal));
+  const listBooks: Component = useMemo(
+    () => renderBooks(where(inputVal, stateVal)),
+    [inputVal, stateVal, showDetails, myBooks, ascToDesc]
+  );
 
   return (
     <section className="w-full px-4 sm:px-0 sm:w-[620px] flex flex-col justify-between items-center gap-y-7 relative">

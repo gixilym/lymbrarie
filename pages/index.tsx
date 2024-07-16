@@ -83,8 +83,7 @@ function Index(): Component {
 
   async function fetchBooks(): Promise<void> {
     if (zeroBooks) return;
-    const decryptedBooks: Book[] = cacheBooks;
-    if (Array.isArray(decryptedBooks)) setMyBooks(decryptedBooks);
+    if (Array.isArray(cacheBooks)) setMyBooks(cacheBooks);
     else {
       setLoading(true);
       const { books, isEmpty } = await getListBooks(UID);
