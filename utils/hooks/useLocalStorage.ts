@@ -1,9 +1,10 @@
 import Crypto from "crypto-js";
+import { isNull } from "es-toolkit";
 import { useState } from "react";
 import { PRODUCTION } from "../consts";
 
 function decrypt(data: any): any {
-  if (data == null) return null;
+  if (isNull(data)) return null;
   const key: string = process.env.NEXT_PUBLIC_DECRYPT as string;
   const bytes = Crypto.AES.decrypt(data, key);
   const res: any = JSON.parse(bytes.toString(Crypto.enc.Utf8));

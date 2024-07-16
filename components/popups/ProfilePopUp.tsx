@@ -9,6 +9,7 @@ import LogOutBtn from "../btns/LogOutBtn";
 import DialogContainer from "../DialogContainer";
 import HeaderPopUp from "../HeaderPopUp";
 import { UserRound as Icon } from "lucide-react";
+import { isUndefined, sum } from "es-toolkit";
 
 function ProfilePopUp({ profileImg, profileName }: Props): Component {
   const [t] = useTranslation("global"),
@@ -32,9 +33,7 @@ function ProfilePopUp({ profileImg, profileName }: Props): Component {
 
       cacheBooks.forEach((b: Book) => {
         const state: string = b.data.state as BookState;
-        if (counts[state] !== undefined) {
-          counts[state]++;
-        }
+        if (!isUndefined(counts[state])) counts[state]++;
       });
 
       setStateCounts(counts);
@@ -70,7 +69,7 @@ function ProfilePopUp({ profileImg, profileName }: Props): Component {
             </thead>
             <tbody className="sm:text-xl text-lg">
               <tr className="border-0 border-slate-600/30 ">
-                <td>{Read + Borrowed + Reading + Pending}</td>
+                <td>{sum([Read, Borrowed, Reading, Pending])}</td>
                 <td>{Reading}</td>
                 <td>{Pending}</td>
                 <td>{Read}</td>

@@ -16,7 +16,6 @@ import type {
   FormRef,
   InputEvent,
   SelectEvent,
-  Timer,
 } from "@/utils/types";
 import { doc, setDoc } from "firebase/firestore/lite";
 import { type NextRouter, useRouter } from "next/router";
@@ -32,6 +31,7 @@ import DialogContainer from "../DialogContainer";
 import FieldsBook from "../FieldsBook";
 import HeaderPopUp from "../HeaderPopUp";
 import { CircleFadingPlus as Icon } from "lucide-react";
+import { clone, delay, isEqual } from "es-toolkit";
 
 function NewBookPopUp({ UID }: { UID: string }): Component {
   const [t] = useTranslation("global"),
@@ -49,8 +49,10 @@ function NewBookPopUp({ UID }: { UID: string }): Component {
     [cusGenderVal, setCusGenderVal] = useState<string>("");
 
   useEffect(() => {
-    const timer: Timer = setTimeout(() => setErrorKey(""), 2300);
-    return () => clearTimeout(timer);
+    (async function () {
+      await delay(2300);
+      setErrorKey("");
+    })();
   }, [addClicked]);
 
   function handleState(state: string): void {
@@ -71,7 +73,7 @@ function NewBookPopUp({ UID }: { UID: string }): Component {
 
   function handleGender(e: SelectEvent): void {
     const gender: string = e.target?.value;
-    setIsCustomGender(gender == "custom");
+    setIsCustomGender(isEqual(gender, "custom"));
     setBook({
       ...book,
       data: { ...book.data, gender },
@@ -105,15 +107,17 @@ function NewBookPopUp({ UID }: { UID: string }): Component {
 
   function validateFields(): boolean {
     const title: string = tLC(book?.data?.title ?? ""),
-      repeteadTitle: boolean = allTitles.some(
-        (t: string) => normalizeText(tLC(t)) == normalizeText(tLC(title))
+      repeteadTitle: boolean = allTitles.some((t: string) =>
+        isEqual(normalizeText(tLC(t)), normalizeText(tLC(title)))
       ),
       maxTitleLength: boolean = title.length > 71,
       maxAuthorLength: boolean = (book?.data?.author?.length ?? 0) > 34,
-      emptyCustomGender: boolean = isCustomGender && cusGenderVal.length == 0,
+      emptyCustomGender: boolean =
+        isCustomGender && isEqual(cusGenderVal.length, 0),
       maxLengthGender: boolean = isCustomGender && cusGenderVal.length > 24,
       emptyLoaned: boolean =
-        isLoaned(book?.data?.state ?? "") && book?.data?.loaned?.trim() == "",
+        isLoaned(book?.data?.state ?? "") &&
+        isEqual(book?.data?.loaned?.trim(), ""),
       maxLengthLoaned: boolean =
         isLoaned(book?.data?.state ?? "") &&
         (book?.data?.loaned?.length ?? 0) > 24,

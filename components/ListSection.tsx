@@ -3,7 +3,7 @@ import { normalizeText, tLC } from "@/utils/helpers";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import { inputSearch, stateBookValue } from "@/utils/store";
 import type { Book, BookData, Component, MemoComponent } from "@/utils/types";
-import { orderBy } from "es-toolkit";
+import { isEqual, orderBy, round } from "es-toolkit";
 import { memo, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import BookCard from "./BookCard";
@@ -15,10 +15,11 @@ import SortBtn from "./btns/SortBtn";
 const ListSection: MemoComponent = memo(function B({ myBooks }: Props) {
   const [inputVal] = useRecoilState<string>(inputSearch),
     [stateVal] = useRecoilState<string>(stateBookValue),
-    [listModeOn, setListModeOn] = useLocalStorage("list-mode-on", true),
+    [showDetailsLS, setShowDetailsLS] = useLocalStorage("list-mode-on", true),
+    [showDetails, setShowDetails] = useState<boolean>(showDetailsLS),
     [scroll, setScroll] = useLocalStorage("scroll", 0),
-    [ascToDesc, setAscToDesc] = useState<boolean>(true),
-    [showDetails, setShowDetails] = useState<boolean>(false);
+    [ascLS, setAscLS] = useLocalStorage("asc", true),
+    [ascToDesc, setAscToDesc] = useState<boolean>(ascLS);
 
   useEffect(() => {
     const resetScroll = (): void => setScroll(0);
@@ -32,17 +33,13 @@ const ListSection: MemoComponent = memo(function B({ myBooks }: Props) {
     return () => removeEventListener("scroll", handleScroll);
   }, [myBooks]);
 
-  useEffect(() => {
-    if (listModeOn) setShowDetails(true);
-  }, [listModeOn]);
-
   const renderBooks = (arr: Book[]): Component => {
-    const condition: boolean = arr.length == 0 && inputVal != "",
+    const noMatches: boolean = isEqual(arr.length, 0) && inputVal != "",
       data: BookData[] = arr.map((b: Book) => b.data),
       order: any[] = ascToDesc ? ["asc", "desc"] : ["desc", "asc"],
       sorted: BookData[] = orderBy(data, ["title", "author"], order);
 
-    if (condition) return <NoMatchesText />;
+    if (noMatches) return <NoMatchesText />;
 
     return sorted.map((b: BookData) => (
       <BookCard key={b.title} data={b} showDetails={showDetails} />
@@ -50,7 +47,7 @@ const ListSection: MemoComponent = memo(function B({ myBooks }: Props) {
   };
 
   function where(value: string, state: string): Book[] {
-    const checkState = (b: BookData) => !state || b.state == stateVal,
+    const checkState = (b: BookData) => !state || isEqual(b.state, stateVal),
       checkTitle = (b: BookData) =>
         normalizeText(tLC(b.title ?? ""))?.includes(normalizeText(tLC(value))),
       checkAuthor = (b: BookData) => tLC(b.author ?? "")?.includes(tLC(value));
@@ -62,16 +59,23 @@ const ListSection: MemoComponent = memo(function B({ myBooks }: Props) {
   }
 
   function handleScroll(): void {
-    const position: number = Number(scrollY.toFixed(0));
+    const position: number = Number(round(scrollY, 0));
     setScroll(position);
   }
 
   function changeDetails(): void {
     setShowDetails(!showDetails);
-    setListModeOn(!showDetails);
+    setShowDetailsLS(!showDetails);
   }
 
-  const alternateSort = (): void => setAscToDesc(!ascToDesc);
+  function alternateSort(): void {
+    setAscLS(!ascLS);
+    setAscToDesc(!ascToDesc);
+    /* //* el scroll se vuelve loco cuando ascToDesc es null
+    if (ascToDesc) setAscToDesc(false);
+    else if (ascToDesc === false) setAscToDesc(null);
+    else setAscToDesc(true);*/
+  }
 
   const listBooks: Component = renderBooks(where(inputVal, stateVal));
 

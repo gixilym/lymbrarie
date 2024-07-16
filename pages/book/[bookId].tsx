@@ -20,6 +20,7 @@ import usePopUp from "@/utils/hooks/usePopUp";
 import { popupsValue } from "@/utils/store";
 import type { Book, Component } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
+import { isEqual, noop, union } from "es-toolkit";
 import {
   type Auth,
   getAuth,
@@ -73,7 +74,7 @@ function BookId(): Component {
     }));
 
   useEffect(() => {
-    const unsubscribe: Unsubscribe = onAuthStateChanged(auth, () => {});
+    const unsubscribe: Unsubscribe = onAuthStateChanged(auth, () => noop());
     getCacheBook();
     toast.remove();
     return () => unsubscribe();
@@ -108,7 +109,9 @@ function BookId(): Component {
   }
 
   function getCacheBook(): void {
-    const book: Book = cacheBooks.find((b: Book) => b?.data?.title == title);
+    const book: Book = cacheBooks.find((b: Book) =>
+      isEqual(b?.data?.title, title)
+    );
     setBook(book);
     setNotes(book?.data?.notes ?? "");
     setDocumentId(book?.id);

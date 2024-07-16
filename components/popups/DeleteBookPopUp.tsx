@@ -6,6 +6,7 @@ import usePopUp from "@/utils/hooks/usePopUp";
 import { inputSearch, zeroBooksValue } from "@/utils/store";
 import type { Book, Component } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
+import { isEqual } from "es-toolkit";
 import { deleteDoc, doc } from "firebase/firestore/lite";
 import { TriangleAlert as WarningIcon } from "lucide-react";
 import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
@@ -41,8 +42,8 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
     try {
       await deleteDoc(doc(COLLECTION, documentId));
       setSearchVal("");
-      setZeroBooks(cacheBooks?.length == 1);
-      if (cacheBooks?.length == 1) {
+      setZeroBooks(isEqual(cacheBooks?.length, 1));
+      if (isEqual(cacheBooks?.length, 1)) {
         setCacheBooks(null);
         setAllTitles([]);
         redirectToHome();

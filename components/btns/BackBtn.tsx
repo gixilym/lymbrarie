@@ -1,5 +1,6 @@
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import type { Component } from "@/utils/types";
+import { isEqual } from "es-toolkit";
 import { CircleChevronLeft as Icon } from "lucide-react";
 import { type NextRouter, useRouter } from "next/router";
 import { flushSync } from "react-dom";
@@ -11,7 +12,7 @@ function BackBtn(): Component {
   function goTo(): Promise<boolean> {
     const condition: boolean =
       // @ts-ignore
-      typeof document.startViewTransition == "function" && animations;
+      isEqual(typeof document.startViewTransition, "function") && animations;
 
     return condition
       ? // @ts-ignore

@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useRecoilState } from "recoil";
 import { twMerge } from "tailwind-merge";
 import AddBookBtn from "./btns/AddBookBtn";
+import { isEqual } from "es-toolkit";
 
 function SearchIndex(): Component {
   const [value, setValue] = useRecoilState<string>(inputSearch),
@@ -13,7 +14,7 @@ function SearchIndex(): Component {
     [t] = useTranslation("global");
 
   function selectedState(state: string) {
-    return selectVal == state
+    return isEqual(selectVal, state)
       ? "bg-blue-300 text-gray-700"
       : "bg-slate-800 text-white";
   }

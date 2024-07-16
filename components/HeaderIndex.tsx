@@ -1,6 +1,6 @@
 import SearchIndex from "@/components/SearchIndex";
 import type { Component } from "@/utils/types";
-import AccelerationPopUp from "./popups/AccelerationPopUp";
+import AccelerationPopUp from "./popups/HardwareAccelerationPopUp";
 
 function HeaderIndex(): Component {
   return (

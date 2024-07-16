@@ -1,3 +1,4 @@
+import { isEqual } from "es-toolkit";
 import { toast } from "react-hot-toast";
 
 function notification(noti: Notis, msg: string): void {
@@ -41,7 +42,7 @@ const normalizeText = (text: string): string =>
 
 const removeItem = (item: string) => localStorage?.removeItem(item);
 
-const isLoaned = (state: string): boolean => state == "Borrowed";
+const isLoaned = (state: string): boolean => isEqual(state, "Borrowed");
 
 const tLC: Format = (val: string): string => val?.toLowerCase().trim();
 

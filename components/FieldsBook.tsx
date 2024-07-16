@@ -1,6 +1,7 @@
 import { GENDERS } from "@/utils/consts";
 import { tLC } from "@/utils/helpers";
 import type { Component, InputEvent } from "@/utils/types";
+import { isEqual } from "es-toolkit";
 import {
   UserRoundSearch as BorrowedIcon,
   Type as CustomIcon,
@@ -40,7 +41,7 @@ function FieldsBook(props: Props): Component {
       <label
         htmlFor="title-input"
         className={twMerge(
-          "title-input" == errorKey && "border-2 border-red-500",
+          isEqual("title-input", errorKey) && "border-2 border-red-500",
           "input input-bordered flex items-center sm:text-xl text-lg h-14 mt-3"
         )}
       >
@@ -61,7 +62,7 @@ function FieldsBook(props: Props): Component {
       <label
         htmlFor="author-input"
         className={twMerge(
-          "author-input" == errorKey && "border-2 border-red-500",
+          isEqual("author-input", errorKey) && "border-2 border-red-500",
           "input input-bordered flex items-center sm:text-xl text-lg h-14"
         )}
       >
@@ -125,7 +126,7 @@ function FieldsBook(props: Props): Component {
           <label
             htmlFor="gender-input"
             className={twMerge(
-              "gender-input" == errorKey && "border-2 border-red-500",
+              isEqual("gender-input", errorKey) && "border-2 border-red-500",
               "input input-bordered flex items-center sm:text-xl text-lg h-14 w-2/4 sm:w-full"
             )}
           >
@@ -183,7 +184,7 @@ function FieldsBook(props: Props): Component {
           <label
             htmlFor="loaned-input"
             className={twMerge(
-              "loaned-input" == errorKey && "border-2 border-red-500",
+              isEqual("loaned-input", errorKey) && "border-2 border-red-500",
               "input input-bordered flex items-center sm:text-xl text-lg w-2/4 sm:w-full h-14"
             )}
           >
@@ -206,7 +207,7 @@ function FieldsBook(props: Props): Component {
         <label
           htmlFor="image-input"
           className={twMerge(
-            "image-input" == errorKey && "border-2 border-red-500",
+            isEqual("image-input", errorKey) && "border-2 border-red-500",
             "input input-bordered flex items-center sm:text-xl text-lg h-14 mb-1"
           )}
         >

@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import { twMerge } from "tailwind-merge";
 import CardWithDetails from "./CardWithDetails";
 import CardWithOutDetails from "./CardWithoutDetails";
+import { isEqual } from "es-toolkit";
 
 function BookCard(props: Props): Component {
   const { data, showDetails } = props,
@@ -34,7 +35,7 @@ function BookCard(props: Props): Component {
   function goTo(): Promise<boolean> {
     const condition: boolean =
       // @ts-ignore
-      typeof document.startViewTransition == "function" && animations;
+      isEqual(typeof document.startViewTransition, "function") && animations;
 
     return condition
       ? // @ts-ignore

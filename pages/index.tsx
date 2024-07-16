@@ -11,6 +11,7 @@ import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import { zeroBooksValue } from "@/utils/store";
 import type { Book, Component, Doc } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
+import { isEqual, noop } from "es-toolkit";
 import {
   type Auth,
   getAuth,
@@ -25,7 +26,6 @@ import {
   where,
 } from "firebase/firestore/lite";
 import { AuthAction, type User, useUser, withUser } from "next-firebase-auth";
-import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilState } from "recoil";
@@ -61,7 +61,7 @@ function Index(): Component {
   useEffect(() => showNotifications(), []);
 
   useEffect(() => {
-    const unsubscribe: Unsubscribe = onAuthStateChanged(auth, () => {});
+    const unsubscribe: Unsubscribe = onAuthStateChanged(auth, () => noop());
     return () => unsubscribe();
   }, [auth]);
 
@@ -118,14 +118,6 @@ function Index(): Component {
       style={styles}
       className="flex flex-col justify-start items-center w-full sm:max-w-[950px] h-full gap-y-6"
     >
-      <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta
-          name="description"
-          content="donde cada libro encuentra su lugar"
-        />
-      </Head>
-
       {MAINTENANCE ? (
         <Maintenance />
       ) : (
@@ -162,7 +154,7 @@ async function getListBooks(UID: string): Promise<List> {
       isEmpty = res.empty;
     } catch (err: any) {
       if (MAINTENANCE) {
-        const e = err.message == "Quota exceeded." ? "limit" : "unknown";
+        const e = isEqual(err.message, "Quota exceeded.") ? "limit" : "unknown";
         if (PRODUCTION) location.href = `/error?err=${e}`;
         else console.error(`error en getListBooks: ${err.message}`);
       }

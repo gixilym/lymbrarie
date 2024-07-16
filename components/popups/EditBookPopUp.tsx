@@ -18,7 +18,6 @@ import type {
   FormRef,
   InputEvent,
   SelectEvent,
-  Timer,
 } from "@/utils/types";
 import { doc, setDoc } from "firebase/firestore/lite";
 import { type NextRouter, useRouter } from "next/router";
@@ -34,8 +33,7 @@ import DialogContainer from "../DialogContainer";
 import FieldsBook from "../FieldsBook";
 import HeaderPopUp from "../HeaderPopUp";
 import { PencilIcon as Icon } from "lucide-react";
-
-
+import { delay, isEqual } from "es-toolkit";
 
 function EditBookPopUp(props: Props): Component {
   const { data: dataBook, documentId } = props,
@@ -61,18 +59,20 @@ function EditBookPopUp(props: Props): Component {
   useEffect(() => loadBookData(), [data]);
 
   useEffect(() => {
-    const timer: Timer = setTimeout(() => setErrorKey(""), 2300);
-    return () => clearTimeout(timer);
+    (async function () {
+      await delay(2300);
+      setErrorKey("");
+    })();
   }, [addClicked]);
 
   useEffect(() => {
     const noChanges: boolean =
-      book.title == data?.title &&
-      book.gender == data?.gender &&
-      book.state == data?.state &&
-      book.image == data?.image &&
-      book.author == data?.author &&
-      book.loaned == data?.loaned;
+      isEqual(book.title, data?.title) &&
+      isEqual(book.gender, data?.gender) &&
+      isEqual(book.state, data?.state) &&
+      isEqual(book.image, data?.image) &&
+      isEqual(book.author, data?.author) &&
+      isEqual(book.loaned, data?.loaned);
 
     if (noChanges) setEditDisabled(true);
     else setEditDisabled(false);
@@ -101,7 +101,7 @@ function EditBookPopUp(props: Props): Component {
   function handleGender(e: SelectEvent): void {
     const gender: string = e.target?.value;
     setBook({ ...book, gender });
-    setIsCustomGender(gender == "custom");
+    setIsCustomGender(isEqual(gender, "custom"));
   }
 
   async function editBook(e: FormEvent): Promise<void> {
@@ -142,16 +142,16 @@ function EditBookPopUp(props: Props): Component {
       repeteadTitle: boolean = allTitles.some(
         (t: string) =>
           normalizeText(tLC(t)) != normalizeText(tLC(formatBookId)) &&
-          normalizeText(tLC(t)) == normalizeText(tLC(title))
+          isEqual(normalizeText(tLC(t)), normalizeText(tLC(title)))
       ),
       maxTitleLength: boolean = title.length > 71,
       maxAuthorLength: boolean = (book.author?.length ?? 0) > 34,
       emptyCustomGender: boolean =
-        isCustomGender && (cusGenderVal.length ?? 0) == 0,
+        isCustomGender && isEqual(cusGenderVal.length ?? 0, 0),
       maxLengthGender: boolean =
         isCustomGender && (cusGenderVal.length ?? 0) > 24,
       emptyLoaned: boolean =
-        isLoaned(book.state ?? "") && book.loaned?.trim() == "",
+        isLoaned(book.state ?? "") && isEqual(book.loaned?.trim(), ""),
       maxLengthLoaned: boolean =
         isLoaned(book.state ?? "") && (book.loaned?.length ?? 0) > 24,
       validateURL: RegExp =
