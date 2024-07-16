@@ -79,7 +79,7 @@ function BookId(): Component {
       unsubscribe();
       getCacheBook();
     };
-  }, [bookTitle]);
+  }, [bookTitle, auth]);
 
   useEffect(() => {
     if (notExist) router.push("/");
