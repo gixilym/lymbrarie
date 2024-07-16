@@ -60,28 +60,6 @@ function Index(): Component {
 
   useEffect(() => showNotifications(), []);
 
-  function showNotifications(): () => void {
-    switch (true) {
-      case newBookNoti:
-        return () => {
-          notification("success", t("book-added"));
-          removeItem("added");
-        };
-
-      case deletedNoti:
-        return () => {
-          notification("success", t("book-deleted"));
-          removeItem("deleted");
-        };
-
-      default:
-        return () => {
-          removeItem("added");
-          removeItem("deleted");
-        };
-    }
-  }
-
   useEffect(() => {
     const unsubscribe: Unsubscribe = onAuthStateChanged(auth, () => {});
     return () => unsubscribe();
@@ -113,6 +91,25 @@ function Index(): Component {
       setMyBooks(books);
       setBooksIsEmpty(isEmpty);
       setLoading(false);
+    }
+  }
+
+  function showNotifications(): void {
+    switch (true) {
+      case newBookNoti: {
+        removeItem("added");
+        return notification("success", t("book-added"));
+      }
+
+      case deletedNoti: {
+        removeItem("deleted");
+        return notification("success", t("book-deleted"));
+      }
+
+      default: {
+        removeItem("added");
+        removeItem("deleted");
+      }
     }
   }
 
