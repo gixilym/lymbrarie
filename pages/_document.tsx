@@ -15,7 +15,7 @@ export default function Document(): Component {
           content="donde cada libro encuentra su lugar"
         />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://metatags.io/" />
+        <meta property="og:url" content="https://lymbrarie.com/" />
         <meta property="og:title" content="Lymbrarie" />
         <meta
           property="og:description"
@@ -23,10 +23,10 @@ export default function Document(): Component {
         />
         <meta
           property="og:image"
-          content="https://metatags.io/images/meta-tags.png"
+          content="https://res.cloudinary.com/dgs55s8qh/image/upload/v1721180775/j0voni7wm4nta6xiiuzx.png"
         />
         <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content="https://metatags.io/" />
+        <meta property="twitter:url" content="https://lymbrarie.com/" />
         <meta property="twitter:title" content="Lymbrarie" />
         <meta
           property="twitter:description"
@@ -34,7 +34,7 @@ export default function Document(): Component {
         />
         <meta
           property="twitter:image"
-          content="https://metatags.io/images/meta-tags.png"
+          content="https://res.cloudinary.com/dgs55s8qh/image/upload/v1721180775/j0voni7wm4nta6xiiuzx.png"
         />
       </Head>
       <Providers>
