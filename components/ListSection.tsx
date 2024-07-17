@@ -3,7 +3,7 @@ import { normalizeText, tLC } from "@/utils/helpers";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import { inputSearch, stateBookValue } from "@/utils/store";
 import type { Book, BookData, Component, MemoComponent } from "@/utils/types";
-import { isEqual, orderBy, round } from "es-toolkit";
+import { isEqual, isNull, orderBy, round, shuffle } from "es-toolkit";
 import { memo, useEffect, useMemo, useState } from "react";
 import { useRecoilState } from "recoil";
 import BookCard from "./BookCard";
@@ -19,7 +19,7 @@ const ListSection: MemoComponent = memo(function B({ myBooks }: Props) {
     [showDetails, setShowDetails] = useState<boolean>(showDetailsLS),
     [scroll, setScroll] = useLocalStorage("scroll", 0),
     [ascLS, setAscLS] = useLocalStorage("asc", true),
-    [ascToDesc, setAscToDesc] = useState<boolean>(ascLS);
+    [ascToDesc, setAscToDesc] = useState<boolean | null>(ascLS);
 
   useEffect(() => {
     const resetScroll = (): void => setScroll(0);
@@ -37,7 +37,9 @@ const ListSection: MemoComponent = memo(function B({ myBooks }: Props) {
     const noMatches: boolean = isEqual(arr.length, 0) && inputVal != "",
       data: BookData[] = arr.map((b: Book) => b.data),
       order: any[] = ascToDesc ? ["asc", "desc"] : ["desc", "asc"],
-      sorted: BookData[] = orderBy(data, ["title", "author"], order);
+      sorted: BookData[] = isNull(ascToDesc)
+        ? shuffle(data)
+        : orderBy(data, ["title", "author"], order);
 
     if (noMatches) return <NoMatchesText />;
 
@@ -69,12 +71,20 @@ const ListSection: MemoComponent = memo(function B({ myBooks }: Props) {
   }
 
   function alternateSort(): void {
-    setAscLS(!ascLS);
-    setAscToDesc(!ascToDesc);
-    /* //* el scroll se vuelve loco cuando ascToDesc es null
-    if (ascToDesc) setAscToDesc(false);
-    else if (ascToDesc === false) setAscToDesc(null);
-    else setAscToDesc(true);*/
+    switch (ascToDesc) {
+      case true:
+        setAscToDesc(false);
+        setAscLS(false);
+        break;
+      case false:
+        setAscToDesc(null);
+        setAscLS(null);
+        break;
+      default:
+        setAscToDesc(true);
+        setAscLS(true);
+        break;
+    }
   }
 
   const listBooks: Component = useMemo(

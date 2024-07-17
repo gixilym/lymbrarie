@@ -1,5 +1,7 @@
 import type { Component } from "@/utils/types";
+import { isNull } from "es-toolkit";
 import {
+  Shuffle as ShuffleIcon,
   ArrowDownAZ as SortAZIcon,
   ArrowDownZA as SortZAIcon,
 } from "lucide-react";
@@ -10,7 +12,7 @@ function SortBtn({ alternateSort, ascToDesc }: Props): Component {
     <button onClick={alternateSort} className="btn btn-ghost btn-square">
       {ascToDesc && <SortAZIcon size={29} />}
       {ascToDesc === false && <SortZAIcon size={29} />}
-      {/* {isNull(ascToDesc) && <ShuffleIcon size={27} />} */}
+      {isNull(ascToDesc) && <ShuffleIcon size={27} />}
     </button>
   );
 }

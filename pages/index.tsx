@@ -26,6 +26,7 @@ import {
   where,
 } from "firebase/firestore/lite";
 import { AuthAction, type User, useUser, withUser } from "next-firebase-auth";
+import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilState } from "recoil";
@@ -117,6 +118,13 @@ function Index(): Component {
       style={styles}
       className="flex flex-col justify-start items-center w-full sm:max-w-[950px] h-full gap-y-6"
     >
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="description"
+          content="donde cada libro encuentra su lugar"
+        />
+      </Head>
       {MAINTENANCE ? (
         <Maintenance />
       ) : (
