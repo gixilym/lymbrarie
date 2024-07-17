@@ -11,9 +11,11 @@ import { useTranslation } from "react-i18next";
 import ClosePopUpBtn from "../btns/ClosePopUpBtn";
 import DialogContainer from "../DialogContainer";
 import HeaderPopUp from "../HeaderPopUp";
+import { type NextRouter, useRouter } from "next/router";
 
 function SettingsPopUp(): Component {
   const [t, i18n] = useTranslation("global"),
+    { reload }: NextRouter = useRouter(),
     [language, setLanguage] = useLocalStorage("language", "en"),
     [animations, setAnimations] = useLocalStorage("animations", true),
     [state, setState] = useLocalStorage("state", true);
@@ -56,7 +58,7 @@ function SettingsPopUp(): Component {
           <button
             onClick={() => {
               setAnimations(!animations);
-              location.reload();
+              reload();
             }}
             id="enabled-animations"
             className="w-[230px] sm:w-full max-w-xs text-lg border border-gray-700 h-11 rounded-xl text-center pr-5"
@@ -76,7 +78,7 @@ function SettingsPopUp(): Component {
           <button
             onClick={() => {
               setState(!state);
-              location.reload();
+              reload();
             }}
             id="hidden-state"
             className="w-[230px] sm:w-full max-w-xs text-lg border border-gray-700 h-11 rounded-xl text-center pr-5"
