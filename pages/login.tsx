@@ -2,7 +2,7 @@ import LoadComponent from "@/components/LoadComponent";
 import logo from "@/public/favicon.ico";
 import { PRODUCTION } from "@/utils/consts";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
-import { GithubIcon, GoogleIcon, FacebookIcon } from "@/utils/svgs";
+import { GithubIcon, GoogleIcon } from "@/utils/svgs";
 import type { Component } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
 import {
@@ -10,7 +10,6 @@ import {
   getAuth,
   GithubAuthProvider,
   GoogleAuthProvider,
-  FacebookAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
 import { AuthAction, withUser } from "next-firebase-auth";
@@ -59,10 +58,10 @@ function LoginPage(): Component {
     logIn(provider);
   }
 
-  function withFacebook(): void {
-    const provider: FacebookAuthProvider = new FacebookAuthProvider();
-    logIn(provider);
-  }
+  // function withFacebook(): void {
+  //   const provider: FacebookAuthProvider = new FacebookAuthProvider();
+  //   logIn(provider);
+  // }
 
   return (
     <section className="absolute top-0 right-0 min-h-screen w-full flex items-start justify-center bg-transparent pt-12 sm:pt-20">
@@ -86,30 +85,30 @@ function LoginPage(): Component {
         <div className="w-full flex flex-col justify-start items-center gap-y-3.5">
           <button
             onClick={withGoogle}
-            className="bg-slate-100/10 justify-center sm:justify-start sm:pl-12 hover:bg-slate-400/10
- flex items-center w-[330px] sm:w-full max-w-[400px] h-14 sm:h-[58px] gap-x-6 rounded-lg border border-slate-500/40 duration-150 "
+            className="bg-slate-100/10 justify-start gap-x-6 px-6 hover:bg-slate-400/10
+ flex items-center w-[330px] sm:w-full max-w-[400px] h-14 rounded-lg border border-slate-500/40 duration-150 "
           >
             <GoogleIcon className="w-7 h-7" />
             <p className="text-lg sm:text-xl text-white">{t("with-google")}</p>
           </button>
           <button
+            onClick={withGithub}
+            className="bg-black/60 border border-slate-800 justify-start gap-x-6 px-6 hover:bg-slate-950/20
+flex items-center w-[330px] sm:w-full max-w-[405px] h-[60px] rounded-lg duration-150"
+          >
+            <GithubIcon className="w-7 h-7" />
+            <p className="text-lg sm:text-xl text-white">{t("with-github")}</p>
+          </button>
+          {/* <button
             onClick={withFacebook}
-            className="bg-blue-600/70 justify-center sm:justify-start sm:pl-12 hover:bg-slate-400/10
- flex items-center w-[330px] sm:w-full max-w-[400px] h-14 sm:h-[58px] gap-x-6 rounded-lg border border-slate-500/40 duration-150 "
+            className="bg-blue-600/70 justify-start gap-x-6 px-6 hover:bg-blue-600/90
+ flex items-center w-[330px] sm:w-full max-w-[400px] !h-14 rounded-lg border border-slate-500/40 duration-150 "
           >
             <FacebookIcon className="w-7 h-7" />
             <p className="text-lg sm:text-xl text-white">
               {t("with-facebook")}
             </p>
-          </button>
-          <button
-            onClick={withGithub}
-            className="bg-black/60 border border-slate-800 justify-center sm:justify-start sm:pl-12 hover:bg-black/50
-flex items-center w-[330px] sm:w-full max-w-[400px] h-14 sm:h-[62px] gap-x-6 rounded-lg  duration-150"
-          >
-            <GithubIcon className="w-7 h-7" />
-            <p className="text-lg sm:text-xl text-white">{t("with-github")}</p>
-          </button>
+          </button> */}
         </div>
       </animated.div>
     </section>
