@@ -120,10 +120,7 @@ function Index(): Component {
     >
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta
-          name="description"
-          content="donde cada libro encuentra su lugar"
-        />
+   
       </Head>
       {MAINTENANCE ? (
         <Maintenance />

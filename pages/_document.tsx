@@ -9,6 +9,33 @@ export default function Document(): Component {
       <Head>
         <meta charSet="utf-8" />
         <link rel="icon" href="/favicon.ico" />
+        <meta name="title" content="Lymbrarie" />
+        <meta
+          name="description"
+          content="donde cada libro encuentra su lugar"
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://metatags.io/" />
+        <meta property="og:title" content="Lymbrarie" />
+        <meta
+          property="og:description"
+          content="donde cada libro encuentra su lugar"
+        />
+        <meta
+          property="og:image"
+          content="https://metatags.io/images/meta-tags.png"
+        />
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://metatags.io/" />
+        <meta property="twitter:title" content="Lymbrarie" />
+        <meta
+          property="twitter:description"
+          content="donde cada libro encuentra su lugar"
+        />
+        <meta
+          property="twitter:image"
+          content="https://metatags.io/images/meta-tags.png"
+        />
       </Head>
       <Providers>
         <Body>
