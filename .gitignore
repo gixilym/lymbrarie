@@ -24,6 +24,6 @@ next-env.d.ts
 /blob-report/
 /playwright/.cache/
 firestore.rules
-.vscode/
+/.vscode
 ui-debug.log
 firestore-debug.log
