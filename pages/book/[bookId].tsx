@@ -215,7 +215,7 @@ function BookId(): Component {
               tabIndex={0}
               className={twMerge(
                 loadingFav ? "hidden" : "block",
-                "mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
+                "mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box sm:w-52 w-56"
               )}
             >
               <li

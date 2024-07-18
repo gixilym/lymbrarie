@@ -1,6 +1,8 @@
-import defaultCover from "@/public/cover.webp";
 import useLocalStorage from "@/hooks/useLocalStorage";
+import defaultCover from "@/public/cover.webp";
 import type { Book, Component } from "@/utils/types";
+import { isUndefined, sum } from "es-toolkit";
+import { UserRound as Icon } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -8,8 +10,6 @@ import ClosePopUpBtn from "../btns/ClosePopUpBtn";
 import LogOutBtn from "../btns/LogOutBtn";
 import DialogContainer from "../DialogContainer";
 import HeaderPopUp from "../HeaderPopUp";
-import { UserRound as Icon } from "lucide-react";
-import { isUndefined, sum } from "es-toolkit";
 
 function ProfilePopUp({ profileImg, profileName }: Props): Component {
   const [t] = useTranslation("global"),
@@ -58,24 +58,40 @@ function ProfilePopUp({ profileImg, profileName }: Props): Component {
             </p>
           </div>
 
-          <table className="table w-full max-w-[550px] ">
-            <thead className="sm:text-xl text-lg">
-              <tr className="capitalize text-slate-500 border-0 border-slate-600/30 border-b-0">
-                <th>{t("books")}</th>
-                <th>{t("add-book-reading")}</th>
-                <th>{t("add-book-pending")}</th>
-                <th>{t("add-book-read")}</th>
-              </tr>
-            </thead>
-            <tbody className="sm:text-xl text-lg">
-              <tr className="border-0 border-slate-600/30 ">
-                <td>{sum([Read, Borrowed, Reading, Pending])}</td>
-                <td>{Reading}</td>
-                <td>{Pending}</td>
-                <td>{Read}</td>
-              </tr>
-            </tbody>
-          </table>
+          <div className="grid gap-3.5 grid-cols-2 text-slate-400 w-full max-w-sm">
+            <div className="space-y-2 border-2 border-slate-600/60 rounded-lg flex flex-col justify-center items-center py-2">
+              <p className="capitalize text-lg sm:text-xl font-medium">
+                {t("books")}
+              </p>
+              <span className="text-xl sm:text-2xl font-thin text-slate-200">
+                {sum([Read, Borrowed, Reading, Pending])}
+              </span>
+            </div>
+            <div className="space-y-2 border-2 border-slate-600/60 rounded-lg flex flex-col justify-center items-center py-2">
+              <p className="capitalize text-lg sm:text-xl font-medium">
+                {t("add-book-reading")}
+              </p>
+              <span className="text-xl sm:text-2xl font-thin text-slate-200">
+                {Reading}
+              </span>
+            </div>
+            <div className="space-y-2 border-2 border-slate-600/60 rounded-lg flex flex-col justify-center items-center py-2">
+              <p className="capitalize text-lg sm:text-xl font-medium">
+                {t("add-book-pending")}
+              </p>
+              <span className="text-xl sm:text-2xl font-thin text-slate-200">
+                {Pending}
+              </span>
+            </div>
+            <div className="space-y-2 border-2 border-slate-600/60 rounded-lg flex flex-col justify-center items-center py-2">
+              <p className="capitalize text-lg sm:text-xl font-medium">
+                {t("add-book-read")}
+              </p>
+              <span className="text-xl sm:text-2xl font-thin text-slate-200">
+                {Read}
+              </span>
+            </div>
+          </div>
         </div>
       </>
     );

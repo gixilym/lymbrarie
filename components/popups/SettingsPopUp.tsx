@@ -25,7 +25,7 @@ function SettingsPopUp(): Component {
       <HeaderPopUp icon={<SettingsIcon size={25} />} title={t("settings")} />
 
       <div className="w-full flex flex-col justify-start items-center gap-y-10 text-slate-200">
-        <div className="w-full sm:w-[90%] flex justify-between items-center gap-x-6 sm:gap-x-0 ">
+        <div className="w-full sm:w-[90%] flex flex-col sm:flex-row gap-y-2 justify-between items-center gap-x-3 sm:gap-x-0">
           <label
             htmlFor="select-language"
             className="sm:text-xl text-lg flex justify-start items-center gap-x-3"
@@ -39,7 +39,7 @@ function SettingsPopUp(): Component {
               setLanguage(e.target.value);
             }}
             id="select-language"
-            className="select select-bordered sm:w-full max-w-xs w-[230px] text-lg text-center"
+            className="select select-bordered sm:w-full max-w-xs w-[180px] text-lg text-center"
             value={language}
           >
             <option value="en">English</option>
@@ -47,7 +47,7 @@ function SettingsPopUp(): Component {
           </select>
         </div>
 
-        <div className="w-full sm:w-[90%] flex justify-between items-center gap-x-6 sm:gap-x-0">
+        <div className="w-full sm:w-[90%] flex flex-col gap-y-2 sm:flex-row justify-between items-center gap-x-3 sm:gap-x-0">
           <label
             htmlFor="enabled-animations"
             className="sm:text-xl text-lg flex justify-start items-center gap-x-3"
@@ -61,13 +61,13 @@ function SettingsPopUp(): Component {
               reload();
             }}
             id="enabled-animations"
-            className="w-[230px] sm:w-full max-w-xs text-lg border border-gray-700 h-11 rounded-xl text-center pr-5"
+            className="w-[180px] sm:w-full max-w-xs text-lg border border-gray-700 h-11 rounded-xl text-center pr-5"
           >
             {animations ? t("enabled") : t("disabled")}
           </button>
         </div>
 
-        <div className="w-full sm:w-[90%] flex justify-between items-center gap-x-6 sm:gap-x-0">
+        <div className="w-full sm:w-[90%] flex flex-col gap-y-2 sm:flex-row justify-between items-center gap-x-3 sm:gap-x-0">
           <label
             htmlFor="hidden-state"
             className="sm:text-xl text-lg flex justify-start items-center gap-x-3"
@@ -81,13 +81,13 @@ function SettingsPopUp(): Component {
               reload();
             }}
             id="hidden-state"
-            className="w-[230px] sm:w-full max-w-xs text-lg border border-gray-700 h-11 rounded-xl text-center pr-5"
+            className="w-[180px] sm:w-full max-w-xs text-lg border border-gray-700 h-11 rounded-xl text-center pr-5"
           >
             {state ? t("enabled") : t("disabled")}
           </button>
         </div>
 
-        <div className=" w-full sm:w-[90%] flex justify-between items-center gap-x-6 sm:gap-x-0">
+        <div className=" w-full sm:w-[90%] flex flex-col gap-y-2 sm:flex-row justify-between items-center gap-x-3 sm:gap-x-0">
           <label
             htmlFor="select-theme"
             className="sm:text-xl text-lg flex justify-start items-center gap-x-3"
@@ -97,7 +97,7 @@ function SettingsPopUp(): Component {
           </label>
           <select
             id="select-theme"
-            className="capitalize select select-bordered w-[230px] sm:w-full max-w-xs text-lg text-center"
+            className="capitalize select select-bordered w-[180px] sm:w-full max-w-xs text-lg text-center"
             disabled
             defaultValue="dark"
           >
@@ -106,6 +106,7 @@ function SettingsPopUp(): Component {
           </select>
         </div>
       </div>
+
       <div className="modal-action pt-1 w-full">
         <ClosePopUpBtn id="settings" />
       </div>

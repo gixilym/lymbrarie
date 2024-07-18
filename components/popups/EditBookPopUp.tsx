@@ -226,7 +226,7 @@ function EditBookPopUp(props: Props): Component {
   }
 
   return (
-    <DialogContainer divClass="justify-between">
+    <DialogContainer>
       <HeaderPopUp icon={<Icon size={25} />} title={t("edit-book")} />
 
       <FieldsBook

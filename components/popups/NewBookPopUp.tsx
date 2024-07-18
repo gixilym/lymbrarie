@@ -1,3 +1,6 @@
+import useLoadContent from "@/hooks/useLoadContent";
+import useLocalStorage from "@/hooks/useLocalStorage";
+import usePopUp from "@/hooks/usePopUp";
 import { COLLECTION, EMPTY_BOOK, PRODUCTION } from "@/utils/consts";
 import {
   dismissNoti,
@@ -6,9 +9,6 @@ import {
   notification,
   tLC,
 } from "@/utils/helpers";
-import useLoadContent from "@/hooks/useLoadContent";
-import useLocalStorage from "@/hooks/useLocalStorage";
-import usePopUp from "@/hooks/usePopUp";
 import type {
   Book,
   BookData,
@@ -17,7 +17,9 @@ import type {
   InputEvent,
   SelectEvent,
 } from "@/utils/types";
+import { delay, isEqual, union } from "es-toolkit";
 import { doc, setDoc } from "firebase/firestore/lite";
+import { CircleFadingPlus as Icon } from "lucide-react";
 import { type NextRouter, useRouter } from "next/router";
 import {
   type FormEvent,
@@ -30,8 +32,6 @@ import { useTranslation } from "react-i18next";
 import DialogContainer from "../DialogContainer";
 import FieldsBook from "../FieldsBook";
 import HeaderPopUp from "../HeaderPopUp";
-import { CircleFadingPlus as Icon } from "lucide-react";
-import { delay, isEqual, union } from "es-toolkit";
 
 function NewBookPopUp({ UID }: { UID: string }): Component {
   const [t] = useTranslation("global"),

@@ -76,11 +76,11 @@ function NotesBook(props: Notes): Component {
         <div className="flex justify-between items-end w-full h-10">
           <div className="flex justify-start items-center gap-x-2">
             <NotesIcon size={24} className="opacity-90" />
-            <p className="text-2xl select-none">{t("notes")}</p>
+            <p className="text-xl sm:text-2xl select-none">{t("notes")}</p>
           </div>
           {hasChanges && !loadingFav && (
             <button
-              className="btn bg-green-400/80 text-black hover:bg-green-300"
+              className="btn bg-green-400/80 text-slate-900 hover:bg-green-300"
               onClick={saveContent}
             >
               <SaveIcon size={20} />
