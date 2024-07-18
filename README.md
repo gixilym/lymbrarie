@@ -1,2 +1,2 @@
 # Lymbrarie: tu biblioteca personal 📚
-![image](https://github.com/gixilym/lymbrarie/assets/104705119/9fd67705-aff6-4b85-a9a8-652618e65ee2)
+![lym-img](https://github.com/user-attachments/assets/7535d210-b46b-4cf2-82af-aa94188d4c1a)
