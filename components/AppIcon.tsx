@@ -10,9 +10,9 @@ import { useRecoilState } from "recoil";
 
 function AppIcon(): Component {
   const MyLink = animated(Link),
-    [animations] = useLocalStorage("animations", true),
-    [, setSearch] = useRecoilState<string>(inputSearchVal),
     [, setState] = useRecoilState<string>(stateBookVal),
+    [, setSearch] = useRecoilState<string>(inputSearchVal),
+    [animations] = useLocalStorage("animations", true),
     [styles, animate] = useSpring(() => ({
       opacity: animations ? 0 : 1,
       config: { duration: 600 },

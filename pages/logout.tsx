@@ -54,10 +54,10 @@ function LogoutPage(): Component {
   }
 
   return (
-    <section className="absolute top-0 right-0 min-h-screen w-full flex items-start justify-center bg-transparent pt-16 sm:pt-24">
+    <section className="absolute top-0 right-0 min-h-screen w-full flex items-start justify-center bg-transparent sm:pt-24">
       <animated.div
         style={styles}
-        className="border-2 border-slate-700/70 py-14 sm:rounded-lg bg-slate-900 flex flex-col gap-y-14 justify-center items-center w-full max-w-[580px]"
+        className="border-0 sm:border-2 border-slate-700/70 py-14 sm:rounded-lg bg-slate-900 flex flex-col gap-y-14 justify-start items-center w-full min-h-screen sm:min-h-min max-w-[580px]"
       >
         <div className="w-full flex flex-col justify-start items-center gap-y-4">
           <Image

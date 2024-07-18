@@ -4,9 +4,12 @@ import {
   Heart as HeartIcon,
   MessageCircleQuestion as SupportIcon,
   User as UserIcon,
+  Shield as PrivacyIcon,
 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useTranslation } from "react-i18next";
+import logo from "@/public/favicon.ico";
 
 function FooterIndex(): Component {
   const [t] = useTranslation("global");
@@ -20,38 +23,47 @@ function FooterIndex(): Component {
           width={30}
           height={30}
           className="border rounded-full border-gray-700"
-          src="https://res.cloudinary.com/dgs55s8qh/image/upload/v1711605978/ppwljpmujdgqzuskudws.ico"
+          src={logo}
           alt="logo"
         />
         <p className="">Copyright © 2024 Lymbrarie - {t("copyright")}</p>
       </aside>
-      <div className="flex items-center justify-evenly w-full h-10 sm:h-auto sm:w-auto sm:gap-x-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center pl-3 sm:pl-0 justify-evenly w-full h-auto sm:w-auto sm:gap-x-6">
         <div
           onClick={() => openPopUp("profile")}
           className={
             "flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline"
           }
         >
-          <p className="text-sm sm:text-lg hover:underline duration-75 cursor-pointer ">
+          <UserIcon size={18} />
+          <p className="text-sm sm:text-[16px] hover:underline duration-75 cursor-pointer ">
             {t("profile")}
           </p>
-          <UserIcon size={18} />
         </div>
-
-        <div
-          onClick={() => openPopUp("support")}
-          className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline "
-        >
-          <p className="text-sm sm:text-lg">{t("support")}</p>
-          <SupportIcon size={18} />
-        </div>
-
         <div
           className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline "
           onClick={() => openPopUp("donations")}
         >
-          <p className="text-sm sm:text-lg">{t("donate")}</p>
           <HeartIcon size={18} />
+          <p className="text-sm sm:text-[16px]">{t("donate")}</p>
+        </div>
+        <div
+          onClick={() => openPopUp("support")}
+          className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline "
+        >
+          <SupportIcon size={18} />
+          <p className="text-sm sm:text-[16px]">{t("support")}</p>
+        </div>
+
+        <div
+          className={
+            "flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline"
+          }
+        >
+          <PrivacyIcon size={18} />
+          <Link className="text-sm sm:text-[16px]" href="/privacypolicy">
+            {t("privacy-policy")}
+          </Link>
         </div>
       </div>
     </footer>

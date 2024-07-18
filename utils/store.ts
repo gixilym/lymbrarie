@@ -21,6 +21,7 @@ const popupsVal: RecoilState<any> = atom({
     settings: false,
     donations: false,
     offline: false,
+    updates: false,
   },
 });
 

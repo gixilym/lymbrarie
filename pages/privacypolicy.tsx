@@ -1,22 +1,45 @@
+import BackBtn from "@/components/btns/BackBtn";
+import useLocalStorage from "@/hooks/useLocalStorage";
 import type { Component } from "@/utils/types";
+import { useSpring, animated } from "@react-spring/web";
+import Link from "next/link";
+import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 function PrivacyPolicyPage(): Component {
+  const [t] = useTranslation("global"),
+    [animations] = useLocalStorage("animations", true),
+    [styles, animate] = useSpring(() => ({ opacity: animations ? 0 : 1 }));
+
+  useEffect(() => {
+    if (animations) animate.start({ opacity: 1 });
+  }, [animate]);
+
   return (
-    <div>
-      En Lymbrarie, valoramos y respetamos tu privacidad. Por ello, solo se
-      emplea tu nombre, email, y foto de usuario. Estos datos son utilizados
-      exclusivamente para identificarte y sincronizar tu colección de libros,
-      asegurándonos de que puedas mantener un registro de tus lecturas y libros
-      pendientes. No compartimos, vendemos ni divulgamos tu información personal
-      a terceros sin tu consentimiento expreso, salvo que sea requerido por la
-      ley. Tu información está protegida mediante medidas de seguridad adecuadas
-      para evitar accesos no autorizados. En Lymbrarie, estamos comprometidos a
-      garantizar la seguridad y confidencialidad de tus datos. Si tienes alguna
-      pregunta o inquietud sobre cómo manejamos tu información, no dudes en
-      contactarnos. Estamos aquí para asegurarnos de que disfrutes de tu
-      experiencia en Lymbrarie con total confianza en la protección de tu
-      privacidad.
-    </div>
+    <>
+      <animated.section
+        style={styles}
+        className="max-w-2xl w-full px-6 sm:px-0 text-slate-200/90 text-sm sm:text-xl flex flex-col justify-start items-center gap-y-8 my-20 sm:mt-10 sm:mb-0 [&>p]:w-full [&>p]:text-pretty"
+      >
+        <BackBtn />
+        <p>{t("privacy-1")}</p>
+
+        <p>{t("privacy-2")}</p>
+        <p>{t("privacy-3")}</p>
+        <p> {t("privacy-4")}</p>
+        <address className="text-sm sm:text-lg w-full">
+          {t("contact")}:&nbsp;&nbsp;
+          <Link
+            className=" text-blue-400 no-underline hover:text-blue-300 cursor-pointer duration-75"
+            href="mailto:gixi.tsx@gmail.com"
+            target="_blank"
+            rel="noreferrer"
+          >
+            gixi.tsx@gmail.com
+          </Link>
+        </address>
+      </animated.section>
+    </>
   );
 }
 

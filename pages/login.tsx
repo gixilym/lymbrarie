@@ -17,6 +17,7 @@ import Image from "next/image";
 import { type NextRouter, useRouter } from "next/router";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import Link from "next/link";
 
 export default withUser({
   whenAuthed: AuthAction.REDIRECT_TO_APP,
@@ -64,10 +65,10 @@ function LoginPage(): Component {
   // }
 
   return (
-    <section className="absolute top-0 right-0 min-h-screen w-full flex items-start justify-center bg-transparent pt-12 sm:pt-20">
+    <section className="absolute top-0 right-0 min-h-screen w-full flex items-start justify-center bg-transparent sm:pt-20">
       <animated.div
         style={styles}
-        className="border-2 border-slate-700/70 py-14 sm:rounded-lg bg-slate-900 flex flex-col gap-y-14 justify-center items-center w-full max-w-[580px]"
+        className="border-0 sm:border-2 border-slate-700/70 relative py-14 sm:rounded-lg bg-slate-900 flex flex-col gap-y-10 justify-start sm:justify-center items-center w-full max-w-[580px] pb-20 min-h-screen sm:min-h-min"
       >
         <div className="w-full flex flex-col justify-start items-center gap-y-4">
           <Image
@@ -75,14 +76,14 @@ function LoginPage(): Component {
             src={logo}
             alt="logo"
           />
-          <h4 className="text-2xl sm:text-3xl tracking-tight  w-full text-center text-slate-200">
+          <h4 className="text-xl sm:text-3xl tracking-tight  w-full text-center text-slate-200">
             {t("welcome")}
           </h4>
-          <p className="text-lg  text-center text-slate-400">
+          <p className="text-sm sm:text-lg text-center text-slate-400">
             {t("book-find")}
           </p>
         </div>
-        <div className="w-full flex flex-col justify-start items-center gap-y-3.5">
+        <div className="w-full flex flex-col justify-start items-center gap-y-3">
           <button
             onClick={withGoogle}
             className="bg-slate-400/10 justify-start gap-x-6 px-10 hover:bg-slate-100/10
@@ -109,6 +110,12 @@ flex items-center min-w-[330px] sm:w-full max-w-[413px] h-[60px] rounded-lg dura
               {t("with-facebook")}
             </p>
           </button> */}
+          <Link
+            className="absolute bottom-4 cursor-default text-xs sm:text-[16px] hover:underline duration-100 hover:text-slate-200/90"
+            href="/privacypolicy"
+          >
+            {t("privacy-policy")}
+          </Link>
         </div>
       </animated.div>
     </section>

@@ -99,7 +99,7 @@
     "loaned-too-long": "Prestado a... muy largo",
     "invalid-url-image": "URL de imagen inválida",
     "hardware-msg": "Si desea disfrutar de las animaciones, por favor, active la aceleración por hardware del navegador.",
-    "donations-text": "Este proyecto es el esfuerzo de una sola persona. Si disfrutas usando Lymbrarie y quieres ver más mejoras, considera hacer una donación. ¡Tu contribución hace la diferencia!",
+    "donations-text": "Este proyecto es el esfuerzo de una sola persona. Si disfrutas usando Lymbrarie y quieres que siga, considera hacer una donación. ¡Tu contribución hace la diferencia!",
     "thanks": "¡Gracias!",
     "paypal": "Donar através de PayPal",
     "welcome": "¡Bienvenido a Lymbrarie!",
@@ -130,5 +130,11 @@
     "removing": "Quitando...",
     "favorites": "Favoritos",
     "layout": "Diseño",
-    "order": "Orden"
+    "order": "Orden",
+    "privacy-1": "En Lymbrarie, valoro y respeto tu privacidad. Por ello, solo empleo tu nombre, email y foto de usuario. Estos datos son utilizados exclusivamente para identificarte y sincronizar tu colección de libros, asegurándome de que puedas mantener seguros tus registros.",
+    "privacy-2": "No comparto, vendo ni divulgo tu información personal a terceros sin tu consentimiento expreso, salvo que sea requerido por la ley.",
+    "privacy-3": "Tu información está protegida mediante medidas de seguridad adecuadas, incluyendo encriptación, tanto en local como en la base de datos. En Lymbrarie, estoy comprometido a garantizar la seguridad y confidencialidad de tus datos.",
+    "privacy-4": "Si tienes alguna pregunta o inquietud, no dudes en contactarme.",
+    "contact": "Contacto",
+    "privacy-policy": "Política de privacidad"
 }

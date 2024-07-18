@@ -129,5 +129,11 @@
     "removing": "Removing...",
     "favorites": "Favorites",
     "layout": "Layout",
-    "order": "Order"
+    "order": "Order",
+    "privacy-1": "At Lymbrarie, I value and respect your privacy. Therefore, I only use your name, email, and user photo. This data is used exclusively to identify you and synchronize your book collection, ensuring that you can keep your records safe.",
+    "privacy-2": "I do not share, sell, or disclose your personal information to third parties without your express consent, unless required by law.",
+    "privacy-3": "Your information is protected with appropriate security measures, including encryption, both locally and in the database. At Lymbrarie, I am committed to ensuring the security and confidentiality of your data.",
+    "privacy-4": "If you have any questions or concerns, please feel free to contact me.",
+    "contact": "Contact",
+    "privacy-policy": "Privacy Policy"
 }
