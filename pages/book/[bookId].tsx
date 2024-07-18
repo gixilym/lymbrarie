@@ -167,7 +167,7 @@ function BookId(): Component {
       <article className="w-full sm:w-[700px] h-[315px] flex flex-col sm:flex-row gap-y-12 justify-start items-center sm:items-start backdrop-blur-[2.5px] relative mt-20 xl:mt-0 sm:mt-12">
         <Image
           priority
-          className="select-none aspect-[200/300] w-[200px] h-[300px] object-center object-fill rounded-md"
+          className="select-none aspect-[200/300] w-[200px] h-[300px] object-center object-fill rounded-md hover:scale-95 duration-300"
           src={book?.data?.image || defaultCover}
           width={200}
           height={300}
