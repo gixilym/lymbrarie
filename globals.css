@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 html {
-  @apply sm:overflow-y-scroll font-pop;
+  @apply overflow-y-scroll font-pop;
 }
 
 ::-webkit-scrollbar {

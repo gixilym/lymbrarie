@@ -52,6 +52,7 @@ interface BookData {
   gender?: string;
   loaned?: string;
   notes?: string;
+  isFav?: boolean;
 }
 
 interface UserData {

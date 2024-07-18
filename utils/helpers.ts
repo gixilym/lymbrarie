@@ -4,7 +4,7 @@ import { toast } from "react-hot-toast";
 function notification(noti: Notis, msg: string): void {
   toast[noti](msg, {
     id: msg,
-    duration: 2000,
+    duration: isEqual(noti, "loading") ? 50000 : 2000,
     style: {
       backgroundColor: "#202020",
       color: "#fff",

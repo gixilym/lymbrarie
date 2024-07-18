@@ -31,7 +31,7 @@ import DialogContainer from "../DialogContainer";
 import FieldsBook from "../FieldsBook";
 import HeaderPopUp from "../HeaderPopUp";
 import { CircleFadingPlus as Icon } from "lucide-react";
-import { clone, delay, isEqual } from "es-toolkit";
+import { delay, isEqual, union } from "es-toolkit";
 
 function NewBookPopUp({ UID }: { UID: string }): Component {
   const [t] = useTranslation("global"),
@@ -64,7 +64,7 @@ function NewBookPopUp({ UID }: { UID: string }): Component {
 
   function handleChange(e: InputEvent): void {
     const key: string = e.target?.name;
-    const value: string = e.target?.value;
+    const value: string = e.target?.value.trim();
     setBook({
       ...book,
       data: { ...book.data, [key]: value },
@@ -72,7 +72,7 @@ function NewBookPopUp({ UID }: { UID: string }): Component {
   }
 
   function handleGender(e: SelectEvent): void {
-    const gender: string = e.target?.value;
+    const gender: string = e.target?.value.trim();
     setIsCustomGender(isEqual(gender, "custom"));
     setBook({
       ...book,
@@ -90,15 +90,14 @@ function NewBookPopUp({ UID }: { UID: string }): Component {
 
     try {
       const newID: string = crypto.randomUUID();
-      const bookData: BookData = { ...book.data, owner: UID };
-      await setDoc(doc(COLLECTION, newID), bookData);
-      const newBookData: Book = { id: newID, data: bookData };
-      const newVersion: Book[] = [...(cacheBooks ?? []), newBookData];
+      const data: BookData = { ...book.data, owner: UID };
+      await setDoc(doc(COLLECTION, newID), data);
+      const newVersion: Book[] = union(cacheBooks ?? [], [{ id: newID, data }]);
       setCacheBooks(newVersion);
       setShowNoti(true);
       router.reload();
     } catch (err: any) {
-      if (PRODUCTION) router.push("/error?err=unknown");
+      if (PRODUCTION) router.push("/error");
       else console.error(`error en newBook: ${err.message}`);
     } finally {
       dismissNoti();

@@ -21,12 +21,17 @@ export default withUser({
 
 function LogoutPage(): Component {
   const auth: Auth = getAuth(),
-    [t] = useTranslation("global"),
-    router: NextRouter = useRouter(),
-    [animations] = useLocalStorage("animations", true),
     [, setCacheBooks] = useLocalStorage("cacheBooks", null),
     [, setAllTitles] = useLocalStorage("allTitles", []),
+    [, setScroll] = useLocalStorage("scroll", 0),
     [, setSearch] = useRecoilState<string>(inputSearch),
+    [, setMyFavs] = useLocalStorage("myFavorites", []),
+    [, setShowFavs] = useLocalStorage("showFavs", false),
+    [, setEdited] = useLocalStorage("edited", false),
+    [, setNewBook] = useLocalStorage("newBook", false),
+    router: NextRouter = useRouter(),
+    [t] = useTranslation("global"),
+    [animations] = useLocalStorage("animations", true),
     [styles, animate] = useSpring(() => ({
       opacity: animations ? 0 : 1,
       config: { duration: 400 },
@@ -38,8 +43,13 @@ function LogoutPage(): Component {
 
   function forgetSession(): void {
     setSearch("");
-    setCacheBooks(null);
+    setScroll(0);
+    setNewBook(false);
+    setEdited(false);
+    setShowFavs(false);
+    setMyFavs([]);
     setAllTitles([]);
+    setCacheBooks(null);
     auth.signOut();
   }
 

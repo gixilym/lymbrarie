@@ -4,7 +4,7 @@ import type { Book, BookData } from "./types";
 
 const MAINTENANCE: boolean = false;
 
-const PRODUCTION: boolean = true;
+const PRODUCTION: boolean = false;
 
 const GENDERS: string[] = [
   "no-gender",

@@ -17,7 +17,7 @@ import { twMerge } from "tailwind-merge";
 function NotesBook(props: Notes): Component {
   const [t] = useTranslation("global"),
     router: NextRouter = useRouter(),
-    { notes, updateNotes, setNotes, classText } = props,
+    { notes, updateNotes, setNotes, classText, loadingFav } = props,
     [hasChanges, setHasChanges] = useState<boolean>(false),
     [animations] = useLocalStorage("animations", true),
     { openPopUp } = usePopUp(),
@@ -40,7 +40,7 @@ function NotesBook(props: Notes): Component {
   }, [hasChanges]);
 
   function handleBeforeUnload(e: BeforeUnloadEvent): string | void {
-    if (hasChanges) {
+    if (hasChanges && !loadingFav) {
       const msg: string = t("unsaved-changes");
       e.preventDefault();
       e.returnValue = msg;
@@ -50,7 +50,7 @@ function NotesBook(props: Notes): Component {
 
   function handleChangeContent(e: ChangeEvent<HTMLTextAreaElement>): void {
     setNotes(e.target.value);
-    if (!hasChanges) setHasChanges(true);
+    if (!hasChanges && !loadingFav) setHasChanges(true);
   }
 
   function handleRouteChange(): void {
@@ -75,10 +75,10 @@ function NotesBook(props: Notes): Component {
       <div className="flex flex-col items-center justify-between w-full sm:px-0 px-4">
         <div className="flex justify-between items-end w-full h-10">
           <div className="flex justify-start items-center gap-x-2">
-            <NotesIcon size={26} className="opacity-90" />
+            <NotesIcon size={24} className="opacity-90" />
             <p className="text-2xl select-none">{t("notes")}</p>
           </div>
-          {hasChanges && (
+          {hasChanges && !loadingFav && (
             <button
               className="btn bg-green-400/80 text-black hover:bg-green-300"
               onClick={saveContent}
@@ -97,6 +97,7 @@ function NotesBook(props: Notes): Component {
         <textarea
           placeholder="..."
           value={notes}
+          disabled={loadingFav}
           onChange={handleChangeContent}
           className={twMerge(
             notes?.length > 0 ? "sm:min-h-[300px] max-h-[1200px]" : "h-14",
@@ -116,4 +117,5 @@ interface Notes {
   setNotes: Dispatch<SetStateAction<string>>;
   classText: string;
   isLoading: boolean;
+  loadingFav: boolean;
 }

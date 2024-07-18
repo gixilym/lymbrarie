@@ -18,7 +18,7 @@ import useLoadContent from "@/utils/hooks/useLoadContent";
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import usePopUp from "@/utils/hooks/usePopUp";
 import { popupsValue } from "@/utils/store";
-import type { Book, Component } from "@/utils/types";
+import type { Book, BookData, Component } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
 import { isEqual, noop, union } from "es-toolkit";
 import {
@@ -31,7 +31,9 @@ import { doc, setDoc } from "firebase/firestore/lite";
 import {
   Trash as DeleteIcon,
   SquarePen as EditIcon,
+  BookmarkCheck as FavoriteIcon,
   Library as LibraryIcon,
+  Bookmark as RemoveFavIcon,
   Tag as StateIcon,
   User as UserIcon,
 } from "lucide-react";
@@ -43,6 +45,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { useRecoilState } from "recoil";
+import { twMerge } from "tailwind-merge";
 
 export default withUser({
   whenAuthed: AuthAction.RENDER,
@@ -62,11 +65,16 @@ function BookId(): Component {
     [book, setBook] = useState<any>(EMPTY_BOOK),
     [documentId, setDocumentId] = useState<string>(""),
     [notes, setNotes] = useState<string>(""),
+    [loadingFav, setLoadingFav] = useState<boolean>(false),
     [cacheBooks, setCacheBooks] = useLocalStorage("cacheBooks", null),
     [animations] = useLocalStorage("animations", true),
     [allTitles] = useLocalStorage("allTitles", []),
+    myFavs: BookData[] = cacheBooks
+      .map((b: Book) => b?.data)
+      .filter((b: BookData) => b?.isFav),
+    checkFav: boolean = myFavs.some((b: BookData) => isEqual(b?.title, title)),
     notExist: boolean = !allTitles.includes(title),
-    notesProps = { updateNotes, notes, setNotes, isLoading },
+    notesProps = { updateNotes, notes, setNotes, isLoading, loadingFav },
     [popup] = useRecoilState<any>(popupsValue),
     [styles, animate] = useSpring(() => ({
       opacity: animations ? 0 : 1,
@@ -88,6 +96,16 @@ function BookId(): Component {
     if (animations) animate.start({ opacity: 1 });
   }, [animate]);
 
+  function getCacheBook(): void {
+    const b: Book = cacheBooks.find((b: Book) =>
+      isEqual(b?.data?.title, title)
+    );
+    setBook(b);
+    setNotes(b?.data?.notes ?? "");
+    setDocumentId(b?.id);
+    finishLoading();
+  }
+
   async function updateNotes(): Promise<void> {
     notification("loading", t("editing"));
     try {
@@ -101,21 +119,29 @@ function BookId(): Component {
       setCacheBooks(newVersion);
       router.reload();
     } catch (err: any) {
-      if (PRODUCTION) router.push("/error?err=unknown");
+      if (PRODUCTION) router.push("/error");
       else console.error(`Error en updateNotes: ${err.message}`);
     } finally {
       dismissNoti();
     }
   }
 
-  function getCacheBook(): void {
-    const book: Book = cacheBooks.find((b: Book) =>
-      isEqual(b?.data?.title, title)
-    );
-    setBook(book);
-    setNotes(book?.data?.notes ?? "");
-    setDocumentId(book?.id);
-    finishLoading();
+  async function toggleFav(): Promise<void> {
+    try {
+      setLoadingFav(true);
+      notification("loading", t(checkFav ? "removing" : "adding"));
+      const data: BookData = { ...book?.data, isFav: !checkFav };
+      await setDoc(doc(COLLECTION, documentId), data);
+      const oldVersion: Book[] = cacheBooks.filter(
+        (b: Book) => b?.id != documentId
+      );
+      const newVersion: Book[] = union(oldVersion, [{ id: documentId, data }]);
+      setCacheBooks(newVersion);
+      router.reload();
+    } catch (err: any) {
+      if (PRODUCTION) router.push("/error");
+      else console.error(`Error en toggleFav: ${err.message}`);
+    }
   }
 
   return (
@@ -141,7 +167,7 @@ function BookId(): Component {
       <article className="w-full sm:w-[700px] h-[315px] flex flex-col sm:flex-row gap-y-12 justify-start items-center sm:items-start backdrop-blur-[2.5px] relative mt-20 xl:mt-0 sm:mt-12">
         <Image
           priority
-          className="select-none aspect-[200/300] w-[200px] h-[300px] object-center object-fill rounded-sm"
+          className="select-none aspect-[200/300] w-[200px] h-[300px] object-center object-fill rounded-md"
           src={book?.data?.image || defaultCover}
           width={200}
           height={300}
@@ -153,6 +179,7 @@ function BookId(): Component {
             <h4 className="text-2xl sm:text-3xl font-bold tracking-tight sm:min-h-20 h-auto overflow-ellipsis overflow-hidden whitespace-wrap w-full">
               {book?.data?.title}
             </h4>
+
             {book?.data?.author && (
               <div className="flex flex-row justify-start items-center gap-x-2 w-full">
                 <UserIcon size={18} />
@@ -161,6 +188,7 @@ function BookId(): Component {
                 </p>
               </div>
             )}
+
             {book?.data?.gender && book?.data?.gender != "no-gender" && (
               <div className="flex flex-row justify-start items-center gap-x-2 w-full">
                 <StateIcon size={18} />
@@ -181,12 +209,30 @@ function BookId(): Component {
               </div>
             )}
           </div>
-          <div className="dropdown dropdown-top dropdown-right sm:opacity-80">
+          <div className="dropdown dropdown-top dropdown-right opacity-100">
             <SettingsBtn />
             <ul
               tabIndex={0}
-              className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52 gap-y-1"
+              className={twMerge(
+                loadingFav ? "hidden" : "block",
+                "mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52 gap-y-1"
+              )}
             >
+              <li
+                onClick={() =>
+                  navigator.onLine ? toggleFav() : openPopUp("offline")
+                }
+              >
+                <div className="flex flex-row items-center justify-start gap-x-3">
+                  {checkFav ? (
+                    <FavoriteIcon size={18} />
+                  ) : (
+                    <RemoveFavIcon size={18} />
+                  )}
+                  <p>{t(checkFav ? "remove-fav" : "add-fav")}</p>
+                </div>
+              </li>
+
               <li
                 onClick={() =>
                   navigator.onLine

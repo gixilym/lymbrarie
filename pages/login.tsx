@@ -43,7 +43,7 @@ function LoginPage(): Component {
     try {
       await signInWithPopup(auth, provider);
     } catch (err: any) {
-      if (PRODUCTION) push("/error?err=unknown");
+      if (PRODUCTION) push("/error");
       else console.error(`error en logIn: ${err.message}`);
     }
   }
@@ -85,7 +85,7 @@ function LoginPage(): Component {
         <div className="w-full flex flex-col justify-start items-center gap-y-3.5">
           <button
             onClick={withGoogle}
-            className="bg-slate-100/10 justify-start gap-x-6 px-6 hover:bg-slate-400/10
+            className="bg-slate-100/10 justify-start gap-x-6 px-10 hover:bg-slate-400/10
  flex items-center w-[330px] sm:w-full max-w-[400px] h-14 rounded-lg border border-slate-500/40 duration-150 "
           >
             <GoogleIcon className="w-7 h-7" />
@@ -93,7 +93,7 @@ function LoginPage(): Component {
           </button>
           <button
             onClick={withGithub}
-            className="bg-black/60 border border-slate-800 justify-start gap-x-6 px-6 hover:bg-slate-950/20
+            className="bg-black/60 border border-slate-800 justify-start gap-x-6 px-11 hover:bg-slate-950/20
 flex items-center w-[330px] sm:w-full max-w-[405px] h-[60px] rounded-lg duration-150"
           >
             <GithubIcon className="w-7 h-7" />

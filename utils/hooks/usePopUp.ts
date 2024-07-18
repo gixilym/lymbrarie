@@ -2,7 +2,7 @@ import { useRecoilState } from "recoil";
 import { popupsValue } from "../store";
 import type { PopUpsIds } from "../types";
 
-function usePopUp() {
+function usePopUp(): PopUp {
   const [modal, setModals] = useRecoilState<any>(popupsValue);
 
   function closePopUp(id: PopUpsIds): void {
@@ -10,7 +10,6 @@ function usePopUp() {
   }
 
   function openPopUp(id: PopUpsIds): void {
-    scrollTo({ top: 0, behavior: "instant" });
     setModals({ ...modal, [id]: true });
   }
 
@@ -18,3 +17,8 @@ function usePopUp() {
 }
 
 export default usePopUp;
+
+type PopUp = {
+  closePopUp: (id: PopUpsIds) => void;
+  openPopUp: (id: PopUpsIds) => void;
+};

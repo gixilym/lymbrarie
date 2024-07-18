@@ -19,7 +19,9 @@ import type {
   InputEvent,
   SelectEvent,
 } from "@/utils/types";
+import { delay, isEqual, union } from "es-toolkit";
 import { doc, setDoc } from "firebase/firestore/lite";
+import { PencilIcon as Icon } from "lucide-react";
 import { type NextRouter, useRouter } from "next/router";
 import {
   type FormEvent,
@@ -32,12 +34,10 @@ import { useTranslation } from "react-i18next";
 import DialogContainer from "../DialogContainer";
 import FieldsBook from "../FieldsBook";
 import HeaderPopUp from "../HeaderPopUp";
-import { PencilIcon as Icon } from "lucide-react";
-import { delay, isEqual } from "es-toolkit";
 
 function EditBookPopUp(props: Props): Component {
   const { data: dataBook, documentId } = props,
-    data: BookData = dataBook.data,
+    data: BookData = dataBook?.data,
     [t] = useTranslation("global"),
     { closePopUp } = usePopUp(),
     router: NextRouter = useRouter(),
@@ -88,18 +88,19 @@ function EditBookPopUp(props: Props): Component {
       owner: data?.owner,
       loaned: data?.loaned,
       notes: data?.notes,
+      isFav: data?.isFav,
     };
     setBook({ ...loadData });
   }
 
   function handleChange(e: InputEvent): void {
     const key: string = e.target?.name;
-    const value: string = e.target?.value;
+    const value: string = e.target?.value.trim();
     setBook({ ...book, [key]: value });
   }
 
   function handleGender(e: SelectEvent): void {
-    const gender: string = e.target?.value;
+    const gender: string = e.target?.value.trim();
     setBook({ ...book, gender });
     setIsCustomGender(isEqual(gender, "custom"));
   }
@@ -114,23 +115,20 @@ function EditBookPopUp(props: Props): Component {
     notification("loading", t("editing"));
 
     const loaned: string = isLoaned(book.state) ? book.loaned : "",
-      updatedBook: Book = { ...book, loaned } as const,
+      data: Book = { ...book, loaned } as const,
       oldVersion: any[] = cacheBooks.filter((b: Book) => b.id != documentId),
-      newVersion: Book[] = [
-        ...oldVersion,
-        { id: documentId, data: updatedBook },
-      ],
+      newVersion: Book[] = union(oldVersion, [{ id: documentId, data }]),
       titlePage: string = formatTitle(book.title),
       newPath: string = `/book/${titlePage}`,
-      newTitles: string[] = [...allTitles, book.title ?? ""];
+      newTitles: string[] = union(allTitles, [book.title]);
 
     try {
-      await setDoc(doc(COLLECTION, documentId), updatedBook);
+      await setDoc(doc(COLLECTION, documentId), data);
       setCacheBooks(newVersion);
       setAllTitles(newTitles);
       router.replace(newPath).then(() => router.reload());
     } catch (err: any) {
-      if (PRODUCTION) router.push("/error?err=unknown");
+      if (PRODUCTION) router.push("/error");
       else console.error(`error en editBook: ${err.message}`);
     } finally {
       dismissNoti();

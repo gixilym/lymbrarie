@@ -117,8 +117,15 @@
     "text-offline": "Necesitas conexión a internet para añadir, editar o eliminar un libro.",
     "book-find": "donde cada libro encuentra su lugar",
     "editing": "Editando...",
-    "adding": "Añadiendo",
+    "adding": "Añadiendo...",
     "book-added": "Libro añadido",
     "book-deleted": "Libro eliminado",
-    "alert": "Aviso"
+    "alert": "Aviso",
+    "add-fav": "Añadir a favoritos",
+    "remove-fav": "Quitar de favoritos",
+    "no-favs": "No has añadido favoritos",
+    "fav-added": "Añadido a favoritos",
+    "fav-removed": "Quitado de favoritos",
+    "reload": "Recargar",
+    "removing": "Quitando..."
 }

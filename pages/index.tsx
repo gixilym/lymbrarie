@@ -74,7 +74,7 @@ function Index(): Component {
     if (zeroBooks) return;
     if (myBooks.length > 0) {
       setCacheBooks(myBooks);
-      setAllTitles(myBooks.map((b: Book) => b.data.title));
+      setAllTitles(myBooks.map((b: Book) => b?.data?.title ?? ""));
     }
   }, [myBooks, user, zeroBooks]);
 
@@ -120,7 +120,6 @@ function Index(): Component {
     >
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-   
       </Head>
       {MAINTENANCE ? (
         <Maintenance />
@@ -129,7 +128,7 @@ function Index(): Component {
           <HeaderIndex />
           <PopUps profileImg={profileImg} profileName={profileName} UID={UID} />
           {loading ? (
-            <LoadComponent />
+            <LoadComponent mt={false} />
           ) : (
             <>
               {booksIsEmpty || zeroBooks ? (

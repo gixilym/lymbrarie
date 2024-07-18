@@ -53,7 +53,7 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
         redirectToHome();
       }
     } catch (err: any) {
-      if (PRODUCTION) router.push("/error?err=unknown");
+      if (PRODUCTION) router.push("/error");
       else console.error(`error en deleteDocument: ${err.message}`);
     } finally {
       dismissNoti();
@@ -68,8 +68,8 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
   }
 
   return (
-    <dialog className="select-none backdrop-blur-md w-full h-full fixed top-10 z-50 flex justify-center items-start pt-10 bg-transparent">
-      <animated.div style={styles} className="modal-box">
+    <dialog className="select-none backdrop-blur-md w-full h-full fixed top-0 z-50 flex justify-center items-start pt-10 bg-transparent">
+      <animated.div style={styles} className="modal-box mt-8 sm:mt-20">
         <div className="flex flex-row justify-start items-start gap-x-4">
           <WarningIcon size={25} />
           <p className="font-bold tracking-wide text-lg">{t("warning")}</p>

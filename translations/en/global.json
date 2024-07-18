@@ -90,7 +90,6 @@
     "empty-loaned": "Loaned to ...",
     "no-gender": "Not assigned",
     "religion": "Religion",
-    "limit": "The query limit has been reached. Please report to this email:",
     "unknown": "An unexpected error occurred, please reload the website and verify your connection. If the error persists, report it to this email:",
     "show-state": "Show state",
     "title-too-long": "Title too long",
@@ -120,5 +119,12 @@
     "adding": "Adding...",
     "book-added": "Book added",
     "book-deleted": "Book deleted",
-    "alert": "Alert"
+    "alert": "Alert",
+    "add-fav": "Add to favorites",
+    "remove-fav": "Remove from favorites",
+    "no-favs": "You haven't added favorites",
+    "fav-added": "Added to favorites",
+    "fav-removed": "Removed from favorites",
+    "reload": "Reload",
+    "removing": "Removing..."
 }
