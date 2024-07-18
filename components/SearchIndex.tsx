@@ -1,4 +1,4 @@
-import { inputSearch, stateBookValue } from "@/utils/store";
+import { inputSearchVal, stateBookVal } from "@/utils/store";
 import type { Component, InputEvent } from "@/utils/types";
 import { isEqual } from "es-toolkit";
 import { useTranslation } from "react-i18next";
@@ -7,9 +7,9 @@ import { twMerge } from "tailwind-merge";
 import AddBookBtn from "./btns/AddBookBtn";
 
 function SearchIndex(): Component {
-  const [value, setValue] = useRecoilState<string>(inputSearch),
+  const [value, setValue] = useRecoilState<string>(inputSearchVal),
     handleChangeInput = (e: InputEvent) => setValue(e.target.value),
-    [selectVal, setSelectStateValue] = useRecoilState<string>(stateBookValue),
+    [selectVal, setSelectStateValue] = useRecoilState<string>(stateBookVal),
     handleChangeSelect = (value: string) => setSelectStateValue(value),
     [t] = useTranslation("global");
 
@@ -21,19 +21,24 @@ function SearchIndex(): Component {
 
   return (
     <form className="w-full sm:w-max flex flex-col items-center justify-center select-none px-6 sm:px-0">
-      <div className="w-full h-max flex flex-col sm:flex-row gap-y-4 sm:gap-y-0 sm:gap-x-2 justify-start items-center">
+      <div className="w-full h-max flex flex-col sm:flex-row gap-y-2 sm:gap-y-0 sm:gap-x-2 justify-start items-center">
         <div className="join">
           <input
             value={value}
             onChange={handleChangeInput}
-            className="focus:outline-0  backdrop-blur-[2px] input join-item w-[270px] h-14 bg-slate-800/60 border-2 border-rose-300/10 placeholder:text-slate-300 text-sm sm:text-lg text-slate-300 placeholder:w-full"
+            className="focus:outline-0 focus:border-rose-300/10 backdrop-blur-[2px] input join-item w-[230px] sm:w-[270px] h-14 bg-slate-800/60 border-2 border-rose-300/10 placeholder:text-slate-300/70 text-sm sm:text-lg text-slate-300 placeholder:w-full"
             placeholder={t("placeholder-search")}
             type="search"
           />
           <select
             value={selectVal}
             onChange={e => handleChangeSelect(e.target.value)}
-            className="w-full focus:outline-0  backdrop-blur-[2px] select join-item h-14 sm:w-[160px] text-sm sm:text-[17px] bg-slate-800/60 border-2 border-rose-300/10 text-slate-300 "
+            className={twMerge(
+              selectVal != ""
+                ? "border-rose-300/40 focus:border-rose-300/40 text-slate-300/90"
+                : "border-rose-300/10 focus:border-rose-300/10 text-slate-300/70",
+              "w-full focus:outline-0 border-2 backdrop-blur-[2px] select join-item h-14 sm:w-[160px] text-[13px] sm:text-[17px] bg-slate-800/60 cursor-default"
+            )}
           >
             <option
               className={twMerge(selectedState(""), "border-t-2")}

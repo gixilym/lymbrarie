@@ -22,7 +22,7 @@ function DialogContainer(props: Props): Component {
         style={styles}
         className={twJoin(
           divClass,
-          "modal-box sm:max-w-[700px] w-full min-h-screen sm:min-h-0 sm:h-[560px] overflow-x-hidden rounded-none sm:rounded-2xl flex flex-col gap-y-3 border-2 border-rose-300/10 [&>label>input]:placeholder:text-gray-400 sm:mt-14"
+          "modal-box sm:max-w-[700px] w-full min-h-screen sm:min-h-0 sm:h-[560px] overflow-x-hidden rounded-none sm:rounded-2xl flex flex-col gap-y-3 border-2 border-rose-300/10 [&>label>input]:placeholder:text-gray-400 sm:mt-14 overflow-y-scroll sm:overflow-y-auto"
         )}
       >
         {children}

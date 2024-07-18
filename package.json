@@ -16,6 +16,7 @@
   },
   "scripts": {
     "dev": "next dev --turbo",
+    "ng": "ngrok http --hostname=curious-probably-moray.ngrok-free.app 3000",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

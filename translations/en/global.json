@@ -15,7 +15,7 @@
     "enabled": "Enabled",
     "disabled": "Disabled",
     "change-state": "Change State",
-    "new-book": "New book",
+    "new-book": "Add book",
     "placeholder-title": "Title: The Shining",
     "placeholder-author": "Author: Stephen King",
     "placeholder-link": "Cover URL",
@@ -126,5 +126,8 @@
     "fav-added": "Added to favorites",
     "fav-removed": "Removed from favorites",
     "reload": "Reload",
-    "removing": "Removing..."
+    "removing": "Removing...",
+    "favorites": "Favorites",
+    "layout": "Layout",
+    "order": "Order"
 }

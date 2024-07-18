@@ -73,14 +73,14 @@ function NotesBook(props: Notes): Component {
   return (
     <div className={classText}>
       <div className="flex flex-col items-center justify-between w-full sm:px-0 px-4">
-        <div className="flex justify-between items-end w-full h-10">
+        <div className="flex justify-between items-end w-full h-10 opacity-80">
           <div className="flex justify-start items-center gap-x-2">
             <NotesIcon size={24} className="opacity-90" />
             <p className="text-xl sm:text-2xl select-none">{t("notes")}</p>
           </div>
           {hasChanges && !loadingFav && (
             <button
-              className="btn bg-green-400/80 text-slate-900 hover:bg-green-300"
+              className="btn bg-green-400/90 font-thin text-sm sm:text-lg text-black hover:bg-green-300 opacity-95"
               onClick={saveContent}
             >
               <SaveIcon size={20} />

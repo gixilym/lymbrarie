@@ -60,34 +60,34 @@ function ProfilePopUp({ profileImg, profileName }: Props): Component {
 
           <div className="grid gap-3.5 grid-cols-2 text-slate-400 w-full max-w-sm">
             <div className="space-y-2 border-2 border-slate-600/60 rounded-lg flex flex-col justify-center items-center py-2">
-              <p className="capitalize text-lg sm:text-xl font-medium">
+              <p className="capitalize text-sm sm:text-xl font-medium">
                 {t("books")}
               </p>
-              <span className="text-xl sm:text-2xl font-thin text-slate-200">
+              <span className="text-lg sm:text-2xl font-thin text-slate-200">
                 {sum([Read, Borrowed, Reading, Pending])}
               </span>
             </div>
             <div className="space-y-2 border-2 border-slate-600/60 rounded-lg flex flex-col justify-center items-center py-2">
-              <p className="capitalize text-lg sm:text-xl font-medium">
+              <p className="capitalize text-sm sm:text-xl font-medium">
                 {t("add-book-reading")}
               </p>
-              <span className="text-xl sm:text-2xl font-thin text-slate-200">
+              <span className="text-lg sm:text-2xl font-thin text-slate-200">
                 {Reading}
               </span>
             </div>
             <div className="space-y-2 border-2 border-slate-600/60 rounded-lg flex flex-col justify-center items-center py-2">
-              <p className="capitalize text-lg sm:text-xl font-medium">
+              <p className="capitalize text-sm sm:text-xl font-medium">
                 {t("add-book-pending")}
               </p>
-              <span className="text-xl sm:text-2xl font-thin text-slate-200">
+              <span className="text-lg sm:text-2xl font-thin text-slate-200">
                 {Pending}
               </span>
             </div>
             <div className="space-y-2 border-2 border-slate-600/60 rounded-lg flex flex-col justify-center items-center py-2">
-              <p className="capitalize text-lg sm:text-xl font-medium">
+              <p className="capitalize text-sm sm:text-xl font-medium">
                 {t("add-book-read")}
               </p>
-              <span className="text-xl sm:text-2xl font-thin text-slate-200">
+              <span className="text-lg sm:text-2xl font-thin text-slate-200">
                 {Read}
               </span>
             </div>

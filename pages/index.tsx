@@ -8,7 +8,7 @@ import PopUps from "@/components/PopUps";
 import { COLLECTION, MAINTENANCE, PRODUCTION } from "@/utils/consts";
 import { notification, removeItem } from "@/utils/helpers";
 import useLocalStorage from "@/hooks/useLocalStorage";
-import { zeroBooksValue } from "@/utils/store";
+import { zeroBooksVal } from "@/utils/store";
 import type { Book, Component, Doc } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
 import { isEqual, noop } from "es-toolkit";
@@ -53,7 +53,7 @@ function Index(): Component {
     [loading, setLoading] = useState<boolean>(false),
     [newBookNoti] = useLocalStorage("added", false),
     [deletedNoti] = useLocalStorage("deleted", false),
-    [zeroBooks] = useRecoilState<boolean>(zeroBooksValue),
+    [zeroBooks] = useRecoilState<boolean>(zeroBooksVal),
     [styles, animate] = useSpring(() => ({
       opacity: animations ? 0 : 1,
       config: { duration: 1000 },

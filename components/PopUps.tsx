@@ -1,4 +1,4 @@
-import { popupsValue } from "@/utils/store";
+import { popupsVal } from "@/utils/store";
 import type { Component } from "@/utils/types";
 import { useRecoilState } from "recoil";
 import DonationsPopUp from "./popups/DonationsPopUp";
@@ -10,7 +10,7 @@ import SupportPopUp from "./popups/SupportPopUp";
 
 function PopUps(props: Props): Component {
   const { UID, profileImg, profileName } = props;
-  const [popup] = useRecoilState<any>(popupsValue);
+  const [popup] = useRecoilState<any>(popupsVal);
 
   return (
     <>

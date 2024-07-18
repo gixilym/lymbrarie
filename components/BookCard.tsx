@@ -44,7 +44,7 @@ function BookCard(props: Props): Component {
   }
 
   function formatState(): Component {
-    switch (data.state) {
+    switch (data?.state) {
       case "Reading":
         return (
           <BookState
@@ -100,7 +100,7 @@ function BookState({ showDetails, text, bg }: State): Component {
     <span
       className={twMerge(
         showDetails && "absolute bottom-2 right-2",
-        `${bg} rounded-md text-md w-28 py-0.5 text-center select-none`
+        `${bg} rounded-md text-xs sm:text-lg w-24 sm:w-28 py-0.5 text-center select-none`
       )}
     >
       {text.split(" ")[0]}

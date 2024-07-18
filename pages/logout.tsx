@@ -1,7 +1,7 @@
 import LoadComponent from "@/components/LoadComponent";
 import logo from "@/public/favicon.ico";
 import useLocalStorage from "@/hooks/useLocalStorage";
-import { inputSearch } from "@/utils/store";
+import { inputSearchVal } from "@/utils/store";
 import type { Component } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
 import { type Auth, getAuth } from "firebase/auth";
@@ -24,7 +24,7 @@ function LogoutPage(): Component {
     [, setCacheBooks] = useLocalStorage("cacheBooks", null),
     [, setAllTitles] = useLocalStorage("allTitles", []),
     [, setScroll] = useLocalStorage("scroll", 0),
-    [, setSearch] = useRecoilState<string>(inputSearch),
+    [, setSearch] = useRecoilState<string>(inputSearchVal),
     [, setMyFavs] = useLocalStorage("myFavorites", []),
     [, setShowFavs] = useLocalStorage("showFavs", false),
     [, setEdited] = useLocalStorage("edited", false),

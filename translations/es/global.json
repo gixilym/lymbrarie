@@ -15,7 +15,7 @@
     "enabled": "Activado",
     "disabled": "Desactivado",
     "change-state": "Cambiar estado",
-    "new-book": "Nuevo libro",
+    "new-book": "Añadir libro",
     "placeholder-title": "Titulo: Don Quijote de la Mancha",
     "placeholder-author": "Autor: Miguel de Cervantes",
     "placeholder-link": "URL de portada",
@@ -127,5 +127,8 @@
     "fav-added": "Añadido a favoritos",
     "fav-removed": "Quitado de favoritos",
     "reload": "Recargar",
-    "removing": "Quitando..."
+    "removing": "Quitando...",
+    "favorites": "Favoritos",
+    "layout": "Diseño",
+    "order": "Orden"
 }

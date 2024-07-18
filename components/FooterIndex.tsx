@@ -32,7 +32,7 @@ function FooterIndex(): Component {
             "flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline"
           }
         >
-          <p className="text-lg hover:underline duration-75 cursor-pointer ">
+          <p className="text-sm sm:text-lg hover:underline duration-75 cursor-pointer ">
             {t("profile")}
           </p>
           <UserIcon size={18} />
@@ -42,7 +42,7 @@ function FooterIndex(): Component {
           onClick={() => openPopUp("support")}
           className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline "
         >
-          <p className="text-lg">{t("support")}</p>
+          <p className="text-sm sm:text-lg">{t("support")}</p>
           <SupportIcon size={18} />
         </div>
 
@@ -50,7 +50,7 @@ function FooterIndex(): Component {
           className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline "
           onClick={() => openPopUp("donations")}
         >
-          <p className="text-lg">{t("donate")}</p>
+          <p className="text-sm sm:text-lg">{t("donate")}</p>
           <HeartIcon size={18} />
         </div>
       </div>

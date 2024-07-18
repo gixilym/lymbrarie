@@ -1,10 +1,11 @@
 import HomeBtn from "@/components/btns/HomeBtn";
-import { normalizeText, tLC } from "@/utils/helpers";
 import useLocalStorage from "@/hooks/useLocalStorage";
-import { inputSearch, stateBookValue } from "@/utils/store";
+import { normalizeText, tLC } from "@/utils/helpers";
+import { inputSearchVal, stateBookVal } from "@/utils/store";
 import type { Book, BookData, Component, MemoComponent } from "@/utils/types";
 import { isEqual, isNull, orderBy, round, shuffle } from "es-toolkit";
 import { memo, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useRecoilState } from "recoil";
 import BookCard from "./BookCard";
 import ListBooks from "./ListBooks";
@@ -12,12 +13,11 @@ import NoMatchesText from "./NoMatchesText";
 import DetailsBtn from "./btns/DetailsBtn";
 import FavoritesBtn from "./btns/FavoritesBtn";
 import SortBtn from "./btns/SortBtn";
-import { useTranslation } from "react-i18next";
 
 const ListSection: MemoComponent = memo(function B({ myBooks }: Props) {
   const [t] = useTranslation("global"),
-    [searchVal] = useRecoilState<string>(inputSearch),
-    [stateVal] = useRecoilState<string>(stateBookValue),
+    [searchVal] = useRecoilState<string>(inputSearchVal),
+    [stateVal] = useRecoilState<string>(stateBookVal),
     [showDetailsLS, setShowDetailsLS] = useLocalStorage("list-mode-on", true),
     [showDetails, setShowDetails] = useState<boolean>(showDetailsLS),
     [scroll, setScroll] = useLocalStorage("scroll", 0),
@@ -40,14 +40,19 @@ const ListSection: MemoComponent = memo(function B({ myBooks }: Props) {
   }, [myBooks]);
 
   const renderBooks = (arr: Book[]): Component => {
-    const noMatches: boolean = isEqual(arr.length, 0) && searchVal != "",
-      data: BookData[] = arr.map((b: Book) => b?.data),
+    const data: BookData[] = arr.map((b: Book) => b?.data),
       order: any[] = ascToDesc ? ["asc", "desc"] : ["desc", "asc"],
       books: BookData[] = isNull(ascToDesc)
         ? shuffle(data)
-        : orderBy(data, ["title", "author"], order);
+        : orderBy(data, ["title", "author"], order),
+      noMatches: boolean =
+        (isEqual(arr.length, 0) && !isEqual(searchVal, "")) ||
+        (isEqual(books.length, 0) && showFavs) ||
+        (isEqual(searchVal, "") &&
+          !isEqual(stateVal, "") &&
+          isEqual(books.length, 0));
 
-    if (noMatches || (isEqual(books.length, 0) && showFavs))
+    if (noMatches)
       return <NoMatchesText t={t(showFavs ? "no-favs" : "no-matches")} />;
 
     return books.map((b: BookData) => (

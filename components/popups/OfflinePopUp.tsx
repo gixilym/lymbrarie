@@ -12,7 +12,7 @@ function OfflinePopUp(): Component {
   return (
     <DialogContainer divClass="justify-between items-center">
       <HeaderPopUp icon={<Icon size={30} />} title={t("offline")} />
-      <p className="text-xl sm:text-2xl tracking-wide text-center sm:px-6 text-pretty text-slate-300">
+      <p className="text-lg sm:text-2xl tracking-wide text-center sm:px-6 text-pretty text-slate-300">
         {t("text-offline")}
       </p>
 

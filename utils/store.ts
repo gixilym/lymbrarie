@@ -1,16 +1,16 @@
-import { atom, RecoilState } from "recoil";
+import { atom, type RecoilState } from "recoil";
 
-const inputSearch: RecoilState<string> = atom({
-  key: "inputSearch",
+const inputSearchVal: RecoilState<string> = atom({
+  key: "inputSearchVal",
   default: "",
 });
 
-const stateBookValue: RecoilState<string> = atom({
-  key: "stateBookValue",
+const stateBookVal: RecoilState<string> = atom({
+  key: "stateBookVal",
   default: "",
 });
 
-const popupsValue: RecoilState<any> = atom({
+const popupsVal: RecoilState<any> = atom({
   key: "popups",
   default: {
     add_book: false,
@@ -24,9 +24,9 @@ const popupsValue: RecoilState<any> = atom({
   },
 });
 
-const zeroBooksValue: RecoilState<boolean> = atom({
-  key: "zeroBooksValue",
+const zeroBooksVal: RecoilState<boolean> = atom({
+  key: "zeroBooksVal",
   default: false,
 });
 
-export { inputSearch, popupsValue, stateBookValue, zeroBooksValue };
+export { inputSearchVal, popupsVal, stateBookVal, zeroBooksVal };

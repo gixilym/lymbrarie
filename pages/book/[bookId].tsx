@@ -17,7 +17,7 @@ import {
 import useLoadContent from "@/hooks/useLoadContent";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
-import { popupsValue } from "@/utils/store";
+import { popupsVal } from "@/utils/store";
 import type { Book, BookData, Component } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
 import { isEqual, noop, union } from "es-toolkit";
@@ -75,7 +75,7 @@ function BookId(): Component {
     checkFav: boolean = myFavs.some((b: BookData) => isEqual(b?.title, title)),
     notExist: boolean = !allTitles.includes(title),
     notesProps = { updateNotes, notes, setNotes, isLoading, loadingFav },
-    [popup] = useRecoilState<any>(popupsValue),
+    [popup] = useRecoilState<any>(popupsVal),
     [styles, animate] = useSpring(() => ({
       opacity: animations ? 0 : 1,
       config: { duration: 500 },
@@ -167,7 +167,7 @@ function BookId(): Component {
       <article className="w-full sm:w-[700px] h-[315px] flex flex-col sm:flex-row gap-y-12 justify-start items-center sm:items-start backdrop-blur-[2.5px] relative mt-20 xl:mt-0 sm:mt-12">
         <Image
           priority
-          className="select-none aspect-[200/300] w-[200px] h-[300px] object-center object-fill rounded-md hover:scale-95 duration-300"
+          className="select-none aspect-[200/300] w-[200px] h-[300px] object-center object-fill rounded-md"
           src={book?.data?.image || defaultCover}
           width={200}
           height={300}
@@ -175,15 +175,15 @@ function BookId(): Component {
         />
 
         <div className="flex flex-col justify-between items-start w-[100vw] sm:w-full max-w-[500px] sm:h-full px-10 sm:px-4 pb-2.5">
-          <div className="flex flex-col justify-start items-start w-full h-full gap-y-2.5">
-            <h4 className="text-2xl sm:text-3xl font-bold tracking-wide sm:min-h-20 h-auto overflow-ellipsis overflow-hidden whitespace-wrap w-full">
+          <div className="flex flex-col justify-start items-start w-full h-full gap-y-2 sm:gap-y-3">
+            <h4 className="text-xl sm:text-3xl font-bold tracking-wide sm:min-h-20 h-auto overflow-ellipsis overflow-hidden whitespace-wrap w-full">
               {book?.data?.title}
             </h4>
 
             {book?.data?.author && (
               <div className="flex flex-row justify-start items-center gap-x-2 w-full">
                 <UserIcon size={18} />
-                <p className="text-md overflow-ellipsis overflow-hidden whitespace-nowrap w-full">
+                <p className="text-sm sm:text-[16px] overflow-ellipsis overflow-hidden whitespace-nowrap w-full">
                   {book?.data?.author}
                 </p>
               </div>
@@ -192,7 +192,7 @@ function BookId(): Component {
             {book?.data?.gender && book?.data?.gender != "no-gender" && (
               <div className="flex flex-row justify-start items-center gap-x-2 w-full">
                 <StateIcon size={18} />
-                <p className="text-sm capitalize overflow-ellipsis overflow-hidden whitespace-nowrap w-full">
+                <p className="text-sm sm:text-[16px] capitalize overflow-ellipsis overflow-hidden whitespace-nowrap w-full">
                   {t(book?.data?.gender)}
                 </p>
               </div>
@@ -201,7 +201,7 @@ function BookId(): Component {
             {book?.data?.state && (
               <div className="flex flex-row justify-start items-center gap-x-2 w-full">
                 <LibraryIcon size={18} />
-                <p className="text-sm overflow-ellipsis overflow-hidden whitespace-nowrap w-full">
+                <p className="text-sm sm:text-[16px] overflow-ellipsis overflow-hidden whitespace-nowrap w-full">
                   {translateStateBook(book?.data?.state ?? "", t)}
                   {isLoaned(book?.data?.state ?? "") &&
                     ` ${book?.data?.loaned}`}
@@ -209,7 +209,7 @@ function BookId(): Component {
               </div>
             )}
           </div>
-          <div className="dropdown dropdown-top dropdown-right opacity-100">
+          <div className="dropdown dropdown-bottom dropdown-left sm:dropdown-right opacity-100 flex sm:block items-end justify-center absolute sm:relative right-10 sm:right-0 top-60 sm:top-0">
             <SettingsBtn />
             <ul
               tabIndex={0}

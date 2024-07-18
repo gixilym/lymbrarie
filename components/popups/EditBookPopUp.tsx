@@ -88,7 +88,7 @@ function EditBookPopUp(props: Props): Component {
       owner: data?.owner,
       loaned: data?.loaned,
       notes: data?.notes,
-      isFav: data?.isFav,
+      isFav: data?.isFav ?? false,
     };
     setBook({ ...loadData });
   }

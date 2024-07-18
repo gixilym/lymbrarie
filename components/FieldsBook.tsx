@@ -42,7 +42,7 @@ function FieldsBook(props: Props): Component {
         htmlFor="title-input"
         className={twMerge(
           isEqual("title-input", errorKey) && "border-2 border-red-500",
-          "input input-bordered flex items-center sm:text-xl text-lg h-14 mt-3"
+          "input input-bordered flex items-center w-full text-sm sm:text-xl h-14 mt-3"
         )}
       >
         <TitleIcon size={18} className="mr-1.5" />
@@ -54,7 +54,7 @@ function FieldsBook(props: Props): Component {
           defaultValue={defaultValueTitle}
           name="title"
           type="text"
-          className="grow px-1 h-14 placeholder:text-slate-100"
+          className="grow px-1 h-14 placeholder:text-slate-100 w-10/12"
           placeholder={t("placeholder-title")}
         />
       </label>
@@ -63,7 +63,7 @@ function FieldsBook(props: Props): Component {
         htmlFor="author-input"
         className={twMerge(
           isEqual("author-input", errorKey) && "border-2 border-red-500",
-          "input input-bordered flex items-center sm:text-xl text-lg h-14"
+          "input input-bordered flex items-center sm:text-xl w-full text-sm h-14"
         )}
       >
         <UserIcon size={18} className="mt-0.5 mr-2" />
@@ -78,7 +78,7 @@ function FieldsBook(props: Props): Component {
             isLoading
               ? "placeholder:!text-slate-700"
               : "placeholder:text-slate-100",
-            "grow px-1 h-14"
+            "grow px-1 h-14 w-10/12"
           )}
           placeholder={t("placeholder-author")}
         />
@@ -103,7 +103,7 @@ function FieldsBook(props: Props): Component {
             id="gender-select"
             onChange={handleGender}
             disabled={isLoading}
-            className="select input-bordered pl-1.5 border-x-0 rounded-none sm:text-xl text-lg w-full focus:outline-0 h-14 text-slate-400"
+            className="select input-bordered pl-1.5 border-x-0 rounded-none sm:text-xl text-sm w-full focus:outline-0 h-14 text-slate-400"
             defaultValue={
               applyGender
                 ? defaultValueGender
@@ -127,7 +127,7 @@ function FieldsBook(props: Props): Component {
             htmlFor="gender-input"
             className={twMerge(
               isEqual("gender-input", errorKey) && "border-2 border-red-500",
-              "input input-bordered flex items-center sm:text-xl text-lg h-14 w-2/4 sm:w-full"
+              "input input-bordered flex items-center sm:text-xl text-sm h-14 w-full"
             )}
           >
             <CustomIcon size={18} className="mt-0.5 mr-2" />
@@ -140,7 +140,7 @@ function FieldsBook(props: Props): Component {
               name="gender"
               disabled={isLoading}
               type="text"
-              className="grow px-1 placeholder:text-slate-500"
+              className="grow px-1 placeholder:text-slate-500 text-sm sm:text-xl w-full"
               placeholder={t("custom")}
               defaultValue={applyGender ? t("my-gender") : defaultValueGender}
             />
@@ -168,7 +168,7 @@ function FieldsBook(props: Props): Component {
             id="state-select"
             disabled={isLoading}
             onChange={e => handleState(e.target.value)}
-            className="select text-slate-400 input-bordered border-x-0 rounded-none sm:text-xl text-lg w-full focus:outline-0 h-14"
+            className="select text-slate-400 input-bordered border-x-0 rounded-none sm:text-xl text-sm w-full focus:outline-0 h-14"
             defaultValue={defaultValueState}
           >
             <option value="default" disabled>
@@ -185,7 +185,7 @@ function FieldsBook(props: Props): Component {
             htmlFor="loaned-input"
             className={twMerge(
               isEqual("loaned-input", errorKey) && "border-2 border-red-500",
-              "input input-bordered flex items-center sm:text-xl text-lg w-2/4 sm:w-full h-14"
+              "input input-bordered flex items-center sm:text-xl text-xs w-2/4 sm:w-full h-14"
             )}
           >
             <BorrowedIcon size={18} className="mt-0.5 mr-2" />
@@ -196,19 +196,19 @@ function FieldsBook(props: Props): Component {
               name="loaned"
               defaultValue={defaultValueLoaned}
               type="text"
-              className="grow px-1"
+              className="grow px-1 text-sm sm:text-xl w-full "
               placeholder={t("loanedto")}
             />
           </label>
         )}
       </div>
 
-      <div>
+      <div className="w-full">
         <label
           htmlFor="image-input"
           className={twMerge(
             isEqual("image-input", errorKey) && "border-2 border-red-500",
-            "input input-bordered flex items-center sm:text-xl text-lg h-14 mb-1"
+            "input input-bordered flex items-center sm:text-xl w-full text-sm h-14 mb-1"
           )}
         >
           <ImageIcon size={18} className="mt-0.5 mr-2" />
@@ -223,7 +223,7 @@ function FieldsBook(props: Props): Component {
               isLoading
                 ? "placeholder:text-slate-700"
                 : "placeholder:text-slate-400",
-              "grow px-1 text-md"
+              "grow px-1 w-10/12"
             )}
             placeholder={t("placeholder-link")}
           />
@@ -235,7 +235,7 @@ function FieldsBook(props: Props): Component {
             isLoading
               ? "text-slate-600 cursor-default"
               : "link text-slate-400 hover:text-slate-300",
-            "duration-75 text-md sm:text-lg pl-1"
+            "duration-75 text-xs sm:text-lg pl-1"
           )}
         >
           {t("generate-link")}

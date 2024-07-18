@@ -1,9 +1,9 @@
 import { useRecoilState } from "recoil";
-import { popupsValue } from "@/utils/store";
+import { popupsVal } from "@/utils/store";
 import type { PopUpsIds } from "@/utils/types";
 
 function usePopUp(): PopUp {
-  const [modal, setModals] = useRecoilState<any>(popupsValue);
+  const [modal, setModals] = useRecoilState<any>(popupsVal);
 
   function closePopUp(id: PopUpsIds): void {
     setModals({ ...modal, [id]: false });

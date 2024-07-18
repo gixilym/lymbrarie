@@ -6,10 +6,16 @@ import {
   ArrowDownZA as SortZAIcon,
 } from "lucide-react";
 import type { MouseEventHandler } from "react";
+import { useTranslation } from "react-i18next";
 
 function SortBtn({ alternateSort, ascToDesc }: Props): Component {
+  const [t] = useTranslation("global");
   return (
-    <button onClick={alternateSort} className="btn btn-ghost btn-square">
+    <button
+      title={t("order")}
+      onClick={alternateSort}
+      className="btn btn-ghost btn-square"
+    >
       {ascToDesc && <SortAZIcon size={29} />}
       {ascToDesc === false && <SortZAIcon size={29} />}
       {isNull(ascToDesc) && <ShuffleIcon size={27} />}

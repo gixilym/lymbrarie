@@ -3,7 +3,7 @@ import { dismissNoti, notification } from "@/utils/helpers";
 import useLoadContent from "@/hooks/useLoadContent";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
-import { inputSearch, zeroBooksValue } from "@/utils/store";
+import { inputSearchVal, zeroBooksVal } from "@/utils/store";
 import type { Book, Component } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
 import { isEqual } from "es-toolkit";
@@ -20,8 +20,8 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
     { closePopUp } = usePopUp(),
     [animations] = useLocalStorage("animations", true),
     router: AppRouterInstance = useRouter(),
-    [, setSearchVal] = useRecoilState<string>(inputSearch),
-    [, setZeroBooks] = useRecoilState<boolean>(zeroBooksValue),
+    [, setSearchVal] = useRecoilState<string>(inputSearchVal),
+    [, setZeroBooks] = useRecoilState<boolean>(zeroBooksVal),
     [cacheBooks, setCacheBooks] = useLocalStorage("cacheBooks", null),
     [, setAllTitles] = useLocalStorage("allTitles", []),
     { isLoading, startLoading, finishLoading } = useLoadContent(),
@@ -68,31 +68,33 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
   }
 
   return (
-    <dialog className="select-none backdrop-blur-md w-full h-full fixed top-0 z-50 flex justify-center items-start pt-10 bg-transparent">
-      <animated.div style={styles} className="modal-box mt-8 sm:mt-20">
-        <div className="flex flex-row justify-start items-start gap-x-4">
+    <dialog className="select-none backdrop-blur-md w-full h-full fixed top-0 z-50 flex justify-center items-start pt-10 bg-transparent px-2 sm:px-0">
+      <animated.div style={styles} className="modal-box mt-28 sm:mt-20 w-full">
+        <div className="flex flex-row justify-start items-end sm:items-start gap-x-4">
           <WarningIcon size={25} />
-          <p className="font-bold tracking-wide text-lg">{t("warning")}</p>
+          <p className="font-bold tracking-wide text-sm sm:text-lg">
+            {t("warning")}
+          </p>
         </div>
-        <p className="py-4 text-xl">{t("delete-message")}</p>
+        <p className="py-4 text-lg sm:text-xl">{t("delete-message")}</p>
         <div className="modal-action">
           <form method="dialog" className="space-x-2">
             <button
               disabled={isLoading}
               onClick={() => closePopUp("delete_book")}
-              className="btn font-thin bg-slate-700 hover:bg-slate-600 text-white text-lg"
+              className="btn font-thin bg-slate-700 hover:bg-slate-600 text-white text-sm sm:text-lg"
             >
               {t("cancel")}
             </button>
             {isLoading ? (
-              <button className="btn font-thin cursor-default text-white text-lg w-26">
+              <button className="btn font-thin cursor-default text-white text-sm sm:text-lg w-26">
                 {t("deleting")}
               </button>
             ) : (
               <button
                 onClick={deleteDocument}
                 type="button"
-                className="btn font-thin bg-red-800/90 hover:bg-red-700 text-white text-lg w-26"
+                className="btn font-thin bg-red-800/90 hover:bg-red-700 text-white text-sm sm:text-lg w-26"
               >
                 {t("delete-book")}
               </button>

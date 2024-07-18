@@ -195,7 +195,7 @@ function NewBookPopUp({ UID }: { UID: string }): Component {
   }
 
   return (
-    <DialogContainer>
+    <DialogContainer divClass="!w-full justify-start items-end">
       <HeaderPopUp icon={<Icon size={25} />} title={t("new-book")} />
 
       <FieldsBook
@@ -222,23 +222,23 @@ function NewBookPopUp({ UID }: { UID: string }): Component {
                 disabled={isLoading}
                 type="button"
                 onClick={() => closePopUp("add_book")}
-                className="btn text-lg w-24 px-2 font-normal bg-slate-800 hover:bg-slate-700 text-white"
+                className="btn text-lg sm:text-xl w-32 font-normal bg-slate-800 hover:bg-slate-700 text-slate-200"
               >
-                {t("close")}
+                {t("cancel")}
               </button>
 
               {isLoading ? (
                 <button
                   disabled
                   type="button"
-                  className="btn bg-red-500 text-black hover:bg-red-400 duration-100 text-lg w-24 px-2"
+                  className="btn bg-red-500 text-black text-lg sm:text-xl w-32"
                 >
                   {t("charging")}
                 </button>
               ) : (
                 <button
                   type="submit"
-                  className="btn bg-blue-500 font-semibold text-black hover:bg-blue-400 duration-100 text-lg w-24 px-2"
+                  className="btn bg-blue-500 font-medium sm:font-semibold text-black hover:bg-blue-400 duration-100 text-lg sm:text-xl w-32 tracking-wide"
                 >
                   {t("add")}
                 </button>
