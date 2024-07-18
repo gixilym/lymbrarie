@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useTranslation } from "react-i18next";
 import { useSpring, animated } from "@react-spring/web";
 import { useEffect } from "react";
-import useLocalStorage from "@/utils/hooks/useLocalStorage";
+import useLocalStorage from "@/hooks/useLocalStorage";
 
 function CardWithDetails(props: Card): Component {
   const [t] = useTranslation("global"),

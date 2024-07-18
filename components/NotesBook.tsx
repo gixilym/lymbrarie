@@ -1,5 +1,5 @@
-import useLocalStorage from "@/utils/hooks/useLocalStorage";
-import usePopUp from "@/utils/hooks/usePopUp";
+import useLocalStorage from "@/hooks/useLocalStorage";
+import usePopUp from "@/hooks/usePopUp";
 import type { Component } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
 import { Notebook as NotesIcon, Save as SaveIcon } from "lucide-react";

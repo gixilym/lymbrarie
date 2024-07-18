@@ -14,9 +14,9 @@ import {
   notification,
   translateStateBook,
 } from "@/utils/helpers";
-import useLoadContent from "@/utils/hooks/useLoadContent";
-import useLocalStorage from "@/utils/hooks/useLocalStorage";
-import usePopUp from "@/utils/hooks/usePopUp";
+import useLoadContent from "@/hooks/useLoadContent";
+import useLocalStorage from "@/hooks/useLocalStorage";
+import usePopUp from "@/hooks/usePopUp";
 import { popupsValue } from "@/utils/store";
 import type { Book, BookData, Component } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";

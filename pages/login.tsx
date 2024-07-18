@@ -1,7 +1,7 @@
 import LoadComponent from "@/components/LoadComponent";
 import logo from "@/public/favicon.ico";
 import { PRODUCTION } from "@/utils/consts";
-import useLocalStorage from "@/utils/hooks/useLocalStorage";
+import useLocalStorage from "@/hooks/useLocalStorage";
 import { GithubIcon, GoogleIcon } from "@/utils/svgs";
 import type { Component } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";

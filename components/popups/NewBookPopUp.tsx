@@ -6,9 +6,9 @@ import {
   notification,
   tLC,
 } from "@/utils/helpers";
-import useLoadContent from "@/utils/hooks/useLoadContent";
-import useLocalStorage from "@/utils/hooks/useLocalStorage";
-import usePopUp from "@/utils/hooks/usePopUp";
+import useLoadContent from "@/hooks/useLoadContent";
+import useLocalStorage from "@/hooks/useLocalStorage";
+import usePopUp from "@/hooks/usePopUp";
 import type {
   Book,
   BookData,

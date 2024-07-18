@@ -85,12 +85,12 @@ const EmptyData: BookData = {
   gender: "no-gender",
   notes: "",
   loaned: "",
-};
+} as const;
 
 const EMPTY_BOOK = {
   id: "",
   data: EmptyData,
-};
+} as const;
 
 export {
   COLLECTION,

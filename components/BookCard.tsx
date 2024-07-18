@@ -1,6 +1,6 @@
 import defaultCover from "@/public/cover.webp";
 import { formatTitle } from "@/utils/helpers";
-import useLocalStorage from "@/utils/hooks/useLocalStorage";
+import useLocalStorage from "@/hooks/useLocalStorage";
 import type { BookData, Component } from "@/utils/types";
 import { useRouter, type NextRouter } from "next/router";
 import { flushSync } from "react-dom";

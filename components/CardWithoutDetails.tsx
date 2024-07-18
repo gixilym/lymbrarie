@@ -1,4 +1,4 @@
-import useLocalStorage from "@/utils/hooks/useLocalStorage";
+import useLocalStorage from "@/hooks/useLocalStorage";
 import type { Component } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
 import { Book as BookIcon } from "lucide-react";

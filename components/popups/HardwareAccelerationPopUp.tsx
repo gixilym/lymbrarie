@@ -1,4 +1,4 @@
-import useLocalStorage from "@/utils/hooks/useLocalStorage";
+import useLocalStorage from "@/hooks/useLocalStorage";
 import type { Component } from "@/utils/types";
 import { useTranslation } from "react-i18next";
 import DialogContainer from "../DialogContainer";

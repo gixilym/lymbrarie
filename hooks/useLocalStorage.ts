@@ -1,7 +1,7 @@
 import Crypto from "crypto-js";
 import { isNull } from "es-toolkit";
 import { useState } from "react";
-import { PRODUCTION } from "../consts";
+import { PRODUCTION } from "@/utils/consts";
 
 function decrypt(data: any): any {
   if (isNull(data)) return null;

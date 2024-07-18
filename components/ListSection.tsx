@@ -1,6 +1,6 @@
 import HomeBtn from "@/components/btns/HomeBtn";
 import { normalizeText, tLC } from "@/utils/helpers";
-import useLocalStorage from "@/utils/hooks/useLocalStorage";
+import useLocalStorage from "@/hooks/useLocalStorage";
 import { inputSearch, stateBookValue } from "@/utils/store";
 import type { Book, BookData, Component, MemoComponent } from "@/utils/types";
 import { isEqual, isNull, orderBy, round, shuffle } from "es-toolkit";

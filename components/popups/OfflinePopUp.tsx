@@ -1,4 +1,4 @@
-import usePopUp from "@/utils/hooks/usePopUp";
+import usePopUp from "@/hooks/usePopUp";
 import type { Component } from "@/utils/types";
 import { WifiOff as Icon } from "lucide-react";
 import { useTranslation } from "react-i18next";

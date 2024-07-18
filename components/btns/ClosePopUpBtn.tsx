@@ -1,4 +1,4 @@
-import usePopUp from "@/utils/hooks/usePopUp";
+import usePopUp from "@/hooks/usePopUp";
 import type { Component, PopUpsIds } from "@/utils/types";
 import { CircleX as CloseIcon } from "lucide-react";
 

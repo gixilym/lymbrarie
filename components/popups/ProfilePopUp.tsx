@@ -1,5 +1,5 @@
 import defaultCover from "@/public/cover.webp";
-import useLocalStorage from "@/utils/hooks/useLocalStorage";
+import useLocalStorage from "@/hooks/useLocalStorage";
 import type { Book, Component } from "@/utils/types";
 import Image from "next/image";
 import { useEffect, useState } from "react";

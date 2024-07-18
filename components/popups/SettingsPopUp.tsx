@@ -1,4 +1,4 @@
-import useLocalStorage from "@/utils/hooks/useLocalStorage";
+import useLocalStorage from "@/hooks/useLocalStorage";
 import type { Component, SelectEvent } from "@/utils/types";
 import {
   Languages as LanguagesIcon,

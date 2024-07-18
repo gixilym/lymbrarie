@@ -1,6 +1,6 @@
 import LoadComponent from "@/components/LoadComponent";
 import logo from "@/public/favicon.ico";
-import useLocalStorage from "@/utils/hooks/useLocalStorage";
+import useLocalStorage from "@/hooks/useLocalStorage";
 import { inputSearch } from "@/utils/store";
 import type { Component } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
