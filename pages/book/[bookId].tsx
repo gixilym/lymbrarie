@@ -176,7 +176,7 @@ function BookId(): Component {
 
         <div className="flex flex-col justify-between items-start w-[100vw] sm:w-full max-w-[500px] sm:h-full px-10 sm:px-4 pb-2.5">
           <div className="flex flex-col justify-start items-start w-full h-full gap-y-2.5">
-            <h4 className="text-2xl sm:text-3xl font-bold tracking-tight sm:min-h-20 h-auto overflow-ellipsis overflow-hidden whitespace-wrap w-full">
+            <h4 className="text-2xl sm:text-3xl font-bold tracking-wide sm:min-h-20 h-auto overflow-ellipsis overflow-hidden whitespace-wrap w-full">
               {book?.data?.title}
             </h4>
 
@@ -215,7 +215,7 @@ function BookId(): Component {
               tabIndex={0}
               className={twMerge(
                 loadingFav ? "hidden" : "block",
-                "mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52 gap-y-1"
+                "mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
               )}
             >
               <li
@@ -234,6 +234,7 @@ function BookId(): Component {
               </li>
 
               <li
+                className="py-1.5"
                 onClick={() =>
                   navigator.onLine
                     ? openPopUp("edit_book")

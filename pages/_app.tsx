@@ -1,3 +1,4 @@
+import AppIcon from "@/components/AppIcon";
 import I18Provider from "@/components/I18Provider";
 import initAuth from "@/database/initAuth";
 import "@/globals.css";
@@ -29,6 +30,7 @@ function App({
         <Head>
           <title>Lymbrarie</title>
         </Head>
+        <AppIcon />
         <Notifications reverseOrder={false} position="top-right" />
         <Component {...pageProps} />
       </RecoilProvider>

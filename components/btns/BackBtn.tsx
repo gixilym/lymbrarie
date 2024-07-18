@@ -1,7 +1,7 @@
 import useLocalStorage from "@/utils/hooks/useLocalStorage";
 import type { Component } from "@/utils/types";
 import { isEqual } from "es-toolkit";
-import { CircleChevronLeft as Icon } from "lucide-react";
+import { ArrowLeft as Icon } from "lucide-react";
 import { type NextRouter, useRouter } from "next/router";
 import { flushSync } from "react-dom";
 
@@ -21,12 +21,11 @@ function BackBtn(): Component {
   }
 
   return (
-    <div className="absolute top-10 xl:top-16 xl:pt-2 right-0 xl:right-[36rem] opacity-90 w-full flex justify-center items-center">
+    <div className="absolute top-10 xl:top-[69px] xl:pt-2 right-0 xl:right-[28rem] opacity-90 w-full flex justify-center items-center">
       <Icon
         onClick={goTo}
-        size={50}
-        color="#dad8d8"
-        className="z-30 cursor-pointer hover:scale-110 duration-150"
+        size={45}
+        className="z-30 cursor-pointer duration-150 hover:brightness-200"
       />
     </div>
   );

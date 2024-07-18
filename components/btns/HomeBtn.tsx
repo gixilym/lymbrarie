@@ -20,7 +20,7 @@ function HomeBtn(): Component {
       </div>
       <ul
         tabIndex={0}
-        className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52 gap-y-1"
+        className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52 gap-y-1.5"
       >
         <li onClick={() => openPopUp("profile")}>
           <div className="flex flex-row items-center justify-start gap-x-3">
