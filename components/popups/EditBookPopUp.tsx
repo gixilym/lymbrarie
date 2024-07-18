@@ -142,7 +142,7 @@ function EditBookPopUp(props: Props): Component {
           normalizeText(tLC(t)) != normalizeText(tLC(formatBookId)) &&
           isEqual(normalizeText(tLC(t)), normalizeText(tLC(title)))
       ),
-      maxTitleLength: boolean = title.length > 71,
+      maxTitleLength: boolean = title.length > 80,
       maxAuthorLength: boolean = (book.author?.length ?? 0) > 34,
       emptyCustomGender: boolean =
         isCustomGender && isEqual(cusGenderVal.length ?? 0, 0),

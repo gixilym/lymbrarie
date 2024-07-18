@@ -21,7 +21,7 @@ function CardWithDetails(props: Card): Component {
     <animated.li
       onClick={onClick}
       style={styles}
-      className="mx-4 hover:scale-95 duration-300 cursor-pointer bg-gradient-to-r from-slate-900 to-transparent backdrop-blur-sm border-r-2 border-b-2 border-rose-300/10 hover:border-rose-300/20 flex flex-row justify-start items-start w-full sm:w-[580px] max-w-w-[580px] gap-x-4 rounded-xl relative h-28"
+      className="mx-4 hover:scale-95 duration-300 cursor-pointer bg-gradient-to-r from-slate-900 to-transparent backdrop-blur-sm border-r-2 border-b-2 border-rose-300/10 hover:border-rose-300/20 flex flex-row justify-start items-start w-full sm:w-[580px] max-w-[580px] gap-x-4 rounded-xl relative h-[116px]"
     >
       {state && formatState()}
       {img && (
@@ -34,7 +34,7 @@ function CardWithDetails(props: Card): Component {
           className="w-[70px] h-full aspect-[3/5] rounded-tl-lg rounded-bl-lg select-none"
         />
       )}
-      <div className="flex flex-col justify-between items-start gap-y-1 h-full w-[200px] sm:w-[490px] py-1 sm:py-2">
+      <div className="flex flex-col justify-between items-start gap-y-1 h-full w-[200px] sm:w-[490px] py-1 sm:py-2 pr-3">
         <p
           title={title}
           className="text-slate-200/85 w-full text-sm sm:text-xl font-ligth overflow-ellipsis overflow-hidden whitespace-nowrap"

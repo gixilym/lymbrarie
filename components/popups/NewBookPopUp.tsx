@@ -109,7 +109,7 @@ function NewBookPopUp({ UID }: { UID: string }): Component {
       repeteadTitle: boolean = allTitles.some((t: string) =>
         isEqual(normalizeText(tLC(t)), normalizeText(tLC(title)))
       ),
-      maxTitleLength: boolean = title.length > 71,
+      maxTitleLength: boolean = title.length > 80,
       maxAuthorLength: boolean = (book?.data?.author?.length ?? 0) > 34,
       emptyCustomGender: boolean =
         isCustomGender && isEqual(cusGenderVal.length, 0),
