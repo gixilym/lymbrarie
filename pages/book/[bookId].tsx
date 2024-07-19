@@ -5,6 +5,9 @@ import NotesBook from "@/components/NotesBook";
 import DeleteBookPopUp from "@/components/popups/DeleteBookPopUp";
 import EditBookPopUp from "@/components/popups/EditBookPopUp";
 import OfflinePopUp from "@/components/popups/OfflinePopUp";
+import useLoadContent from "@/hooks/useLoadContent";
+import useLocalStorage from "@/hooks/useLocalStorage";
+import usePopUp from "@/hooks/usePopUp";
 import defaultCover from "@/public/cover.webp";
 import { COLLECTION, EMPTY_BOOK, PRODUCTION } from "@/utils/consts";
 import {
@@ -14,9 +17,6 @@ import {
   notification,
   translateStateBook,
 } from "@/utils/helpers";
-import useLoadContent from "@/hooks/useLoadContent";
-import useLocalStorage from "@/hooks/useLocalStorage";
-import usePopUp from "@/hooks/usePopUp";
 import { popupsVal } from "@/utils/store";
 import type { Book, BookData, Component } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
@@ -61,13 +61,19 @@ function BookId(): Component {
     router: NextRouter = useRouter(),
     bookTitle: string = router.query.bookId?.toString() ?? "",
     title: string = deformatTitle(bookTitle),
+    [animations] = useLocalStorage("animations", true),
     { isLoading, finishLoading } = useLoadContent(),
+    Cover = animated(Image),
+    [stylesImg] = useSpring(() => ({
+      from: { opacity: animations ? 0 : 1 },
+      to: { opacity: 1 },
+      config: { duration: 1000 },
+    })),
     [book, setBook] = useState<any>(EMPTY_BOOK),
     [documentId, setDocumentId] = useState<string>(""),
     [notes, setNotes] = useState<string>(""),
     [loadingFav, setLoadingFav] = useState<boolean>(false),
     [cacheBooks, setCacheBooks] = useLocalStorage("cacheBooks", null),
-    [animations] = useLocalStorage("animations", true),
     [allTitles] = useLocalStorage("allTitles", []),
     myFavs: BookData[] = cacheBooks
       .map((b: Book) => b?.data)
@@ -76,8 +82,9 @@ function BookId(): Component {
     notExist: boolean = !allTitles.includes(title),
     notesProps = { updateNotes, notes, setNotes, isLoading, loadingFav },
     [popup] = useRecoilState<any>(popupsVal),
-    [styles, animate] = useSpring(() => ({
-      opacity: animations ? 0 : 1,
+    [styles] = useSpring(() => ({
+      from: { opacity: animations ? 0 : 1 },
+      to: { opacity: 1 },
       config: { duration: 500 },
     }));
 
@@ -92,10 +99,6 @@ function BookId(): Component {
     if (notExist) router.push("/");
   }, [notExist]);
 
-  useEffect(() => {
-    if (animations) animate.start({ opacity: 1 });
-  }, [animate]);
-
   function getCacheBook(): void {
     const b: Book = cacheBooks.find((b: Book) =>
       isEqual(b?.data?.title, title)
@@ -107,7 +110,7 @@ function BookId(): Component {
   }
 
   async function updateNotes(): Promise<void> {
-    notification("loading", t("editing"));
+    notification("loading", t("saving"));
     try {
       const bookToDB = { ...book?.data, notes };
       await setDoc(doc(COLLECTION, book.id), bookToDB);
@@ -165,8 +168,9 @@ function BookId(): Component {
       <BackBtn />
 
       <article className="w-full sm:w-[700px] h-[315px] flex flex-col sm:flex-row gap-y-12 justify-start items-center sm:items-start backdrop-blur-[2.5px] relative mt-20 xl:mt-0 sm:mt-12">
-        <Image
+        <Cover
           priority
+          style={stylesImg}
           className="select-none aspect-[200/300] w-[200px] h-[300px] object-center object-fill rounded-md"
           src={book?.data?.image || defaultCover}
           width={200}

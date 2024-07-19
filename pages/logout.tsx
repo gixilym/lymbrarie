@@ -2,7 +2,7 @@ import LoadComponent from "@/components/LoadComponent";
 import logo from "@/public/favicon.ico";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { inputSearchVal } from "@/utils/store";
-import type { Component } from "@/utils/types";
+import type { Component, SetState } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
 import { type Auth, getAuth } from "firebase/auth";
 import { AuthAction, withUser } from "next-firebase-auth";
@@ -10,7 +10,7 @@ import Image from "next/image";
 import { type NextRouter, useRouter } from "next/router";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 
 export default withUser({
   whenAuthed: AuthAction.RENDER,
@@ -24,7 +24,7 @@ function LogoutPage(): Component {
     [, setCacheBooks] = useLocalStorage("cacheBooks", null),
     [, setAllTitles] = useLocalStorage("allTitles", []),
     [, setScroll] = useLocalStorage("scroll", 0),
-    [, setSearch] = useRecoilState<string>(inputSearchVal),
+    setSearch: SetState = useSetRecoilState<string>(inputSearchVal),
     [, setMyFavs] = useLocalStorage("myFavorites", []),
     [, setShowFavs] = useLocalStorage("showFavs", false),
     [, setEdited] = useLocalStorage("edited", false),
@@ -32,14 +32,11 @@ function LogoutPage(): Component {
     router: NextRouter = useRouter(),
     [t] = useTranslation("global"),
     [animations] = useLocalStorage("animations", true),
-    [styles, animate] = useSpring(() => ({
-      opacity: animations ? 0 : 1,
+    [styles] = useSpring(() => ({
+      from: { opacity: animations ? 0 : 1 },
+      to: { opacity: 1 },
       config: { duration: 400 },
     }));
-
-  useEffect(() => {
-    if (animations) animate.start({ opacity: 1 });
-  }, [animate]);
 
   function forgetSession(): void {
     setSearch("");

@@ -31,14 +31,11 @@ function LoginPage(): Component {
     { push }: NextRouter = useRouter(),
     [animations] = useLocalStorage("animations", true),
     auth: Auth = getAuth(),
-    [styles, animate] = useSpring(() => ({
-      opacity: animations ? 0 : 1,
+    [styles] = useSpring(() => ({
+      from: { opacity: animations ? 0 : 1 },
+      to: { opacity: 1 },
       config: { duration: 400 },
     }));
-
-  useEffect(() => {
-    if (animations) animate.start({ opacity: 1 });
-  }, [animate]);
 
   async function logIn(provider: Providers): Promise<void> {
     try {
@@ -111,7 +108,7 @@ flex items-center min-w-[330px] sm:w-full max-w-[413px] h-[60px] rounded-lg dura
             </p>
           </button> */}
           <Link
-            className="absolute bottom-4 cursor-default text-xs sm:text-[16px] hover:underline duration-100 hover:text-slate-200/90"
+            className="absolute bottom-4 cursor-default text-xs text-slate-400/80 sm:text-[16px] hover:underline duration-100 hover:text-slate-400"
             href="/privacypolicy"
           >
             {t("privacy-policy")}

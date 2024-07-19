@@ -9,6 +9,7 @@ import type {
   ReactNode,
   RefObject,
 } from "react";
+import { type SetterOrUpdater } from "recoil";
 
 type Component = JSX.Element | JSX.Element[] | ReactNode;
 
@@ -27,6 +28,8 @@ type SelectEvent = ChangeEvent<HTMLSelectElement>;
 type Timer = ReturnType<typeof setTimeout>;
 
 type Doc = QueryDocumentSnapshot<DocumentData, DocumentData>;
+
+type SetState = SetterOrUpdater<any> ;
 
 type PopUpsIds =
   | "add_book"
@@ -76,4 +79,5 @@ export type {
   SelectEvent,
   Timer,
   User,
+  SetState,
 };

@@ -1,39 +1,35 @@
-import { COLLECTION, PRODUCTION } from "@/utils/consts";
-import { dismissNoti, notification } from "@/utils/helpers";
 import useLoadContent from "@/hooks/useLoadContent";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
+import { COLLECTION, PRODUCTION } from "@/utils/consts";
+import { dismissNoti, notification } from "@/utils/helpers";
 import { inputSearchVal, zeroBooksVal } from "@/utils/store";
-import type { Book, Component } from "@/utils/types";
+import type { Book, Component, SetState } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
 import { isEqual } from "es-toolkit";
 import { deleteDoc, doc } from "firebase/firestore/lite";
 import { TriangleAlert as WarningIcon } from "lucide-react";
 import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 
 function DeleteBookPopUp({ documentId, title }: Props): Component {
   const [t] = useTranslation("global"),
     { closePopUp } = usePopUp(),
     [animations] = useLocalStorage("animations", true),
     router: AppRouterInstance = useRouter(),
-    [, setSearchVal] = useRecoilState<string>(inputSearchVal),
-    [, setZeroBooks] = useRecoilState<boolean>(zeroBooksVal),
+    setSearchVal: SetState = useSetRecoilState<string>(inputSearchVal),
+    setZeroBooks: SetState = useSetRecoilState<boolean>(zeroBooksVal),
     [cacheBooks, setCacheBooks] = useLocalStorage("cacheBooks", null),
     [, setAllTitles] = useLocalStorage("allTitles", []),
     { isLoading, startLoading, finishLoading } = useLoadContent(),
     [, setShowNoti] = useLocalStorage("deleted", []),
-    [styles, animate] = useSpring(() => ({
-      transform: animations ? "scale(0.5)" : "scale(1)",
+    [styles] = useSpring(() => ({
+      from: { transform: animations ? "scale(0.7)" : "scale(1)" },
+      to: { transform: "scale(1)" },
       config: { duration: 100 },
     }));
-
-  useEffect(() => {
-    if (animations) animate.start({ transform: "scale(1)" });
-  }, [animate]);
 
   async function deleteDocument(): Promise<void> {
     startLoading();

@@ -21,14 +21,11 @@ function NotesBook(props: Notes): Component {
     [hasChanges, setHasChanges] = useState<boolean>(false),
     [animations] = useLocalStorage("animations", true),
     { openPopUp } = usePopUp(),
-    [styles, animate] = useSpring(() => ({
-      opacity: animations ? 0 : 1,
+    [styles] = useSpring(() => ({
+      from: { opacity: animations ? 0 : 1 },
+      to: { opacity: 1 },
       config: { duration: 600 },
     }));
-
-  useEffect(() => {
-    if (animations) animate.start({ opacity: 1 });
-  }, [animate]);
 
   useEffect(() => {
     router.events.on("routeChangeStart", handleRouteChange);

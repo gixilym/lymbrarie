@@ -1,26 +1,22 @@
 import useLocalStorage from "@/hooks/useLocalStorage";
 import icon from "@/public/favicon.ico";
 import { inputSearchVal, stateBookVal } from "@/utils/store";
-import type { Component } from "@/utils/types";
+import type { Component, SetState } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect } from "react";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 
 function AppIcon(): Component {
   const MyLink = animated(Link),
-    [, setState] = useRecoilState<string>(stateBookVal),
-    [, setSearch] = useRecoilState<string>(inputSearchVal),
+    setState: SetState = useSetRecoilState<string>(stateBookVal),
+    setSearch: SetState = useSetRecoilState<string>(inputSearchVal),
     [animations] = useLocalStorage("animations", true),
-    [styles, animate] = useSpring(() => ({
-      opacity: animations ? 0 : 1,
-      config: { duration: 600 },
+    [styles] = useSpring(() => ({
+      from: { opacity: animations ? 0 : 1 },
+      to: { opacity: 1 },
+      config: { duration: 1000 },
     }));
-
-  useEffect(() => {
-    if (animations) animate.start({ opacity: 1 });
-  }, [animate]);
 
   function onClick(): void {
     setSearch("");

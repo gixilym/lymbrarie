@@ -1,17 +1,13 @@
 import useLocalStorage from "@/hooks/useLocalStorage";
 import type { Component } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
-import { useEffect } from "react";
 
 function NoMatchesText({ t }: any): Component {
   const [animations] = useLocalStorage("animations", true);
-  const [styles, animate] = useSpring(() => ({
-    opacity: animations ? 0 : 1,
+  const [styles] = useSpring(() => ({
+    from: { opacity: animations ? 0 : 1 },
+    to: { opacity: 1 },
   }));
-
-  useEffect(() => {
-    if (animations) animate.start({ opacity: 1 });
-  }, [animate]);
 
   return (
     <animated.p

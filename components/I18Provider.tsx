@@ -1,6 +1,6 @@
+import useLocalStorage from "@/hooks/useLocalStorage";
 import global_en from "@/translations/en/global.json";
 import global_es from "@/translations/es/global.json";
-import useLocalStorage from "@/hooks/useLocalStorage";
 import type { Component } from "@/utils/types";
 import i18next from "i18next";
 import { type PropsWithChildren, useEffect } from "react";

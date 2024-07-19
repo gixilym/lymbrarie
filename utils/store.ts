@@ -30,4 +30,9 @@ const zeroBooksVal: RecoilState<boolean> = atom({
   default: false,
 });
 
-export { inputSearchVal, popupsVal, stateBookVal, zeroBooksVal };
+const animateList: RecoilState<boolean> = atom({
+  key: "animateList",
+  default: false,
+});
+
+export { inputSearchVal, popupsVal, stateBookVal, zeroBooksVal, animateList };

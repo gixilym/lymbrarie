@@ -1,19 +1,18 @@
 import BackBtn from "@/components/btns/BackBtn";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import type { Component } from "@/utils/types";
-import { useSpring, animated } from "@react-spring/web";
+import { animated, useSpring } from "@react-spring/web";
 import Link from "next/link";
-import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 function PrivacyPolicyPage(): Component {
   const [t] = useTranslation("global"),
     [animations] = useLocalStorage("animations", true),
-    [styles, animate] = useSpring(() => ({ opacity: animations ? 0 : 1 }));
-
-  useEffect(() => {
-    if (animations) animate.start({ opacity: 1 });
-  }, [animate]);
+    [styles, animate] = useSpring(() => ({
+      from: { opacity: animations ? 0 : 1 },
+      to: { opacity: 1 },
+      config: { duration: 400 },
+    }));
 
   return (
     <>

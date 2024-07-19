@@ -1,20 +1,16 @@
 import useLocalStorage from "@/hooks/useLocalStorage";
 import type { Component } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
-import { useEffect } from "react";
 import { twJoin } from "tailwind-merge";
 
 function DialogContainer(props: Props): Component {
   const { children, divClass } = props,
     [animations] = useLocalStorage("animations", true),
-    [styles, animate] = useSpring(() => ({
-      transform: animations ? "scale(0.5)" : "scale(1)",
+    [styles] = useSpring(() => ({
+      from: { transform: animations ? "scale(0.7)" : "scale(1)" },
+      to: { transform: "scale(1)" },
       config: { duration: 100 },
     }));
-
-  useEffect(() => {
-    if (animations) animate.start({ transform: "scale(1)" });
-  }, [animate]);
 
   return (
     <dialog className="w-full h-full fixed top-0 z-40 flex justify-center items-start bg-transparent backdrop-blur-md">
