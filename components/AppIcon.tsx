@@ -8,10 +8,10 @@ import Link from "next/link";
 import { useSetRecoilState } from "recoil";
 
 function AppIcon(): Component {
-  const MyLink = animated(Link),
+  const [animations] = useLocalStorage("animations", true),
+    MyLink = animated(Link),
     setState: SetState = useSetRecoilState<string>(stateBookVal),
     setSearch: SetState = useSetRecoilState<string>(inputSearchVal),
-    [animations] = useLocalStorage("animations", true),
     [styles] = useSpring(() => ({
       from: { opacity: animations ? 0 : 1 },
       to: { opacity: 1 },

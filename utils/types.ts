@@ -29,7 +29,7 @@ type Timer = ReturnType<typeof setTimeout>;
 
 type Doc = QueryDocumentSnapshot<DocumentData, DocumentData>;
 
-type SetState = SetterOrUpdater<any> ;
+type SetState = SetterOrUpdater<any>;
 
 type PopUpsIds =
   | "add_book"
@@ -77,7 +77,7 @@ export type {
   MemoComponent,
   PopUpsIds,
   SelectEvent,
+  SetState,
   Timer,
   User,
-  SetState,
 };

@@ -1,7 +1,7 @@
 import LoadComponent from "@/components/LoadComponent";
+import useLocalStorage from "@/hooks/useLocalStorage";
 import logo from "@/public/favicon.ico";
 import { PRODUCTION } from "@/utils/consts";
-import useLocalStorage from "@/hooks/useLocalStorage";
 import { GithubIcon, GoogleIcon } from "@/utils/svgs";
 import type { Component } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
@@ -14,10 +14,9 @@ import {
 } from "firebase/auth";
 import { AuthAction, withUser } from "next-firebase-auth";
 import Image from "next/image";
-import { type NextRouter, useRouter } from "next/router";
-import { useEffect } from "react";
-import { useTranslation } from "react-i18next";
 import Link from "next/link";
+import { type NextRouter, useRouter } from "next/router";
+import { useTranslation } from "react-i18next";
 
 export default withUser({
   whenAuthed: AuthAction.REDIRECT_TO_APP,
@@ -56,11 +55,6 @@ function LoginPage(): Component {
     logIn(provider);
   }
 
-  // function withFacebook(): void {
-  //   const provider: FacebookAuthProvider = new FacebookAuthProvider();
-  //   logIn(provider);
-  // }
-
   return (
     <section className="absolute top-0 right-0 min-h-screen w-full flex items-start justify-center bg-transparent sm:pt-20">
       <animated.div
@@ -97,16 +91,7 @@ flex items-center min-w-[330px] sm:w-full max-w-[413px] h-[60px] rounded-lg dura
             <GithubIcon className="w-7 h-7" />
             <p className="text-sm sm:text-xl text-white">{t("with-github")}</p>
           </button>
-          {/* <button
-            onClick={withFacebook}
-            className="bg-blue-600/70 justify-start gap-x-6 px-6 hover:bg-blue-600/90
- flex items-center min-w-[330px] sm:w-full max-w-[400px] !h-14 rounded-lg border border-slate-500/40 duration-150 "
-          >
-            <FacebookIcon className="w-7 h-7" />
-            <p className="text-lg sm:text-xl text-white">
-              {t("with-facebook")}
-            </p>
-          </button> */}
+
           <Link
             className="absolute bottom-4 cursor-default text-xs text-slate-400/80 sm:text-[16px] hover:underline duration-100 hover:text-slate-400"
             href="/privacypolicy"
