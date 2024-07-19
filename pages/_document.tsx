@@ -23,7 +23,7 @@ export default function Document(): Component {
         />
         <meta
           property="og:image"
-          content="https://res.cloudinary.com/dgs55s8qh/image/upload/v1721180775/j0voni7wm4nta6xiiuzx.png"
+          content="https://res.cloudinary.com/dgs55s8qh/image/upload/v1721421179/uyp9sym1kgwcbbt3z07r.png"
         />
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content="https://lymbrarie.com/" />
@@ -34,7 +34,7 @@ export default function Document(): Component {
         />
         <meta
           property="twitter:image"
-          content="https://res.cloudinary.com/dgs55s8qh/image/upload/v1721180775/j0voni7wm4nta6xiiuzx.png"
+          content="https://res.cloudinary.com/dgs55s8qh/image/upload/v1721421179/uyp9sym1kgwcbbt3z07r.png"
         />
       </Head>
       <Providers>
