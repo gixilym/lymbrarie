@@ -167,7 +167,7 @@ function BookId(): Component {
 
       <BackBtn />
 
-      <article className="w-full sm:w-[700px] h-[315px] flex flex-col sm:flex-row gap-y-12 justify-start items-center sm:items-start backdrop-blur-[2.5px] relative mt-20 xl:mt-0 sm:mt-12">
+      <article className="w-full sm:w-[700px] h-[300px] flex flex-col sm:flex-row gap-y-12 justify-start items-center sm:items-start backdrop-blur-[2.5px] relative mt-20 xl:mt-0 sm:mt-12">
         <Cover
           priority
           style={stylesImg}
@@ -179,13 +179,13 @@ function BookId(): Component {
         />
 
         <div className="flex flex-col justify-between items-start w-[100vw] sm:w-full max-w-[500px] sm:h-full px-10 sm:px-4 pb-2.5">
-          <div className="flex flex-col justify-start items-start w-full h-full gap-y-2 sm:gap-y-3">
-            <h4 className="text-xl sm:text-3xl font-bold tracking-wide sm:min-h-20 h-auto overflow-ellipsis overflow-hidden whitespace-wrap w-full">
+          <div className="flex flex-col justify-start items-start w-full h-full gap-y-2">
+            <h4 className="text-xl sm:text-[28px] font-bold tracking-wide sm:min-h-20 h-auto overflow-ellipsis overflow-hidden whitespace-wrap w-full">
               {book?.data?.title}
             </h4>
 
             {book?.data?.author && (
-              <div className="flex flex-row justify-start items-center gap-x-2 w-full">
+              <div className="flex flex-row justify-start items-center gap-x-2 w-full mt-4">
                 <UserIcon size={18} />
                 <p className="text-sm sm:text-[16px] overflow-ellipsis overflow-hidden whitespace-nowrap w-full">
                   {book?.data?.author}
@@ -213,7 +213,7 @@ function BookId(): Component {
               </div>
             )}
           </div>
-          <div className="dropdown dropdown-bottom dropdown-left sm:dropdown-right opacity-100 flex sm:block items-end justify-center absolute sm:relative right-10 sm:right-0 top-60 sm:top-0">
+          <div className="dropdown dropdown-bottom dropdown-left sm:dropdown-right opacity-100 flex sm:block items-end justify-center absolute sm:relative right-10 sm:right-0 top-60 sm:top-3">
             <SettingsBtn />
             <ul
               tabIndex={0}
@@ -273,7 +273,7 @@ function BookId(): Component {
         />
       </article>
       <NotesBook
-        classText="hidden sm:flex w-[700px] flex-col justify-start items-start gap-y-4 mt-10 bg-transparent"
+        classText="hidden sm:flex w-[700px] h-full flex-col justify-start items-start gap-y-4 mt-10 bg-transparent"
         {...notesProps}
       />
     </animated.section>

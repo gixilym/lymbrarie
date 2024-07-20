@@ -73,14 +73,14 @@ function NotesBook(props: Notes): Component {
         <div className="flex justify-between items-end w-full h-10 opacity-80">
           <div className="flex justify-start items-center gap-x-2">
             <NotesIcon size={24} className="opacity-90" />
-            <p className="text-xl sm:text-2xl select-none">{t("notes")}</p>
+            <p className="text-lg sm:text-2xl select-none">{t("notes")}</p>
           </div>
           {hasChanges && !loadingFav && (
             <button
               className="btn bg-green-400/90 font-thin text-sm sm:text-lg text-black hover:bg-green-300 opacity-95"
               onClick={saveContent}
             >
-              <SaveIcon size={20} />
+              <SaveIcon size={18} />
               {t("save")}
             </button>
           )}
@@ -98,7 +98,7 @@ function NotesBook(props: Notes): Component {
           onChange={handleChangeContent}
           className={twMerge(
             notes?.length > 0 ? "sm:min-h-[300px] max-h-[1200px]" : "h-14",
-            "w-full h-full bg-transparent  text-white/80 resize-none border-none focus:ring-0 focus:outline-none text-md sm:text-lg sm:pr-2 py-4"
+            "w-full h-full bg-transparent  text-white/80 resize-none border-none focus:ring-0 focus:outline-none text-sm sm:text-lg sm:pr-2 py-4"
           )}
         />
       </animated.div>
