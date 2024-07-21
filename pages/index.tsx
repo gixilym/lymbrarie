@@ -1,13 +1,12 @@
 import AddYourFirstBook from "@/components/AddYourFirstBook";
-import FooterIndex from "@/components/FooterIndex";
 import HeaderIndex from "@/components/HeaderIndex";
 import ListSection from "@/components/ListSection";
 import LoadComponent from "@/components/LoadComponent";
 import Maintenance from "@/components/Maintenance";
 import PopUps from "@/components/PopUps";
+import useLocalStorage from "@/hooks/useLocalStorage";
 import { COLLECTION, MAINTENANCE, PRODUCTION } from "@/utils/consts";
 import { notification, removeItem } from "@/utils/helpers";
-import useLocalStorage from "@/hooks/useLocalStorage";
 import { zeroBooksVal } from "@/utils/store";
 import type { Book, Component, Doc } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
@@ -138,7 +137,6 @@ function Index(): Component {
               )}
             </>
           )}
-          <FooterIndex />
         </>
       )}
     </animated.div>

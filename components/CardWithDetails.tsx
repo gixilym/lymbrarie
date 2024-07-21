@@ -26,11 +26,11 @@ function CardWithDetails(props: Card): Component {
         />
       )}
       <div className="flex flex-col justify-between items-start gap-y-1 h-full w-[300px] sm:w-[490px] py-2 pr-3">
-        <p className="text-slate-200/85 w-full text-sm sm:text-xl font-ligth overflow-ellipsis overflow-hidden whitespace-nowrap">
+        <p className="text-slate-200/90 w-full text-sm sm:text-xl font-ligth overflow-ellipsis overflow-hidden whitespace-nowrap">
           {title}
         </p>
 
-        <div className="sm:pl-1 w-full space-y-1 sm:space-y-2 text-slate-300/75">
+        <div className="sm:pl-1 w-full space-y-1 sm:space-y-2 text-slate-300/80">
           {author && (
             <div className="flex flex-row justify-start items-center gap-x-2">
               <UserIcon size={16} />

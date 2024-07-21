@@ -1,20 +1,16 @@
 import I18Provider from "@/components/I18Provider";
+import Layout from "@/components/Layout";
 import initAuth from "@/database/initAuth";
 import "@/globals.css";
 import { MAINTENANCE } from "@/utils/consts";
 import type { Component } from "@/utils/types";
-import "@fontsource/poppins";
 import type { AppProps } from "next/app";
-import dynamic from "next/dynamic";
 import Head from "next/head";
 import { type NextRouter, useRouter } from "next/router";
 import { useEffect } from "react";
-import { Toaster as Notifications } from "react-hot-toast";
 import { RecoilRoot as RecoilProvider } from "recoil";
 
 initAuth();
-
-const AppIcon = dynamic(() => import("@/components/AppIcon"), { ssr: false });
 
 function App({
   Component,
@@ -32,9 +28,9 @@ function App({
         <Head>
           <title translate="no">Lymbrarie</title>
         </Head>
-        <AppIcon />
-        <Notifications reverseOrder={false} position="top-right" />
-        <Component {...pageProps} />
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
       </RecoilProvider>
     </I18Provider>
   );

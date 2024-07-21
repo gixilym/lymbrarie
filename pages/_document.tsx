@@ -1,9 +1,8 @@
-import Body from "@/components/Body";
 import Providers from "@/components/I18Provider";
 import type { Component } from "@/utils/types";
 import { Head, Html, Main, NextScript } from "next/document";
 
-export default function Document(): Component {
+function Document(): Component {
   return (
     <Html lang="es">
       <Head>
@@ -38,11 +37,11 @@ export default function Document(): Component {
         />
       </Head>
       <Providers>
-        <Body>
-          <Main />
-          <NextScript />
-        </Body>
+        <Main />
+        <NextScript />
       </Providers>
     </Html>
   );
 }
+
+export default Document;

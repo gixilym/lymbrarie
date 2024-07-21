@@ -156,7 +156,7 @@ function BookId(): Component {
   return (
     <animated.section
       style={styles}
-      className="flex flex-col justify-center items-center w-full gap-y-6 sm:py-10 h-full"
+      className="flex flex-col justify-center items-center w-full gap-y-6 sm:py-10 h-full sm:pl-20"
     >
       <Head>
         <title translate="no">{book?.data?.title || "Lymbrarie"}</title>

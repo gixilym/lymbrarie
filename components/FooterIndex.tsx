@@ -10,10 +10,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import logo from "@/public/favicon.ico";
+import { NextRouter, useRouter } from "next/router";
 
 function FooterIndex(): Component {
   const [t] = useTranslation("global");
+  const { pathname, push }: NextRouter = useRouter();
   const { openPopUp } = usePopUp();
+  const noHome: boolean = pathname != "/";
 
   return (
     <footer className="select-none footer absolute bottom-0 w-full flex flex-col-reverse sm:flex-row justify-between items-center sm:p-4 bg-slate-900 border-t-2 border-gray-800 py-2 sm:py-0 sm:h-14 text-gray-400">
@@ -30,7 +33,10 @@ function FooterIndex(): Component {
       </aside>
       <div className="flex flex-col sm:flex-row items-start sm:items-center pl-3 sm:pl-0 justify-evenly w-full h-auto sm:w-auto sm:gap-x-6">
         <div
-          onClick={() => openPopUp("profile")}
+          onClick={() => {
+            noHome && push("/");
+            openPopUp("profile");
+          }}
           className={
             "flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline"
           }
@@ -42,13 +48,19 @@ function FooterIndex(): Component {
         </div>
         <div
           className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline "
-          onClick={() => openPopUp("donations")}
+          onClick={() => {
+            noHome && push("/");
+            openPopUp("donations");
+          }}
         >
           <HeartIcon size={18} />
           <p className="text-sm sm:text-[16px]">{t("donate")}</p>
         </div>
         <div
-          onClick={() => openPopUp("support")}
+          onClick={() => {
+            noHome && push("/");
+            openPopUp("support");
+          }}
           className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline "
         >
           <SupportIcon size={18} />
