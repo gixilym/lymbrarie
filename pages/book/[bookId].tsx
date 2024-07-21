@@ -230,7 +230,7 @@ function BookId(): Component {
             >
               <NotesIcon className="w-6 h-6 sm:w-7 sm:h-8" />
             </button>
-            <div className="dropdown dropdown-bottom dropdown-left sm:dropdown-right opacity-100 flex sm:block items-end justify-center">
+            <div className="dropdown dropdown-top dropdown-right opacity-100 flex sm:block items-end justify-center">
               <SettingsBtn />
               <ul
                 tabIndex={0}
