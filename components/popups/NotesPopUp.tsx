@@ -1,5 +1,6 @@
 import usePopUp from "@/hooks/usePopUp";
 import type { Component } from "@/utils/types";
+import { delay } from "es-toolkit";
 import {
   CircleX as ExitIcon,
   Notebook as Icon,
@@ -22,6 +23,7 @@ function NotesPopUp(props: Props): Component {
     [t] = useTranslation("global"),
     router: NextRouter = useRouter(),
     [hasChanges, setHasChanges] = useState<boolean>(false),
+    [showAlert, setShowAlert] = useState<boolean>(false),
     { notes, setNotes, updateNotes, loadingFav } = props;
 
   useEffect(() => {
@@ -32,6 +34,15 @@ function NotesPopUp(props: Props): Component {
       removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, [hasChanges]);
+
+  useEffect(() => {
+    if (showAlert) {
+      (async function () {
+        await delay(5000);
+        setShowAlert(false);
+      })();
+    }
+  }, [showAlert]);
 
   function handleBeforeUnload(e: BeforeUnloadEvent): string | void {
     if (hasChanges && !loadingFav) {
@@ -61,7 +72,7 @@ function NotesPopUp(props: Props): Component {
     if (navigator.onLine) {
       setHasChanges(false);
       updateNotes();
-    } else openPopUp("offline");
+    } else setShowAlert(true);
   }
 
   function handleClosePopUp(): void {
@@ -102,6 +113,8 @@ function NotesPopUp(props: Props): Component {
         />
       </div>
 
+      {showAlert && <Alert />}
+
       <button
         type="button"
         onClick={handleClosePopUp}
@@ -121,3 +134,29 @@ interface Props {
   loadingFav: boolean;
   updateNotes: () => void;
 }
+
+const Alert = () => {
+  const [t] = useTranslation("global");
+
+  return (
+    <div
+      role="alert"
+      className="alert alert-error bg-red-400 font-semibold text-sm sm:text-[16px] flex justify-start items-end mb-10 sm:mb-0"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-6 w-6 shrink-0 stroke-current"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
+      </svg>
+      <span className="text-start">{t("error-notes")}</span>
+    </div>
+  );
+};
