@@ -19,7 +19,7 @@ import DialogContainer from "../DialogContainer";
 import HeaderPopUp from "../HeaderPopUp";
 
 function NotesPopUp(props: Props): Component {
-  const { openPopUp, closePopUp } = usePopUp(),
+  const { closePopUp } = usePopUp(),
     [t] = useTranslation("global"),
     router: NextRouter = useRouter(),
     [hasChanges, setHasChanges] = useState<boolean>(false),

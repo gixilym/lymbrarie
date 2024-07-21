@@ -1,25 +1,38 @@
 import usePopUp from "@/hooks/usePopUp";
+import logo from "@/public/favicon.ico";
 import type { Component } from "@/utils/types";
+import { isNull } from "es-toolkit";
 import {
   Heart as HeartIcon,
+  Shield as PrivacyIcon,
   MessageCircleQuestion as SupportIcon,
   User as UserIcon,
-  Shield as PrivacyIcon,
 } from "lucide-react";
+import { useUser, withUser } from "next-firebase-auth";
 import Image from "next/image";
 import Link from "next/link";
+import { type NextRouter, useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
-import logo from "@/public/favicon.ico";
-import { NextRouter, useRouter } from "next/router";
+import { twMerge } from "tailwind-merge";
+
+export default withUser()(FooterIndex);
 
 function FooterIndex(): Component {
-  const [t] = useTranslation("global");
-  const { pathname, push }: NextRouter = useRouter();
-  const { openPopUp } = usePopUp();
-  const noHome: boolean = pathname != "/";
+  const [t] = useTranslation("global"),
+    { openPopUp } = usePopUp(),
+    { id }: { id: string | null } = useUser(),
+    { pathname, push }: NextRouter = useRouter(),
+    noHome: boolean = pathname != "/",
+    dontShow: boolean =
+      isNull(id) || pathname == "/login" || pathname == "/logout";
 
   return (
-    <footer className="select-none footer absolute bottom-0 w-full flex flex-col-reverse sm:flex-row justify-between items-center sm:p-4 bg-slate-900 border-t-2 border-gray-800 py-2 sm:py-0 sm:h-14 text-gray-400">
+    <footer
+      className={twMerge(
+        dontShow ? "hidden" : "flex",
+        "select-none footer absolute bottom-0 w-full flex-col-reverse sm:flex-row justify-between items-center sm:p-4 bg-slate-900 border-t-2 border-gray-800 py-2 sm:py-0 sm:h-14 text-gray-400"
+      )}
+    >
       <aside className="hidden sm:grid items-center grid-flow-col px-4 sm:px-0">
         <Image
           loading="lazy"
@@ -81,5 +94,3 @@ function FooterIndex(): Component {
     </footer>
   );
 }
-
-export default FooterIndex;
