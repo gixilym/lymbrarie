@@ -31,7 +31,9 @@ function AppIcon(): Component {
       className="hidden xl:flex px-3.5 py-2 rounded-full cursor-default justify-between items-center bg-purple-700/10 fixed top-5 left-5 gap-x-3"
     >
       <Image src={icon} width={35} height={35} alt="logo" />
-      <p className="text-xl text-purple-200/90">Lymbrarie</p>
+      <p className="text-xl text-purple-200/90" translate="no">
+        Lymbrarie
+      </p>
     </MyLink>
   );
 }

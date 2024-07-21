@@ -12,7 +12,10 @@ function AccelerationPopUp(): Component {
   if (!show) return <></>;
 
   return (
-    <DialogContainer divClass="sm:!h-[270px] !max-w-[600px] items-center justify-between sm:mt-10">
+    <DialogContainer
+      id="acceleration"
+      divClass="sm:!h-[270px] !max-w-[600px] items-center justify-between sm:mt-10"
+    >
       <div className="flex flex-col justify-center items-center gap-y-10">
         <HeaderPopUp icon={<Icon size={30} />} title={t("alert")} />
         <p className="text-center sm:text-xl text-lg text-pretty w-full px-4 text-slate-200">

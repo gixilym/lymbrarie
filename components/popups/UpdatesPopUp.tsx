@@ -9,7 +9,7 @@ function UpdatesPopUp(): Component {
   const [t] = useTranslation("global");
 
   return (
-    <DialogContainer divClass="justify-between items-center">
+    <DialogContainer id="updates" divClass="justify-between items-center">
       <HeaderPopUp
         icon={<Icon size={25} />}
         title={t("Lymbrarie se ha actualizado")}

@@ -26,7 +26,7 @@ function FooterIndex(): Component {
           src={logo}
           alt="logo"
         />
-        <p className="">Copyright © 2024 Lymbrarie - {t("copyright")}</p>
+        <p translate="no">Copyright © 2024 Lymbrarie - {t("copyright")}</p>
       </aside>
       <div className="flex flex-col sm:flex-row items-start sm:items-center pl-3 sm:pl-0 justify-evenly w-full h-auto sm:w-auto sm:gap-x-6">
         <div

@@ -226,9 +226,8 @@ function EditBookPopUp(props: Props): Component {
   }
 
   return (
-    <DialogContainer>
+    <DialogContainer id="edit_book">
       <HeaderPopUp icon={<Icon size={25} />} title={t("edit-book")} />
-
       <FieldsBook
         errorKey={errorKey}
         handleChange={handleChange}

@@ -30,7 +30,7 @@ function App({
     <I18Provider>
       <RecoilProvider>
         <Head>
-          <title>Lymbrarie</title>
+          <title translate="no">Lymbrarie</title>
         </Head>
         <AppIcon />
         <Notifications reverseOrder={false} position="top-right" />

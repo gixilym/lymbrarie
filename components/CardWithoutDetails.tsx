@@ -16,7 +16,7 @@ function CardWithOutDetails(props: Card): Component {
         <Icon className="w-5 h-5 sm:w-7 sm:h-7" />
         <p
           title={title}
-          className="w-full sm:max-w-max max-w-[310px] text-sm sm:text-xl font-ligth overflow-ellipsis overflow-hidden whitespace-nowrap bg-gradient-to-r from-[#cdc7ff] via-[#8678f9] to-[#c7d2fe] bg-[200%_auto] bg-clip-text text-transparent"
+          className="w-full sm:max-w-max max-w-[300px] text-sm sm:text-xl font-ligth overflow-ellipsis overflow-hidden whitespace-nowrap bg-gradient-to-r from-[#cdc7ff] via-[#8678f9] to-[#c7d2fe] bg-[200%_auto] bg-clip-text text-transparent"
         >
           {title}
         </p>

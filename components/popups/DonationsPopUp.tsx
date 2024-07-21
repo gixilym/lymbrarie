@@ -10,7 +10,7 @@ function DonationsPopUp(): Component {
   const [t] = useTranslation("global");
 
   return (
-    <DialogContainer divClass="justify-between">
+    <DialogContainer id="donations" divClass="justify-between">
       <HeaderPopUp icon={<Icon size={25} />} title={t("donations")} />
       <p className="text-lg sm:text-xl text-center w-full text-pretty sm:px-4 text-slate-200">
         {t("donations-text")}

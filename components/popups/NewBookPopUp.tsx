@@ -195,7 +195,7 @@ function NewBookPopUp({ UID }: { UID: string }): Component {
   }
 
   return (
-    <DialogContainer divClass="!w-full justify-start items-end">
+    <DialogContainer id="add_book" divClass="!w-full justify-start items-end">
       <HeaderPopUp icon={<Icon size={25} />} title={t("new-book")} />
 
       <FieldsBook

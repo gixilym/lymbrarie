@@ -64,8 +64,15 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
   }
 
   return (
-    <dialog className="select-none backdrop-blur-md w-full h-full fixed top-0 z-50 flex justify-center items-start pt-10 bg-transparent px-2 sm:px-0">
-      <animated.div style={styles} className="modal-box mt-28 sm:mt-20 w-full">
+    <dialog
+      onClick={() => closePopUp("delete_book")}
+      className="select-none backdrop-blur-md w-full h-full fixed top-0 z-50 flex justify-center items-start pt-10 bg-transparent px-2 sm:px-0"
+    >
+      <animated.div
+        onClick={e => e.stopPropagation()}
+        style={styles}
+        className="modal-box mt-28 sm:mt-20 w-full"
+      >
         <div className="flex flex-row justify-start items-end sm:items-start gap-x-4">
           <WarningIcon size={25} />
           <p className="font-bold tracking-wide text-sm sm:text-lg">

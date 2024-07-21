@@ -21,7 +21,7 @@ function SettingsPopUp(): Component {
     [state, setState] = useLocalStorage("state", true);
 
   return (
-    <DialogContainer divClass="justify-between">
+    <DialogContainer id="settings" divClass="justify-between">
       <HeaderPopUp icon={<SettingsIcon size={25} />} title={t("settings")} />
 
       <div className="w-full flex flex-col justify-start items-center gap-y-10 text-slate-200">

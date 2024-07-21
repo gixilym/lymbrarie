@@ -25,7 +25,7 @@ function CardWithDetails(props: Card): Component {
           className="w-[70px] h-full aspect-[3/5] rounded-tl-lg rounded-bl-lg select-none"
         />
       )}
-      <div className="flex flex-col justify-between items-start gap-y-1 h-full w-[310px] sm:w-[490px] py-2 pr-3">
+      <div className="flex flex-col justify-between items-start gap-y-1 h-full w-[300px] sm:w-[490px] py-2 pr-3">
         <p className="text-slate-200/85 w-full text-sm sm:text-xl font-ligth overflow-ellipsis overflow-hidden whitespace-nowrap">
           {title}
         </p>

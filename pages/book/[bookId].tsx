@@ -1,9 +1,9 @@
 import BackBtn from "@/components/btns/BackBtn";
 import SettingsBtn from "@/components/btns/SettingsBtn";
 import LoadComponent from "@/components/LoadComponent";
-import NotesBook from "@/components/NotesBook";
 import DeleteBookPopUp from "@/components/popups/DeleteBookPopUp";
 import EditBookPopUp from "@/components/popups/EditBookPopUp";
+import NotesPopUp from "@/components/popups/NotesPopUp";
 import OfflinePopUp from "@/components/popups/OfflinePopUp";
 import useLoadContent from "@/hooks/useLoadContent";
 import useLocalStorage from "@/hooks/useLocalStorage";
@@ -33,6 +33,7 @@ import {
   SquarePen as EditIcon,
   BookmarkCheck as FavoriteIcon,
   Library as LibraryIcon,
+  Notebook as NotesIcon,
   Bookmark as RemoveFavIcon,
   Tag as StateIcon,
   User as UserIcon,
@@ -82,6 +83,11 @@ function BookId(): Component {
     notExist: boolean = !allTitles.includes(title),
     notesProps = { updateNotes, notes, setNotes, isLoading, loadingFav },
     [popup] = useRecoilState<any>(popupsVal),
+    [stylesIcons] = useSpring(() => ({
+      from: { opacity: animations ? 0 : 1 },
+      to: { opacity: 1 },
+      config: { duration: 1000 },
+    })),
     [styles] = useSpring(() => ({
       from: { opacity: animations ? 0 : 1 },
       to: { opacity: 1 },
@@ -153,11 +159,12 @@ function BookId(): Component {
       className="flex flex-col justify-center items-center w-full gap-y-6 sm:py-10 h-full"
     >
       <Head>
-        <title>{book?.data?.title || "Lymbrarie"}</title>
+        <title translate="no">{book?.data?.title || "Lymbrarie"}</title>
       </Head>
 
       {popup.offline && <OfflinePopUp />}
       {popup.edit_book && <EditBookPopUp data={book} documentId={documentId} />}
+      {popup.notes && <NotesPopUp {...notesProps} />}
       {popup.delete_book && (
         <DeleteBookPopUp
           documentId={documentId}
@@ -213,69 +220,71 @@ function BookId(): Component {
               </div>
             )}
           </div>
-          <div className="dropdown dropdown-bottom dropdown-left sm:dropdown-right opacity-100 flex sm:block items-end justify-center absolute sm:relative right-10 sm:right-0 top-60 sm:top-3">
-            <SettingsBtn />
-            <ul
-              tabIndex={0}
-              className={twMerge(
-                loadingFav ? "hidden" : "block",
-                "mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box sm:w-52 w-56"
-              )}
+          <animated.div
+            style={stylesIcons}
+            className="flex items-center justify-center gap-x-2"
+          >
+            <button
+              onClick={() => openPopUp("notes")}
+              className="btn btn-square bg-slate-700/30 sm:bg-slate-700/25 hover:bg-slate-700/50 border-2 border-slate-700/40 mt-4 sm:mt-0 mb-1"
             >
-              <li
-                onClick={() =>
-                  navigator.onLine ? toggleFav() : openPopUp("offline")
-                }
+              <NotesIcon className="w-6 h-6 sm:w-7 sm:h-8" />
+            </button>
+            <div className="dropdown dropdown-bottom dropdown-left sm:dropdown-right opacity-100 flex sm:block items-end justify-center">
+              <SettingsBtn />
+              <ul
+                tabIndex={0}
+                className={twMerge(
+                  loadingFav ? "hidden" : "block",
+                  "mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box sm:w-52 w-56"
+                )}
               >
-                <div className="flex flex-row items-center justify-start gap-x-3">
-                  {checkFav ? (
-                    <FavoriteIcon size={18} />
-                  ) : (
-                    <RemoveFavIcon size={18} />
-                  )}
-                  <p>{t(checkFav ? "remove-fav" : "add-fav")}</p>
-                </div>
-              </li>
+                <li
+                  onClick={() =>
+                    navigator.onLine ? toggleFav() : openPopUp("offline")
+                  }
+                >
+                  <div className="flex flex-row items-center justify-start gap-x-3">
+                    {checkFav ? (
+                      <FavoriteIcon size={18} />
+                    ) : (
+                      <RemoveFavIcon size={18} />
+                    )}
+                    <p>{t(checkFav ? "remove-fav" : "add-fav")}</p>
+                  </div>
+                </li>
 
-              <li
-                className="py-1.5"
-                onClick={() =>
-                  navigator.onLine
-                    ? openPopUp("edit_book")
-                    : openPopUp("offline")
-                }
-              >
-                <div className="flex flex-row items-center justify-start gap-x-3">
-                  <EditIcon size={18} />
-                  <p>{t("edit-book")}</p>
-                </div>
-              </li>
+                <li
+                  className="py-1.5"
+                  onClick={() =>
+                    navigator.onLine
+                      ? openPopUp("edit_book")
+                      : openPopUp("offline")
+                  }
+                >
+                  <div className="flex flex-row items-center justify-start gap-x-3">
+                    <EditIcon size={18} />
+                    <p>{t("edit-book")}</p>
+                  </div>
+                </li>
 
-              <li
-                onClick={() =>
-                  navigator.onLine
-                    ? openPopUp("delete_book")
-                    : openPopUp("offline")
-                }
-              >
-                <div className="flex flex-row items-center justify-start gap-x-3">
-                  <DeleteIcon size={18} />
-                  <p>{t("delete-book")}</p>
-                </div>
-              </li>
-            </ul>
-          </div>
+                <li
+                  onClick={() =>
+                    navigator.onLine
+                      ? openPopUp("delete_book")
+                      : openPopUp("offline")
+                  }
+                >
+                  <div className="flex flex-row items-center justify-start gap-x-3">
+                    <DeleteIcon size={18} />
+                    <p>{t("delete-book")}</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </animated.div>
         </div>
-
-        <NotesBook
-          classText="sm:hidden w-full flex min-h-full flex-col justify-start items-start gap-y-4 px-6 bg-transparent"
-          {...notesProps}
-        />
       </article>
-      <NotesBook
-        classText="hidden sm:flex w-[700px] h-full flex-col justify-start items-start gap-y-4 mt-10 bg-transparent"
-        {...notesProps}
-      />
     </animated.section>
   );
 }

@@ -10,7 +10,7 @@ function SupportPopUp(): Component {
   const [t] = useTranslation("global");
 
   return (
-    <DialogContainer divClass="justify-between items-center">
+    <DialogContainer id="support" divClass="justify-between items-center">
       <HeaderPopUp icon={<Icon size={25} />} title={t("support")} />
       <p className="text-xl sm:text-2xl w-full max-w-[600px] text-center sm:px-4 text-pretty text-slate-200">
         {t("text-support")}

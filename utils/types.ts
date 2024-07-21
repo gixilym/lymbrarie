@@ -40,7 +40,9 @@ type PopUpsIds =
   | "settings"
   | "donations"
   | "offline"
-  | "updates";
+  | "updates"
+  | "notes"
+  | "acceleration";
 
 interface Book {
   id: string;
