@@ -157,6 +157,7 @@ function BookId(): Component {
     >
       <Head>
         <title translate="no">{book?.data?.title || "Lymbrarie"}</title>
+        <meta name="google-adsense-account" content="ca-pub-6333479205921641" />
       </Head>
 
       {popup.offline && <OfflinePopUp />}
