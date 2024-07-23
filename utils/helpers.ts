@@ -1,24 +1,7 @@
 import { isEqual } from "es-toolkit";
-import { toast } from "react-hot-toast";
+import type { Translate } from "./types";
 
-function notification(noti: Notis, msg: string): void {
-  toast[noti](msg, {
-    id: msg,
-    duration: isEqual(noti, "loading") ? 50000 : 2000,
-    style: {
-      backgroundColor: "#202020",
-      color: "#fff",
-      padding: "6px 20px",
-      zIndex: 50,
-    },
-  });
-}
-
-function dismissNoti(id?: string): void {
-  return id ? toast.dismiss(id) : toast.dismiss();
-}
-
-function translateStateBook(state: string, t: any): string {
+function translateStateBook(state: string, t: Translate): string {
   switch (state) {
     case "Read":
       return t("new-book-read");
@@ -42,6 +25,8 @@ const normalizeText = (text: string): string =>
 
 const removeItem = (item: string) => localStorage?.removeItem(item);
 
+const clearStorage = (): void => localStorage?.clear();
+
 const isLoaned = (state: string): boolean => isEqual(state, "Borrowed");
 
 const tLC: Format = (val: string): string => val?.toLowerCase().trim();
@@ -57,13 +42,10 @@ export {
   formatTitle,
   isLoaned,
   normalizeText,
-  notification,
-  tLC,
   removeItem,
+  tLC,
   translateStateBook,
-  dismissNoti,
+  clearStorage,
 };
 
 type Format = (title: string) => string;
-
-type Notis = "success" | "error" | "loading";

@@ -1,11 +1,11 @@
 import useLocalStorage from "@/hooks/useLocalStorage";
 import type { Component } from "@/utils/types";
+import { AlertCircle as Icon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import DialogContainer from "../DialogContainer";
 import HeaderPopUp from "../HeaderPopUp";
-import { AlertCircle as Icon } from "lucide-react";
 
-function AccelerationPopUp(): Component {
+function AccelerationAlert(): Component {
   const [t] = useTranslation("global");
   const [show, setShow] = useLocalStorage("acceleration", true);
 
@@ -32,4 +32,4 @@ function AccelerationPopUp(): Component {
   );
 }
 
-export default AccelerationPopUp;
+export default AccelerationAlert;

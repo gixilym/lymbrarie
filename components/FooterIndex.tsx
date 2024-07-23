@@ -30,10 +30,11 @@ function FooterIndex(): Component {
     <footer
       className={twMerge(
         dontShow ? "hidden" : "flex",
+        pathname.includes("/book/") && "hidden sm:flex",
         "select-none footer absolute bottom-0 w-full flex-col-reverse sm:flex-row justify-between items-center sm:p-4 bg-slate-900 border-t-2 border-gray-800 py-2 sm:py-0 sm:h-14 text-gray-400"
       )}
     >
-      <aside className="hidden sm:grid items-center grid-flow-col px-4 sm:px-0">
+      <div className="hidden sm:grid items-center grid-flow-col px-4 sm:px-0">
         <Image
           loading="lazy"
           width={30}
@@ -43,7 +44,7 @@ function FooterIndex(): Component {
           alt="logo"
         />
         <p translate="no">Copyright © 2024 Lymbrarie - {t("copyright")}</p>
-      </aside>
+      </div>
       <div className="flex flex-col sm:flex-row items-start sm:items-center pl-3 sm:pl-0 justify-evenly w-full h-auto sm:w-auto sm:gap-x-6">
         <div
           onClick={() => {

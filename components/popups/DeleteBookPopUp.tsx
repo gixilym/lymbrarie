@@ -2,12 +2,12 @@ import useLoadContent from "@/hooks/useLoadContent";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
 import { COLLECTION, PRODUCTION } from "@/utils/consts";
-import { dismissNoti, notification } from "@/utils/helpers";
-import { inputSearchVal, zeroBooksVal } from "@/utils/store";
+import { dismissNotification, notification } from "@/utils/notifications";
+import { searchAtom, zeroAtom } from "@/utils/atoms";
 import type { Book, Component, SetState } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
 import { isEqual } from "es-toolkit";
-import { deleteDoc, doc } from "firebase/firestore/lite";
+import { deleteDoc, doc } from "firebase/firestore";
 import { TriangleAlert as WarningIcon } from "lucide-react";
 import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
@@ -19,8 +19,8 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
     { closePopUp } = usePopUp(),
     [animations] = useLocalStorage("animations", true),
     router: AppRouterInstance = useRouter(),
-    setSearchVal: SetState = useSetRecoilState<string>(inputSearchVal),
-    setZeroBooks: SetState = useSetRecoilState<boolean>(zeroBooksVal),
+    setSearchVal: SetState = useSetRecoilState<string>(searchAtom),
+    setZeroBooks: SetState = useSetRecoilState<boolean>(zeroAtom),
     [cacheBooks, setCacheBooks] = useLocalStorage("cacheBooks", null),
     [, setAllTitles] = useLocalStorage("allTitles", []),
     { isLoading, startLoading, finishLoading } = useLoadContent(),
@@ -52,7 +52,7 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
       if (PRODUCTION) router.push("/error");
       else console.error(`error en deleteDocument: ${err.message}`);
     } finally {
-      dismissNoti();
+      dismissNotification();
     }
   }
 
@@ -85,7 +85,7 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
             <button
               disabled={isLoading}
               onClick={() => closePopUp("delete_book")}
-              className="btn font-thin bg-slate-700 hover:bg-slate-600 text-white text-sm sm:text-lg"
+              className="btn font-thin bg-slate-700 hover:bg-slate-600 text-slate-300 text-sm sm:text-lg"
             >
               {t("cancel")}
             </button>

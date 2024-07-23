@@ -1,5 +1,5 @@
 import useLocalStorage from "@/hooks/useLocalStorage";
-import { animateList, inputSearchVal, stateBookVal } from "@/utils/store";
+import { animListAtom, searchAtom, stateAtom } from "@/utils/atoms";
 import type { Component } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
 import { noop } from "es-toolkit";
@@ -9,9 +9,9 @@ import Arrows from "./btns/ArrowsBtn";
 
 function ListBooks({ listBooks }: Props): Component {
   const [cacheBooks] = useLocalStorage("cacheBooks", null),
-    [searchVal] = useRecoilState<string>(inputSearchVal),
-    [stateVal] = useRecoilState<string>(stateBookVal),
-    [animateCard] = useRecoilState<boolean>(animateList),
+    [searchVal] = useRecoilState<string>(searchAtom),
+    [stateVal] = useRecoilState<string>(stateAtom),
+    [animateCard] = useRecoilState<boolean>(animListAtom),
     [animations] = useLocalStorage("animations", true),
     [styles, api] = useSpring(() => noop());
 

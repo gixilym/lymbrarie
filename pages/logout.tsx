@@ -1,16 +1,14 @@
 import LoadComponent from "@/components/LoadComponent";
-import logo from "@/public/favicon.ico";
 import useLocalStorage from "@/hooks/useLocalStorage";
-import { inputSearchVal } from "@/utils/store";
-import type { Component, SetState } from "@/utils/types";
+import logo from "@/public/favicon.ico";
+import { clearStorage } from "@/utils/helpers";
+import type { Component } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
 import { type Auth, getAuth } from "firebase/auth";
 import { AuthAction, withUser } from "next-firebase-auth";
 import Image from "next/image";
 import { type NextRouter, useRouter } from "next/router";
-import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useSetRecoilState } from "recoil";
 
 export default withUser({
   whenAuthed: AuthAction.RENDER,
@@ -21,17 +19,11 @@ export default withUser({
 
 function LogoutPage(): Component {
   const auth: Auth = getAuth(),
-    [, setCacheBooks] = useLocalStorage("cacheBooks", null),
-    [, setAllTitles] = useLocalStorage("allTitles", []),
-    [, setScroll] = useLocalStorage("scroll", 0),
-    setSearch: SetState = useSetRecoilState<string>(inputSearchVal),
-    [, setMyFavs] = useLocalStorage("myFavorites", []),
-    [, setShowFavs] = useLocalStorage("showFavs", false),
-    [, setEdited] = useLocalStorage("edited", false),
-    [, setNewBook] = useLocalStorage("newBook", false),
+    [, setAcceleration] = useLocalStorage("acceleration", false),
+    [lang, setLang] = useLocalStorage("language", "en"),
+    [animations, setAnimations] = useLocalStorage("animations", true),
     router: NextRouter = useRouter(),
     [t] = useTranslation("global"),
-    [animations] = useLocalStorage("animations", true),
     [styles] = useSpring(() => ({
       from: { opacity: animations ? 0 : 1 },
       to: { opacity: 1 },
@@ -39,14 +31,10 @@ function LogoutPage(): Component {
     }));
 
   function forgetSession(): void {
-    setSearch("");
-    setScroll(0);
-    setNewBook(false);
-    setEdited(false);
-    setShowFavs(false);
-    setMyFavs([]);
-    setAllTitles([]);
-    setCacheBooks(null);
+    clearStorage();
+    setAcceleration(false);
+    setLang(lang);
+    setAnimations(animations);
     auth.signOut();
   }
 

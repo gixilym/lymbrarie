@@ -1,6 +1,6 @@
 // import { type Analytics, getAnalytics } from "firebase/analytics";
 import { type FirebaseApp, initializeApp } from "firebase/app";
-import { type Firestore, getFirestore } from "firebase/firestore/lite";
+import { type Firestore, getFirestore } from "firebase/firestore";
 import { init } from "next-firebase-auth";
 
 export default function initAuth(): void {

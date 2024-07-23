@@ -1,31 +1,23 @@
 import AddYourFirstBook from "@/components/AddYourFirstBook";
-import HeaderIndex from "@/components/HeaderIndex";
+import AccelerationAlert from "@/components/alerts/AccelerationAlert";
 import ListSection from "@/components/ListSection";
 import LoadComponent from "@/components/LoadComponent";
-import Maintenance from "@/components/Maintenance";
 import PopUps from "@/components/PopUps";
+import SearchIndex from "@/components/SearchIndex";
 import useLocalStorage from "@/hooks/useLocalStorage";
-import { COLLECTION, MAINTENANCE, PRODUCTION } from "@/utils/consts";
-import { notification, removeItem } from "@/utils/helpers";
-import { zeroBooksVal } from "@/utils/store";
-import type { Book, Component, Doc } from "@/utils/types";
+import { zeroAtom } from "@/utils/atoms";
+import { getDocuments } from "@/utils/documents";
+import { showNotifications } from "@/utils/notifications";
+import type { Book, Component } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
-import { isEqual, noop } from "es-toolkit";
+import { noop } from "es-toolkit";
 import {
   type Auth,
   getAuth,
   onAuthStateChanged,
   type Unsubscribe,
 } from "firebase/auth";
-import {
-  getDocs,
-  Query,
-  query,
-  QuerySnapshot,
-  where,
-} from "firebase/firestore/lite";
 import { AuthAction, type User, useUser, withUser } from "next-firebase-auth";
-import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilState } from "recoil";
@@ -50,24 +42,38 @@ function Index(): Component {
     [booksIsEmpty, setBooksIsEmpty] = useState<boolean | null>(null),
     [animations] = useLocalStorage("animations", true),
     [loading, setLoading] = useState<boolean>(false),
-    [newBookNoti] = useLocalStorage("added", false),
+    [newNoti] = useLocalStorage("added", false),
     [deletedNoti] = useLocalStorage("deleted", false),
-    [zeroBooks] = useRecoilState<boolean>(zeroBooksVal),
-    [styles, animate] = useSpring(() => ({
-      opacity: animations ? 0 : 1,
+    [zeroBooks] = useRecoilState<boolean>(zeroAtom),
+    showFirstBook: boolean = booksIsEmpty || zeroBooks,
+    [styles] = useSpring(() => ({
+      from: { opacity: animations ? 0 : 1 },
+      to: { opacity: 1 },
       config: { duration: 1000 },
     }));
 
-  useEffect(() => showNotifications(), []);
+  // const argsSync = {
+  //   UID,
+  //   cacheBooks,
+  //   setCacheBooks,
+  //   setMyBooks,
+  //   setAllTitles,
+  //   reload,
+  // };
+
+  useEffect(() => {
+    showNotifications(newNoti, deletedNoti, t);
+    // syncDocuments(argsSync);
+  }, []);
+
+  useEffect(() => {
+    fetchBooks();
+  }, [user]);
 
   useEffect(() => {
     const unsubscribe: Unsubscribe = onAuthStateChanged(auth, () => noop());
     return () => unsubscribe();
   }, [auth]);
-
-  useEffect(() => {
-    if (animations) animate.start({ opacity: 1 });
-  }, [animate]);
 
   useEffect(() => {
     if (zeroBooks) return;
@@ -77,92 +83,29 @@ function Index(): Component {
     }
   }, [myBooks, user, zeroBooks]);
 
-  useEffect(() => {
-    fetchBooks();
-  }, [user]);
-
   async function fetchBooks(): Promise<void> {
     if (zeroBooks) return;
     if (Array.isArray(cacheBooks)) setMyBooks(cacheBooks);
     else {
       setLoading(true);
-      const { books, isEmpty } = await getListBooks(UID);
+      const { books, isEmpty } = await getDocuments(UID);
       setMyBooks(books);
       setBooksIsEmpty(isEmpty);
       setLoading(false);
     }
   }
 
-  function showNotifications(): void {
-    switch (true) {
-      case newBookNoti: {
-        removeItem("added");
-        return notification("success", t("book-added"));
-      }
-
-      case deletedNoti: {
-        removeItem("deleted");
-        return notification("success", t("book-deleted"));
-      }
-
-      default: {
-        removeItem("added");
-        removeItem("deleted");
-      }
-    }
-  }
+  if (loading) return <LoadComponent mt={false} />;
 
   return (
     <animated.div
       style={styles}
       className="flex flex-col justify-start items-center w-full sm:max-w-[950px] h-full gap-y-6"
     >
-      <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </Head>
-      {MAINTENANCE ? (
-        <Maintenance />
-      ) : (
-        <>
-          <HeaderIndex />
-          <PopUps profileImg={profileImg} profileName={profileName} UID={UID} />
-          {loading ? (
-            <LoadComponent mt={false} />
-          ) : (
-            <>
-              {booksIsEmpty || zeroBooks ? (
-                <AddYourFirstBook />
-              ) : (
-                <ListSection myBooks={myBooks} />
-              )}
-            </>
-          )}
-        </>
-      )}
+      <SearchIndex />
+      <PopUps profileImg={profileImg} profileName={profileName} UID={UID} />
+      {showFirstBook ? <AddYourFirstBook /> : <ListSection myBooks={myBooks} />}
+      <AccelerationAlert />
     </animated.div>
   );
 }
-
-async function getListBooks(UID: string): Promise<List> {
-  const books: Book[] = [];
-  let isEmpty: boolean = false;
-
-  if (UID) {
-    try {
-      const q: Query = query(COLLECTION, where("owner", "==", UID));
-      const res: QuerySnapshot = await getDocs(q);
-      res.forEach((doc: Doc) => books.push({ id: doc.id, data: doc.data() }));
-      isEmpty = res.empty;
-    } catch (err: any) {
-      if (MAINTENANCE) {
-        const e = isEqual(err.message, "Quota exceeded.") ? "limit" : "unknown";
-        if (PRODUCTION) location.href = `/error?err=${e}`;
-        else console.error(`error en getListBooks: ${err.message}`);
-      }
-    }
-  }
-
-  return { books, isEmpty };
-}
-
-type List = { books: Book[]; isEmpty: boolean };

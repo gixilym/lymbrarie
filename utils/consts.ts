@@ -1,5 +1,5 @@
 import { DB } from "@/database/initAuth";
-import { collection, type CollectionReference } from "firebase/firestore/lite";
+import { collection, type CollectionReference } from "firebase/firestore";
 import type { Book, BookData } from "./types";
 
 const MAINTENANCE: boolean = false;

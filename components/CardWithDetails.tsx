@@ -58,7 +58,7 @@ export default CardWithDetails;
 interface Card {
   title: string;
   formatState: () => Component;
-  onClick: () => void;
+  onClick: () => Promise<boolean>;
   img?: string;
   gender?: string;
   author?: string;

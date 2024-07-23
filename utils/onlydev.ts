@@ -7,7 +7,7 @@ import {
   QuerySnapshot,
   setDoc,
   where,
-} from "firebase/firestore/lite";
+} from "firebase/firestore";
 import { COLLECTION } from "./consts";
 import type { Book, Doc } from "./types";
 
@@ -48,4 +48,3 @@ async function DEV_deleteBook(documentID: string): Promise<void> {
 }
 
 export { DEV_changeOwner, DEV_deleteBook, DEV_getEveryBooks };
-

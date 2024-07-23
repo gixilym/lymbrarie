@@ -1,5 +1,5 @@
 import useLocalStorage from "@/hooks/useLocalStorage";
-import { animateList } from "@/utils/store";
+import { animListAtom } from "@/utils/atoms";
 import type { Component } from "@/utils/types";
 import {
   BookmarkCheck as FavoriteCheckIcon,
@@ -13,7 +13,7 @@ import { twMerge } from "tailwind-merge";
 function FavoritesBtn({ showFavs, alternateFavorites }: Props): Component {
   const [t] = useTranslation("global");
   const [animations] = useLocalStorage("animations", true);
-  const [animate, setAnimate] = useRecoilState<boolean>(animateList);
+  const [animate, setAnimate] = useRecoilState<boolean>(animListAtom);
 
   return (
     <button

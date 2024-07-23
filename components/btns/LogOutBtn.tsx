@@ -19,7 +19,7 @@ function LogOutBtn(): Component {
       border-red-600 border-b-[4px]
       active:border-b-[2px] active:brightness-90 active:translate-y-[2px] sm:text-lg text-sm tracking-wider opacity-85 flex flex-row justify-start items-center gap-x-3"
     >
-      <p>{t("go-out")}</p>
+      <p>{t("logout")}</p>
       <Icon size={28} />
     </button>
   );

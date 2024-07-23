@@ -12,10 +12,10 @@ function SupportPopUp(): Component {
   return (
     <DialogContainer id="support" divClass="justify-between items-center">
       <HeaderPopUp icon={<Icon size={25} />} title={t("support")} />
-      <p className="text-xl sm:text-2xl w-full max-w-[600px] text-center sm:px-4 text-pretty text-slate-200">
+      <p className="text-lg sm:text-xl w-full max-w-[600px] text-center sm:px-4 text-pretty text-slate-200">
         {t("text-support")}
       </p>
-      <address className="text-xl sm:text-2xl no-underline link text-blue-400 hover:text-blue-300 cursor-pointer duration-75">
+      <address className="text-lg sm:text-xl no-underline link text-blue-400 hover:text-blue-300 cursor-pointer duration-75">
         <Link href="mailto:gixi.tsx@gmail.com" target="_blank" rel="noreferrer">
           gixi.tsx@gmail.com
         </Link>

@@ -1,126 +1,44 @@
 import defaultCover from "@/public/cover.webp";
 import { formatTitle } from "@/utils/helpers";
-import useLocalStorage from "@/hooks/useLocalStorage";
 import type { BookData, Component } from "@/utils/types";
 import { useRouter, type NextRouter } from "next/router";
-import { flushSync } from "react-dom";
-import { useTranslation } from "react-i18next";
-import { twMerge } from "tailwind-merge";
+import fnState from "./BookState";
 import CardWithDetails from "./CardWithDetails";
 import CardWithOutDetails from "./CardWithoutDetails";
-import { isEqual } from "es-toolkit";
 
-function BookCard(props: Props): Component {
-  const { data, showDetails } = props,
-    { push }: NextRouter = useRouter(),
-    [animations] = useLocalStorage("animations", true),
+function BookCard({ data, showDetails }: Props): Component {
+  const { push }: NextRouter = useRouter(),
     title = formatTitle(data.title ?? ""),
     img: string = data.image || defaultCover.src,
-    [t] = useTranslation("global"),
-    path: string = `/book/${title}`,
-    withProps: Details = {
-      onClick: goTo,
+    onClick = (): Promise<boolean> => push(`/book/${title}`),
+    formatState = (): Component => fnState(data.state ?? "", showDetails),
+    withDetails: Details = {
       title: data.title ?? "",
+      onClick,
       formatState,
       img,
       gender: data.gender,
       author: data.author,
-    },
-    withOutProps: Details = {
-      onClick: goTo,
-      title: data.title ?? "",
+    } as const,
+    withOutDetails: Details = {
+      onClick,
       formatState,
-    };
+      title: data.title ?? "",
+    } as const;
 
-  function goTo(): Promise<boolean> {
-    const condition: boolean =
-      // @ts-ignore
-      isEqual(typeof document.startViewTransition, "function") && animations;
-
-    return condition
-      ? // @ts-ignore
-        document.startViewTransition(() => flushSync(() => push(path)))
-      : push(path);
-  }
-
-  function formatState(): Component {
-    switch (data?.state) {
-      case "Reading":
-        return (
-          <BookState
-            text={t("new-book-reading")}
-            bg="bg-yellow-600/30"
-            showDetails={showDetails}
-          />
-        );
-
-      case "Read":
-        return (
-          <BookState
-            text={t("new-book-read")}
-            bg="bg-green-600/30"
-            showDetails={showDetails}
-          />
-        );
-
-      case "Pending":
-        return (
-          <BookState
-            text={t("new-book-pending")}
-            bg="bg-orange-600/30"
-            showDetails={showDetails}
-          />
-        );
-
-      case "Borrowed":
-        return (
-          <BookState
-            text={t("loanedto")}
-            bg="bg-orange-600/30"
-            showDetails={showDetails}
-          />
-        );
-
-      default:
-        return <></>;
-    }
-  }
-
-  return showDetails ? (
-    <CardWithDetails {...withProps} />
-  ) : (
-    <CardWithOutDetails {...withOutProps} />
-  );
+  if (showDetails) return <CardWithDetails {...withDetails} />;
+  return <CardWithOutDetails {...withOutDetails} />;
 }
 
 export default BookCard;
-
-function BookState({ showDetails, text, bg }: State): Component {
-  return (
-    <span
-      className={twMerge(
-        showDetails && "absolute bottom-2 right-2",
-        `${bg} rounded-md text-xs sm:text-lg w-24 sm:w-28 py-0.5 text-center select-none`
-      )}
-    >
-      {text.split(" ")[0]}
-    </span>
-  );
-}
 
 interface Props {
   data: BookData;
   showDetails: boolean;
 }
 
-interface State {
-  showDetails: boolean;
-  text: string;
-  bg: string;
-}
-
 interface Details {
-  onClick: () => void;
+  onClick: () => Promise<boolean>;
   title: string;
   formatState: () => Component;
   img?: string;

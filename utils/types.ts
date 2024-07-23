@@ -1,7 +1,4 @@
-import type {
-  DocumentData,
-  QueryDocumentSnapshot,
-} from "firebase/firestore/lite";
+import type { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 import type {
   ChangeEvent,
   JSX,
@@ -30,6 +27,8 @@ type Timer = ReturnType<typeof setTimeout>;
 type Doc = QueryDocumentSnapshot<DocumentData, DocumentData>;
 
 type SetState = SetterOrUpdater<any>;
+
+type Translate = (key: string) => string;
 
 type PopUpsIds =
   | "add_book"
@@ -73,6 +72,7 @@ export type {
   BookData,
   Component,
   Doc,
+  Translate,
   Document,
   FormRef,
   InputEvent,

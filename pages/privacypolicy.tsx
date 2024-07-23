@@ -19,8 +19,8 @@ function PrivacyPolicyPage(): Component {
       style={styles}
       className="max-w-2xl w-full px-6 sm:px-0 text-slate-200/90 text-sm sm:text-xl flex flex-col justify-start items-center gap-y-8 [&>p]:w-full [&>p]:text-pretty"
     >
-      <BackBtn />
-      <p className="mt-20 lg:mt-10">{t("privacy-1")}</p>
+      <BackBtn hidden={false} />
+      <p className="mt-20 xl:mt-10">{t("privacy-1")}</p>
 
       <p>{t("privacy-2")}</p>
       <p>{t("privacy-3")}</p>

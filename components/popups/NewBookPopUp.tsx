@@ -2,13 +2,8 @@ import useLoadContent from "@/hooks/useLoadContent";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
 import { COLLECTION, EMPTY_BOOK, PRODUCTION } from "@/utils/consts";
-import {
-  dismissNoti,
-  isLoaned,
-  normalizeText,
-  notification,
-  tLC,
-} from "@/utils/helpers";
+import { isLoaned, normalizeText, tLC } from "@/utils/helpers";
+import { dismissNotification, notification } from "@/utils/notifications";
 import type {
   Book,
   BookData,
@@ -18,7 +13,7 @@ import type {
   SelectEvent,
 } from "@/utils/types";
 import { delay, isEqual, union } from "es-toolkit";
-import { doc, setDoc } from "firebase/firestore/lite";
+import { doc, setDoc } from "firebase/firestore";
 import { CircleFadingPlus as Icon } from "lucide-react";
 import { type NextRouter, useRouter } from "next/router";
 import {
@@ -100,7 +95,7 @@ function NewBookPopUp({ UID }: { UID: string }): Component {
       if (PRODUCTION) router.push("/error");
       else console.error(`error en newBook: ${err.message}`);
     } finally {
-      dismissNoti();
+      dismissNotification();
     }
   }
 
@@ -222,7 +217,7 @@ function NewBookPopUp({ UID }: { UID: string }): Component {
                 disabled={isLoading}
                 type="button"
                 onClick={() => closePopUp("add_book")}
-                className="btn text-lg sm:text-xl w-32 font-normal bg-slate-800 hover:bg-slate-700 text-slate-200"
+                className="btn text-lg sm:text-xl w-32 font-normal bg-slate-800 hover:bg-slate-700 text-slate-300"
               >
                 {t("cancel")}
               </button>

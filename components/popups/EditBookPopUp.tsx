@@ -1,16 +1,15 @@
-import { COLLECTION, EMPTY_BOOK, GENDERS, PRODUCTION } from "@/utils/consts";
-import {
-  deformatTitle,
-  dismissNoti,
-  formatTitle,
-  isLoaned,
-  normalizeText,
-  notification,
-  tLC,
-} from "@/utils/helpers";
 import useLoadContent from "@/hooks/useLoadContent";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
+import { COLLECTION, EMPTY_BOOK, GENDERS, PRODUCTION } from "@/utils/consts";
+import {
+  deformatTitle,
+  formatTitle,
+  isLoaned,
+  normalizeText,
+  tLC,
+} from "@/utils/helpers";
+import { dismissNotification, notification } from "@/utils/notifications";
 import type {
   Book,
   BookData,
@@ -20,7 +19,7 @@ import type {
   SelectEvent,
 } from "@/utils/types";
 import { delay, isEqual, union } from "es-toolkit";
-import { doc, setDoc } from "firebase/firestore/lite";
+import { doc, setDoc } from "firebase/firestore";
 import { PencilIcon as Icon } from "lucide-react";
 import { type NextRouter, useRouter } from "next/router";
 import {
@@ -87,7 +86,7 @@ function EditBookPopUp(props: Props): Component {
       gender: data?.gender,
       owner: data?.owner,
       loaned: data?.loaned,
-      notes: data?.notes,
+      notes: data?.notes ?? "",
       isFav: data?.isFav ?? false,
     };
     setBook({ ...loadData });
@@ -110,7 +109,6 @@ function EditBookPopUp(props: Props): Component {
     setAddClicked(!addClicked);
 
     if (!validateFields()) return;
-
     startLoading();
     notification("loading", t("editing"));
 
@@ -131,7 +129,7 @@ function EditBookPopUp(props: Props): Component {
       if (PRODUCTION) router.push("/error");
       else console.error(`error en editBook: ${err.message}`);
     } finally {
-      dismissNoti();
+      dismissNotification();
     }
   }
 
@@ -256,7 +254,7 @@ function EditBookPopUp(props: Props): Component {
             disabled={isLoading}
             type="button"
             onClick={() => closePopUp("edit_book")}
-            className="btn text-lg w-auto font-thin bg-slate-800 hover:bg-slate-700 text-white"
+            className="btn text-lg w-auto font-thin bg-slate-800 hover:bg-slate-700 text-slate-300"
           >
             {t("cancel")}
           </button>

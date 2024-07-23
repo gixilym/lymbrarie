@@ -1,3 +1,4 @@
+import Breadcrumbs from "@/components/Breadcrumbs";
 import BackBtn from "@/components/btns/BackBtn";
 import SettingsBtn from "@/components/btns/SettingsBtn";
 import LoadComponent from "@/components/LoadComponent";
@@ -9,15 +10,10 @@ import useLoadContent from "@/hooks/useLoadContent";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
 import defaultCover from "@/public/cover.webp";
+import { popupsAtom } from "@/utils/atoms";
 import { COLLECTION, EMPTY_BOOK, PRODUCTION } from "@/utils/consts";
-import {
-  deformatTitle,
-  dismissNoti,
-  isLoaned,
-  notification,
-  translateStateBook,
-} from "@/utils/helpers";
-import { popupsVal } from "@/utils/store";
+import { deformatTitle, isLoaned, translateStateBook } from "@/utils/helpers";
+import { dismissNotification, notification } from "@/utils/notifications";
 import type { Book, BookData, Component } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
 import { isEqual, noop, union } from "es-toolkit";
@@ -27,7 +23,7 @@ import {
   onAuthStateChanged,
   type Unsubscribe,
 } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore/lite";
+import { doc, setDoc } from "firebase/firestore";
 import {
   Trash as DeleteIcon,
   SquarePen as EditIcon,
@@ -56,7 +52,7 @@ export default withUser({
 })(BookId);
 
 function BookId(): Component {
-  const { openPopUp } = usePopUp(),
+  const { openPopUp, closePopUp } = usePopUp(),
     auth: Auth = getAuth(),
     [t] = useTranslation("global"),
     router: NextRouter = useRouter(),
@@ -65,11 +61,6 @@ function BookId(): Component {
     [animations] = useLocalStorage("animations", true),
     { isLoading, finishLoading } = useLoadContent(),
     Cover = animated(Image),
-    [stylesImg] = useSpring(() => ({
-      from: { opacity: animations ? 0 : 1 },
-      to: { opacity: 1 },
-      config: { duration: 1000 },
-    })),
     [book, setBook] = useState<any>(EMPTY_BOOK),
     [documentId, setDocumentId] = useState<string>(""),
     [notes, setNotes] = useState<string>(""),
@@ -82,13 +73,18 @@ function BookId(): Component {
     checkFav: boolean = myFavs.some((b: BookData) => isEqual(b?.title, title)),
     notExist: boolean = !allTitles.includes(title),
     notesProps = { updateNotes, notes, setNotes, isLoading, loadingFav },
-    [popup] = useRecoilState<any>(popupsVal),
+    [popup] = useRecoilState<any>(popupsAtom),
+    [stylesImg] = useSpring(() => ({
+      from: { opacity: animations ? 0 : 1 },
+      to: { opacity: 1 },
+      config: { duration: 700 },
+    })),
     [stylesIcons] = useSpring(() => ({
       from: { opacity: animations ? 0 : 1 },
       to: { opacity: 1 },
       config: { duration: 1000 },
     })),
-    [styles] = useSpring(() => ({
+    [stylesSection] = useSpring(() => ({
       from: { opacity: animations ? 0 : 1 },
       to: { opacity: 1 },
       config: { duration: 500 },
@@ -124,14 +120,15 @@ function BookId(): Component {
         oldVersion: Book[] = cacheBooks.filter(
           (b: Book) => b?.id != documentId
         ),
-        newVersion: Book[] = [...oldVersion, updatedNotes];
+        newVersion: Book[] = union(oldVersion, [updatedNotes]);
       setCacheBooks(newVersion);
       router.reload();
     } catch (err: any) {
-      if (PRODUCTION) router.push("/error");
+      closePopUp("notes");
+      if (PRODUCTION) router.push(`/error?notes=${notes}`);
       else console.error(`Error en updateNotes: ${err.message}`);
     } finally {
-      dismissNoti();
+      dismissNotification();
     }
   }
 
@@ -155,8 +152,8 @@ function BookId(): Component {
 
   return (
     <animated.section
-      style={styles}
-      className="flex flex-col justify-center items-center w-full gap-y-6 sm:py-10 h-full sm:pl-20"
+      style={stylesSection}
+      className="flex flex-col justify-center items-center w-full gap-y-6 sm:pb-10 sm:pt-20 h-full sm:pl-20"
     >
       <Head>
         <title translate="no">{book?.data?.title || "Lymbrarie"}</title>
@@ -172,8 +169,8 @@ function BookId(): Component {
         />
       )}
 
-      <BackBtn />
-
+      <BackBtn hidden />
+      <Breadcrumbs title={book?.data?.title ?? ""} />
       <article className="w-full sm:w-[700px] h-[300px] flex flex-col sm:flex-row gap-y-12 justify-start items-center sm:items-start backdrop-blur-[2.5px] relative mt-20 xl:mt-0 sm:mt-12">
         <Cover
           priority
@@ -236,7 +233,7 @@ function BookId(): Component {
                 tabIndex={0}
                 className={twMerge(
                   loadingFav ? "hidden" : "block",
-                  "mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box sm:w-52 w-56"
+                  "mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-[240px]"
                 )}
               >
                 <li

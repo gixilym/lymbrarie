@@ -1,7 +1,7 @@
 import HomeBtn from "@/components/btns/HomeBtn";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { normalizeText, tLC } from "@/utils/helpers";
-import { inputSearchVal, stateBookVal } from "@/utils/store";
+import { searchAtom, stateAtom } from "@/utils/atoms";
 import type { Book, BookData, Component, MemoComponent } from "@/utils/types";
 import { isEqual, isNull, orderBy, round, shuffle } from "es-toolkit";
 import { memo, useEffect, useMemo, useState } from "react";
@@ -16,8 +16,8 @@ import SortBtn from "./btns/SortBtn";
 
 const ListSection: MemoComponent = memo(function B({ myBooks }: Props) {
   const [t] = useTranslation("global"),
-    [searchVal] = useRecoilState<string>(inputSearchVal),
-    [stateVal] = useRecoilState<string>(stateBookVal),
+    [searchVal] = useRecoilState<string>(searchAtom),
+    [stateVal] = useRecoilState<string>(stateAtom),
     [showDetailsLS, setShowDetailsLS] = useLocalStorage("list-mode-on", true),
     [showDetails, setShowDetails] = useState<boolean>(showDetailsLS),
     [scroll, setScroll] = useLocalStorage("scroll", 0),
@@ -53,7 +53,11 @@ const ListSection: MemoComponent = memo(function B({ myBooks }: Props) {
           isEqual(books.length, 0));
 
     if (noMatches)
-      return <NoMatchesText t={t(showFavs ? "no-favs" : "no-matches")} />;
+      return (
+        <NoMatchesText
+          t={t(showFavs && !searchVal ? "no-favs" : "no-matches")}
+        />
+      );
 
     return books.map((b: BookData) => (
       <BookCard key={b.title} data={b} showDetails={showDetails} />
@@ -105,7 +109,7 @@ const ListSection: MemoComponent = memo(function B({ myBooks }: Props) {
     setShowFavsLS(!showFavs);
   }
 
-  const listBooks: Component = useMemo(
+  const renderList: Component = useMemo(
     () => renderBooks(where(searchVal, stateVal)),
     [searchVal, stateVal, showDetails, ascToDesc, showFavs, myBooks]
   );
@@ -121,7 +125,7 @@ const ListSection: MemoComponent = memo(function B({ myBooks }: Props) {
           alternateFavorites={alternateFavorites}
         />
       </div>
-      <ListBooks listBooks={listBooks} />
+      <ListBooks listBooks={renderList} />
     </section>
   );
 });
