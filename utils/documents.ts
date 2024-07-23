@@ -23,8 +23,7 @@ async function getDocuments(UID: string): Promise<List> {
       isEmpty = res.empty;
     } catch (err: any) {
       if (MAINTENANCE) {
-        const e = isEqual(err.message, "Quota exceeded.") ? "limit" : "unknown";
-        if (PRODUCTION) location.href = `/error?err=${e}`;
+        if (PRODUCTION) location.href = "/error";
         else console.error(`error en getDocuments: ${err.message}`);
       }
     }
@@ -56,7 +55,6 @@ async function syncDocuments(props: SyncDocs) {
           setCacheBooks(remoteBooks);
           setMyBooks(remoteBooks);
           setAllTitles(remoteBooks.map(b => b?.data?.title ?? ""));
-          // reload();
         } else return;
       }
     );

@@ -221,23 +221,13 @@ function NewBookPopUp({ UID }: { UID: string }): Component {
               >
                 {t("cancel")}
               </button>
-
-              {isLoading ? (
-                <button
-                  disabled
-                  type="button"
-                  className="btn bg-red-500 text-black text-lg sm:text-xl w-32"
-                >
-                  {t("charging")}
-                </button>
-              ) : (
-                <button
-                  type="submit"
-                  className="btn bg-blue-500 font-medium sm:font-semibold text-black hover:bg-blue-400 duration-100 text-lg sm:text-xl w-32 tracking-wide"
-                >
-                  {t("add")}
-                </button>
-              )}
+              <button
+                disabled={isLoading}
+                type="submit"
+                className="btn bg-blue-500 font-medium sm:font-semibold text-black hover:bg-blue-400 duration-100 text-lg sm:text-xl w-32 tracking-wide"
+              >
+                {t("add")}
+              </button>
             </div>
           </div>
         </form>

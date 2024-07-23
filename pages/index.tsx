@@ -46,7 +46,7 @@ function Index(): Component {
     [deletedNoti] = useLocalStorage("deleted", false),
     [zeroBooks] = useRecoilState<boolean>(zeroAtom),
     showFirstBook: boolean = booksIsEmpty || zeroBooks,
-    [styles] = useSpring(() => ({
+    [styles, animate] = useSpring(() => ({
       from: { opacity: animations ? 0 : 1 },
       to: { opacity: 1 },
       config: { duration: 1000 },
@@ -63,6 +63,14 @@ function Index(): Component {
     showNotifications(newNoti, deletedNoti, t);
     syncDocuments(argsSync);
   }, []);
+
+  useEffect(() => {
+    animate.start({
+      from: { opacity: animations ? 0 : 1 },
+      to: { opacity: 1 },
+      config: { duration: 1000 },
+    });
+  }, [myBooks]);
 
   useEffect(() => {
     fetchBooks();

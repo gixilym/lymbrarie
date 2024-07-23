@@ -258,24 +258,13 @@ function EditBookPopUp(props: Props): Component {
           >
             {t("cancel")}
           </button>
-
-          {isLoading ? (
-            <button
-              disabled
-              type="button"
-              className="btn bg-red-500 text-black hover:bg-red-400 duration-100 text-lg w-24 px-2"
-            >
-              {t("charging")}
-            </button>
-          ) : (
-            <button
-              disabled={editDisabled}
-              type="submit"
-              className="btn bg-blue-500 text-black hover:bg-blue-400 duration-100 text-lg w-24 px-2"
-            >
-              {t("edit-confirm")}
-            </button>
-          )}
+          <button
+            disabled={editDisabled || isLoading}
+            type="submit"
+            className="btn bg-blue-500 text-black hover:bg-blue-400 duration-100 text-lg w-24 px-2"
+          >
+            {t("edit-confirm")}
+          </button>
         </form>
       </div>
     </DialogContainer>
