@@ -33,8 +33,8 @@ function BookState({ state, showDetails }: Props): Component {
   return (
     <span
       className={twMerge(
-        showDetails && "absolute bottom-2 right-2",
-        `${bg} rounded-md text-xs sm:text-sm w-24 py-0.5 text-center select-none opacity-90`
+        `${bg} rounded-md text-xs sm:text-sm w-3/12 min-w-[75px] max-w-[90px] py-0.5 text-center select-none opacity-90`,
+        showDetails && "absolute bottom-2 right-2 w-24"
       )}
     >
       {text.split(" ")[0]}

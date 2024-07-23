@@ -15,7 +15,7 @@ function CardWithOutDetails(props: Card): Component {
       <div className="flex justify-between items-center w-full">
         <div
           className={twMerge(
-            state ? "w-10/12" : "w-full",
+            state ? "w-9/12" : "w-full",
             "flex justify-start items-center gap-x-2 sm:gap-x-4"
           )}
         >

@@ -6,9 +6,9 @@ import PopUps from "@/components/PopUps";
 import SearchIndex from "@/components/SearchIndex";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { zeroAtom } from "@/utils/atoms";
-import { getDocuments } from "@/utils/documents";
+import { getDocuments, syncDocuments } from "@/utils/documents";
 import { showNotifications } from "@/utils/notifications";
-import type { Book, Component } from "@/utils/types";
+import type { Book, Component, SyncDocs } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
 import { noop } from "es-toolkit";
 import {
@@ -50,20 +50,18 @@ function Index(): Component {
       from: { opacity: animations ? 0 : 1 },
       to: { opacity: 1 },
       config: { duration: 1000 },
-    }));
-
-  // const argsSync = {
-  //   UID,
-  //   cacheBooks,
-  //   setCacheBooks,
-  //   setMyBooks,
-  //   setAllTitles,
-  //   reload,
-  // };
+    })),
+    argsSync: SyncDocs = {
+      UID,
+      cacheBooks,
+      setCacheBooks,
+      setMyBooks,
+      setAllTitles,
+    };
 
   useEffect(() => {
     showNotifications(newNoti, deletedNoti, t);
-    // syncDocuments(argsSync);
+    syncDocuments(argsSync);
   }, []);
 
   useEffect(() => {
@@ -98,14 +96,14 @@ function Index(): Component {
   if (loading) return <LoadComponent mt={false} />;
 
   return (
-    <animated.div
+    <animated.main
       style={styles}
       className="flex flex-col justify-start items-center w-full sm:max-w-[950px] h-full gap-y-6"
     >
       <SearchIndex />
-      <PopUps profileImg={profileImg} profileName={profileName} UID={UID} />
       {showFirstBook ? <AddYourFirstBook /> : <ListSection myBooks={myBooks} />}
+      <PopUps profileImg={profileImg} profileName={profileName} UID={UID} />
       <AccelerationAlert />
-    </animated.div>
+    </animated.main>
   );
 }

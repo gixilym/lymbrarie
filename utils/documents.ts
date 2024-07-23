@@ -1,5 +1,5 @@
 import { isEqual, isNull } from "es-toolkit";
-import { Unsubscribe } from "firebase/auth";
+import type { Unsubscribe } from "firebase/auth";
 import {
   getDocs,
   onSnapshot,
@@ -9,7 +9,7 @@ import {
   where,
 } from "firebase/firestore";
 import { COLLECTION, MAINTENANCE, PRODUCTION } from "./consts";
-import { Book, Doc } from "./types";
+import type { Book, Doc, SyncDocs } from "./types";
 
 async function getDocuments(UID: string): Promise<List> {
   const books: Book[] = [];
@@ -33,39 +33,30 @@ async function getDocuments(UID: string): Promise<List> {
   return { books, isEmpty };
 }
 
-async function syncDocuments({
-  UID,
-  cacheBooks,
-  setCacheBooks,
-  setMyBooks,
-  setAllTitles,
-  reload,
-}: any) {
+async function syncDocuments(props: SyncDocs) {
+  const { UID, cacheBooks, setCacheBooks, setMyBooks, setAllTitles } = props;
   if (isNull(UID)) return;
-
   try {
-    console.log("Ejecutando...");
     const myQuery: Query = query(COLLECTION, where("owner", "==", UID));
     const unsubscribe: Unsubscribe = onSnapshot(
       myQuery,
       (qs: QuerySnapshot) => {
         const remoteBooks: Book[] = qs.docs.map((d: Doc) => ({
-          id: d?.id,
-          data: d?.data(),
-        }));
-
-        const localBooks: Book[] = cacheBooks ?? [];
-        const hasChanges: boolean =
-          localBooks?.length != remoteBooks?.length ||
-          remoteBooks?.some(
-            (doc, i) => !isEqual(doc.data, localBooks[i]?.data)
-          );
+            id: d?.id,
+            data: d?.data(),
+          })),
+          localBooks: Book[] = cacheBooks ?? [],
+          hasChanges: boolean =
+            localBooks?.length != remoteBooks?.length ||
+            remoteBooks?.some(
+              (doc, i) => !isEqual(doc.data, localBooks[i]?.data)
+            );
 
         if (hasChanges) {
           setCacheBooks(remoteBooks);
           setMyBooks(remoteBooks);
           setAllTitles(remoteBooks.map(b => b?.data?.title ?? ""));
-          reload();
+          // reload();
         } else return;
       }
     );
@@ -78,10 +69,5 @@ async function syncDocuments({
 }
 
 export { getDocuments, syncDocuments };
-
-interface SyncProps {
-  UID: string;
-  cacheBooks: Book[] | null;
-}
 
 type List = { books: Book[]; isEmpty: boolean };

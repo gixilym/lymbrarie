@@ -1,12 +1,14 @@
 import type { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 import type {
   ChangeEvent,
+  Dispatch,
   JSX,
   MemoExoticComponent,
   ReactNode,
   RefObject,
+  SetStateAction,
 } from "react";
-import { type SetterOrUpdater } from "recoil";
+import type { SetterOrUpdater } from "recoil";
 
 type Component = JSX.Element | JSX.Element[] | ReactNode;
 
@@ -67,12 +69,19 @@ interface UserData {
   id: string;
 }
 
+interface SyncDocs {
+  UID: string;
+  cacheBooks: Book[] | null;
+  setCacheBooks: Dispatch<SetStateAction<Book[] | null>>;
+  setMyBooks: Dispatch<SetStateAction<Book[]>>;
+  setAllTitles: Dispatch<SetStateAction<string[]>>;
+}
+
 export type {
   Book,
   BookData,
   Component,
   Doc,
-  Translate,
   Document,
   FormRef,
   InputEvent,
@@ -80,6 +89,8 @@ export type {
   PopUpsIds,
   SelectEvent,
   SetState,
+  SyncDocs,
   Timer,
+  Translate,
   User,
 };
