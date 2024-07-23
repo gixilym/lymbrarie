@@ -18,7 +18,6 @@ import {
   type Unsubscribe,
 } from "firebase/auth";
 import { AuthAction, type User, useUser, withUser } from "next-firebase-auth";
-import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilState } from "recoil";
@@ -109,10 +108,6 @@ function Index(): Component {
       style={styles}
       className="flex flex-col justify-start items-center w-full sm:max-w-[950px] h-full gap-y-6"
     >
-      <Head>
-        <meta name="google-adsense-account" content="ca-pub-6333479205921641" />
-      </Head>
-
       <SearchIndex />
       {showFirstBook ? <AddYourFirstBook /> : <ListSection myBooks={myBooks} />}
       <PopUps profileImg={profileImg} profileName={profileName} UID={UID} />
