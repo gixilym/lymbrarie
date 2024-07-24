@@ -7,7 +7,6 @@ import OfflinePopUp from "./popups/OfflinePopUp";
 import ProfilePopUp from "./popups/ProfilePopUp";
 import SettingsPopUp from "./popups/SettingsPopUp";
 import SupportPopUp from "./popups/SupportPopUp";
-// import UpdatesPopUp from "./popups/UpdatesPopUp";
 
 function PopUps(props: Props): Component {
   const { UID, profileImg, profileName } = props;
@@ -23,7 +22,6 @@ function PopUps(props: Props): Component {
       {popup.support && <SupportPopUp />}
       {popup.donations && <DonationsPopUp />}
       {popup.offline && <OfflinePopUp />}
-      {/* {popup.updates && <UpdatesPopUp />} */}
     </>
   );
 }

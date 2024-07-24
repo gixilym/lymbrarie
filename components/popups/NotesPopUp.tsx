@@ -111,6 +111,7 @@ function NotesPopUp(props: Props): Component {
           </button>
         )}
         <textarea
+          id="notes"
           value={notes}
           spellCheck={false}
           disabled={loadingFav}
