@@ -18,12 +18,12 @@ const ListSection: MemoComponent = memo(function B({ myBooks }: Props) {
   const [t] = useTranslation("global"),
     [searchVal] = useRecoilState<string>(searchAtom),
     [stateVal] = useRecoilState<string>(stateAtom),
-    [showDetailsLS, setShowDetailsLS] = useLocalStorage("list-mode-on", true),
+    [showDetailsLS, setShowDetailsLS] = useLocalStorage("show-details", true),
     [showDetails, setShowDetails] = useState<boolean>(showDetailsLS),
     [scroll, setScroll] = useLocalStorage("scroll", 0),
     [ascLS, setAscLS] = useLocalStorage("asc", true),
     [ascToDesc, setAscToDesc] = useState<boolean | null>(ascLS),
-    [showFavsLS, setShowFavsLS] = useLocalStorage("showFavs", false),
+    [showFavsLS, setShowFavsLS] = useLocalStorage("show-favs", false),
     [showFavs, setShowFavs] = useState<boolean>(showFavsLS),
     myFavs: Book[] = myBooks.filter((b: Book) => b?.data?.isFav);
 

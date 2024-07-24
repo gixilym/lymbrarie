@@ -8,7 +8,7 @@ import { useRecoilState } from "recoil";
 import Arrows from "./btns/ArrowsBtn";
 
 function ListBooks({ listBooks }: Props): Component {
-  const [cacheBooks] = useLocalStorage("cacheBooks", null),
+  const [cacheBooks] = useLocalStorage("cache-books", null),
     [searchVal] = useRecoilState<string>(searchAtom),
     [stateVal] = useRecoilState<string>(stateAtom),
     [animateCard] = useRecoilState<boolean>(animListAtom),

@@ -20,7 +20,7 @@ function ProfilePopUp({ profileImg, profileName }: Props): Component {
       Borrowed: 0,
     }),
     { Read, Reading, Pending, Borrowed }: States = stateCounts,
-    [cacheBooks] = useLocalStorage("cacheBooks", null);
+    [cacheBooks] = useLocalStorage("cache-books", null);
 
   useEffect(() => {
     if (Array.isArray(cacheBooks)) {

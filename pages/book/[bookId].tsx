@@ -52,7 +52,7 @@ export default withUser({
 })(BookId);
 
 function BookId(): Component {
-  const { openPopUp, closePopUp } = usePopUp(),
+  const { openPopUp, closePopUp, closeAllPopUps } = usePopUp(),
     auth: Auth = getAuth(),
     [t] = useTranslation("global"),
     router: NextRouter = useRouter(),
@@ -65,8 +65,8 @@ function BookId(): Component {
     [documentId, setDocumentId] = useState<string>(""),
     [notes, setNotes] = useState<string>(""),
     [loadingFav, setLoadingFav] = useState<boolean>(false),
-    [cacheBooks, setCacheBooks] = useLocalStorage("cacheBooks", null),
-    [allTitles] = useLocalStorage("allTitles", []),
+    [cacheBooks, setCacheBooks] = useLocalStorage("cache-books", null),
+    [allTitles] = useLocalStorage("all-titles", []),
     myFavs: BookData[] = cacheBooks
       .map((b: Book) => b?.data)
       .filter((b: BookData) => b?.isFav),
@@ -74,6 +74,7 @@ function BookId(): Component {
     notExist: boolean = !allTitles.includes(title),
     notesProps = { updateNotes, notes, setNotes, isLoading, loadingFav },
     [popup] = useRecoilState<any>(popupsAtom),
+    handleRouteChange = (): void => closeAllPopUps(),
     [stylesImg] = useSpring(() => ({
       from: { opacity: animations ? 0 : 1 },
       to: { opacity: 1 },
@@ -89,6 +90,11 @@ function BookId(): Component {
       to: { opacity: 1 },
       config: { duration: 500 },
     }));
+
+  useEffect(() => {
+    router.events.on("routeChangeStart", handleRouteChange);
+    return () => router.events.off("routeChangeStart", handleRouteChange);
+  }, []);
 
   useEffect(() => {
     const unsubscribe: Unsubscribe = onAuthStateChanged(auth, () => noop());

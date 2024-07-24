@@ -1,3 +1,4 @@
+import useLoadContent from "@/hooks/useLoadContent";
 import usePopUp from "@/hooks/usePopUp";
 import type { Component } from "@/utils/types";
 import { delay } from "es-toolkit";
@@ -18,7 +19,6 @@ import { useTranslation } from "react-i18next";
 import DialogContainer from "../DialogContainer";
 import HeaderPopUp from "../HeaderPopUp";
 import NotesAlert from "../alerts/NotesAlert";
-import useLoadContent from "@/hooks/useLoadContent";
 
 function NotesPopUp(props: Props): Component {
   const [t] = useTranslation("global"),

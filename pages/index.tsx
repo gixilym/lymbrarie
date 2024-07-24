@@ -5,6 +5,7 @@ import LoadComponent from "@/components/LoadComponent";
 import PopUps from "@/components/PopUps";
 import SearchIndex from "@/components/SearchIndex";
 import useLocalStorage from "@/hooks/useLocalStorage";
+import usePopUp from "@/hooks/usePopUp";
 import { zeroAtom } from "@/utils/atoms";
 import { getDocuments, syncDocuments } from "@/utils/documents";
 import { showNotifications } from "@/utils/notifications";
@@ -37,8 +38,8 @@ function Index(): Component {
     UID: string = user.id as string,
     profileImg: string = user?.photoURL as string,
     profileName: string = user?.displayName as string,
-    [cacheBooks, setCacheBooks] = useLocalStorage("cacheBooks", null),
-    [, setAllTitles] = useLocalStorage("allTitles", []),
+    [cacheBooks, setCacheBooks] = useLocalStorage("cache-books", null),
+    [, setAllTitles] = useLocalStorage("all-titles", []),
     [booksIsEmpty, setBooksIsEmpty] = useState<boolean | null>(null),
     [animations] = useLocalStorage("animations", true),
     [loading, setLoading] = useState<boolean>(false),

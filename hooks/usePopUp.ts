@@ -13,7 +13,15 @@ function usePopUp(): PopUp {
     setModals({ ...modal, [id]: true });
   }
 
-  return { closePopUp, openPopUp };
+  function closeAllPopUps(): void {
+    closePopUp("offline");
+    closePopUp("delete_book");
+    closePopUp("edit_book");
+    closePopUp("add_book");
+    closePopUp("notes");
+  }
+
+  return { closePopUp, openPopUp, closeAllPopUps };
 }
 
 export default usePopUp;
@@ -21,4 +29,5 @@ export default usePopUp;
 type PopUp = {
   closePopUp: (id: PopUpsIds) => void;
   openPopUp: (id: PopUpsIds) => void;
+  closeAllPopUps: () => void;
 };

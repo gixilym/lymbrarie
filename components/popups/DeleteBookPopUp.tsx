@@ -21,8 +21,8 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
     router: AppRouterInstance = useRouter(),
     setSearchVal: SetState = useSetRecoilState<string>(searchAtom),
     setZeroBooks: SetState = useSetRecoilState<boolean>(zeroAtom),
-    [cacheBooks, setCacheBooks] = useLocalStorage("cacheBooks", null),
-    [, setAllTitles] = useLocalStorage("allTitles", []),
+    [cacheBooks, setCacheBooks] = useLocalStorage("cache-books", null),
+    [, setAllTitles] = useLocalStorage("all-titles", []),
     { isLoading, startLoading, finishLoading } = useLoadContent(),
     [, setShowNoti] = useLocalStorage("deleted", []),
     [styles] = useSpring(() => ({
