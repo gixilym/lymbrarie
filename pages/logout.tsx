@@ -22,6 +22,7 @@ function LogoutPage(): Component {
     [, setAcceleration] = useLocalStorage("acceleration", false),
     [lang, setLang] = useLocalStorage("language", "en"),
     [animations, setAnimations] = useLocalStorage("animations", true),
+    [state, setState] = useLocalStorage("state", true),
     router: NextRouter = useRouter(),
     [t] = useTranslation("global"),
     [styles] = useSpring(() => ({
@@ -35,6 +36,7 @@ function LogoutPage(): Component {
     setAcceleration(false);
     setLang(lang);
     setAnimations(animations);
+    setState(state);
     auth.signOut();
   }
 

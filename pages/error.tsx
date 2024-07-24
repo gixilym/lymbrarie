@@ -12,6 +12,7 @@ function ErrorPage(): Component {
     notes: string | undefined = useRouter()?.query?.notes?.toString(),
     [, setAcceleration] = useLocalStorage("acceleration", false),
     [lang, setLang] = useLocalStorage("language", "en"),
+    [state, setState] = useLocalStorage("state", true),
     [animations, setAnimations] = useLocalStorage("animations", true);
 
   function clearData(): void {
@@ -19,6 +20,7 @@ function ErrorPage(): Component {
     setAcceleration(false);
     setLang(lang);
     setAnimations(animations);
+    setState(state);
   }
 
   if (notes) return <ErrorNotes notes={notes} />;
