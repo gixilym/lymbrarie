@@ -10,6 +10,7 @@ import {
 } from "firebase/firestore";
 import { COLLECTION, MAINTENANCE, PRODUCTION } from "./consts";
 import type { Book, Doc, SyncDocs } from "./types";
+import { len } from "./helpers";
 
 async function getDocuments(UID: string): Promise<List> {
   const books: Book[] = [];
@@ -46,7 +47,7 @@ async function syncDocuments(props: SyncDocs) {
           })),
           localBooks: Book[] = cacheBooks ?? [],
           hasChanges: boolean =
-            localBooks?.length != remoteBooks?.length ||
+            len(localBooks) != len(remoteBooks) ||
             remoteBooks?.some(
               (doc, i) => !isEqual(doc.data, localBooks[i]?.data)
             );

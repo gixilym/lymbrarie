@@ -7,6 +7,7 @@ import SearchIndex from "@/components/SearchIndex";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { zeroAtom } from "@/utils/atoms";
 import { getDocuments, syncDocuments } from "@/utils/documents";
+import { len } from "@/utils/helpers";
 import { showNotifications } from "@/utils/notifications";
 import type { Book, Component, SyncDocs } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
@@ -83,7 +84,7 @@ function Index(): Component {
 
   useEffect(() => {
     if (zeroBooks) return;
-    if (myBooks.length > 0) {
+    if (len(myBooks) > 0) {
       setCacheBooks(myBooks);
       setAllTitles(myBooks.map((b: Book) => b?.data?.title ?? ""));
     }

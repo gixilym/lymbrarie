@@ -1,5 +1,6 @@
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { animListAtom, searchAtom, stateAtom } from "@/utils/atoms";
+import { len } from "@/utils/helpers";
 import type { Component } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
 import { noop } from "es-toolkit";
@@ -30,7 +31,7 @@ function ListBooks({ listBooks }: Props): Component {
       className="mb-36 flex flex-col justify-start w-full items-center gap-y-4 sm:overflow-hidden h-auto"
     >
       {listBooks}
-      {(cacheBooks ?? []).length > 8 && <Arrows />}
+      {len(cacheBooks ?? []) > 8 && <Arrows />}
     </animated.ul>
   );
 }

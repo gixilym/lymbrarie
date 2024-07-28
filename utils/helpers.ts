@@ -115,7 +115,9 @@ const formatTitle: Handler<string, string> = (title: string) =>
 const deformatTitle: Handler<string, string> = (title: string) =>
   title.replaceAll("_", " ").replaceAll("@", "?");
 
-const len: Handler<string, number> = (str: string): number => str.length;
+const len: Handler<string | Array<any>, number> = (
+  str: string | Array<any>
+): number => str.length;
 
 export {
   clearStorage,
@@ -123,10 +125,10 @@ export {
   formatState,
   formatTitle,
   isLoaned,
+  len,
   normalizeText,
   removeItem,
   selectStyles,
   tLC,
   translateStateBook,
-  len,
 };

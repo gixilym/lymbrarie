@@ -1,9 +1,10 @@
 import useLoadContent from "@/hooks/useLoadContent";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
-import { COLLECTION, PRODUCTION } from "@/utils/consts";
-import { dismissNotification, notification } from "@/utils/notifications";
 import { searchAtom, zeroAtom } from "@/utils/atoms";
+import { COLLECTION, PRODUCTION } from "@/utils/consts";
+import { len } from "@/utils/helpers";
+import { dismissNotification, notification } from "@/utils/notifications";
 import type { Book, Component, SetState } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
 import { isEqual } from "es-toolkit";
@@ -38,8 +39,8 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
     try {
       await deleteDoc(doc(COLLECTION, documentId));
       setSearchVal("");
-      setZeroBooks(isEqual(cacheBooks?.length, 1));
-      if (isEqual(cacheBooks?.length, 1)) {
+      setZeroBooks(isEqual(len(cacheBooks), 1));
+      if (isEqual(len(cacheBooks), 1)) {
         setCacheBooks(null);
         setAllTitles([]);
         redirectToHome();

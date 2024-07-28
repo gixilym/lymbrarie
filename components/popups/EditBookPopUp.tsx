@@ -6,6 +6,7 @@ import {
   deformatTitle,
   formatTitle,
   isLoaned,
+  len,
   normalizeText,
   tLC,
 } from "@/utils/helpers";
@@ -140,20 +141,20 @@ function EditBookPopUp(props: Props): Component {
           normalizeText(tLC(t)) != normalizeText(tLC(formatBookId)) &&
           isEqual(normalizeText(tLC(t)), normalizeText(tLC(title)))
       ),
-      maxTitleLength: boolean = title.length > 80,
-      maxAuthorLength: boolean = (book.author?.length ?? 0) > 34,
+      maxTitleLength: boolean = len(title) > 80,
+      maxAuthorLength: boolean = len(book.author ?? "0") > 34,
       emptyCustomGender: boolean =
-        isCustomGender && isEqual(cusGenderVal.length ?? 0, 0),
+        isCustomGender && isEqual(len(cusGenderVal ?? "0"), 0),
       maxLengthGender: boolean =
-        isCustomGender && (cusGenderVal.length ?? 0) > 24,
+        isCustomGender && len(cusGenderVal ?? "0") > 24,
       emptyLoaned: boolean =
         isLoaned(book.state ?? "") && isEqual(book.loaned?.trim(), ""),
       maxLengthLoaned: boolean =
-        isLoaned(book.state ?? "") && (book.loaned?.length ?? 0) > 24,
+        isLoaned(book.state ?? "") && len(book.loaned ?? "0") > 24,
       validateURL: RegExp =
         /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/,
       validateImg: boolean =
-        (book?.image?.length ?? 0) > 0 && !validateURL.test(book.image ?? "");
+        len(book?.image ?? "0") > 0 && !validateURL.test(book.image ?? "");
 
     if (!title) {
       setErrorKey("title-input");

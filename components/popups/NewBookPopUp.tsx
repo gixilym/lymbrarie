@@ -2,7 +2,7 @@ import useLoadContent from "@/hooks/useLoadContent";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
 import { COLLECTION, EMPTY_BOOK, PRODUCTION } from "@/utils/consts";
-import { isLoaned, normalizeText, tLC } from "@/utils/helpers";
+import { isLoaned, len, normalizeText, tLC } from "@/utils/helpers";
 import { dismissNotification, notification } from "@/utils/notifications";
 import type {
   Book,
@@ -104,21 +104,21 @@ function NewBookPopUp({ UID }: Props): Component {
       repeteadTitle: boolean = allTitles.some((t: string) =>
         isEqual(normalizeText(tLC(t)), normalizeText(tLC(title)))
       ),
-      maxTitleLength: boolean = title.length > 80,
-      maxAuthorLength: boolean = (book?.data?.author?.length ?? 0) > 34,
+      maxTitleLength: boolean = len(title) > 80,
+      maxAuthorLength: boolean = len(book?.data?.author ?? "0") > 34,
       emptyCustomGender: boolean =
-        isCustomGender && isEqual(cusGenderVal.length, 0),
-      maxLengthGender: boolean = isCustomGender && cusGenderVal.length > 24,
+        isCustomGender && isEqual(len(cusGenderVal), 0),
+      maxLengthGender: boolean = isCustomGender && len(cusGenderVal) > 24,
       emptyLoaned: boolean =
         isLoaned(book?.data?.state ?? "") &&
         isEqual(book?.data?.loaned?.trim(), ""),
       maxLengthLoaned: boolean =
         isLoaned(book?.data?.state ?? "") &&
-        (book?.data?.loaned?.length ?? 0) > 24,
+        len(book?.data?.loaned ?? "0") > 24,
       validateURL: RegExp =
         /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/,
       validateImg: boolean =
-        (book?.data?.image?.length ?? 0) > 0 &&
+        len(book?.data?.image ?? "0") > 0 &&
         !validateURL.test(book?.data?.image ?? "");
 
     if (!title) {

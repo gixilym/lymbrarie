@@ -1,7 +1,7 @@
 import HomeBtn from "@/components/btns/HomeBtn";
 import useLocalStorage from "@/hooks/useLocalStorage";
-import { normalizeText, tLC } from "@/utils/helpers";
 import { searchAtom, stateAtom } from "@/utils/atoms";
+import { len, normalizeText, tLC } from "@/utils/helpers";
 import type { Book, BookData, Component, MemoComponent } from "@/utils/types";
 import { isEqual, isNull, orderBy, round, shuffle } from "es-toolkit";
 import { memo, useEffect, useMemo, useState } from "react";
@@ -46,11 +46,11 @@ const ListSection: MemoComponent = memo(function B({ myBooks }: Props) {
         ? shuffle(data)
         : orderBy(data, ["title", "author"], order),
       noMatches: boolean =
-        (isEqual(arr.length, 0) && !isEqual(searchVal, "")) ||
-        (isEqual(books.length, 0) && showFavs) ||
+        (isEqual(len(arr), 0) && !isEqual(searchVal, "")) ||
+        (isEqual(len(books), 0) && showFavs) ||
         (isEqual(searchVal, "") &&
           !isEqual(stateVal, "") &&
-          isEqual(books.length, 0));
+          isEqual(len(books), 0));
 
     if (noMatches)
       return (
