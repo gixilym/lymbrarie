@@ -8,9 +8,14 @@ import type {
   RefObject,
   SetStateAction,
 } from "react";
+import { SingleValue } from "react-select";
 import type { SetterOrUpdater } from "recoil";
 
 type Component = JSX.Element | JSX.Element[] | ReactNode;
+
+type Handler<T, R> = (arg: T) => R;
+
+type EventSelect = SingleValue<any>;
 
 type InputEvent = ChangeEvent<HTMLInputElement>;
 
@@ -31,6 +36,8 @@ type Doc = QueryDocumentSnapshot<DocumentData, DocumentData>;
 type SetState = SetterOrUpdater<any>;
 
 type Translate = (key: string) => string;
+
+type SelectOpt = { value: string; label: string }[];
 
 type PopUpsIds =
   | "add_book"
@@ -86,11 +93,14 @@ export type {
   FormRef,
   InputEvent,
   MemoComponent,
+  Handler,
   PopUpsIds,
   SelectEvent,
   SetState,
   SyncDocs,
   Timer,
   Translate,
+  SelectOpt,
   User,
+  EventSelect,
 };

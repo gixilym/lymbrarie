@@ -5,7 +5,6 @@ import LoadComponent from "@/components/LoadComponent";
 import PopUps from "@/components/PopUps";
 import SearchIndex from "@/components/SearchIndex";
 import useLocalStorage from "@/hooks/useLocalStorage";
-import usePopUp from "@/hooks/usePopUp";
 import { zeroAtom } from "@/utils/atoms";
 import { getDocuments, syncDocuments } from "@/utils/documents";
 import { showNotifications } from "@/utils/notifications";

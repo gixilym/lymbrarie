@@ -1,24 +1,36 @@
 import useLocalStorage from "@/hooks/useLocalStorage";
-import type { Component, SelectEvent } from "@/utils/types";
+import { selectStyles } from "@/utils/helpers";
+import type { Component, EventSelect, Handler, SelectOpt } from "@/utils/types";
 import {
+  Sparkles as AnimationsIcon,
   Languages as LanguagesIcon,
   Palette as PalletIcon,
-  Sparkles as AnimationsIcon,
-  Library as StateIcon,
   Settings as SettingsIcon,
+  Library as StateIcon,
 } from "lucide-react";
+import { type NextRouter, useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
+import Select from "react-select";
 import ClosePopUpBtn from "../btns/ClosePopUpBtn";
 import DialogContainer from "../DialogContainer";
 import HeaderPopUp from "../HeaderPopUp";
-import { type NextRouter, useRouter } from "next/router";
 
 function SettingsPopUp(): Component {
-  const [t, i18n] = useTranslation("global"),
+  const [t, { changeLanguage }] = useTranslation("global"),
     { reload }: NextRouter = useRouter(),
     [language, setLanguage] = useLocalStorage("language", "en"),
     [animations, setAnimations] = useLocalStorage("animations", true),
-    [state, setState] = useLocalStorage("state", true);
+    [state, setState] = useLocalStorage("state", true),
+    formatLang: Handler<void, string> = () =>
+      language == "en" ? "English" : "Español",
+    handleSelect: Handler<string, void> = (val: string) => {
+      changeLanguage(val);
+      setLanguage(val);
+    },
+    options: SelectOpt = [
+      { value: "en", label: "English" },
+      { value: "es", label: "Español" },
+    ] as const;
 
   return (
     <DialogContainer id="settings" divClass="justify-between">
@@ -33,18 +45,16 @@ function SettingsPopUp(): Component {
             <LanguagesIcon size={25} />
             {t("language")}
           </label>
-          <select
-            onChange={(e: SelectEvent) => {
-              i18n.changeLanguage(e.target.value);
-              setLanguage(e.target.value);
-            }}
+          <Select
+            className="sm:w-full max-w-xs w-[180px] text-center"
             id="select-language"
-            className="select select-bordered sm:w-full max-w-xs w-[180px] text-lg text-center"
+            isSearchable={false}
+            options={options}
+            placeholder={formatLang()}
             value={language}
-          >
-            <option value="en">English</option>
-            <option value="es">Español</option>
-          </select>
+            styles={selectStyles(true, true)}
+            onChange={(e: EventSelect) => handleSelect(e.value)}
+          />
         </div>
 
         <div className="w-full sm:w-[90%] flex flex-col gap-y-2 sm:flex-row justify-between items-center gap-x-3 sm:gap-x-0">

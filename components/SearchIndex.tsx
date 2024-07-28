@@ -1,23 +1,34 @@
 import { searchAtom, stateAtom } from "@/utils/atoms";
-import type { Component, InputEvent } from "@/utils/types";
-import { isEqual } from "es-toolkit";
+import { formatState, selectStyles } from "@/utils/helpers";
+import type {
+  Component,
+  EventSelect,
+  Handler,
+  InputEvent,
+  SelectOpt,
+} from "@/utils/types";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import Select from "react-select";
 import { useRecoilState } from "recoil";
-import { twMerge } from "tailwind-merge";
 import AddBookBtn from "./btns/AddBookBtn";
 
 function SearchIndex(): Component {
-  const [value, setValue] = useRecoilState<string>(searchAtom),
-    handleChangeInput = (e: InputEvent) => setValue(e.target.value),
-    [selectVal, setSelectStateValue] = useRecoilState<string>(stateAtom),
-    handleChangeSelect = (value: string) => setSelectStateValue(value),
-    [t] = useTranslation("global");
-
-  function selectedState(state: string) {
-    return isEqual(selectVal, state)
-      ? "bg-blue-300 text-gray-700"
-      : "bg-slate-800 text-white";
-  }
+  const [t] = useTranslation("global"),
+    [value, setValue] = useRecoilState<string>(searchAtom),
+    [selectVal, setSelectStateVal] = useRecoilState<string>(stateAtom),
+    placeholder: string = useMemo(() => formatState(selectVal, t), [selectVal]),
+    handleSearch: Handler<InputEvent, void> = (e: InputEvent) =>
+      setValue(e.target.value),
+    handleSelect: Handler<string, void> = (val: string) =>
+      setSelectStateVal(val),
+    options: SelectOpt = [
+      { value: "", label: t("add-book-all") },
+      { value: "Reading", label: t("add-book-reading") },
+      { value: "Read", label: t("add-book-read") },
+      { value: "Pending", label: t("add-book-pending") },
+      { value: "Borrowed", label: t("add-book-borrowed") },
+    ] as const;
 
   return (
     <header className="z-10 w-full mb-6 sm:mb-10 justify-center items-center flex h-26">
@@ -25,43 +36,23 @@ function SearchIndex(): Component {
         <div className="w-full h-max flex flex-col sm:flex-row gap-y-2 sm:gap-y-0 sm:gap-x-2 justify-start items-center">
           <div className="join">
             <input
-              id="search"
+              id="input-search"
               value={value}
-              onChange={handleChangeInput}
+              onChange={handleSearch}
               className="focus:outline-0 focus:border-rose-300/10 backdrop-blur-[2px] input join-item w-[230px] sm:w-[270px] h-14 bg-slate-800/60 border-2 border-rose-300/10 placeholder:text-slate-300/70 text-sm sm:text-lg text-slate-300 placeholder:w-full"
               placeholder={t("placeholder-search")}
               type="search"
             />
-            <select
-              id="state"
+            <Select
+              className="join-item"
+              id="select-state"
+              isSearchable={false}
+              options={options}
+              placeholder={placeholder}
               value={selectVal}
-              onChange={e => handleChangeSelect(e.target.value)}
-              className={twMerge(
-                selectVal != ""
-                  ? "border-rose-300/40 focus:border-rose-300/40 text-slate-300/90"
-                  : "border-rose-300/10 focus:border-rose-300/10 text-slate-300/70",
-                "w-full focus:outline-0 border-2 backdrop-blur-[2px] select join-item h-14 sm:w-[160px] text-[13px] sm:text-[17px] bg-slate-800/60 cursor-default"
-              )}
-            >
-              <option
-                className={twMerge(selectedState(""), "border-t-2")}
-                value=""
-              >
-                {t("add-book-all")}
-              </option>
-              <option className={selectedState("Reading")} value="Reading">
-                {t("add-book-reading")}
-              </option>
-              <option className={selectedState("Read")} value="Read">
-                {t("add-book-read")}
-              </option>
-              <option className={selectedState("Pending")} value="Pending">
-                {t("add-book-pending")}
-              </option>
-              <option className={selectedState("Borrowed")} value="Borrowed">
-                {t("add-book-borrowed")}
-              </option>
-            </select>
+              styles={selectStyles(selectVal == "", false)}
+              onChange={(e: EventSelect) => handleSelect(e.value)}
+            />
           </div>
           <AddBookBtn text={t("new-book")} />
         </div>

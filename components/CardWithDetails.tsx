@@ -34,7 +34,7 @@ function CardWithDetails(props: Card): Component {
           {author && (
             <div className="flex flex-row justify-start items-center gap-x-2">
               <UserIcon size={16} />
-              <p className="w-11/12 text-xs sm:text-[16px] capitalize overflow-ellipsis overflow-hidden whitespace-nowrap">
+              <p className="w-11/12 text-xs sm:text-[16px] capitalize overflow-ellipsis overflow-hidden pb-0.5 whitespace-nowrap">
                 {author}
               </p>
             </div>

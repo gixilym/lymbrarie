@@ -1,5 +1,6 @@
 import { isEqual } from "es-toolkit";
-import type { Translate } from "./types";
+import type { StylesConfig } from "react-select";
+import type { Handler, Translate } from "./types";
 
 function translateStateBook(state: string, t: Translate): string {
   switch (state) {
@@ -20,32 +21,109 @@ function translateStateBook(state: string, t: Translate): string {
   }
 }
 
-const normalizeText = (text: string): string =>
+const selectStyles = (showAll: boolean, normal: boolean): any => ({
+  placeholder: (s: StylesConfig) => ({
+    ...s,
+    color: normal
+      ? "#e2e8f0"
+      : showAll
+      ? "rgb(203 213 225 / 0.7)"
+      : "rgb(203 213 225)",
+  }),
+  singleValue: (s: StylesConfig) => ({
+    ...s,
+    fontSize: "1.05rem",
+  }),
+  control: (s: StylesConfig) => ({
+    ...s,
+    padding: "0 0.5rem",
+    backgroundColor: normal ? "transparent" : "rgb(30 41 59 / 0.6)",
+    borderWidth: normal ? 1 : 2,
+    borderColor: normal
+      ? "#374151"
+      : showAll
+      ? "rgb(253 164 175 / 0.1)"
+      : "rgb(253 164 175 / 0.42)",
+    width: normal ? "100%" : "160px",
+    height: normal ? "3rem" : "3.5rem",
+    boxShadow: 0,
+    borderTopLeftRadius: normal ? "0.8rem" : 0,
+    borderBottomLeftRadius: normal ? "0.8rem" : 0,
+    borderTopRightRadius: "0.8rem",
+    borderBottomRightRadius: "0.8rem",
+    ":hover": {
+      borderColor: showAll
+        ? "rgb(253 164 175 / 0.1)"
+        : "rgb(253 164 175 / 0.42)",
+    },
+  }),
+  option: (s: StylesConfig) => ({
+    ...s,
+    backgroundColor: "transparent",
+    border: 0,
+    color: "rgb(203 213 225 / 0.9)",
+    fontSize: "1rem",
+    padding: "5px 10px",
+    ":hover": {
+      backgroundColor: "rgb(253 164 175 / 0.1)",
+    },
+  }),
+  menu: (s: StylesConfig) => ({
+    ...s,
+    backgroundColor: "rgb(30 41 59)",
+    marginTop: 2,
+    borderRadius: "0.8rem",
+  }),
+  indicatorSeparator: () => ({ backgroundColor: "transparent" }),
+});
+
+function formatState(val: string, t: Translate): string {
+  switch (val) {
+    case "Read":
+      return t("add-book-read");
+
+    case "Reading":
+      return t("add-book-reading");
+
+    case "Pending":
+      return t("add-book-pending");
+
+    case "Borrowed":
+      return t("add-book-borrowed");
+
+    default:
+      return t("add-book-all");
+  }
+}
+
+const normalizeText: Handler<string, string> = (text: string): string =>
   text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-const removeItem = (item: string) => localStorage?.removeItem(item);
+const removeItem: Handler<string, void> = (item: string) =>
+  localStorage?.removeItem(item);
 
-const clearStorage = (): void => localStorage?.clear();
+const clearStorage: Handler<void, void> = () => localStorage?.clear();
 
-const isLoaned = (state: string): boolean => isEqual(state, "Borrowed");
+const isLoaned: Handler<string, boolean> = (state: string) =>
+  isEqual(state, "Borrowed");
 
-const tLC: Format = (val: string): string => val?.toLowerCase().trim();
+const tLC: Handler<string, string> = (val: string) => val?.toLowerCase().trim();
 
-const formatTitle: Format = (title: string): string =>
+const formatTitle: Handler<string, string> = (title: string) =>
   title.replaceAll(" ", "_").replaceAll("?", "@");
 
-const deformatTitle: Format = (title: string): string =>
+const deformatTitle: Handler<string, string> = (title: string) =>
   title.replaceAll("_", " ").replaceAll("@", "?");
 
 export {
+  clearStorage,
   deformatTitle,
+  formatState,
   formatTitle,
   isLoaned,
   normalizeText,
   removeItem,
+  selectStyles,
   tLC,
   translateStateBook,
-  clearStorage,
 };
-
-type Format = (title: string) => string;

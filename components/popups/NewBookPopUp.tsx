@@ -28,9 +28,9 @@ import DialogContainer from "../DialogContainer";
 import FieldsBook from "../FieldsBook";
 import HeaderPopUp from "../HeaderPopUp";
 
-function NewBookPopUp({ UID }: { UID: string }): Component {
-  const [t] = useTranslation("global"),
-    { closePopUp } = usePopUp(),
+function NewBookPopUp({ UID }: Props): Component {
+  const { closePopUp } = usePopUp(),
+    [t] = useTranslation("global"),
     router: NextRouter = useRouter(),
     formRef: FormRef = useRef<Reference>(null),
     [book, setBook] = useState<Book>(EMPTY_BOOK),
@@ -237,3 +237,7 @@ function NewBookPopUp({ UID }: { UID: string }): Component {
 }
 
 export default NewBookPopUp;
+
+interface Props {
+  UID: string;
+}
