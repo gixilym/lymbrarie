@@ -1,21 +1,6 @@
-import Crypto from "crypto-js";
-import { isNull } from "es-toolkit";
-import { useState } from "react";
 import { PRODUCTION } from "@/utils/consts";
-
-function decrypt(data: any): any {
-  if (isNull(data)) return null;
-  const key: string = process.env.NEXT_PUBLIC_DECRYPT as string;
-  const bytes = Crypto.AES.decrypt(data, key);
-  const res: any = JSON.parse(bytes.toString(Crypto.enc.Utf8));
-  return res;
-}
-
-function encrypt(data: any): string {
-  const key: string = process.env.NEXT_PUBLIC_DECRYPT as string;
-  const res: string = Crypto.AES.encrypt(JSON.stringify(data), key).toString();
-  return res;
-}
+import { decrypt, encrypt } from "@/utils/encrypt";
+import { useState } from "react";
 
 function useLocalStorage(key: any, initialValue?: any) {
   const [storedValue, setStoredValue] = useState<any>(() => {
