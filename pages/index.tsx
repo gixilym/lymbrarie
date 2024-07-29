@@ -78,8 +78,8 @@ function Index(): Component {
   }, [user]);
 
   useEffect(() => {
-    const unsubscribe: Unsubscribe = onAuthStateChanged(auth, () => noop());
-    return () => unsubscribe();
+    const unsub: Unsubscribe = onAuthStateChanged(auth, () => noop());
+    return () => unsub();
   }, [auth]);
 
   useEffect(() => {

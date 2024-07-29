@@ -38,29 +38,26 @@ async function syncDocuments(props: SyncDocs) {
   if (isNull(UID)) return;
   try {
     const myQuery: Query = query(COLLECTION, where("owner", "==", UID));
-    const unsubscribe: Unsubscribe = onSnapshot(
-      myQuery,
-      (qs: QuerySnapshot) => {
-        const remoteBooks: Book[] = qs.docs.map((d: Doc) => ({
-            id: d?.id,
-            data: d?.data(),
-          })),
-          localBooks: Book[] = cacheBooks ?? [],
-          hasChanges: boolean =
-            len(localBooks) != len(remoteBooks) ||
-            remoteBooks?.some(
-              (doc, i) => !isEqual(doc.data, localBooks[i]?.data)
-            );
+    const unsub: Unsubscribe = onSnapshot(myQuery, (qs: QuerySnapshot) => {
+      const remoteBooks: Book[] = qs.docs.map((d: Doc) => ({
+          id: d?.id,
+          data: d?.data(),
+        })),
+        localBooks: Book[] = cacheBooks ?? [],
+        hasChanges: boolean =
+          len(localBooks) != len(remoteBooks) ||
+          remoteBooks?.some(
+            (doc, i) => !isEqual(doc.data, localBooks[i]?.data)
+          );
 
-        if (hasChanges) {
-          setCacheBooks(remoteBooks);
-          setMyBooks(remoteBooks);
-          setAllTitles(remoteBooks.map(b => b?.data?.title ?? ""));
-        } else return;
-      }
-    );
+      if (hasChanges) {
+        setCacheBooks(remoteBooks);
+        setMyBooks(remoteBooks);
+        setAllTitles(remoteBooks.map(b => b?.data?.title ?? ""));
+      } else return;
+    });
 
-    return unsubscribe;
+    return unsub;
   } catch (err: any) {
     if (PRODUCTION) return (location.pathname = "/error");
     else console.error(`Error en syncDocuments: ${err.message}`);

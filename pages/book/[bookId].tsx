@@ -14,7 +14,7 @@ import { popupsAtom } from "@/utils/atoms";
 import { COLLECTION, EMPTY_BOOK, PRODUCTION } from "@/utils/consts";
 import { deformatTitle, isLoaned, translateStateBook } from "@/utils/helpers";
 import { dismissNotification, notification } from "@/utils/notifications";
-import type { Book, BookData, Component } from "@/utils/types";
+import type { Book, BookData, Component, Handler } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
 import { isEqual, noop, union } from "es-toolkit";
 import {
@@ -74,7 +74,7 @@ function BookId(): Component {
     notExist: boolean = !allTitles.includes(title),
     notesProps = { updateNotes, notes, setNotes, isLoading, loadingFav },
     [popup] = useRecoilState<any>(popupsAtom),
-    handleRouteChange = (): void => closeAllPopUps(),
+    handleRouteChange: Handler<void, void> = () => closeAllPopUps(),
     [stylesImg] = useSpring(() => ({
       from: { opacity: animations ? 0 : 1 },
       to: { opacity: 1 },
@@ -97,10 +97,10 @@ function BookId(): Component {
   }, []);
 
   useEffect(() => {
-    const unsubscribe: Unsubscribe = onAuthStateChanged(auth, () => noop());
+    const unsub: Unsubscribe = onAuthStateChanged(auth, () => noop());
     getCacheBook();
     toast.remove();
-    return () => unsubscribe();
+    return () => unsub();
   }, [bookTitle, auth]);
 
   useEffect(() => {
