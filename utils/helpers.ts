@@ -21,7 +21,7 @@ function translateStateBook(state: string, t: Translate): string {
   }
 }
 
-const selectStyles = (showAll: boolean, normal: boolean): any => ({
+const selectStyles = (showAll: boolean, normal: boolean): Styles => ({
   placeholder: (s: StylesConfig) => ({
     ...s,
     color: normal
@@ -96,28 +96,25 @@ function formatState(val: string, t: Translate): string {
   }
 }
 
-const normalizeText: Handler<string, string> = (text: string): string =>
+const normalizeText: Handler<string, string> = (text): string =>
   text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-const removeItem: Handler<string, void> = (item: string) =>
+const removeItem: Handler<string, void> = item =>
   localStorage?.removeItem(item);
 
 const clearStorage: Handler<void, void> = () => localStorage?.clear();
 
-const isLoaned: Handler<string, boolean> = (state: string) =>
-  isEqual(state, "Borrowed");
+const isLoaned: Handler<string, boolean> = state => isEqual(state, "Borrowed");
 
-const tLC: Handler<string, string> = (val: string) => val?.toLowerCase().trim();
+const tLC: Handler<string, string> = val => val?.toLowerCase().trim();
 
-const formatTitle: Handler<string, string> = (title: string) =>
+const formatTitle: Handler<string, string> = title =>
   title.replaceAll(" ", "_").replaceAll("?", "@");
 
-const deformatTitle: Handler<string, string> = (title: string) =>
+const deformatTitle: Handler<string, string> = title =>
   title.replaceAll("_", " ").replaceAll("@", "?");
 
-const len: Handler<string | Array<any>, number> = (
-  str: string | Array<any>
-): number => str.length;
+const len: Handler<string | Array<any>, number> = str => str.length;
 
 export {
   clearStorage,
@@ -132,3 +129,12 @@ export {
   tLC,
   translateStateBook,
 };
+
+interface Styles {
+  placeholder: (s: StylesConfig) => StylesConfig;
+  singleValue: (s: StylesConfig) => StylesConfig;
+  control: (s: StylesConfig) => StylesConfig;
+  option: (s: StylesConfig) => StylesConfig;
+  menu: (s: StylesConfig) => StylesConfig;
+  indicatorSeparator: () => { backgroundColor: string };
+}
