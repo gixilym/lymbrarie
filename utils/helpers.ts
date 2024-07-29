@@ -96,7 +96,7 @@ function formatState(val: string, t: Translate): string {
   }
 }
 
-const normalizeText: Handler<string, string> = (text): string =>
+const normalizeText: Handler<string, string> = text =>
   text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
 const removeItem: Handler<string, void> = item =>
