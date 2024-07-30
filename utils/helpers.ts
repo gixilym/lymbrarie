@@ -21,8 +21,8 @@ function translateStateBook(state: string, t: Translate): string {
   }
 }
 
-const selectStyles = (showAll: boolean, normal: boolean): Styles => ({
-  placeholder: (s: StylesConfig) => ({
+const selectStyles = (showAll: boolean, normal: boolean): any => ({
+  placeholder: (s: StylesConfig<any>) => ({
     ...s,
     color: normal
       ? "#e2e8f0"
@@ -129,12 +129,3 @@ export {
   tLC,
   translateStateBook,
 };
-
-interface Styles {
-  placeholder: (s: StylesConfig) => StylesConfig;
-  singleValue: (s: StylesConfig) => StylesConfig;
-  control: (s: StylesConfig) => StylesConfig;
-  option: (s: StylesConfig) => StylesConfig;
-  menu: (s: StylesConfig) => StylesConfig;
-  indicatorSeparator: () => { backgroundColor: string };
-}
