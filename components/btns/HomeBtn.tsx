@@ -14,7 +14,7 @@ function HomeBtn(): Component {
   return (
     <div className="mt-1 dropdown dropdown-right dropdown-left">
       <div tabIndex={0} role="button">
-        <button title={t("Home")} className="btn btn-square btn-ghost">
+        <button title={t("home")} className="btn btn-square btn-ghost">
           <HomIcon size={28} />
         </button>
       </div>

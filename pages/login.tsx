@@ -15,7 +15,6 @@ import {
 import { AuthAction, withUser } from "next-firebase-auth";
 import Image from "next/image";
 import Link from "next/link";
-import { type NextRouter, useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 
 export default withUser({
@@ -26,10 +25,9 @@ export default withUser({
 })(LoginPage);
 
 function LoginPage(): Component {
-  const [t] = useTranslation("global"),
-    { push }: NextRouter = useRouter(),
+  const auth: Auth = getAuth(),
+    [t] = useTranslation("global"),
     [animations] = useLocalStorage("animations", true),
-    auth: Auth = getAuth(),
     [styles] = useSpring(() => ({
       from: { opacity: animations ? 0 : 1 },
       to: { opacity: 1 },
@@ -40,8 +38,7 @@ function LoginPage(): Component {
     try {
       await signInWithPopup(auth, provider);
     } catch (err: any) {
-      if (PRODUCTION) push("/error");
-      else console.error(`error en logIn: ${err.message}`);
+      if (!PRODUCTION) console.error(`error en logIn: ${err.message}`);
     }
   }
 
