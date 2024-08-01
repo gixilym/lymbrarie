@@ -91,7 +91,10 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
               {t("cancel")}
             </button>
             {isLoading ? (
-              <button className="btn font-thin cursor-default text-white text-sm sm:text-lg w-26">
+              <button
+                disabled
+                className="btn font-thin cursor-default text-white text-sm sm:text-lg w-26"
+              >
                 {t("deleting")}
               </button>
             ) : (

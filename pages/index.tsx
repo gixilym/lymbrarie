@@ -66,6 +66,7 @@ function Index(): Component {
   }, []);
 
   useEffect(() => {
+    if (newNoti || deletedNoti) return;
     animate.start({
       from: { opacity: animations ? 0 : 1 },
       to: { opacity: 1 },
