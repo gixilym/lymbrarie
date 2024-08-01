@@ -73,6 +73,7 @@ function LoginPage(): Component {
         </div>
         <div className="w-full flex flex-col justify-start items-center gap-y-3">
           <button
+            type="button"
             onClick={withGoogle}
             className="bg-slate-400/10 justify-start gap-x-6 px-10 hover:bg-slate-100/10
  flex items-center min-w-[330px] sm:w-full max-w-[410px] h-14 rounded-lg border border-slate-500/40 duration-150 "
@@ -81,6 +82,7 @@ function LoginPage(): Component {
             <p className="text-sm sm:text-xl text-white">{t("with-google")}</p>
           </button>
           <button
+            type="button"
             onClick={withGithub}
             className="bg-black/60 border border-slate-800 justify-start gap-x-6 px-11 hover:bg-slate-950/70
 flex items-center min-w-[330px] sm:w-full max-w-[413px] h-[60px] rounded-lg duration-150"

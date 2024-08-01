@@ -9,7 +9,7 @@ function BackBtn({ hidden }: { hidden: boolean }): Component {
       href="/"
       className={twMerge(
         hidden ? "flex sm:hidden" : "flex",
-        "absolute top-10 xl:top-[69px] xl:pt-2 right-0 xl:right-[28rem] opacity-90 w-full justify-center items-center"
+        "absolute top-10 xl:top-[72px] xl:pt-2 right-20 2xl:left-[20rem] opacity-90 w-max justify-center items-center"
       )}
     >
       <Icon
