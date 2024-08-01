@@ -190,7 +190,10 @@ function NewBookPopUp({ UID }: Props): Component {
   }
 
   return (
-    <DialogContainer id="add_book" divClass="!w-full justify-start items-end">
+    <DialogContainer
+      id="add_book"
+      divClass="!w-full items-end !justify-start lg:justify-between"
+    >
       <HeaderPopUp icon={<Icon size={25} />} title={t("new-book")} />
 
       <FieldsBook

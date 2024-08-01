@@ -3,6 +3,7 @@ import usePopUp from "@/hooks/usePopUp";
 import type { Component, PopUpsIds } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
 import { noop } from "es-toolkit";
+import type { MouseEventHandler } from "react";
 import { twJoin } from "tailwind-merge";
 
 function DialogContainer(props: Props): Component {
@@ -10,6 +11,7 @@ function DialogContainer(props: Props): Component {
     { closePopUp } = usePopUp(),
     close: boolean = id != "notes" && id != "edit_book",
     [animations] = useLocalStorage("animations", true),
+    handleClick: Fn = () => (close ? closePopUp(id) : noop()),
     [styles] = useSpring(() => ({
       from: { transform: animations ? "scale(0.7)" : "scale(1)" },
       to: { transform: "scale(1)" },
@@ -18,14 +20,14 @@ function DialogContainer(props: Props): Component {
 
   return (
     <dialog
-      onClick={() => (close ? closePopUp(id) : noop())}
+      onClick={handleClick}
       className="w-full h-full fixed top-0 z-40 flex justify-center items-start bg-transparent backdrop-blur-md"
     >
       <animated.div
         style={styles}
         onClick={e => e.stopPropagation()}
         className={twJoin(
-          "modal-box sm:max-w-[700px] w-full min-h-screen sm:min-h-0 sm:h-[560px] overflow-x-hidden rounded-none sm:rounded-2xl flex flex-col gap-y-3 border-2 relative z-50 border-rose-300/10 [&>label>input]:placeholder:text-gray-400 sm:mt-14 overflow-y-scroll sm:overflow-y-auto",
+          "modal-box sm:max-w-[700px] w-full min-h-screen sm:min-h-0 sm:h-[560px] overflow-x-hidden rounded-none sm:rounded-2xl flex flex-col gap-y-3 border-2 relative z-50 border-rose-300/10 [&>label>input]:placeholder:text-gray-400 sm:mt-14 overflow-y-scroll sm:overflow-y-auto justify-between",
           divClass
         )}
       >
@@ -36,6 +38,8 @@ function DialogContainer(props: Props): Component {
 }
 
 export default DialogContainer;
+
+type Fn = MouseEventHandler<HTMLDialogElement>;
 
 interface Props {
   divClass?: string;

@@ -225,7 +225,10 @@ function EditBookPopUp(props: Props): Component {
   }
 
   return (
-    <DialogContainer id="edit_book">
+    <DialogContainer
+      id="edit_book"
+      divClass="!justify-start lg:justify-between"
+    >
       <HeaderPopUp icon={<Icon size={25} />} title={t("edit-book")} />
       <FieldsBook
         errorKey={errorKey}

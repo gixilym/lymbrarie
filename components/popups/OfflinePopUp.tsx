@@ -10,7 +10,7 @@ function OfflinePopUp(): Component {
   const { closePopUp } = usePopUp();
 
   return (
-    <DialogContainer id="offline" divClass="justify-between items-center">
+    <DialogContainer id="offline" divClass="items-center">
       <HeaderPopUp icon={<Icon size={30} />} title={t("offline")} />
       <p className="text-lg sm:text-2xl tracking-wide text-center sm:px-6 text-pretty text-slate-300">
         {t("text-offline")}

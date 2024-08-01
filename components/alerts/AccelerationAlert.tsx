@@ -14,7 +14,7 @@ function AccelerationAlert(): Component {
   return (
     <DialogContainer
       id="acceleration"
-      divClass="sm:!h-[270px] !max-w-[600px] items-center justify-between sm:mt-10"
+      divClass="sm:!h-[270px] !max-w-[600px] items-center sm:mt-10"
     >
       <div className="flex flex-col justify-center items-center gap-y-10">
         <HeaderPopUp icon={<Icon size={30} />} title={t("alert")} />

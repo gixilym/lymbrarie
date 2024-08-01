@@ -98,7 +98,7 @@ function ProfilePopUp({ profileImg, profileName }: Props): Component {
   }
 
   return (
-    <DialogContainer id="profile" divClass="justify-between">
+    <DialogContainer id="profile">
       <UserData />
       <div className="justify-between modal-action w-full flex items-center">
         <LogOutBtn />

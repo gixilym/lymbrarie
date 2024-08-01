@@ -4,7 +4,6 @@ import type { Component, EventSelect, Handler, SelectOpt } from "@/utils/types";
 import {
   Sparkles as AnimationsIcon,
   Languages as LanguagesIcon,
-  Palette as PalletIcon,
   Settings as SettingsIcon,
   Library as StateIcon,
 } from "lucide-react";
@@ -33,11 +32,11 @@ function SettingsPopUp(): Component {
     ] as const;
 
   return (
-    <DialogContainer id="settings" divClass="justify-between">
+    <DialogContainer id="settings">
       <HeaderPopUp icon={<SettingsIcon size={25} />} title={t("settings")} />
 
-      <div className="w-full flex flex-col justify-start items-center gap-y-10 text-slate-200">
-        <div className="w-full sm:w-[90%] flex flex-col sm:flex-row gap-y-2 justify-between items-center gap-x-3 sm:gap-x-0">
+      <div className="w-full flex flex-col justify-between items-center gap-y-10 text-slate-200 pt-16 lg:pt-0">
+        <div className="w-full sm:w-[90%] flex flex-col sm:flex-row gap-y-3 justify-between items-center gap-x-3 sm:gap-x-0">
           <label
             htmlFor="select-language"
             className="sm:text-xl text-lg flex justify-start items-center gap-x-3"
@@ -57,7 +56,7 @@ function SettingsPopUp(): Component {
           />
         </div>
 
-        <div className="w-full sm:w-[90%] flex flex-col gap-y-2 sm:flex-row justify-between items-center gap-x-3 sm:gap-x-0">
+        <div className="w-full sm:w-[90%] flex flex-col gap-y-3 sm:flex-row justify-between items-center gap-x-3 sm:gap-x-0">
           <label
             htmlFor="enabled-animations"
             className="sm:text-xl text-lg flex justify-start items-center gap-x-3"
@@ -77,7 +76,7 @@ function SettingsPopUp(): Component {
           </button>
         </div>
 
-        <div className="w-full sm:w-[90%] flex flex-col gap-y-2 sm:flex-row justify-between items-center gap-x-3 sm:gap-x-0">
+        <div className="w-full sm:w-[90%] flex flex-col gap-y-3 sm:flex-row justify-between items-center gap-x-3 sm:gap-x-0">
           <label
             htmlFor="hidden-state"
             className="sm:text-xl text-lg flex justify-start items-center gap-x-3"
@@ -97,7 +96,7 @@ function SettingsPopUp(): Component {
           </button>
         </div>
 
-        <div className=" w-full sm:w-[90%] flex flex-col gap-y-2 sm:flex-row justify-between items-center gap-x-3 sm:gap-x-0">
+        {/* <div className=" w-full sm:w-[90%] flex flex-col gap-y-3 sm:flex-row justify-between items-center gap-x-3 sm:gap-x-0">
           <label
             htmlFor="select-theme"
             className="sm:text-xl text-lg flex justify-start items-center gap-x-3"
@@ -114,7 +113,7 @@ function SettingsPopUp(): Component {
             <option value="dark">{t("dark")}</option>
             <option value="light">{t("light")}</option>
           </select>
-        </div>
+        </div> */}
       </div>
 
       <div className="modal-action pt-1 w-full">
