@@ -52,7 +52,7 @@ export default withUser({
 })(BookId);
 
 function BookId(): Component {
-  const { openPopUp, closePopUp, closeAllPopUps } = usePopUp(),
+  const { openPopUp, closePopUp, closeBookPopUps } = usePopUp(),
     auth: Auth = getAuth(),
     [t] = useTranslation("global"),
     router: NextRouter = useRouter(),
@@ -74,7 +74,7 @@ function BookId(): Component {
     notExist: boolean = !allTitles.includes(title),
     notesProps = { updateNotes, notes, setNotes, isLoading, loadingFav },
     [popup] = useRecoilState<any>(popupsAtom),
-    handleRouteChange: Handler<void, void> = () => closeAllPopUps(),
+    handleRouteChange: Handler<void, void> = () => closeBookPopUps(),
     [stylesImg] = useSpring(() => ({
       from: { opacity: animations ? 0 : 1 },
       to: { opacity: 1 },

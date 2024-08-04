@@ -65,14 +65,7 @@ function Index(): Component {
     syncDocuments(argsSync);
   }, []);
 
-  useEffect(() => {
-    if (newNoti || deletedNoti) return;
-    animate.start({
-      from: { opacity: animations ? 0 : 1 },
-      to: { opacity: 1 },
-      config: { duration: 1000 },
-    });
-  }, [myBooks]);
+  useEffect(() => animateList(), [myBooks]);
 
   useEffect(() => {
     fetchBooks();
@@ -101,6 +94,15 @@ function Index(): Component {
       setBooksIsEmpty(isEmpty);
       setLoading(false);
     }
+  }
+
+  function animateList(): void {
+    if (newNoti || deletedNoti) return;
+    animate.start({
+      from: { opacity: animations ? 0 : 1 },
+      to: { opacity: 1 },
+      config: { duration: 1000 },
+    });
   }
 
   if (loading) return <LoadComponent mt={false} />;

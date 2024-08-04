@@ -9,7 +9,7 @@ function usePopUp(): PopUp {
 
   const openPopUp: Pop = id => setModals({ ...modal, [id]: true });
 
-  function closeAllPopUps(): void {
+  function closeBookPopUps(): void {
     closePopUp("offline");
     closePopUp("delete_book");
     closePopUp("edit_book");
@@ -17,7 +17,15 @@ function usePopUp(): PopUp {
     closePopUp("notes");
   }
 
-  return { closePopUp, openPopUp, closeAllPopUps };
+  function closeAllPopUps(): void {
+    closeBookPopUps();
+    closePopUp("settings");
+    closePopUp("profile");
+    closePopUp("support");
+    closePopUp("donations");
+  }
+
+  return { closePopUp, openPopUp, closeBookPopUps, closeAllPopUps };
 }
 
 export default usePopUp;
@@ -25,6 +33,7 @@ export default usePopUp;
 interface PopUp {
   closePopUp: Pop;
   openPopUp: Pop;
+  closeBookPopUps: () => void;
   closeAllPopUps: () => void;
 }
 

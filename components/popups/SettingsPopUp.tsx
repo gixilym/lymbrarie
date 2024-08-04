@@ -95,25 +95,6 @@ function SettingsPopUp(): Component {
             {state ? t("enabled") : t("disabled")}
           </button>
         </div>
-
-        {/* <div className=" w-full sm:w-[90%] flex flex-col gap-y-3 sm:flex-row justify-between items-center gap-x-3 sm:gap-x-0">
-          <label
-            htmlFor="select-theme"
-            className="sm:text-xl text-lg flex justify-start items-center gap-x-3"
-          >
-            <PalletIcon size={25} />
-            {t("theme")}
-          </label>
-          <select
-            id="select-theme"
-            className="capitalize select select-bordered w-[180px] sm:w-full max-w-xs text-lg text-center"
-            disabled
-            defaultValue="dark"
-          >
-            <option value="dark">{t("dark")}</option>
-            <option value="light">{t("light")}</option>
-          </select>
-        </div> */}
       </div>
 
       <div className="modal-action pt-1 w-full">

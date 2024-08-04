@@ -13,7 +13,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { type NextRouter, useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
-import { twMerge } from "tailwind-merge";
 
 export default withUser()(FooterIndex);
 
@@ -49,9 +48,7 @@ function FooterIndex(): Component {
       <div className="flex flex-col sm:flex-row items-start sm:items-center pl-3 sm:pl-0 justify-evenly w-full h-auto sm:w-auto sm:gap-x-6">
         <div
           onClick={() => openPopUp("profile")}
-          className={
-            "flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline"
-          }
+          className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline"
         >
           <UserIcon size={19} />
           <p className="text-sm sm:text-[16px] hover:underline duration-75 cursor-pointer ">
@@ -73,16 +70,14 @@ function FooterIndex(): Component {
           <p className="text-sm sm:text-[16px]">{t("support")}</p>
         </div>
 
-        <div
-          className={
-            "flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline"
-          }
+        <Link
+          href="/privacypolicy"
+          scroll={false}
+          className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline"
         >
           <PrivacyIcon size={18} />
-          <Link className="text-sm sm:text-[16px]" href="/privacypolicy">
-            {t("privacy-policy")}
-          </Link>
-        </div>
+          <p className="text-sm sm:text-[16px]">{t("privacy-policy")}</p>
+        </Link>
       </div>
     </footer>
   );
