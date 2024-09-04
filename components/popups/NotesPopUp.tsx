@@ -99,7 +99,7 @@ function NotesPopUp(props: Props): Component {
       id="notes"
       divClass="!max-w-[850px] !h-full !max-h-[93vh] sm:!mt-6 !overflow-y-hidden"
     >
-      <div className="w-full h-full flex flex-col justify-between items-center gap-y-6">
+      <div className="w-full h-full flex flex-col justify-between items-center gap-y-6 relative">
         <HeaderPopUp icon={<Icon size={27} />} title={t("notes")} />
         {hasChanges && !loadingFav && (
           <button
@@ -128,7 +128,7 @@ function NotesPopUp(props: Props): Component {
         disabled={isLoading}
         type="button"
         onClick={handleClosePopUp}
-        className="btn btn-ghost btn-square w-12 h-12 rounded-full backdrop-blur-xl absolute right-3 bottom-2"
+        className="btn btn-ghost btn-square w-12 h-12 rounded-full backdrop-blur-xl absolute top-3.5 right-3"
       >
         <ExitIcon size={38} />
       </button>
