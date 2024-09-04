@@ -36,7 +36,7 @@ function SettingsPopUp(): Component {
       <HeaderPopUp icon={<SettingsIcon size={25} />} title={t("settings")} />
 
       <div className="w-full flex flex-col justify-between items-center gap-y-10 text-slate-200 pt-16 lg:pt-0">
-        <div className="w-full sm:w-[90%] flex flex-col sm:flex-row gap-y-3 justify-between items-center gap-x-3 sm:gap-x-0">
+        <div className="w-full sm:w-[90%] flex flex-col sm:flex-row gap-y-3 justify-between sm:items-center items-start pl-20 sm:pl-0 gap-x-3 sm:gap-x-0">
           <label
             htmlFor="select-language"
             className="sm:text-xl text-lg flex justify-start items-center gap-x-3"
@@ -56,7 +56,7 @@ function SettingsPopUp(): Component {
           />
         </div>
 
-        <div className="w-full sm:w-[90%] flex flex-col gap-y-3 sm:flex-row justify-between items-center gap-x-3 sm:gap-x-0">
+        <div className="w-full sm:w-[90%] flex flex-col gap-y-3 sm:flex-row justify-between sm:items-center items-start pl-20 sm:pl-0 gap-x-3 sm:gap-x-0">
           <label
             htmlFor="enabled-animations"
             className="sm:text-xl text-lg flex justify-start items-center gap-x-3"
@@ -76,7 +76,7 @@ function SettingsPopUp(): Component {
           </button>
         </div>
 
-        <div className="w-full sm:w-[90%] flex flex-col gap-y-3 sm:flex-row justify-between items-center gap-x-3 sm:gap-x-0">
+        <div className="w-full sm:w-[90%] flex flex-col gap-y-3 sm:flex-row justify-between sm:items-center items-start pl-20 sm:pl-0 gap-x-3 sm:gap-x-0">
           <label
             htmlFor="hidden-state"
             className="sm:text-xl text-lg flex justify-start items-center gap-x-3"
