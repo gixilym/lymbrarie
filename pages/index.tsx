@@ -22,7 +22,6 @@ import { AuthAction, type User, useUser, withUser } from "next-firebase-auth";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilState } from "recoil";
-
 export default withUser({
   whenAuthed: AuthAction.RENDER,
   whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
