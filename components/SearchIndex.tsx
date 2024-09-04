@@ -44,7 +44,7 @@ function SearchIndex(): Component {
               type="search"
             />
             <Select
-              className="join-item"
+              className="join-item capitalize"
               id="select-state"
               isSearchable={false}
               options={options}

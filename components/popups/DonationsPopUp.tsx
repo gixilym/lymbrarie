@@ -1,5 +1,5 @@
 import type { Component } from "@/utils/types";
-import { CoffeeIcon, Heart as Icon, CoinsIcon } from "lucide-react";
+import { CoffeeIcon, CoinsIcon, Heart as Icon } from "lucide-react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import ClosePopUpBtn from "../btns/ClosePopUpBtn";
@@ -15,15 +15,6 @@ function DonationsPopUp(): Component {
       <p className="text-lg sm:text-xl text-center w-full text-pretty sm:px-4 text-slate-200">
         {t("donations-text")}
       </p>
-      {/* <Link
-        target="_blank"
-        rel="noreferrer"
-        href="https://paypal.com/paypalme/gixilym"
-        className="link text-xl sm:text-2xl text-blue-400 hover:text-blue-300 cursor-pointer duration-75 w-full text-center"
-      >
-        {t("paypal")}
-      </Link> */}
-
       <div className="w-full flex flex-col gap-y-4 justify-center items-center">
         <Link
           href="https://cafecito.app/gixilym"
