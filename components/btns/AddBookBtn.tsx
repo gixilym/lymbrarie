@@ -20,6 +20,7 @@ function AddBookBtn({ text }: { text: string }): Component {
         {text}
       </button>
       <button
+        type="button"
         onClick={action}
         className="block sm:hidden rounded-full fixed bottom-28 right-6 font-normal backdrop-blur-[2px] h-14 last:group after:duration-500 border-2 border-rose-300/40 duration-500 origin-left brightness-110 text-white bg-slate-800/60 w-14 justify-start items-center px-3 text-3xl overflow-hidden before:absolute before:w-12 before:h-12 before:content[''] before:right-1 before:top-1 before:z-10 before:bg-violet-500 before:rounded-full before:blur-lg after:absolute after:z-10 after:w-14 after:h-20 after:content[''] after:bg-rose-400 after:right-10 after:top-3 after:rounded-full after:blur-lg"
       >
