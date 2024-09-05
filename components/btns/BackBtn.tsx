@@ -13,7 +13,7 @@ function BackBtn({ hidden }: { hidden: boolean }): Component {
       className={twMerge(
         hidden ? "flex sm:hidden" : "flex",
         pathname.includes("/book/") ? "w-full" : "w-max",
-        "absolute top-10 xl:top-[72px] xl:pt-2 right-20 2xl:left-[20rem] opacity-90 justify-center items-center"
+        "absolute top-10 xl:top-[72px] xl:pt-2 right-[150px] 2xl:left-[20rem] opacity-90 justify-center items-center"
       )}
     >
       <Icon

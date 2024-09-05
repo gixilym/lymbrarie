@@ -45,7 +45,7 @@ function FooterIndex(): Component {
           <span className="hidden xl:inline">{` - ${t("copyright")}`}</span>
         </p>
       </div>
-      <div className="flex flex-col sm:flex-row items-start sm:items-center pl-3 sm:pl-0 justify-evenly w-full h-auto sm:w-auto sm:gap-x-6">
+      <div className="flex flex-row flex-wrap gap-y-4 py-1 items-start sm:items-center pl-3 sm:pl-0 justify-evenly w-full h-auto sm:w-auto sm:gap-x-6">
         <div
           onClick={() => openPopUp("profile")}
           className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline"
