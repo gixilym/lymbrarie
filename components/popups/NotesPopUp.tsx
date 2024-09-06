@@ -103,7 +103,7 @@ function NotesPopUp(props: Props): Component {
         <HeaderPopUp icon={<Icon size={27} />} title={t("notes")} />
         {hasChanges && !loadingFav && (
           <button
-            className="btn bg-green-400/90 tracking-tight font-thin text-sm sm:text-lg text-black hover:bg-green-300 opacity-95 absolute top-4 right-3"
+            className="btn bg-green-400 backdrop-blur-sm font-thin text-sm sm:text-lg text-black hover:bg-green-300 opacity-95 absolute bottom-0 right-0"
             onClick={saveContent}
           >
             <SaveIcon size={20} />

@@ -1,6 +1,5 @@
 import usePopUp from "@/hooks/usePopUp";
 import type { Component } from "@/utils/types";
-import { CirclePlus as Icon } from "lucide-react";
 
 function AddBookBtn({ text }: { text: string }): Component {
   const { openPopUp } = usePopUp();
