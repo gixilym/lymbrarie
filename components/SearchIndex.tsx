@@ -32,7 +32,7 @@ function SearchIndex(): Component {
     ] as const;
 
   return (
-    <header className="z-10 w-full mb-6 sm:mb-10 justify-center items-center flex h-26 relative">
+    <header className="z-10 w-full mb-0 sm:mb-10 justify-center items-center flex flex-col lg:flex-row h-26 relative">
       <AppIcon />
       <form className="w-full sm:w-max flex flex-col items-center justify-center select-none px-6 sm:px-0">
         <div className="w-full h-max flex flex-col sm:flex-row gap-y-2 sm:gap-y-0 sm:gap-x-2 justify-start items-center">

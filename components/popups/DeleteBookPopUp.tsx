@@ -67,7 +67,7 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
   return (
     <dialog
       onClick={() => closePopUp("delete_book")}
-      className="select-none backdrop-blur-md w-full h-full fixed top-0 z-50 flex justify-center items-start pt-10 bg-transparent px-2 sm:px-0"
+      className="select-none backdrop-blur-md w-full h-full fixed top-0 z-50 flex justify-center items-start pt-10 bg-transparent px-6 sm:px-0"
     >
       <animated.div
         onClick={e => e.stopPropagation()}
