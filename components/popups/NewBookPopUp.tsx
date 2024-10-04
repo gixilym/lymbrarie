@@ -192,8 +192,7 @@ function NewBookPopUp({ UID }: Props): Component {
   return (
     <DialogContainer
       id="add_book"
-      divClass="!w-full items-end !justify-start lg:justify-between"
-    >
+      divClass="!w-full items-end !justify-start lg:justify-between">
       <HeaderPopUp icon={<Icon size={25} />} title={t("new-book")} />
 
       <FieldsBook
@@ -212,23 +211,20 @@ function NewBookPopUp({ UID }: Props): Component {
           onSubmit={newBook}
           ref={formRef}
           method="dialog"
-          className="flex justify-center items-center font-public w-full"
-        >
+          className="flex justify-center items-center font-public w-full">
           <div className="w-full justify-end gap-x-4 items-center flex flex-col md:flex-row h-10">
             <div className="flex gap-x-2">
               <button
                 disabled={isLoading}
                 type="button"
                 onClick={() => closePopUp("add_book")}
-                className="btn text-lg sm:text-xl w-32 font-normal bg-slate-800 hover:bg-slate-700 text-slate-300"
-              >
+                className="btn text-lg sm:text-xl w-32 font-normal bg-slate-800 hover:bg-slate-700 text-slate-300">
                 {t("cancel")}
               </button>
               <button
                 disabled={isLoading}
                 type="submit"
-                className="btn bg-blue-500 font-medium sm:font-semibold text-black hover:bg-blue-400 duration-100 text-lg sm:text-xl w-32 tracking-wide"
-              >
+                className="btn bg-blue-500 font-medium sm:font-semibold text-black hover:bg-blue-400 duration-100 text-lg sm:text-xl w-32 tracking-wide">
                 {t("add")}
               </button>
             </div>

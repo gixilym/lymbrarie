@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 html {
-  @apply overflow-y-scroll font-pop selection:bg-violet-900 selection:text-white;
+  @apply font-pop selection:bg-violet-900 selection:text-white;
 }

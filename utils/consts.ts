@@ -8,6 +8,8 @@ const MAINTENANCE: boolean = false;
 
 const BASE_URL: string = "https://lymbrarie.com";
 
+const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dgs55s8qh/image/upload";
+
 const COLLECTION: CollectionReference = collection(DB, "lymbrarie_books");
 
 const GENDERS: string[] = [
@@ -51,4 +53,12 @@ const EMPTY_BOOK: Book = {
   },
 } as const;
 
-export { COLLECTION, EMPTY_BOOK, GENDERS, MAINTENANCE, PRODUCTION, BASE_URL };
+export {
+  COLLECTION,
+  EMPTY_BOOK,
+  GENDERS,
+  MAINTENANCE,
+  PRODUCTION,
+  BASE_URL,
+  CLOUDINARY_URL,
+};
