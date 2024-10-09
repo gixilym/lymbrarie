@@ -227,8 +227,7 @@ function EditBookPopUp(props: Props): Component {
   return (
     <DialogContainer
       id="edit_book"
-      divClass="!justify-start lg:justify-between"
-    >
+      divClass="!justify-start lg:justify-between">
       <HeaderPopUp icon={<Icon size={25} />} title={t("edit-book")} />
       <FieldsBook
         errorKey={errorKey}
@@ -252,21 +251,18 @@ function EditBookPopUp(props: Props): Component {
           onSubmit={editBook}
           ref={form}
           method="dialog"
-          className="space-x-2 "
-        >
+          className="space-x-2 ">
           <button
             disabled={isLoading}
             type="button"
             onClick={() => closePopUp("edit_book")}
-            className="btn text-lg w-auto font-thin bg-slate-800 hover:bg-slate-700 text-slate-300"
-          >
+            className="btn text-lg w-auto font-thin bg-slate-800 hover:bg-slate-700 text-slate-300">
             {t("cancel")}
           </button>
           <button
             disabled={editDisabled || isLoading}
             type="submit"
-            className="btn bg-blue-500 text-black hover:bg-blue-400 duration-100 text-lg w-24 px-2"
-          >
+            className="btn bg-blue-500 text-black hover:bg-blue-400 duration-100 text-lg w-24 px-2">
             {t("edit-confirm")}
           </button>
         </form>
