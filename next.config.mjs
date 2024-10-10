@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+import withPWAInit from "@ducanh2912/next-pwa";
+
 const nextConfig = {
   reactStrictMode: false,
   env: { FIREBASE_API_KEY: process.env.FIREBASE_API_KEY },
@@ -20,4 +22,8 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+const withPWA = withPWAInit({
+  dest: "public",
+});
+
+export default withPWA(nextConfig);
