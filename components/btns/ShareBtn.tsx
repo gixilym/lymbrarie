@@ -42,11 +42,7 @@ function ShareBtn({ title, sharing, setSharing }: Props): Component {
         files: [file],
       };
 
-      if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        await navigator.share(data);
-      } else {
-        toast.error(t("err-share-not-supported"));
-      }
+      await navigator.share(data);
     } catch (err) {
       toast.error(t("err-share"));
     }
