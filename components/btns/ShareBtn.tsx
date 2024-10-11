@@ -3,8 +3,7 @@ import html2canvas from "html2canvas-pro";
 import { Share2 as Icon } from "lucide-react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
-import cover from "@/public/cover.webp";
-import Image from "next/image";
+import cover from "@/public/share.png";
 
 function ShareBtn({ title, sharing, setSharing }: Props): Component {
   const [t] = useTranslation("global"),
