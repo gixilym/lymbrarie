@@ -17,6 +17,11 @@ function ShareBtn({ title, sharing, setSharing }: Props): Component {
         backgroundColor: "rgb(2,6,23)",
       });
 
+      if (!canvas) {
+        toast.error(t("err-canvas"));
+        return;
+      }
+
       const blob = await new Promise<Blob | null>(resolve => {
         canvas.toBlob(blob => resolve(blob), "image/png");
       });
@@ -26,7 +31,9 @@ function ShareBtn({ title, sharing, setSharing }: Props): Component {
         return;
       }
 
-      const file = new File([blob], `${title}.png`, { type: "image/png" });
+      const file = new File([blob], `${title}.png`, {
+        type: "image/png",
+      });
 
       const data: ShareData = {
         title,
@@ -35,12 +42,12 @@ function ShareBtn({ title, sharing, setSharing }: Props): Component {
         files: [file],
       };
 
-      if (navigator.share) {
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
         await navigator.share(data);
       } else {
-        toast.error(t("err-share"));
+        toast.error(t("err-share-not-supported"));
       }
-    } catch (error) {
+    } catch (err) {
       toast.error(t("err-share"));
     }
   }
