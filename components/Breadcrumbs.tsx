@@ -12,13 +12,12 @@ function Breadcrumbs({ title }: { title: string }): Component {
   const [t] = useTranslation("global");
 
   return (
-    <div className="w-full max-w-[700px] absolute top-10 hidden sm:block opacity-95">
-      <ul className="gap-x-2 flex justify-start items-end text-[16.5px] overflow-hidden">
+    <div className="w-full max-w-[700px] absolute top-10 hidden sm:block opacity-70">
+      <ul className="gap-x-2 flex justify-start items-end text-[17px] overflow-hidden">
         <li>
           <Link
             href="/"
-            className="flex justify-start cursor-pointer hover:underline items-center gap-x-1"
-          >
+            className="flex justify-start cursor-pointer hover:underline items-center gap-x-1">
             <HomeIcon size={15} className="mb-0.5" />
             <span className="capitalize">{t("home")}</span>
           </Link>
@@ -27,8 +26,7 @@ function Breadcrumbs({ title }: { title: string }): Component {
         <li>
           <Link
             href="/"
-            className="flex justify-start items-center cursor-pointer hover:underline gap-x-1"
-          >
+            className="flex justify-start items-center cursor-pointer hover:underline gap-x-1">
             <LibraryIcon size={16} />
             <span className="capitalize">{t("books")}</span>
           </Link>

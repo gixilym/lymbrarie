@@ -20,17 +20,15 @@ function DonationsPopUp(): Component {
           href="https://cafecito.app/gixilym"
           rel="noopener noreferrer"
           target="_blank"
-          className="flex justify-center items-center gap-x-4 px-4 py-2 rounded-lg border-2 border-rose-300 bg-rose-400 duration-100 hover:bg-rose-400/90 text-white w-full max-w-[300px]"
-        >
+          className="flex justify-center items-center gap-x-4 px-4 py-2 rounded-lg border-2 border-rose-300 bg-rose-400 duration-100 hover:bg-rose-400/90 text-black font-semibold w-full max-w-[300px]">
           <CoffeeIcon size={25} />
-          <span className="tracking-wide">Invitame un Cafecito</span>
+          <span className="tracking-wide">{t("buy-coffee")}</span>
         </Link>
         <Link
           href="https://paypal.com/paypalme/gixilym"
           rel="noopener noreferrer"
           target="_blank"
-          className="flex justify-center items-center gap-x-4 px-4 py-2 rounded-lg border-2 border-blue-300 bg-blue-400 duration-100 hover:bg-blue-400/90 text-black w-full max-w-[300px]"
-        >
+          className="flex justify-center items-center gap-x-4 px-4 py-2 rounded-lg border-2 border-blue-300 bg-blue-400 duration-100 hover:bg-blue-400/90 text-black w-full max-w-[300px]">
           <CoinsIcon size={25} />
           <span className="tracking-wide font-semibold">{t("paypal")}</span>
         </Link>

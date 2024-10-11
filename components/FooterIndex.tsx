@@ -21,11 +21,9 @@ function FooterIndex(): Component {
     { openPopUp } = usePopUp(),
     { id }: { id: string | null } = useUser(),
     { pathname }: NextRouter = useRouter(),
+    isHomePath: boolean = pathname != "/",
     dontShow: boolean =
-      isNull(id) ||
-      pathname == "/login" ||
-      pathname == "/logout" ||
-      pathname.includes("/book/");
+      isNull(id) || pathname == "/login" || pathname == "/logout";
 
   if (dontShow) return <></>;
 
@@ -41,40 +39,40 @@ function FooterIndex(): Component {
           alt="logo"
         />
         <p translate="no">
-          Copyright © 2024 Lymbrarie
+          Copyright &copy; 2024 Lymbrarie
           <span className="hidden xl:inline">{` - ${t("copyright")}`}</span>
         </p>
       </div>
       <div className="flex flex-row flex-wrap gap-y-4 py-1 items-start sm:items-center pl-3 sm:pl-0 justify-evenly w-full h-auto sm:w-auto sm:gap-x-6">
-        <div
-          onClick={() => openPopUp("profile")}
-          className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline"
-        >
-          <UserIcon size={19} />
-          <p className="text-sm sm:text-[16px] hover:underline duration-75 cursor-pointer ">
-            {t("profile")}
-          </p>
-        </div>
-        <div
-          className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline "
-          onClick={() => openPopUp("donations")}
-        >
-          <HeartIcon size={18} />
-          <p className="text-sm sm:text-[16px]">{t("donate")}</p>
-        </div>
-        <div
-          onClick={() => openPopUp("support")}
-          className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline "
-        >
-          <SupportIcon size={18} />
-          <p className="text-sm sm:text-[16px]">{t("support")}</p>
-        </div>
+        {!isHomePath && (
+          <>
+            <div
+              onClick={() => openPopUp("profile")}
+              className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline">
+              <UserIcon size={19} />
+              <p className="text-sm sm:text-[16px] hover:underline duration-75 cursor-pointer ">
+                {t("profile")}
+              </p>
+            </div>
+            <div
+              className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline "
+              onClick={() => openPopUp("donations")}>
+              <HeartIcon size={18} />
+              <p className="text-sm sm:text-[16px]">{t("donate")}</p>
+            </div>
+            <div
+              onClick={() => openPopUp("support")}
+              className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline ">
+              <SupportIcon size={18} />
+              <p className="text-sm sm:text-[16px]">{t("support")}</p>
+            </div>
+          </>
+        )}
 
         <Link
           href="/privacypolicy"
           scroll={false}
-          className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline"
-        >
+          className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline">
           <PrivacyIcon size={18} />
           <p className="text-sm sm:text-[16px]">{t("privacy-policy")}</p>
         </Link>

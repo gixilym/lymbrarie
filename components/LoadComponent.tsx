@@ -5,7 +5,8 @@ import { twMerge } from "tailwind-merge";
 function LoadComponent({ mt }: { mt?: boolean }): Component {
   const [t] = useTranslation("global");
   return (
-    <div className={twMerge(!mt ? "mt-20 sm:mt-28" : "mt-0", "loader")}>
+    <div
+      className={twMerge(!mt ? "mt-20 sm:mt-28" : "mt-0", "loader opacity-90")}>
       <div>
         <ul>
           <li>

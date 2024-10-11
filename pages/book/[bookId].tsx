@@ -1,3 +1,4 @@
+import AppIcon from "@/components/AppIcon";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import BackBtn from "@/components/btns/BackBtn";
 import SettingsBtn from "@/components/btns/SettingsBtn";
@@ -69,6 +70,7 @@ function BookId(): Component {
     [cacheBooks, setCacheBooks] = useLocalStorage("cache-books", null),
     [sharing, setSharing] = useState<boolean>(false),
     [allTitles] = useLocalStorage("all-titles", []),
+    isMobile: boolean = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent),
     myFavs: BookData[] = cacheBooks
       .map((b: Book) => b?.data)
       .filter((b: BookData) => b?.isFav),
@@ -172,7 +174,11 @@ function BookId(): Component {
       <Head>
         <title translate="no">{book?.data?.title || "Lymbrarie"}</title>
       </Head>
-
+      {!isMobile && (
+        <div className="absolute top-10 left-4">
+          <AppIcon />
+        </div>
+      )}
       {popup.offline && <OfflinePopUp />}
       {popup.edit_book && <EditBookPopUp data={book} documentId={documentId} />}
       {popup.notes && <NotesPopUp {...notesProps} />}
