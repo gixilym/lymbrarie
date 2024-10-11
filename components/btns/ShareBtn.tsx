@@ -9,8 +9,9 @@ function ShareBtn({ title, sharing, setSharing }: Props): Component {
     content = document.getElementById("screenshot") as HTMLElement,
     icons = document.getElementById("icons") as HTMLElement,
     isMobile: boolean = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent),
-    handleShare = () => (isMobile ? shareInMobile() : shareInDesktop());
+    handleShare = () => (isMobile ? shareInDesktop() : shareInDesktop());
 
+  //* No está funcionando la conversión de la imagen a Blob.
   function shareInMobile(): void {
     html2canvas(content, { backgroundColor: "rgb(2,6,23)" }).then(canvas => {
       canvas.toBlob((blob: any) => {
