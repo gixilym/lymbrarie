@@ -15,7 +15,7 @@ function ShareBtn({ title, sharing, setSharing }: Props): Component {
   async function shareInMobile(): Promise<void> {
     const response = await fetch(cover.src);
     const blob = await response.blob();
-    const file = new File([blob], `${title}.png`, {
+    const file = new File([blob], `prueba.png`, {
       type: "image/png",
     });
 
