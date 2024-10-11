@@ -15,7 +15,7 @@ import { popupsAtom } from "@/utils/atoms";
 import { COLLECTION, EMPTY_BOOK, PRODUCTION } from "@/utils/consts";
 import { deformatTitle, isLoaned, translateStateBook } from "@/utils/helpers";
 import { dismissNotification, notification } from "@/utils/notifications";
-import type { Book, BookData, Component, Handler } from "@/utils/types";
+import type { Book, BookData, Component, Handler, Timer } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
 import { isEqual, noop, union } from "es-toolkit";
 import {
@@ -61,12 +61,13 @@ function BookId(): Component {
     title: string = deformatTitle(bookTitle),
     [animations] = useLocalStorage("animations", true),
     { isLoading, finishLoading } = useLoadContent(),
-    Cover = animated(Image),
+    Cover: any = animated(Image),
     [book, setBook] = useState<any>(EMPTY_BOOK),
     [documentId, setDocumentId] = useState<string>(""),
     [notes, setNotes] = useState<string>(""),
     [loadingFav, setLoadingFav] = useState<boolean>(false),
     [cacheBooks, setCacheBooks] = useLocalStorage("cache-books", null),
+    [sharing, setSharing] = useState<boolean>(false),
     [allTitles] = useLocalStorage("all-titles", []),
     myFavs: BookData[] = cacheBooks
       .map((b: Book) => b?.data)
@@ -86,7 +87,7 @@ function BookId(): Component {
       to: { opacity: 1 },
       config: { duration: 1000 },
     })),
-    [stylesSection] = useSpring(() => ({
+    [stylesSection, api] = useSpring(() => ({
       from: { opacity: animations ? 0 : 1 },
       to: { opacity: 1 },
       config: { duration: 500 },
@@ -107,6 +108,13 @@ function BookId(): Component {
   useEffect(() => {
     if (notExist) router.push("/");
   }, [notExist]);
+
+  useEffect(() => {
+    const content = document.getElementById("screenshot") as HTMLElement;
+    content.style.opacity = "0";
+    const timer: Timer = setTimeout(() => (content.style.opacity = "1"), 200);
+    return () => clearTimeout(timer);
+  }, [sharing]);
 
   function getCacheBook(): void {
     const b: Book = cacheBooks.find((b: Book) =>
@@ -179,7 +187,7 @@ function BookId(): Component {
       <Breadcrumbs title={book?.data?.title ?? ""} />
       <article
         id="screenshot"
-        className="w-full sm:w-[700px] h-[300px] flex flex-col sm:flex-row gap-y-12 justify-start items-center sm:items-start backdrop-blur-[2.5px] relative mt-20 xl:mt-0 sm:mt-12">
+        className="w-full sm:w-[700px] h-[290px] flex flex-col sm:flex-row gap-y-12 justify-start items-center sm:items-start backdrop-blur-[2.5px] relative mt-20 xl:mt-0 sm:mt-12">
         <Cover
           priority
           style={stylesImg}
@@ -226,6 +234,7 @@ function BookId(): Component {
             )}
           </div>
           <animated.div
+            id="icons"
             style={stylesIcons}
             className="flex items-center justify-center gap-x-2">
             <button
@@ -281,7 +290,7 @@ function BookId(): Component {
                 </li>
               </ul>
             </div>
-            <ShareBtn title={title} />
+            <ShareBtn title={title} setSharing={setSharing} sharing={sharing} />
           </animated.div>
         </div>
       </article>

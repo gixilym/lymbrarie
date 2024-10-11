@@ -46,7 +46,7 @@ function Index(): Component {
     [deletedNoti] = useLocalStorage("deleted", false),
     [zeroBooks] = useRecoilState<boolean>(zeroAtom),
     showFirstBook: boolean = booksIsEmpty || zeroBooks,
-    [styles, animate] = useSpring(() => ({
+    [styles, api] = useSpring(() => ({
       from: { opacity: animations ? 0 : 1 },
       to: { opacity: 1 },
       config: { duration: 1000 },
@@ -97,7 +97,7 @@ function Index(): Component {
 
   function animateList(): void {
     if (newNoti || deletedNoti) return;
-    animate.start({
+    api.start({
       from: { opacity: animations ? 0 : 1 },
       to: { opacity: 1 },
       config: { duration: 1000 },
@@ -109,8 +109,7 @@ function Index(): Component {
   return (
     <animated.main
       style={styles}
-      className="flex flex-col justify-start items-center w-full sm:max-w-[950px] h-full gap-y-6"
-    >
+      className="flex flex-col justify-start items-center w-full sm:max-w-[950px] h-full gap-y-6">
       <SearchIndex />
       {showFirstBook ? <AddYourFirstBook /> : <ListSection myBooks={myBooks} />}
       <PopUps profileImg={profileImg} profileName={profileName} UID={UID} />

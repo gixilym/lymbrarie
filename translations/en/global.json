@@ -134,5 +134,6 @@
     "copy-notes": "Please copy and save them elsewhere to avoid losing changes and try again later.",
     "copied": "Copied",
     "copy": "Copy",
-    "know-lymbrarie": "Know Lymbrarie!"
+    "know-lymbrarie": "Know Lymbrarie!",
+    "err-share": "Error sharing"
 }
