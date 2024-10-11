@@ -18,7 +18,9 @@ function ShareBtn({ title, sharing, setSharing }: Props): Component {
 
   useEffect(() => {
     (async function () {
-      const img = await fetch("https://picsum.photos/200/300");
+      const img = await fetch(
+        "https://res.cloudinary.com/dgs55s8qh/image/upload/v1727747965/v1o1p4hmkezcne68ipbc.webp"
+      );
       const blob = await img.blob();
       const file = new File([blob], `${title}.png`, { type: "image/png" });
       setFile(file);
