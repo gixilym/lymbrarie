@@ -291,7 +291,7 @@ function BookId(): Component {
               </ul>
             </div>
             <ShareBtn
-              img={book?.data?.image}
+              img={book?.data?.image || defaultCover}
               title={title}
               setSharing={setSharing}
               sharing={sharing}
