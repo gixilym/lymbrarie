@@ -5,7 +5,7 @@
 html {
   @apply overflow-y-scroll font-pop selection:bg-violet-900 selection:text-white;
 }
-/* From Uiverse.io by Nawsome */ 
+
 .loader {
   --background: linear-gradient(135deg, #b823f8, #275EFE);
   --shadow: rgba(39, 94, 254, 0.28);
@@ -195,3 +195,4 @@ html {
     transform: rotateY(0deg);
   }
 }
+

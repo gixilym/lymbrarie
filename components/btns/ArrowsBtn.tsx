@@ -1,23 +1,9 @@
-import useLocalStorage from "@/hooks/useLocalStorage";
 import type { Component } from "@/utils/types";
 import { MoveDown as DownIcon, MoveUp as UpIcon } from "lucide-react";
 
 function Arrows(): Component {
-  const [animations] = useLocalStorage("animations", true);
-
-  function toTop(): void {
-    scrollTo({
-      top: 0,
-      behavior: animations ? "smooth" : "instant",
-    });
-  }
-
-  function toBottom(): void {
-    scrollTo({
-      top: document.body.scrollHeight,
-      behavior: animations ? "smooth" : "instant",
-    });
-  }
+  const toTop = (): void => scrollTo({ top: 0 });
+  const toBottom = (): void => scrollTo({ top: document.body.scrollHeight });
 
   return (
     <div className="absolute -top-10 lg:top-80 right-20 lg:-right-40 space-y-10 opacity-60">
