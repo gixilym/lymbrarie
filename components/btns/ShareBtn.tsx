@@ -1,5 +1,4 @@
 import type { Component } from "@/utils/types";
-import { isNull } from "es-toolkit";
 import html2canvas from "html2canvas-pro";
 import { Share2 as Icon } from "lucide-react";
 import toast from "react-hot-toast";
@@ -12,26 +11,23 @@ function ShareBtn({ title, sharing, setSharing }: Props): Component {
     isMobile: boolean = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent),
     handleShare = () => (isMobile ? shareInMobile() : shareInDesktop());
 
-  function shareInMobile(): string | Promise<void> {
-    let file = null;
+  function shareInMobile(): void {
     html2canvas(content, { backgroundColor: "rgb(2,6,23)" }).then(canvas => {
-      const image = canvas.toDataURL("image/png");
-      const newFile = new File([image], `${title}.png`, { type: "image/png" });
-      file = newFile;
+      canvas.toBlob((blob: any) => {
+        const file = new File([blob], `${title}.png`, {
+          type: "image/png",
+        });
+        const data: ShareData = {
+          title,
+          text: `${title} - Lymbrarie`,
+          url: "https://lymbrarie.com",
+          files: [file],
+        };
+        return navigator.share
+          ? navigator.share(data)
+          : toast.error(t("err-share"));
+      });
     });
-
-    if (isNull(file)) return "";
-
-    const data: ShareData = {
-      title,
-      text: `${title} - Lymbrarie`,
-      url: "https://lymbrarie.com",
-      files: [file],
-    };
-
-    return navigator.share
-      ? navigator.share(data)
-      : toast.error(t("err-share"));
   }
 
   function shareInDesktop(): void {
