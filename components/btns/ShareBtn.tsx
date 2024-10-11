@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import cover from "@/public/share.png";
 import { BASE_URL } from "@/utils/consts";
+import { useEffect, useState } from "react";
 
 function ShareBtn({ title, sharing, setSharing }: Props): Component {
   const [t] = useTranslation("global"),
@@ -13,10 +14,18 @@ function ShareBtn({ title, sharing, setSharing }: Props): Component {
     isMobile: boolean = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent),
     handleShare = () => (isMobile ? shareInMobile() : shareInDesktop());
 
+  const [file, setFile] = useState<any>(null);
+
+  useEffect(() => {
+    (async function () {
+      const img = await fetch("https://picsum.photos/200/300");
+      const blob = await img.blob();
+      const file = new File([blob], `${title}.png`, { type: "image/png" });
+      setFile(file);
+    })();
+  }, []);
+
   async function shareInMobile(): Promise<void> {
-    const img = await fetch("https://picsum.photos/200/300");
-    const blob = await img.blob();
-    const file = new File([blob], `${title}.png`, { type: "image/png" });
     const data = {
       title,
       text: `${title} - Lymbrarie`,
