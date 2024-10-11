@@ -9,26 +9,40 @@ function ShareBtn({ title, sharing, setSharing }: Props): Component {
     content = document.getElementById("screenshot") as HTMLElement,
     icons = document.getElementById("icons") as HTMLElement,
     isMobile: boolean = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent),
-    handleShare = () => (isMobile ? shareInDesktop() : shareInDesktop());
+    handleShare = () => (isMobile ? shareInMobile() : shareInDesktop());
 
-  //* No está funcionando la conversión de la imagen a Blob.
-  function shareInMobile(): void {
-    html2canvas(content, { backgroundColor: "rgb(2,6,23)" }).then(canvas => {
-      canvas.toBlob((blob: any) => {
-        const file = new File([blob], `${title}.png`, {
-          type: "image/png",
-        });
-        const data: ShareData = {
-          title,
-          text: `${title} - Lymbrarie`,
-          url: "https://lymbrarie.com",
-          files: [file],
-        };
-        return navigator.share
-          ? navigator.share(data)
-          : toast.error(t("err-share"));
+  async function shareInMobile(): Promise<void> {
+    try {
+      const canvas = await html2canvas(content, {
+        backgroundColor: "rgb(2,6,23)",
       });
-    });
+
+      const blob = await new Promise<Blob | null>(resolve => {
+        canvas.toBlob(blob => resolve(blob), "image/png");
+      });
+
+      if (!blob) {
+        toast.error(t("err-blob"));
+        return;
+      }
+
+      const file = new File([blob], `${title}.png`, { type: "image/png" });
+
+      const data: ShareData = {
+        title,
+        text: `${title} - Lymbrarie`,
+        url: "https://lymbrarie.com",
+        files: [file],
+      };
+
+      if (navigator.share) {
+        await navigator.share(data);
+      } else {
+        toast.error(t("err-share"));
+      }
+    } catch (error) {
+      toast.error(t("err-share"));
+    }
   }
 
   function shareInDesktop(): void {
