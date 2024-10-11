@@ -13,42 +13,17 @@ function ShareBtn({ title, sharing, setSharing }: Props): Component {
     handleShare = () => (isMobile ? shareInMobile() : shareInDesktop());
 
   async function shareInMobile(): Promise<void> {
-    try {
-      // Tomar la captura de pantalla del contenido con html2canvas
-      const canvas = await html2canvas(content, {
-        backgroundColor: "rgb(2,6,23)",
-      });
-
-      // Convertir el canvas a Blob
-      canvas.toBlob(blob => {
-        if (blob) {
-          // Crear un archivo a partir del Blob
-          const file = new File([blob], `${title}.png`, {
-            type: "image/png",
-          });
-
-          // Crear el objeto de datos para compartir
-          const data: ShareData = {
-            title,
-            text: `${title} - Lymbrarie`,
-            url: "https://lymbrarie.com",
-            files: [file],
-          };
-
-          // Comprobar si el navegador soporta compartir archivos
-          if (navigator.share) {
-            navigator.share(data);
-          } else {
-            toast.error(t("err-share-not-supported"));
-          }
-        } else {
-          toast.error(t("err-share-blob"));
-        }
-      }, "image/png");
-    } catch (error) {
-      console.error("Error al compartir:", error);
-      toast.error(t("err-share"));
-    }
+    const img = fetch("https://picsum.photos/200/300");
+    const blob = img.then(res => res.blob());
+    const file = new File([blob], `${title}.png`, { type: "image/png" });
+    const data = {
+      title,
+      text: `${title} - Lymbrarie`,
+      url: "https://lymbrarie.com",
+      files: [file],
+    };
+    if (navigator.share) navigator.share(data);
+    else toast.error(t("err-share"));
   }
 
   function shareInDesktop(): void {
