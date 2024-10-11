@@ -3,6 +3,8 @@ import html2canvas from "html2canvas-pro";
 import { Share2 as Icon } from "lucide-react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import cover from "@/public/cover.webp";
+import Image from "next/image";
 
 function ShareBtn({ title, sharing, setSharing }: Props): Component {
   const [t] = useTranslation("global"),
@@ -12,40 +14,21 @@ function ShareBtn({ title, sharing, setSharing }: Props): Component {
     handleShare = () => (isMobile ? shareInMobile() : shareInDesktop());
 
   async function shareInMobile(): Promise<void> {
-    try {
-      const canvas = await html2canvas(content, {
-        backgroundColor: "rgb(2,6,23)",
-      });
+    const response = await fetch(cover.src);
+    const blob = await response.blob();
+    const file = new File([blob], `${title}.png`, {
+      type: "image/png",
+    });
 
-      if (!canvas) {
-        toast.error(t("err-canvas"));
-        return;
-      }
+    const data: ShareData = {
+      title,
+      text: `${title} - Lymbrarie`,
+      url: "https://lymbrarie.com",
+      files: [file],
+    };
 
-      const blob = await new Promise<Blob | null>(resolve => {
-        canvas.toBlob(blob => resolve(blob), "image/png");
-      });
-
-      if (!blob) {
-        toast.error(t("err-blob"));
-        return;
-      }
-
-      const file = new File([blob], `${title}.png`, {
-        type: "image/png",
-      });
-
-      const data: ShareData = {
-        title,
-        text: `${title} - Lymbrarie`,
-        url: "https://lymbrarie.com",
-        files: [file],
-      };
-
-      await navigator.share(data);
-    } catch (err) {
-      toast.error(t("err-share"));
-    }
+    if (navigator.canShare()) navigator.share(data);
+    else toast.error(t("err-share"));
   }
 
   function shareInDesktop(): void {
