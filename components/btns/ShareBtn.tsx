@@ -22,7 +22,7 @@ function ShareBtn({ title, sharing, setSharing }: Props): Component {
         "https://res.cloudinary.com/dgs55s8qh/image/upload/v1727747965/v1o1p4hmkezcne68ipbc.webp"
       );
       const blob = await img.blob();
-      const file = new File([blob], `${title}.png`, { type: "image/png" });
+      const file = new File([blob], `${title}.webp`, { type: "image/webp" });
       setFile(file);
     })();
   }, []);
