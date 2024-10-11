@@ -1,6 +1,7 @@
 import Breadcrumbs from "@/components/Breadcrumbs";
 import BackBtn from "@/components/btns/BackBtn";
 import SettingsBtn from "@/components/btns/SettingsBtn";
+import ShareBtn from "@/components/btns/ShareBtn";
 import LoadComponent from "@/components/LoadComponent";
 import DeleteBookPopUp from "@/components/popups/DeleteBookPopUp";
 import EditBookPopUp from "@/components/popups/EditBookPopUp";
@@ -31,7 +32,6 @@ import {
   Library as LibraryIcon,
   Notebook as NotesIcon,
   Bookmark as RemoveFavIcon,
-  Share2,
   Tag as StateIcon,
   User as UserIcon,
 } from "lucide-react";
@@ -44,7 +44,6 @@ import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { useRecoilState } from "recoil";
 import { twMerge } from "tailwind-merge";
-import html2canvas from "html2canvas-pro";
 
 export default withUser({
   whenAuthed: AuthAction.RENDER,
@@ -156,35 +155,6 @@ function BookId(): Component {
       if (PRODUCTION) router.push("/error");
       else console.error(`Error en toggleFav: ${err.message}`);
     }
-  }
-
-  // function handleShare() {
-  //   const container = document.getElementById("screenshot");
-  //   if (container) {
-  //     html2canvas(container, { backgroundColor: "rgb(2,6,23)" }).then(
-  //       canvas => {
-  //         const image = canvas.toDataURL("image/png");
-  //         const link = document.createElement("a");
-  //         link.href = image;
-  //         link.download = bookTitle;
-  //         link.click();
-  //       }
-  //     );
-  //   }
-  // }
-
-  function handleShare() {
-    const info = {
-      title,
-      text: "Lymbrarie - donde cada libro encuentra su lugar",
-      url: "https://lymbrarie.com",
-    };
-    if (navigator.share) {
-      navigator
-        .share(info)
-        .then(() => console.log("Compartido"))
-        .catch(err => console.error(err));
-    } else alert("navegador no compatible");
   }
 
   return (
@@ -311,11 +281,7 @@ function BookId(): Component {
                 </li>
               </ul>
             </div>
-            <button
-              onClick={handleShare}
-              className="btn btn-square bg-slate-700/30 sm:bg-slate-700/25 hover:bg-slate-700/50 border-2 border-slate-700/40 mb-1 mt-4 sm:mt-0 ">
-              <Share2 className="w-5 h-5 sm:w-[26px] sm:h-[26px]" />
-            </button>
+            <ShareBtn title={title} />
           </animated.div>
         </div>
       </article>
