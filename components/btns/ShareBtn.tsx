@@ -22,13 +22,14 @@ function ShareBtn({ title, sharing, setSharing, img }: Props): Component {
       const f: File = new File([blob], `${title}.webp`, { type: "image/webp" });
       setFile(f);
     })();
-  }, []);
+  }, [img]);
 
   function shareInMobile(): void {
     if (isNull(file)) return;
     const data: ShareData = {
       title,
-      url: `${title} - ${BASE_URL}`,
+      text: `${title} - Lymbrarie`,
+      url: BASE_URL,
       files: [file],
     };
     if (navigator.share) navigator.share(data);
