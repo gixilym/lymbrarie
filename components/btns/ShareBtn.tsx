@@ -10,15 +10,39 @@ function ShareBtn({ title, sharing, setSharing }: Props): Component {
     handleShare = () => (isMobile ? shareInMobile() : shareInDesktop());
 
   function shareInMobile(): string | Promise<void> {
-    const info: Info = {
-      title,
-      text: `${title} - Lymbrarie`,
-      url: "https://lymbrarie.com",
-    };
+    const content = document.getElementById("screenshot") as HTMLElement;
 
-    return navigator.share
-      ? navigator.share(info)
-      : toast.error(t("err-share"));
+    return html2canvas(content, { backgroundColor: "rgb(2,6,23)" }).then(
+      canvas => {
+        return new Promise<void>(resolve => {
+          canvas.toBlob(blob => {
+            if (blob) {
+              const file = new File([blob], `${title}.png`, {
+                type: "image/png",
+              });
+              const data: ShareData = {
+                title,
+                text: `${title} - Lymbrarie`,
+                url: "https://lymbrarie.com",
+                files: [file],
+              };
+
+              // Intentar compartir
+              navigator
+                .share(data)
+                .then(() => resolve())
+                .catch(() => {
+                  toast.error(t("err-share"));
+                  resolve();
+                });
+            } else {
+              toast.error(t("err-share"));
+              resolve();
+            }
+          }, "image/png");
+        });
+      }
+    );
   }
 
   function shareInDesktop(): void {
@@ -73,9 +97,3 @@ interface Props {
   sharing: boolean;
   setSharing: React.Dispatch<React.SetStateAction<boolean>>;
 }
-
-type Info = {
-  title: string;
-  text: string;
-  url: string;
-};

@@ -87,7 +87,7 @@ function BookId(): Component {
       to: { opacity: 1 },
       config: { duration: 1000 },
     })),
-    [stylesSection, api] = useSpring(() => ({
+    [stylesSection] = useSpring(() => ({
       from: { opacity: animations ? 0 : 1 },
       to: { opacity: 1 },
       config: { duration: 500 },
@@ -112,7 +112,7 @@ function BookId(): Component {
   useEffect(() => {
     const content = document.getElementById("screenshot") as HTMLElement;
     content.style.opacity = "0";
-    const timer: Timer = setTimeout(() => (content.style.opacity = "1"), 200);
+    const timer: Timer = setTimeout(() => (content.style.opacity = "1"), 300);
     return () => clearTimeout(timer);
   }, [sharing]);
 
