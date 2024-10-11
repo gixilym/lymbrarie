@@ -1,4 +1,5 @@
 import type { Component } from "@/utils/types";
+import { isNull } from "es-toolkit";
 import html2canvas from "html2canvas-pro";
 import { Share2 as Icon } from "lucide-react";
 import toast from "react-hot-toast";
@@ -6,49 +7,35 @@ import { useTranslation } from "react-i18next";
 
 function ShareBtn({ title, sharing, setSharing }: Props): Component {
   const [t] = useTranslation("global"),
+    content = document.getElementById("screenshot") as HTMLElement,
+    icons = document.getElementById("icons") as HTMLElement,
     isMobile: boolean = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent),
     handleShare = () => (isMobile ? shareInMobile() : shareInDesktop());
 
   function shareInMobile(): string | Promise<void> {
-    const content = document.getElementById("screenshot") as HTMLElement;
+    let file = null;
+    html2canvas(content, { backgroundColor: "rgb(2,6,23)" }).then(canvas => {
+      const image = canvas.toDataURL("image/png");
+      const newFile = new File([image], `${title}.png`, { type: "image/png" });
+      file = newFile;
+    });
 
-    return html2canvas(content, { backgroundColor: "rgb(2,6,23)" }).then(
-      canvas => {
-        return new Promise<void>(resolve => {
-          canvas.toBlob(blob => {
-            if (blob) {
-              const file = new File([blob], `${title}.png`, {
-                type: "image/png",
-              });
-              const data: ShareData = {
-                title,
-                text: `${title} - Lymbrarie`,
-                url: "https://lymbrarie.com",
-                files: [file],
-              };
+    if (isNull(file)) return "";
 
-              // Intentar compartir
-              navigator
-                .share(data)
-                .then(() => resolve())
-                .catch(() => {
-                  toast.error(t("err-share"));
-                  resolve();
-                });
-            } else {
-              toast.error(t("err-share"));
-              resolve();
-            }
-          }, "image/png");
-        });
-      }
-    );
+    const data: ShareData = {
+      title,
+      text: `${title} - Lymbrarie`,
+      url: "https://lymbrarie.com",
+      files: [file],
+    };
+
+    return navigator.share
+      ? navigator.share(data)
+      : toast.error(t("err-share"));
   }
 
   function shareInDesktop(): void {
     setSharing(!sharing);
-    const content = document.getElementById("screenshot") as HTMLElement;
-    const icons = document.getElementById("icons") as HTMLElement;
 
     content.style.padding = "20px";
     content.style.border = "3px solid rgba(139,92,246,0.3)";
