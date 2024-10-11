@@ -4,6 +4,7 @@ import { Share2 as Icon } from "lucide-react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import cover from "@/public/share.png";
+import { BASE_URL } from "@/utils/consts";
 
 function ShareBtn({ title, sharing, setSharing }: Props): Component {
   const [t] = useTranslation("global"),
@@ -13,13 +14,13 @@ function ShareBtn({ title, sharing, setSharing }: Props): Component {
     handleShare = () => (isMobile ? shareInMobile() : shareInDesktop());
 
   async function shareInMobile(): Promise<void> {
-    const img = fetch("https://picsum.photos/200/300");
-    const blob = img.then(res => res.blob());
+    const img = await fetch("https://picsum.photos/200/300");
+    const blob = await img.blob();
     const file = new File([blob], `${title}.png`, { type: "image/png" });
     const data = {
       title,
       text: `${title} - Lymbrarie`,
-      url: "https://lymbrarie.com",
+      url: BASE_URL,
       files: [file],
     };
     if (navigator.share) navigator.share(data);
