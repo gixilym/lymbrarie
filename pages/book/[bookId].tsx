@@ -290,7 +290,12 @@ function BookId(): Component {
                 </li>
               </ul>
             </div>
-            <ShareBtn title={title} setSharing={setSharing} sharing={sharing} />
+            <ShareBtn
+              img={book?.data?.image}
+              title={title}
+              setSharing={setSharing}
+              sharing={sharing}
+            />
           </animated.div>
         </div>
       </article>

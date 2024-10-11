@@ -1,37 +1,34 @@
+import { BASE_URL } from "@/utils/consts";
 import type { Component } from "@/utils/types";
+import { isNull } from "es-toolkit";
 import html2canvas from "html2canvas-pro";
 import { Share2 as Icon } from "lucide-react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
-import cover from "@/public/share.png";
-import { BASE_URL } from "@/utils/consts";
-import { useEffect, useState } from "react";
 
-function ShareBtn({ title, sharing, setSharing }: Props): Component {
+function ShareBtn({ title, sharing, setSharing, img }: Props): Component {
   const [t] = useTranslation("global"),
+    [file, setFile] = useState<File | null>(null),
     content = document.getElementById("screenshot") as HTMLElement,
     icons = document.getElementById("icons") as HTMLElement,
     isMobile: boolean = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent),
     handleShare = () => (isMobile ? shareInMobile() : shareInDesktop());
 
-  const [file, setFile] = useState<any>(null);
-
   useEffect(() => {
     (async function () {
-      const img = await fetch(
-        "https://res.cloudinary.com/dgs55s8qh/image/upload/v1727747965/v1o1p4hmkezcne68ipbc.webp"
-      );
-      const blob = await img.blob();
-      const file = new File([blob], `${title}.webp`, { type: "image/webp" });
-      setFile(file);
+      const res: Response = await fetch(img);
+      const blob: Blob = await res.blob();
+      const f: File = new File([blob], `${title}.webp`, { type: "image/webp" });
+      setFile(f);
     })();
   }, []);
 
-  async function shareInMobile(): Promise<void> {
-    const data = {
+  function shareInMobile(): void {
+    if (isNull(file)) return;
+    const data: ShareData = {
       title,
-      text: `${title} - Lymbrarie`,
-      url: BASE_URL,
+      url: `${title} - ${BASE_URL}`,
       files: [file],
     };
     if (navigator.share) navigator.share(data);
@@ -84,6 +81,7 @@ function ShareBtn({ title, sharing, setSharing }: Props): Component {
 export default ShareBtn;
 
 interface Props {
+  img: string;
   title: string;
   sharing: boolean;
   setSharing: React.Dispatch<React.SetStateAction<boolean>>;
