@@ -13,9 +13,10 @@ function ShareBtn({ title, sharing, setSharing, img }: Props): Component {
     content = document.getElementById("screenshot") as HTMLElement,
     icons = document.getElementById("icons") as HTMLElement,
     isMobile: boolean = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent),
-    handleShare = () => (isMobile ? shareInMobile() : shareInDesktop());
+    handleShare = (): void => (isMobile ? shareInMobile() : shareInDesktop());
 
   useEffect(() => {
+    console.log(file);
     (async function () {
       const res: Response = await fetch(img);
       const blob: Blob = await res.blob();
