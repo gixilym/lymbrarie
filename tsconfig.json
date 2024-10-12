@@ -34,7 +34,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "app/api/auth/[...nextauth].js"
-  ],
+, "next-sitemap.config.js"  ],
   "exclude": [
     "node_modules"
   ]
