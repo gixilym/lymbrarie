@@ -3,7 +3,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import BackBtn from "@/components/btns/BackBtn";
 import SettingsBtn from "@/components/btns/SettingsBtn";
 import ShareBtn from "@/components/btns/ShareBtn";
-import LoadComponent from "@/components/LoadComponent";
+import LoadBook from "@/components/LoadBook";
 import DeleteBookPopUp from "@/components/popups/DeleteBookPopUp";
 import EditBookPopUp from "@/components/popups/EditBookPopUp";
 import NotesPopUp from "@/components/popups/NotesPopUp";
@@ -50,7 +50,7 @@ export default withUser({
   whenAuthed: AuthAction.RENDER,
   whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
   whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
-  LoaderComponent: LoadComponent,
+  LoaderComponent: LoadBook,
 })(BookId);
 
 function BookId(): Component {
