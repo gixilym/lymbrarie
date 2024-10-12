@@ -26,6 +26,7 @@ function App({
     <I18Provider>
       <RecoilProvider>
         <Head>
+          <link rel="manifest" href="/manifest.json" />
           <title translate="no">Lymbrarie</title>
         </Head>
         <Layout>

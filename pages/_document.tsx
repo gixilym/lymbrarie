@@ -35,7 +35,6 @@ function Document(): Component {
           property="twitter:image"
           content="https://res.cloudinary.com/dgs55s8qh/image/upload/v1721421179/uyp9sym1kgwcbbt3z07r.png"
         />
-        <meta name="google-adsense-account" content="ca-pub-6333479205921641" />
       </Head>
       <Providers>
         <Main />
