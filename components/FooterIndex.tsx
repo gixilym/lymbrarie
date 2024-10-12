@@ -69,13 +69,22 @@ function FooterIndex(): Component {
           </>
         )}
 
-        <Link
-          href="/privacypolicy"
-          scroll={false}
-          className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline">
-          <PrivacyIcon size={18} />
-          <p className="text-sm sm:text-[16px]">{t("privacy-policy")}</p>
-        </Link>
+        {location.pathname != "/privacypolicy" ? (
+          <Link
+            href="/privacypolicy"
+            scroll={false}
+            className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline">
+            <PrivacyIcon size={18} />
+            <p className="text-sm sm:text-[16px]">{t("privacy-policy")}</p>
+          </Link>
+        ) : (
+          <Link
+            href="/"
+            scroll={false}
+            className="mr-2 sm:mr-6 duration-75 cursor-pointer hover:underline">
+            <p className="text-sm sm:text-[16px]">{t("home")}</p>
+          </Link>
+        )}
       </div>
     </footer>
   );
