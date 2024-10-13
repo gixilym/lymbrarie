@@ -35,4 +35,10 @@ const animListAtom: RecoilState<boolean> = atom({
   default: false,
 });
 
-export { animListAtom, popupsAtom, searchAtom, stateAtom, zeroAtom };
+const referrerAtom: RecoilState<boolean> = atom({
+  key: "referrer-atom",
+  default: false,
+});
+
+export { animListAtom, popupsAtom, referrerAtom, searchAtom, stateAtom, zeroAtom };
+

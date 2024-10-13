@@ -1,7 +1,6 @@
-import LoadComponent from "@/components/LoadComponent";
+import LoaderCircle from "@/components/LoaderCircle";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import logo from "@/public/favicon.ico";
-import { PRODUCTION } from "@/utils/consts";
 import { GithubIcon, GoogleIcon } from "@/utils/svgs";
 import type { Component } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
@@ -21,7 +20,7 @@ export default withUser({
   whenAuthed: AuthAction.REDIRECT_TO_APP,
   whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
   whenUnauthedAfterInit: AuthAction.RENDER,
-  LoaderComponent: LoadComponent,
+  LoaderComponent: LoaderCircle,
 })(LoginPage);
 
 function LoginPage(): Component {
@@ -38,7 +37,7 @@ function LoginPage(): Component {
     try {
       await signInWithPopup(auth, provider);
     } catch (err: any) {
-      if (!PRODUCTION) console.error(`catch 'logIn' ${err.message}`);
+      console.error(`catch 'logIn' ${err.message}`);
     }
   }
 
@@ -87,12 +86,18 @@ flex items-center min-w-[330px] sm:w-full max-w-[413px] h-[60px] rounded-lg dura
             <GithubIcon className="w-7 h-7" />
             <p className="text-sm sm:text-xl text-white">{t("with-github")}</p>
           </button>
-
-          <Link
-            className="absolute bottom-4 cursor-default text-xs text-slate-400/80 sm:text-[16px] hover:underline duration-100 hover:text-slate-400"
-            href="/privacypolicy">
-            {t("privacy-policy")}
-          </Link>
+          <div className="absolute bottom-3 w-full cursor-default text-xs text-slate-400/80 sm:text-[16px] flex flex-col justify-center items-center gap-y-2">
+            <Link
+              className="hover:underline duration-100 hover:text-slate-400"
+              href="/faq">
+              FAQ
+            </Link>
+            <Link
+              className="hover:underline duration-100 hover:text-slate-400"
+              href="/privacypolicy">
+              {t("privacy-policy")}
+            </Link>
+          </div>
         </div>
       </animated.div>
       <div className="hidden sm:flex relative border-4 border-violet-900/30 rounded-lg p-4 bg-violet-900/20 mb-16 justify-start flex-col items-center">

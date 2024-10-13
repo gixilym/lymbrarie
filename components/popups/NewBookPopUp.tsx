@@ -1,7 +1,7 @@
 import useLoadContent from "@/hooks/useLoadContent";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
-import { COLLECTION, EMPTY_BOOK, PRODUCTION } from "@/utils/consts";
+import { COLLECTION, EMPTY_BOOK } from "@/utils/consts";
 import { isLoaned, len, normalizeText, tLC } from "@/utils/helpers";
 import { dismissNotification, notification } from "@/utils/notifications";
 import type {
@@ -92,8 +92,8 @@ function NewBookPopUp({ UID }: Props): Component {
       setShowNoti(true);
       router.reload();
     } catch (err: any) {
-      if (PRODUCTION) router.push("/error");
-      else console.error(`error en newBook: ${err.message}`);
+      router.push("/error");
+      console.error(`catch 'newBook' ${err.message}`);
     } finally {
       dismissNotification();
     }

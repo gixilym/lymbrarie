@@ -2,8 +2,6 @@ import { DB } from "@/database/initAuth";
 import { collection, type CollectionReference } from "firebase/firestore";
 import type { Book } from "./types";
 
-const PRODUCTION: boolean = true;
-
 const MAINTENANCE: boolean = false;
 
 const BASE_URL: string = "https://lymbrarie.com";
@@ -54,11 +52,10 @@ const EMPTY_BOOK: Book = {
 } as const;
 
 export {
-  COLLECTION,
+  BASE_URL,
+  CLOUDINARY_URL, COLLECTION,
   EMPTY_BOOK,
   GENDERS,
-  MAINTENANCE,
-  PRODUCTION,
-  BASE_URL,
-  CLOUDINARY_URL,
+  MAINTENANCE
 };
+

@@ -1,7 +1,7 @@
 import useLoadContent from "@/hooks/useLoadContent";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
-import { COLLECTION, EMPTY_BOOK, GENDERS, PRODUCTION } from "@/utils/consts";
+import { COLLECTION, EMPTY_BOOK, GENDERS } from "@/utils/consts";
 import {
   deformatTitle,
   formatTitle,
@@ -127,8 +127,8 @@ function EditBookPopUp(props: Props): Component {
       setAllTitles(newTitles);
       router.replace(newPath).then(() => router.reload());
     } catch (err: any) {
-      if (PRODUCTION) router.push("/error");
-      else console.error(`error en editBook: ${err.message}`);
+      router.push("/error");
+      console.error(`catch 'editBook' ${err.message}`);
     } finally {
       dismissNotification();
     }

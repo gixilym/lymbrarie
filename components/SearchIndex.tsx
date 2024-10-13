@@ -24,11 +24,17 @@ function SearchIndex(): Component {
     handleSelect: Handler<string, void> = (val: string) =>
       setSelectStateVal(val),
     options: SelectOpt = [
-      { value: "", label: t("add-book-all") },
-      { value: "Reading", label: t("add-book-reading") },
-      { value: "Read", label: t("add-book-read") },
-      { value: "Pending", label: t("add-book-pending") },
-      { value: "Borrowed", label: t("add-book-borrowed") },
+      { value: "", label: "\xA0>\xA0\xA0" + t("new-book-all") },
+      {
+        value: "Reading",
+        label: "\xA0>\xA0\xA0" + t("new-book-reading"),
+      },
+      { value: "Read", label: "\xA0>\xA0\xA0" + t("new-book-read") },
+      { value: "Pending", label: "\xA0>\xA0\xA0" + t("new-book-pending") },
+      {
+        value: "Borrowed",
+        label: "\xA0>\xA0\xA0" + t("new-book-borrowed"),
+      },
     ] as const;
 
   return (

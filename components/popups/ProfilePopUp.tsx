@@ -69,7 +69,7 @@ function ProfilePopUp({ profileImg, profileName }: Props): Component {
             </div>
             <div className="space-y-2 border-2 border-slate-600/60 rounded-lg flex flex-col justify-center items-center py-2">
               <p className="capitalize text-sm sm:text-xl font-medium">
-                {t("add-book-reading")}
+                {t("new-book-reading")}
               </p>
               <span className="text-lg sm:text-2xl font-thin text-slate-200">
                 {Reading}
@@ -77,7 +77,7 @@ function ProfilePopUp({ profileImg, profileName }: Props): Component {
             </div>
             <div className="space-y-2 border-2 border-slate-600/60 rounded-lg flex flex-col justify-center items-center py-2">
               <p className="capitalize text-sm sm:text-xl font-medium">
-                {t("add-book-pending")}
+                {t("new-book-pending")}
               </p>
               <span className="text-lg sm:text-2xl font-thin text-slate-200">
                 {Pending}
@@ -85,7 +85,7 @@ function ProfilePopUp({ profileImg, profileName }: Props): Component {
             </div>
             <div className="space-y-2 border-2 border-slate-600/60 rounded-lg flex flex-col justify-center items-center py-2">
               <p className="capitalize text-sm sm:text-xl font-medium">
-                {t("add-book-read")}
+                {t("new-book-read")}
               </p>
               <span className="text-lg sm:text-2xl font-thin text-slate-200">
                 {Read}

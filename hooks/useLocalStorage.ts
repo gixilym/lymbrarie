@@ -1,4 +1,3 @@
-import { PRODUCTION } from "@/utils/consts";
 import { decrypt, encrypt } from "@/utils/encrypt";
 import { useState } from "react";
 
@@ -8,7 +7,7 @@ function useLocalStorage(key: any, initialValue?: any) {
       const item = window.localStorage.getItem(key);
       return item ? decrypt(item) : initialValue;
     } catch (err: any) {
-      console.error(PRODUCTION ? "" : err.message);
+      console.error( err.message);
       return initialValue;
     }
   });
@@ -20,7 +19,7 @@ function useLocalStorage(key: any, initialValue?: any) {
       setStoredValue(valueToStore);
       window.localStorage.setItem(key, encrypt(valueToStore));
     } catch (err: any) {
-      console.error(PRODUCTION ? "" : err.message);
+      console.error(err.message);
     }
   };
   return [storedValue, setValue];

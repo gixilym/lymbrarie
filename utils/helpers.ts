@@ -71,8 +71,9 @@ const selectStyles = (showAll: boolean, normal: boolean): any => ({
   menu: (s: StylesConfig) => ({
     ...s,
     backgroundColor: "rgb(30 41 59)",
-    marginTop: 2,
-    borderRadius: "0.8rem",
+    marginTop: 4,
+    borderRadius: "0.6rem",
+    border: "2px solid rgb(253 164 175 / 0.1)",
   }),
   indicatorSeparator: () => ({ backgroundColor: "transparent" }),
 });
@@ -80,19 +81,19 @@ const selectStyles = (showAll: boolean, normal: boolean): any => ({
 function formatState(val: string, t: Translate): string {
   switch (val) {
     case "Read":
-      return t("add-book-read");
+      return t("new-book-read");
 
     case "Reading":
-      return t("add-book-reading");
+      return t("new-book-reading");
 
     case "Pending":
-      return t("add-book-pending");
+      return t("new-book-pending");
 
     case "Borrowed":
-      return t("add-book-borrowed");
+      return t("new-book-borrowed");
 
     default:
-      return t("add-book-all");
+      return t("new-book-all");
   }
 }
 

@@ -26,7 +26,7 @@ function ErrorPage(): Component {
   if (notes) return <ErrorNotes notes={notes} />;
 
   return (
-    <div className="w-full h-full justify-start items-center flex flex-col pt-10 gap-y-10">
+    <section className="w-full h-full justify-start items-center flex flex-col pt-10 gap-y-10">
       <div className="w-full justify-center items-center flex">
         <Icon size={90} />
       </div>
@@ -44,11 +44,10 @@ function ErrorPage(): Component {
       <Link
         href="/"
         onClick={clearData}
-        className="text-2xl sm:text-3xl underline w-full text-center lowercase hover:text-slate-300 duration-75"
-      >
+        className="text-2xl sm:text-3xl underline w-full text-center lowercase hover:text-slate-300 duration-75">
         {t("reload")}
       </Link>
-    </div>
+    </section>
   );
 }
 

@@ -4,6 +4,8 @@ import type { Component } from "@/utils/types";
 import { isNull } from "es-toolkit";
 import {
   Heart as HeartIcon,
+  Home,
+  Info,
   Shield as PrivacyIcon,
   MessageCircleQuestion as SupportIcon,
   User as UserIcon,
@@ -28,7 +30,7 @@ function FooterIndex(): Component {
   if (dontShow) return <></>;
 
   return (
-    <footer className="flex select-none footer absolute bottom-0 w-full flex-col-reverse sm:flex-row justify-between items-center sm:p-4 bg-slate-900 border-t-2 border-gray-800 py-2 sm:py-0 sm:h-14 text-gray-400">
+    <footer className="flex select-none footer absolute bottom-0 w-full flex-col-reverse sm:flex-row justify-between items-center sm:p-4 bg-slate-900 border-t-2 border-gray-800 py-2 sm:py-0 sm:h-[60px] text-gray-400">
       <div className="hidden sm:grid items-center grid-flow-col px-4 sm:px-0">
         <Image
           loading="lazy"
@@ -63,13 +65,22 @@ function FooterIndex(): Component {
             <div
               onClick={() => openPopUp("support")}
               className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline ">
-              <SupportIcon size={18} />
+              <Info size={18} />
               <p className="text-sm sm:text-[16px]">{t("support")}</p>
             </div>
           </>
         )}
 
-        {location.pathname != "/privacypolicy" ? (
+        {location.pathname != "/faq" && (
+          <Link
+            href="/faq"
+            scroll={false}
+            className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline">
+            <SupportIcon size={18} />
+            <p className="text-sm sm:text-[16px]">FAQ</p>
+          </Link>
+        )}
+        {location.pathname != "/privacypolicy" && (
           <Link
             href="/privacypolicy"
             scroll={false}
@@ -77,11 +88,13 @@ function FooterIndex(): Component {
             <PrivacyIcon size={18} />
             <p className="text-sm sm:text-[16px]">{t("privacy-policy")}</p>
           </Link>
-        ) : (
+        )}
+        {location.pathname != "/" && (
           <Link
             href="/"
             scroll={false}
-            className="mr-2 sm:mr-6 duration-75 cursor-pointer hover:underline">
+            className="mr-2 sm:mr-6 duration-75 cursor-pointer hover:underline flex gap-x-2 justify-center items-center">
+            <Home size={18} />
             <p className="text-sm sm:text-[16px]">{t("home")}</p>
           </Link>
         )}

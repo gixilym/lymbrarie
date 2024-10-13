@@ -2,6 +2,7 @@
 const nextConfig = {
   reactStrictMode: false,
   env: { FIREBASE_API_KEY: process.env.FIREBASE_API_KEY },
+  compiler: { removeConsole: process.env.NODE_ENV == "production" },
   images: {
     remotePatterns: [
       {

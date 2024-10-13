@@ -2,7 +2,7 @@ import type { Component } from "@/utils/types";
 import { useTranslation } from "react-i18next";
 import { twMerge } from "tailwind-merge";
 
-function LoadComponent({ mt }: { mt?: boolean }): Component {
+function LoaderBook({ mt }: { mt?: boolean }): Component {
   const [t] = useTranslation("global");
   return (
     <div
@@ -48,4 +48,4 @@ function LoadComponent({ mt }: { mt?: boolean }): Component {
   );
 }
 
-export default LoadComponent;
+export default LoaderBook;

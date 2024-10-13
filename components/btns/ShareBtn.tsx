@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 
-function ShareBtn({ title, sharing, setSharing, img }: Props): Component {
+function ShareBtn({ title, img }: Props): Component {
   const [t] = useTranslation("global"),
     [file, setFile] = useState<File | null>(null),
     content = document.getElementById("screenshot") as HTMLElement,
@@ -16,7 +16,6 @@ function ShareBtn({ title, sharing, setSharing, img }: Props): Component {
     handleShare = (): void => (isMobile ? shareInMobile() : shareInDesktop());
 
   useEffect(() => {
-    console.log(file);
     (async function () {
       const res: Response = await fetch(img);
       const blob: Blob = await res.blob();
@@ -38,8 +37,6 @@ function ShareBtn({ title, sharing, setSharing, img }: Props): Component {
   }
 
   function shareInDesktop(): void {
-    setSharing(!sharing);
-
     content.style.padding = "20px";
     content.style.border = "3px solid rgba(139,92,246,0.3)";
     content.style.height = "auto";
@@ -85,6 +82,4 @@ export default ShareBtn;
 interface Props {
   img: string;
   title: string;
-  sharing: boolean;
-  setSharing: React.Dispatch<React.SetStateAction<boolean>>;
 }

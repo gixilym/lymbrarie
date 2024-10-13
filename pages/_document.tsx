@@ -8,17 +8,20 @@ function Document(): Component {
       <Head>
         <meta charSet="utf-8" />
         <link rel="icon" href="/favicon.ico" />
-        <meta name="title" content="Lymbrarie" />
+        <meta name="title" content="Lymbrarie - Tu biblioteca personal" />
         <meta
           name="description"
-          content="donde cada libro encuentra su lugar"
+          content="Organiza y lleva un seguimiento de tus lecturas"
         />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://lymbrarie.com/" />
-        <meta property="og:title" content="Lymbrarie" />
+        <meta
+          property="og:title"
+          content="Lymbrarie - Tu biblioteca personal"
+        />
         <meta
           property="og:description"
-          content="donde cada libro encuentra su lugar"
+          content="Organiza y lleva un seguimiento de tus lecturas"
         />
         <meta
           property="og:image"
@@ -26,10 +29,13 @@ function Document(): Component {
         />
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content="https://lymbrarie.com/" />
-        <meta property="twitter:title" content="Lymbrarie" />
+        <meta
+          property="twitter:title"
+          content="Lymbrarie - Tu biblioteca personal"
+        />
         <meta
           property="twitter:description"
-          content="donde cada libro encuentra su lugar"
+          content="Organiza y lleva un seguimiento de tus lecturas"
         />
         <meta
           property="twitter:image"

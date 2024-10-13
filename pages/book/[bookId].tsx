@@ -3,7 +3,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import BackBtn from "@/components/btns/BackBtn";
 import SettingsBtn from "@/components/btns/SettingsBtn";
 import ShareBtn from "@/components/btns/ShareBtn";
-import LoadBook from "@/components/LoadBook";
+import LoaderCircle from "@/components/LoaderCircle";
 import DeleteBookPopUp from "@/components/popups/DeleteBookPopUp";
 import EditBookPopUp from "@/components/popups/EditBookPopUp";
 import NotesPopUp from "@/components/popups/NotesPopUp";
@@ -12,11 +12,17 @@ import useLoadContent from "@/hooks/useLoadContent";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
 import defaultCover from "@/public/cover.webp";
-import { popupsAtom } from "@/utils/atoms";
-import { COLLECTION, EMPTY_BOOK, PRODUCTION } from "@/utils/consts";
+import { popupsAtom, referrerAtom } from "@/utils/atoms";
+import { COLLECTION, EMPTY_BOOK } from "@/utils/consts";
 import { deformatTitle, isLoaned, translateStateBook } from "@/utils/helpers";
 import { dismissNotification, notification } from "@/utils/notifications";
-import type { Book, BookData, Component, Handler, Timer } from "@/utils/types";
+import type {
+  Book,
+  BookData,
+  Component,
+  Handler,
+  SetState,
+} from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
 import { isEqual, noop, union } from "es-toolkit";
 import {
@@ -43,14 +49,14 @@ import { type NextRouter, useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { twMerge } from "tailwind-merge";
 
 export default withUser({
   whenAuthed: AuthAction.RENDER,
   whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
   whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
-  LoaderComponent: LoadBook,
+  LoaderComponent: LoaderCircle,
 })(BookId);
 
 function BookId(): Component {
@@ -68,7 +74,6 @@ function BookId(): Component {
     [notes, setNotes] = useState<string>(""),
     [loadingFav, setLoadingFav] = useState<boolean>(false),
     [cacheBooks, setCacheBooks] = useLocalStorage("cache-books", null),
-    [sharing, setSharing] = useState<boolean>(false),
     [allTitles] = useLocalStorage("all-titles", []),
     isMobile: boolean = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent),
     myFavs: BookData[] = cacheBooks
@@ -79,10 +84,12 @@ function BookId(): Component {
     notesProps = { updateNotes, notes, setNotes, isLoading, loadingFav },
     [popup] = useRecoilState<any>(popupsAtom),
     handleRouteChange: Handler<void, void> = () => closeBookPopUps(),
+    setReferrer: SetState = useSetRecoilState(referrerAtom),
     [stylesImg] = useSpring(() => ({
       from: { opacity: animations ? 0 : 1 },
       to: { opacity: 1 },
-      config: { duration: 700 },
+      delay: 200,
+      config: { duration: 200 },
     })),
     [stylesIcons] = useSpring(() => ({
       from: { opacity: animations ? 0 : 1 },
@@ -96,27 +103,22 @@ function BookId(): Component {
     }));
 
   useEffect(() => {
+    setReferrer(true);
     router.events.on("routeChangeStart", handleRouteChange);
     return () => router.events.off("routeChangeStart", handleRouteChange);
   }, []);
 
   useEffect(() => {
-    const unsub: Unsubscribe = onAuthStateChanged(auth, () => noop());
-    getCacheBook();
     toast.remove();
+    getCacheBook();
+    if (!navigator.onLine) return;
+    const unsub: Unsubscribe = onAuthStateChanged(auth, () => noop());
     return () => unsub();
   }, [bookTitle, auth]);
 
   useEffect(() => {
     if (notExist) router.push("/");
   }, [notExist]);
-
-  useEffect(() => {
-    const content = document.getElementById("screenshot") as HTMLElement;
-    content.style.opacity = "0";
-    const timer: Timer = setTimeout(() => (content.style.opacity = "1"), 300);
-    return () => clearTimeout(timer);
-  }, [sharing]);
 
   function getCacheBook(): void {
     const b: Book = cacheBooks.find((b: Book) =>
@@ -142,8 +144,8 @@ function BookId(): Component {
       router.reload();
     } catch (err: any) {
       closePopUp("notes");
-      if (PRODUCTION) router.push(`/error?notes=${notes}`);
-      else console.error(`Error en updateNotes: ${err.message}`);
+      router.push(`/error?notes=${notes}`);
+      console.error(`catch 'updateNotes' ${err.message}`);
     } finally {
       dismissNotification();
     }
@@ -162,8 +164,8 @@ function BookId(): Component {
       setCacheBooks(newVersion);
       router.reload();
     } catch (err: any) {
-      if (PRODUCTION) router.push("/error");
-      else console.error(`Error en toggleFav: ${err.message}`);
+      router.push("/error");
+      console.error(`catch 'toggleFav' ${err.message}`);
     }
   }
 
@@ -296,12 +298,9 @@ function BookId(): Component {
                 </li>
               </ul>
             </div>
-            <ShareBtn
-              img={book?.data?.image || defaultCover}
-              title={title}
-              setSharing={setSharing}
-              sharing={sharing}
-            />
+            {navigator.onLine && (
+              <ShareBtn img={book?.data?.image || defaultCover} title={title} />
+            )}
           </animated.div>
         </div>
       </article>

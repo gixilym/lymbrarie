@@ -8,9 +8,9 @@ import {
   type QuerySnapshot,
   where,
 } from "firebase/firestore";
-import { COLLECTION, MAINTENANCE, PRODUCTION } from "./consts";
-import type { Book, Doc, SyncDocs } from "./types";
+import { COLLECTION, MAINTENANCE } from "./consts";
 import { len } from "./helpers";
+import type { Book, Doc, SyncDocs } from "./types";
 
 async function getDocuments(UID: string): Promise<List> {
   const books: Book[] = [];
@@ -24,8 +24,8 @@ async function getDocuments(UID: string): Promise<List> {
       isEmpty = res.empty;
     } catch (err: any) {
       if (MAINTENANCE) {
-        if (PRODUCTION) location.href = "/error";
-        else console.error(`error en getDocuments: ${err.message}`);
+         location.href = "/error";
+         console.error(`catch 'getDocuments' ${err.message}`);
       }
     }
   }
@@ -59,8 +59,8 @@ async function syncDocuments(props: SyncDocs) {
 
     return unsub;
   } catch (err: any) {
-    if (PRODUCTION) return (location.pathname = "/error");
-    else console.error(`Error en syncDocuments: ${err.message}`);
+    console.error(`catch 'syncDocuments' ${err.message}`);
+     return (location.pathname = "/error");
   }
 }
 

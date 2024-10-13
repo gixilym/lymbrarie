@@ -1,11 +1,12 @@
 import AddYourFirstBook from "@/components/AddYourFirstBook";
 import AccelerationAlert from "@/components/alerts/AccelerationAlert";
 import ListSection from "@/components/ListSection";
-import LoadComponent from "@/components/LoadComponent";
+import LoaderBook from "@/components/LoaderBook";
+import LoaderCircle from "@/components/LoaderCircle";
 import PopUps from "@/components/PopUps";
 import SearchIndex from "@/components/SearchIndex";
 import useLocalStorage from "@/hooks/useLocalStorage";
-import { zeroAtom } from "@/utils/atoms";
+import { referrerAtom, zeroAtom } from "@/utils/atoms";
 import { getDocuments, syncDocuments } from "@/utils/documents";
 import { len } from "@/utils/helpers";
 import { showNotifications } from "@/utils/notifications";
@@ -22,11 +23,12 @@ import { AuthAction, type User, useUser, withUser } from "next-firebase-auth";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRecoilState } from "recoil";
+
 export default withUser({
   whenAuthed: AuthAction.RENDER,
   whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
   whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
-  LoaderComponent: LoadComponent,
+  LoaderComponent: LoaderCircle,
 })(Index);
 
 function Index(): Component {
@@ -45,6 +47,7 @@ function Index(): Component {
     [newNoti] = useLocalStorage("added", false),
     [deletedNoti] = useLocalStorage("deleted", false),
     [zeroBooks] = useRecoilState<boolean>(zeroAtom),
+    [referrerBookPath] = useRecoilState<boolean>(referrerAtom),
     showFirstBook: boolean = booksIsEmpty || zeroBooks,
     [styles, api] = useSpring(() => ({
       from: { opacity: animations ? 0 : 1 },
@@ -60,7 +63,9 @@ function Index(): Component {
     };
 
   useEffect(() => {
+    console.log("HOLA");
     showNotifications(newNoti, deletedNoti, t);
+    if (!navigator.onLine) return;
     syncDocuments(argsSync);
   }, []);
 
@@ -71,6 +76,7 @@ function Index(): Component {
   }, [user]);
 
   useEffect(() => {
+    if (!navigator.onLine) return;
     const unsub: Unsubscribe = onAuthStateChanged(auth, () => noop());
     return () => unsub();
   }, [auth]);
@@ -85,14 +91,17 @@ function Index(): Component {
 
   async function fetchBooks(): Promise<void> {
     if (zeroBooks) return;
-    if (Array.isArray(cacheBooks)) setMyBooks(cacheBooks);
-    else {
-      setLoading(true);
-      const { books, isEmpty } = await getDocuments(UID);
-      setMyBooks(books);
-      setBooksIsEmpty(isEmpty);
-      setLoading(false);
-    }
+
+    if (Array.isArray(cacheBooks) || !navigator.onLine)
+      return setMyBooks(cacheBooks ?? []);
+
+    setLoading(true);
+    const { books, isEmpty } = await getDocuments(UID);
+    setMyBooks(books);
+    setBooksIsEmpty(isEmpty);
+    setCacheBooks(books);
+    setAllTitles(books.map((b: Book) => b?.data?.title ?? ""));
+    setLoading(false);
   }
 
   function animateList(): void {
@@ -104,7 +113,8 @@ function Index(): Component {
     });
   }
 
-  if (loading) return <LoadComponent mt={false} />;
+  if (loading && referrerBookPath) return <LoaderCircle />;
+  if (loading && !referrerBookPath) return <LoaderBook />;
 
   return (
     <animated.main
