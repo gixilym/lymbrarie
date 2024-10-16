@@ -12,6 +12,7 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { AuthAction, withUser } from "next-firebase-auth";
+import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
@@ -53,6 +54,13 @@ function LoginPage(): Component {
 
   return (
     <section className="absolute top-0 right-0 min-h-screen w-full flex flex-col items-center gap-y-20 justify-center bg-transparent sm:pt-20">
+      <Head>
+        <meta name="title" content="Lymbrarie - Tu biblioteca personal" />
+        <meta
+          name="description"
+          content="Organiza y lleva un seguimiento de tus lecturas"
+        />
+      </Head>
       <animated.div
         style={styles}
         className="border-0 sm:border-2 border-slate-700/70 relative py-14 sm:rounded-lg bg-slate-900 flex flex-col gap-y-10 justify-start sm:justify-center items-center w-full max-w-[580px] pb-20 min-h-screen sm:min-h-min">

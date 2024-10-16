@@ -2,7 +2,14 @@
 module.exports = {
   siteUrl: "https://lymbrarie.com",
   generateRobotsTxt: true,
-  exclude: ["/error", "/book/**", "/login", "/logout", "/faq"],
+  exclude: [
+    "/error",
+    "/book/**",
+    "/login",
+    "/logout",
+    "/faq",
+    "/privacypolicy",
+  ],
   robotsTxtOptions: {
     additionalSitemaps: [
       "https://lymbrarie.com/sitemap.xml",
