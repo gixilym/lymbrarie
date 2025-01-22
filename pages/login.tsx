@@ -16,6 +16,7 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
+import { Rocket } from "lucide-react";
 
 export default withUser({
   whenAuthed: AuthAction.REDIRECT_TO_APP,
@@ -63,7 +64,11 @@ function LoginPage(): Component {
       </Head>
       <animated.div
         style={styles}
-        className="border-0 sm:border-2 border-slate-700/70 relative py-14 sm:rounded-lg bg-slate-900 flex flex-col gap-y-10 justify-start sm:justify-center items-center w-full max-w-[580px] pb-20 min-h-screen sm:min-h-min">
+        className="border-0 sm:border-2 border-slate-700/70 relative py-14 sm:rounded-lg bg-slate-900 flex flex-col gap-y-10 justify-start sm:justify-center items-center w-full max-w-[580px] pb-20 min-h-screen sm:min-h-min"
+      >
+        <p className="text-xs sm:text-sm tracking-tight text-slate-200 border border-slate-500 rounded px-2 py-1 absolute top-3 right-2.5 bg-purple-600/30">
+          {t("version")} 2.0
+        </p>
         <div className="w-full flex flex-col justify-start items-center gap-y-4">
           <Image
             className="w-20 h-20 border-2 border-slate-500/70 rounded-full"
@@ -82,7 +87,8 @@ function LoginPage(): Component {
             type="button"
             onClick={withGoogle}
             className="bg-slate-400/10 justify-start gap-x-6 px-10 hover:bg-slate-100/10
- flex items-center min-w-[330px] sm:w-full max-w-[410px] h-14 rounded-lg border border-slate-500/40 duration-150 ">
+ flex items-center min-w-[330px] sm:w-full max-w-[410px] h-14 rounded-lg border border-slate-500/40 duration-150 "
+          >
             <GoogleIcon className="w-7 h-7" />
             <p className="text-sm sm:text-xl text-white">{t("with-google")}</p>
           </button>
@@ -90,19 +96,22 @@ function LoginPage(): Component {
             type="button"
             onClick={withGithub}
             className="bg-black/60 border border-slate-800 justify-start gap-x-6 px-11 hover:bg-slate-950/70
-flex items-center min-w-[330px] sm:w-full max-w-[413px] h-[60px] rounded-lg duration-150">
+flex items-center min-w-[330px] sm:w-full max-w-[413px] h-[60px] rounded-lg duration-150"
+          >
             <GithubIcon className="w-7 h-7" />
             <p className="text-sm sm:text-xl text-white">{t("with-github")}</p>
           </button>
           <div className="absolute bottom-3 w-full cursor-default text-xs text-slate-400/80 sm:text-[16px] flex flex-col justify-center items-center gap-y-2">
             <Link
               className="hover:underline duration-100 hover:text-slate-400"
-              href="/faq">
+              href="/faq"
+            >
               FAQ
             </Link>
             <Link
               className="hover:underline duration-100 hover:text-slate-400"
-              href="/privacypolicy">
+              href="/privacypolicy"
+            >
               {t("privacy-policy")}
             </Link>
           </div>

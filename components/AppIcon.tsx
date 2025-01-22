@@ -1,16 +1,13 @@
-"use client";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import icon from "@/public/favicon.ico";
 import type { Component } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
 
 function AppIcon(): Component {
   const MyLink = animated(Link),
     [animations] = useLocalStorage("animations", true),
-    { pathname } = useRouter(),
     [styles] = useSpring(() => ({
       from: { opacity: animations ? 0 : 1 },
       to: { opacity: 1 },

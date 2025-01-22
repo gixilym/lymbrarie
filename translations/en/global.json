@@ -147,5 +147,6 @@
     "answer-4": "Yes, all your information, such as your books and preferences, is private and is not shared with third parties. For more details, please see our privacy policy.",
     "question-5": "Does Lymbrarie have a mobile application?",
     "answer-5": "For now, Lymbrarie does not have an official mobile application, but plans are underway to develop one for Android. In the meantime, you can install the web version directly from your browser, both on PC and mobile.",
-    "back": "Back"
+    "back": "Back",
+    "version": "Version"
 }

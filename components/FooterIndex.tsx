@@ -50,7 +50,8 @@ function FooterIndex(): Component {
           <>
             <div
               onClick={() => openPopUp("profile")}
-              className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline">
+              className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline"
+            >
               <UserIcon size={19} />
               <p className="text-sm sm:text-[16px] hover:underline duration-75 cursor-pointer ">
                 {t("profile")}
@@ -58,13 +59,15 @@ function FooterIndex(): Component {
             </div>
             <div
               className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline "
-              onClick={() => openPopUp("donations")}>
+              onClick={() => openPopUp("donations")}
+            >
               <HeartIcon size={18} />
               <p className="text-sm sm:text-[16px]">{t("donate")}</p>
             </div>
             <div
               onClick={() => openPopUp("support")}
-              className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline ">
+              className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline "
+            >
               <Info size={18} />
               <p className="text-sm sm:text-[16px]">{t("support")}</p>
             </div>
@@ -75,7 +78,8 @@ function FooterIndex(): Component {
           <Link
             href="/faq"
             scroll={false}
-            className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline">
+            className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline"
+          >
             <SupportIcon size={18} />
             <p className="text-sm sm:text-[16px]">FAQ</p>
           </Link>
@@ -84,7 +88,8 @@ function FooterIndex(): Component {
           <Link
             href="/privacypolicy"
             scroll={false}
-            className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline">
+            className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline"
+          >
             <PrivacyIcon size={18} />
             <p className="text-sm sm:text-[16px]">{t("privacy-policy")}</p>
           </Link>
@@ -93,7 +98,8 @@ function FooterIndex(): Component {
           <Link
             href="/"
             scroll={false}
-            className="mr-2 sm:mr-6 duration-75 cursor-pointer hover:underline flex gap-x-2 justify-center items-center">
+            className="mr-2 sm:mr-6 duration-75 cursor-pointer hover:underline flex gap-x-2 justify-center items-center"
+          >
             <Home size={18} />
             <p className="text-sm sm:text-[16px]">{t("home")}</p>
           </Link>

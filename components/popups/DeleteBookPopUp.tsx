@@ -11,7 +11,7 @@ import { isEqual } from "es-toolkit";
 import { deleteDoc, doc } from "firebase/firestore";
 import { TriangleAlert as WarningIcon } from "lucide-react";
 import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
 

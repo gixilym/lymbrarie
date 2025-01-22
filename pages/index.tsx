@@ -1,3 +1,4 @@
+"use client"
 import AddYourFirstBook from "@/components/AddYourFirstBook";
 import AccelerationAlert from "@/components/alerts/AccelerationAlert";
 import ListSection from "@/components/ListSection";
@@ -63,7 +64,6 @@ function Index(): Component {
     };
 
   useEffect(() => {
-    console.log("HOLA");
     showNotifications(newNoti, deletedNoti, t);
     if (!navigator.onLine) return;
     syncDocuments(argsSync);
