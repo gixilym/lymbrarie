@@ -16,10 +16,12 @@ function PrivacyPolicyPage(): Component {
   return (
     <animated.section
       style={styles}
-      className="relative max-w-2xl w-full px-6 sm:px-0 text-slate-200/90 text-sm sm:text-xl flex flex-col justify-start items-center gap-y-8 [&>p]:w-full [&>p]:text-pretty">
+      className="relative max-w-2xl w-full px-6 sm:px-0 mb-16 lg:mb-36 text-slate-200/90 text-sm sm:text-xl flex flex-col justify-start items-center gap-y-8 [&>p]:w-full [&>p]:text-pretty"
+    >
       <Link
         href="/"
-        className="w-full text-xl underline text-center sm:text-start absolute">
+        className="w-full text-xl underline text-center sm:text-start absolute"
+      >
         {t("back")}
       </Link>
       <p className="mt-20 xl:mt-14">{t("privacy-1")}</p>
@@ -32,7 +34,8 @@ function PrivacyPolicyPage(): Component {
           className="text-blue-400 no-underline hover:text-blue-300 cursor-pointer duration-75"
           href="mailto:gixi.tsx@gmail.com"
           target="_blank"
-          rel="noreferrer">
+          rel="noreferrer"
+        >
           gixi.tsx@gmail.com
         </Link>
       </address>

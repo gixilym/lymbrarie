@@ -40,10 +40,7 @@ function FooterIndex(): Component {
           src={logo}
           alt="logo"
         />
-        <p translate="no">
-          Copyright &copy; 2024 Lymbrarie
-          <span className="hidden xl:inline">{` - ${t("copyright")}`}</span>
-        </p>
+        <span translate="no">Copyright &copy; 2025 Lymbrarie</span>
       </div>
       <div className="flex flex-row flex-wrap gap-y-4 py-1 items-start sm:items-center pl-3 sm:pl-0 justify-evenly w-full h-auto sm:w-auto sm:gap-x-6">
         {!isHomePath && (
