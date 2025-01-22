@@ -1,10 +1,5 @@
 import type { Component } from "@/utils/types";
-import {
-  ChevronRight as ArrowIcon,
-  BookIcon,
-  HomeIcon,
-  LibraryIcon,
-} from "lucide-react";
+import { ChevronRight as ArrowIcon, BookIcon, LibraryIcon } from "lucide-react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 
@@ -14,19 +9,20 @@ function Breadcrumbs({ title }: { title: string }): Component {
   return (
     <div className="w-full max-w-[700px] absolute top-10 hidden sm:block opacity-70">
       <ul className="gap-x-2 flex justify-start items-end text-[17px] overflow-hidden">
-        <li>
+        {/* <li>
           <Link
             href="/"
             className="flex justify-start cursor-pointer hover:underline items-center gap-x-1">
             <HomeIcon size={15} className="mb-0.5" />
             <span className="capitalize">{t("home")}</span>
           </Link>
-        </li>
-        <ArrowIcon size={23} />
+        </li> 
+        <ArrowIcon size={23} />*/}
         <li>
           <Link
             href="/"
-            className="flex justify-start items-center cursor-pointer hover:underline gap-x-1">
+            className="flex justify-start items-center cursor-pointer hover:underline gap-x-1"
+          >
             <LibraryIcon size={16} />
             <span className="capitalize">{t("books")}</span>
           </Link>
