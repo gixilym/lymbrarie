@@ -13,12 +13,6 @@ function App({
   Component,
   pageProps: { session, ...pageProps },
 }: AppProps): Component {
-  // const { push, pathname }: NextRouter = useRouter();
-
-  // useEffect(() => {
-  //   if (MAINTENANCE && pathname != "/") push("/");
-  // }, [pathname]);
-
   return (
     <I18Provider>
       <RecoilProvider>
