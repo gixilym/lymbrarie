@@ -1,15 +1,16 @@
-import useLocalStorage from "@/hooks/useLocalStorage";
-import defaultCover from "@/public/cover.webp";
 import type { Book, Component } from "@/utils/types";
 import { isUndefined, sum } from "es-toolkit";
-import { UserRound as Icon } from "lucide-react";
-import Image from "next/image";
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+
 import ClosePopUpBtn from "../btns/ClosePopUpBtn";
-import LogOutBtn from "../btns/LogOutBtn";
 import DialogContainer from "../DialogContainer";
 import HeaderPopUp from "../HeaderPopUp";
+import { UserRound as Icon } from "lucide-react";
+import Image from "next/image";
+import LogOutBtn from "../btns/LogOutBtn";
+import defaultCover from "@/public/cover.webp";
+import useLocalStorage from "@/hooks/useLocalStorage";
+import { useTranslation } from "react-i18next";
 
 function ProfilePopUp({ profileImg, profileName }: Props): Component {
   const [t] = useTranslation("global"),
@@ -44,8 +45,8 @@ function ProfilePopUp({ profileImg, profileName }: Props): Component {
     return (
       <>
         <HeaderPopUp icon={<Icon size={25} />} title={t("profile")} />
-        <div className="w-full flex flex-col justify-center items-center gap-y-6 text-slate-300">
-          <div className="flex flex-col justify-center items-center w-full">
+        <div className="w-full flex flex-col lg:flex-row justify-center gap-6 items-center text-slate-300">
+          <div className="flex flex-col justify-center items-center lg:max-w-[200px] w-full">
             <Image
               alt="avatar"
               className="rounded-full sm:w-24 w-20 sm:h-24 h-20 object-cover object-center"

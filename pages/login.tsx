@@ -54,7 +54,7 @@ function LoginPage(): Component {
   }
 
   return (
-    <section className="absolute top-0 right-0 min-h-screen w-full flex flex-col items-center gap-y-20 justify-center bg-transparent sm:pt-20">
+    <section className="absolute top-0 right-0 min-h-screen w-full flex flex-col items-center gap-y-20 justify-center bg-transparent sm:pt-10">
       <Head>
         <meta name="title" content="Lymbrarie - Tu biblioteca personal" />
         <meta
