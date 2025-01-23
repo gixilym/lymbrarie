@@ -16,7 +16,6 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
-import { Rocket } from "lucide-react";
 
 export default withUser({
   whenAuthed: AuthAction.REDIRECT_TO_APP,
@@ -64,9 +63,9 @@ function LoginPage(): Component {
       </Head>
       <animated.div
         style={styles}
-        className="border-0 sm:border-2 border-slate-700/70 relative py-14 sm:rounded-lg bg-slate-900 flex flex-col gap-y-10 justify-start sm:justify-center items-center w-full max-w-[580px] pb-20 min-h-screen sm:min-h-min"
+        className="border-0 sm:border-2 border-slate-700/70 relative pt-10 sm:rounded-lg bg-slate-900 flex flex-col gap-y-10 justify-start sm:justify-center items-center w-full max-w-[580px] pb-20 min-h-screen sm:min-h-min"
       >
-        <p className="text-xs sm:text-sm tracking-tight text-slate-200 border border-slate-500 rounded px-2 py-1 absolute top-3 right-2.5 bg-purple-600/30">
+        <p className="text-xs sm:text-sm tracking-tight text-slate-200 border border-slate-500/40 rounded px-2 py-1 absolute top-2.5 right-2.5 bg-purple-600/30">
           {t("version")} 2.0
         </p>
         <div className="w-full flex flex-col justify-start items-center gap-y-4">
@@ -78,7 +77,7 @@ function LoginPage(): Component {
           <h4 className="text-xl sm:text-3xl tracking-tight  w-full text-center text-slate-200">
             {t("welcome")}
           </h4>
-          <p className="text-sm sm:text-lg text-center text-slate-400">
+          <p className="text-sm sm:text-lg text-center text-slate-300/85">
             {t("book-find")}
           </p>
         </div>
