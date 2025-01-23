@@ -21,7 +21,6 @@ import type {
 } from "@/utils/types";
 import { delay, isEqual, union } from "es-toolkit";
 import { doc, setDoc } from "firebase/firestore";
-import { PencilIcon as Icon } from "lucide-react";
 import { type NextRouter, useRouter } from "next/router";
 import {
   type FormEvent,
@@ -33,7 +32,6 @@ import {
 import { useTranslation } from "react-i18next";
 import DialogContainer from "../DialogContainer";
 import FieldsBook from "../FieldsBook";
-import HeaderPopUp from "../HeaderPopUp";
 
 function EditBookPopUp(props: Props): Component {
   const { data: dataBook, documentId } = props,
@@ -227,8 +225,9 @@ function EditBookPopUp(props: Props): Component {
   return (
     <DialogContainer
       id="edit_book"
-      divClass="!justify-start lg:justify-between">
-      <HeaderPopUp icon={<Icon size={25} />} title={t("edit-book")} />
+      divClass="!justify-start lg:justify-between"
+    >
+      {/* <HeaderPopUp icon={<Icon size={25} />} title={t("edit-book")} /> */}
       <FieldsBook
         errorKey={errorKey}
         handleChange={handleChange}
@@ -246,27 +245,28 @@ function EditBookPopUp(props: Props): Component {
         defaultValueImg={data?.image}
       />
 
-      <div className="modal-action pt-1">
-        <form
-          onSubmit={editBook}
-          ref={form}
-          method="dialog"
-          className="space-x-2 ">
-          <button
-            disabled={isLoading}
-            type="button"
-            onClick={() => closePopUp("edit_book")}
-            className="btn text-lg w-auto font-thin bg-slate-800 hover:bg-slate-700 text-slate-300">
-            {t("cancel")}
-          </button>
-          <button
-            disabled={editDisabled || isLoading}
-            type="submit"
-            className="btn bg-blue-500 text-black hover:bg-blue-400 duration-100 text-lg w-24 px-2">
-            {t("edit-confirm")}
-          </button>
-        </form>
-      </div>
+      <form
+        onSubmit={editBook}
+        ref={form}
+        method="dialog"
+        className="flex justify-end items-center font-public max-w-full gap-x-2"
+      >
+        <button
+          disabled={isLoading}
+          type="button"
+          onClick={() => closePopUp("edit_book")}
+          className="btn text-lg w-auto font-thin bg-slate-800 hover:bg-slate-700 text-slate-300"
+        >
+          {t("cancel")}
+        </button>
+        <button
+          disabled={editDisabled || isLoading}
+          type="submit"
+          className="btn bg-blue-500 text-black hover:bg-blue-400 duration-100 text-lg w-24 px-2"
+        >
+          {t("edit-confirm")}
+        </button>
+      </form>
     </DialogContainer>
   );
 }

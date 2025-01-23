@@ -1,4 +1,3 @@
-// import { type Analytics, getAnalytics } from "firebase/analytics";
 import { type FirebaseApp, initializeApp } from "firebase/app";
 import { type Firestore, getFirestore } from "firebase/firestore";
 import { init } from "next-firebase-auth";
@@ -50,8 +49,6 @@ const firebaseClientInitConfig: FirebaseConfig = {
 const app: FirebaseApp = initializeApp(firebaseClientInitConfig);
 
 export const DB: Firestore = getFirestore(app);
-
-// const analytics: Analytics = getAnalytics(app);
 
 interface FirebaseConfig {
   apiKey: string;

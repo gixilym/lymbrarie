@@ -14,7 +14,6 @@ import type {
 } from "@/utils/types";
 import { delay, isEqual, union } from "es-toolkit";
 import { doc, setDoc } from "firebase/firestore";
-import { CircleFadingPlus as Icon } from "lucide-react";
 import { type NextRouter, useRouter } from "next/router";
 import {
   type FormEvent,
@@ -26,7 +25,6 @@ import {
 import { useTranslation } from "react-i18next";
 import DialogContainer from "../DialogContainer";
 import FieldsBook from "../FieldsBook";
-import HeaderPopUp from "../HeaderPopUp";
 
 function NewBookPopUp({ UID }: Props): Component {
   const { closePopUp } = usePopUp(),
@@ -210,7 +208,7 @@ function NewBookPopUp({ UID }: Props): Component {
         onSubmit={newBook}
         ref={formRef}
         method="dialog"
-        className="flex justify-center items-center font-public max-w-full"
+        className="flex justify-center items-center font-public max-w-full pt-2"
       >
         <div className="w-full justify-end gap-x-4 items-center flex flex-col md:flex-row h-10">
           <div className="flex gap-x-2">

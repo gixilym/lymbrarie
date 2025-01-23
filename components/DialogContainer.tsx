@@ -28,7 +28,7 @@ function DialogContainer(props: Props): Component {
         style={styles}
         onClick={e => e.stopPropagation()}
         className={twJoin(
-          "modal-box sm:max-w-[600px] w-full min-h-screen sm:min-h-0 sm:h-[440px] overflow-x-hidden rounded-none sm:rounded-2xl flex flex-col gap-y-3 border-2 relative z-50 border-rose-300/10 [&>label>input]:placeholder:text-gray-400 sm:mt-10 overflow-y-scroll sm:overflow-y-auto justify-between",
+          "modal-box sm:max-w-[600px] w-full min-h-screen sm:min-h-0 sm:h-[450px] overflow-x-hidden rounded-none sm:rounded-2xl flex flex-col gap-y-3 border-2 relative z-50 border-rose-300/10 [&>label>input]:placeholder:text-gray-400 sm:mt-10 overflow-y-scroll sm:overflow-y-auto justify-between",
           divClass
         )}
       >

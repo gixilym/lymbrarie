@@ -2,7 +2,7 @@ import AppIcon from "@/components/AppIcon";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import BackBtn from "@/components/btns/BackBtn";
 import SettingsBtn from "@/components/btns/SettingsBtn";
-import ShareBtn from "@/components/btns/ShareBtn";
+// import ShareBtn from "@/components/btns/ShareBtn";
 import LoaderCircle from "@/components/LoaderCircle";
 import DeleteBookPopUp from "@/components/popups/DeleteBookPopUp";
 import EditBookPopUp from "@/components/popups/EditBookPopUp";
@@ -172,7 +172,8 @@ function BookId(): Component {
   return (
     <animated.section
       style={stylesSection}
-      className="flex flex-col justify-center items-center w-full gap-y-6 sm:pb-10 sm:pt-20 h-full sm:pl-20">
+      className="flex flex-col justify-center items-center w-full gap-y-6 sm:pb-10 sm:pt-20 h-full sm:pl-20"
+    >
       <Head>
         <title translate="no">{book?.data?.title || "Lymbrarie"}</title>
       </Head>
@@ -195,7 +196,8 @@ function BookId(): Component {
       <Breadcrumbs title={book?.data?.title ?? ""} />
       <article
         id="screenshot"
-        className="w-full sm:w-[700px] h-[290px] flex flex-col sm:flex-row gap-y-12 justify-start items-center sm:items-start backdrop-blur-[2.5px] relative mt-20 xl:mt-0 sm:mt-12">
+        className="w-full sm:w-[700px] h-[290px] flex flex-col sm:flex-row gap-y-12 justify-start items-center sm:items-start backdrop-blur-[2.5px] relative mt-20 xl:mt-0 sm:mt-12"
+      >
         <Cover
           priority
           style={stylesImg}
@@ -244,10 +246,12 @@ function BookId(): Component {
           <animated.div
             id="icons"
             style={stylesIcons}
-            className="flex items-center justify-center gap-x-2">
+            className="flex items-center justify-center gap-x-2"
+          >
             <button
               onClick={() => openPopUp("notes")}
-              className="btn btn-square bg-slate-700/30 sm:bg-slate-700/25 hover:bg-slate-700/50 border-2 border-slate-700/40 mt-4 sm:mt-0 mb-1">
+              className="btn btn-square bg-slate-700/30 sm:bg-slate-700/25 hover:bg-slate-700/50 border-2 border-slate-700/40 mt-4 sm:mt-0 mb-1"
+            >
               <NotesIcon className="w-6 h-6 sm:w-7 sm:h-8" />
             </button>
             <div className="dropdown dropdown-top dropdown-right opacity-100 flex sm:block items-end justify-center">
@@ -257,11 +261,13 @@ function BookId(): Component {
                 className={twMerge(
                   loadingFav ? "hidden" : "block",
                   "mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-[240px]"
-                )}>
+                )}
+              >
                 <li
                   onClick={() =>
                     navigator.onLine ? toggleFav() : openPopUp("offline")
-                  }>
+                  }
+                >
                   <div className="flex flex-row items-center justify-start gap-x-3">
                     {checkFav ? (
                       <FavoriteIcon size={18} />
@@ -278,7 +284,8 @@ function BookId(): Component {
                     navigator.onLine
                       ? openPopUp("edit_book")
                       : openPopUp("offline")
-                  }>
+                  }
+                >
                   <div className="flex flex-row items-center justify-start gap-x-3">
                     <EditIcon size={18} />
                     <p>{t("edit-book")}</p>
@@ -290,7 +297,8 @@ function BookId(): Component {
                     navigator.onLine
                       ? openPopUp("delete_book")
                       : openPopUp("offline")
-                  }>
+                  }
+                >
                   <div className="flex flex-row items-center justify-start gap-x-3">
                     <DeleteIcon size={18} />
                     <p>{t("delete-book")}</p>
@@ -298,9 +306,7 @@ function BookId(): Component {
                 </li>
               </ul>
             </div>
-            {navigator.onLine && (
-              <ShareBtn img={book?.data?.image || defaultCover} title={title} />
-            )}
+            {/* <ShareBtn img={book?.data?.image || defaultCover} title={title} /> */}
           </animated.div>
         </div>
       </article>

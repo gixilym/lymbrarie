@@ -20,7 +20,7 @@ export default withUser({
 function LogoutPage(): Component {
   const auth: Auth = getAuth(),
     [, setAcceleration] = useLocalStorage("acceleration", false),
-    [lang, setLang] = useLocalStorage("language", "en"),
+    [lang, setLang] = useLocalStorage("language", "es"),
     [animations, setAnimations] = useLocalStorage("animations", true),
     [state, setState] = useLocalStorage("state", true),
     router: NextRouter = useRouter(),
