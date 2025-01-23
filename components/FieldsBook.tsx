@@ -42,8 +42,9 @@ function FieldsBook(props: Props): Component {
         htmlFor="title-input"
         className={twMerge(
           isEqual("title-input", errorKey) && "border-2 border-red-500",
-          "input input-bordered flex items-center w-full text-sm sm:text-xl h-14 mt-3"
-        )}>
+          "input input-bordered flex items-center w-full text-sm sm:text-xl h-14"
+        )}
+      >
         <TitleIcon size={18} className="mr-1.5" />
         <input
           id="title-input"
@@ -63,7 +64,8 @@ function FieldsBook(props: Props): Component {
         className={twMerge(
           isEqual("author-input", errorKey) && "border-2 border-red-500",
           "input input-bordered flex items-center sm:text-xl w-full text-sm h-14"
-        )}>
+        )}
+      >
         <UserIcon size={18} className="mt-0.5 mr-2" />
         <input
           id="author-input"
@@ -88,7 +90,8 @@ function FieldsBook(props: Props): Component {
           className={twMerge(
             isLoading ? "bg-base-200" : "bg-transparent input-bordered",
             "w-full input flex items-center sm:text-xl text-lg h-14 sm:w-full"
-          )}>
+          )}
+        >
           <GenderIcon
             size={18}
             className={twMerge(
@@ -107,7 +110,8 @@ function FieldsBook(props: Props): Component {
                 : !defaultValueGender
                 ? "default"
                 : "custom"
-            }>
+            }
+          >
             <option value="default" disabled>
               {t("placeholder-gender")}
             </option>
@@ -124,7 +128,8 @@ function FieldsBook(props: Props): Component {
             className={twMerge(
               isEqual("gender-input", errorKey) && "border-2 border-red-500",
               "input input-bordered flex items-center sm:text-xl text-sm h-14 w-full"
-            )}>
+            )}
+          >
             <CustomIcon size={18} className="mt-0.5 mr-2" />
             <input
               id="gender-input"
@@ -150,7 +155,8 @@ function FieldsBook(props: Props): Component {
             isLoaned ? "w-2/4" : "w-full",
             isLoading ? "bg-base-200" : "bg-transparent input-bordered",
             "input flex items-center sm:text-xl text-lg sm:w-full h-14"
-          )}>
+          )}
+        >
           <StateIcon
             size={18}
             className={twMerge(
@@ -163,7 +169,8 @@ function FieldsBook(props: Props): Component {
             disabled={isLoading}
             onChange={e => handleState(e.target.value)}
             className="select text-slate-400 input-bordered border-x-0 rounded-none sm:text-xl text-sm w-full focus:outline-0 h-14"
-            defaultValue={defaultValueState}>
+            defaultValue={defaultValueState}
+          >
             <option value="default" disabled>
               {t("state")}
             </option>
@@ -179,7 +186,8 @@ function FieldsBook(props: Props): Component {
             className={twMerge(
               isEqual("loaned-input", errorKey) && "border-2 border-red-500",
               "input input-bordered flex items-center sm:text-xl text-xs w-2/4 sm:w-full h-14"
-            )}>
+            )}
+          >
             <BorrowedIcon size={18} className="mt-0.5 mr-2" />
             <input
               id="loaned-input"
@@ -201,7 +209,8 @@ function FieldsBook(props: Props): Component {
           className={twMerge(
             isEqual("image-input", errorKey) && "border-2 border-red-500",
             "input input-bordered flex items-center sm:text-xl w-full text-sm h-14 mb-1"
-          )}>
+          )}
+        >
           <ImageIcon size={18} className="mt-0.5 mr-2" />
           <input
             id="image-input"
@@ -219,7 +228,7 @@ function FieldsBook(props: Props): Component {
             placeholder={t("placeholder-link")}
           />
         </label>
-        <Link
+        {/* <Link
           href="https://imagen-a-link.netlify.app"
           target="_blank"
           className={twMerge(
@@ -229,7 +238,7 @@ function FieldsBook(props: Props): Component {
             "duration-75 text-xs sm:text-lg pl-1"
           )}>
           {t("generate-link")}
-        </Link>
+        </Link> */}
       </div>
     </>
   );

@@ -45,7 +45,7 @@ function SettingsPopUp(): Component {
             {t("language")}
           </label>
           <Select
-            className="sm:w-full max-w-xs w-[180px] text-center"
+            className="sm:w-full max-w-[220px] w-[180px] text-center"
             id="select-language"
             isSearchable={false}
             options={options}
@@ -70,7 +70,7 @@ function SettingsPopUp(): Component {
               reload();
             }}
             id="enabled-animations"
-            className="w-[180px] sm:w-full max-w-xs text-lg border border-gray-700 h-11 rounded-xl text-center pr-5"
+            className="w-[180px] sm:w-full max-w-[220px] text-lg border border-gray-700 h-11 rounded-xl text-center pr-5"
           >
             {animations ? t("enabled") : t("disabled")}
           </button>
@@ -90,7 +90,7 @@ function SettingsPopUp(): Component {
               reload();
             }}
             id="hidden-state"
-            className="w-[180px] sm:w-full max-w-xs text-lg border border-gray-700 h-11 rounded-xl text-center pr-5"
+            className="w-[180px] sm:w-full max-w-[220px] text-lg border border-gray-700 h-11 rounded-xl text-center pr-5"
           >
             {state ? t("enabled") : t("disabled")}
           </button>

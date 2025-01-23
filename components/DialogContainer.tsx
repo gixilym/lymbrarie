@@ -1,10 +1,11 @@
-import useLocalStorage from "@/hooks/useLocalStorage";
-import usePopUp from "@/hooks/usePopUp";
 import type { Component, PopUpsIds } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
-import { noop } from "es-toolkit";
+
 import type { MouseEventHandler } from "react";
+import { noop } from "es-toolkit";
 import { twJoin } from "tailwind-merge";
+import useLocalStorage from "@/hooks/useLocalStorage";
+import usePopUp from "@/hooks/usePopUp";
 
 function DialogContainer(props: Props): Component {
   const { children, divClass, id } = props,
@@ -21,13 +22,13 @@ function DialogContainer(props: Props): Component {
   return (
     <dialog
       onClick={handleClick}
-      className="w-full h-full fixed top-0 z-40 flex justify-center items-start bg-transparent backdrop-blur-md"
+      className="animated-scroll w-full h-full fixed top-0 z-40 flex justify-center items-start bg-transparent backdrop-blur-md"
     >
       <animated.div
         style={styles}
         onClick={e => e.stopPropagation()}
         className={twJoin(
-          "modal-box sm:max-w-[700px] w-full min-h-screen sm:min-h-0 sm:h-[560px] overflow-x-hidden rounded-none sm:rounded-2xl flex flex-col gap-y-3 border-2 relative z-50 border-rose-300/10 [&>label>input]:placeholder:text-gray-400 sm:mt-10 overflow-y-scroll sm:overflow-y-auto justify-between",
+          "modal-box sm:max-w-[600px] w-full min-h-screen sm:min-h-0 sm:h-[440px] overflow-x-hidden rounded-none sm:rounded-2xl flex flex-col gap-y-3 border-2 relative z-50 border-rose-300/10 [&>label>input]:placeholder:text-gray-400 sm:mt-10 overflow-y-scroll sm:overflow-y-auto justify-between",
           divClass
         )}
       >

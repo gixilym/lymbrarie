@@ -194,7 +194,7 @@ function NewBookPopUp({ UID }: Props): Component {
       id="add_book"
       divClass="!w-full items-end !justify-start lg:justify-between"
     >
-      <HeaderPopUp icon={<Icon size={25} />} title={t("new-book")} />
+      {/* <HeaderPopUp icon={<Icon size={25} />} title={t("new-book")} /> */}
 
       <FieldsBook
         errorKey={errorKey}
@@ -210,7 +210,7 @@ function NewBookPopUp({ UID }: Props): Component {
         onSubmit={newBook}
         ref={formRef}
         method="dialog"
-        className="absolute top-5 flex justify-center items-center font-public w-full"
+        className="flex justify-center items-center font-public max-w-full"
       >
         <div className="w-full justify-end gap-x-4 items-center flex flex-col md:flex-row h-10">
           <div className="flex gap-x-2">
