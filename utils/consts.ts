@@ -1,4 +1,4 @@
-import { DB } from "@/database/initAuth";
+import { DB } from '@/database/initAuth';
 import { collection, type CollectionReference } from "firebase/firestore";
 import type { Book } from "./types";
 
@@ -9,6 +9,9 @@ const BASE_URL: string = "https://lymbrarie.com";
 const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dgs55s8qh/image/upload";
 
 const COLLECTION: CollectionReference = collection(DB, "lymbrarie_books");
+
+const COVER_URL:string  =
+"https://res.cloudinary.com/dgs55s8qh/image/upload/v1737679478/qjyfilncj8xo7p3kn1yl.webp";
 
 const GENDERS: string[] = [
   "no-gender",
@@ -56,6 +59,7 @@ export {
   CLOUDINARY_URL, COLLECTION,
   EMPTY_BOOK,
   GENDERS,
-  MAINTENANCE
+  MAINTENANCE,
+  COVER_URL,
 };
 

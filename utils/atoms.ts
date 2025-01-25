@@ -40,5 +40,11 @@ const referrerAtom: RecoilState<boolean> = atom({
   default: false,
 });
 
-export { animListAtom, popupsAtom, referrerAtom, searchAtom, stateAtom, zeroAtom };
+const coverAtom: RecoilState<boolean> = atom({
+  key: "cover-atom",
+  default: false,
+});
+
+
+export { animListAtom, popupsAtom, referrerAtom, searchAtom, stateAtom, zeroAtom, coverAtom };
 

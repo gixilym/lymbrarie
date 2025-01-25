@@ -1,20 +1,19 @@
+import InputCover from "./InputCover";
 import { GENDERS } from "@/utils/consts";
-import { tLC } from "@/utils/helpers";
-import type { Component, InputEvent } from "@/utils/types";
 import { isEqual } from "es-toolkit";
+import { tLC } from "@/utils/helpers";
+import { twMerge } from "tailwind-merge";
+import { useTranslation } from "react-i18next";
+import type { Component, InputEvent } from "@/utils/types";
 import {
   UserRoundSearch as BorrowedIcon,
   Type as CustomIcon,
   Tag as GenderIcon,
-  Image as ImageIcon,
   Library as StateIcon,
   Italic as TitleIcon,
   User as UserIcon,
 } from "lucide-react";
-import Link from "next/link";
 import type { ChangeEventHandler } from "react";
-import { useTranslation } from "react-i18next";
-import { twMerge } from "tailwind-merge";
 
 function FieldsBook(props: Props): Component {
   const {
@@ -22,6 +21,7 @@ function FieldsBook(props: Props): Component {
       handleChange,
       isLoading,
       setCusGenderVal,
+      handleImage,
       isCustomGender,
       handleGender,
       handleState,
@@ -31,7 +31,6 @@ function FieldsBook(props: Props): Component {
       defaultValueGender = "",
       defaultValueState = "default",
       defaultValueLoaned = "",
-      defaultValueImg = "",
     } = props,
     [t] = useTranslation("global"),
     applyGender: boolean = GENDERS.includes(tLC(defaultValueGender));
@@ -113,7 +112,7 @@ function FieldsBook(props: Props): Component {
             }
           >
             <option value="default" disabled>
-              {t("placeholder-gender")}
+              {t("literary-gender")}
             </option>
             {GENDERS.map((g: string) => (
               <option value={g} key={g}>
@@ -172,7 +171,7 @@ function FieldsBook(props: Props): Component {
             defaultValue={defaultValueState}
           >
             <option value="default" disabled>
-              {t("state")}
+              {t("current-state")}
             </option>
             <option value="Reading">{t("new-book-reading")}</option>
             <option value="Read">{t("new-book-read")}</option>
@@ -203,7 +202,9 @@ function FieldsBook(props: Props): Component {
         )}
       </div>
 
-      <div className="w-full">
+      <InputCover isLoading={isLoading} handleImage={handleImage} />
+
+      {/* <div className="w-full">
         <label
           htmlFor="image-input"
           className={twMerge(
@@ -228,18 +229,7 @@ function FieldsBook(props: Props): Component {
             placeholder={t("placeholder-link")}
           />
         </label>
-        {/* <Link
-          href="https://imagen-a-link.netlify.app"
-          target="_blank"
-          className={twMerge(
-            isLoading
-              ? "text-slate-600 cursor-default"
-              : "link text-slate-400 hover:text-slate-300",
-            "duration-75 text-xs sm:text-lg pl-1"
-          )}>
-          {t("generate-link")}
-        </Link> */}
-      </div>
+      </div> */}
     </>
   );
 }
@@ -254,6 +244,7 @@ interface Props {
   isCustomGender: boolean;
   handleGender: ChangeEventHandler<HTMLSelectElement>;
   handleState: (state: string) => void;
+  handleImage: (newURL: string) => void;
   isLoaned: boolean;
   defaultValueTitle?: string;
   defaultValueAuthor?: string;

@@ -1,21 +1,32 @@
 import AppIcon from "@/components/AppIcon";
-import Breadcrumbs from "@/components/Breadcrumbs";
 import BackBtn from "@/components/btns/BackBtn";
-import SettingsBtn from "@/components/btns/SettingsBtn";
-// import ShareBtn from "@/components/btns/ShareBtn";
-import LoaderCircle from "@/components/LoaderCircle";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import defaultCover from "@/public/cover.webp";
 import DeleteBookPopUp from "@/components/popups/DeleteBookPopUp";
 import EditBookPopUp from "@/components/popups/EditBookPopUp";
+import Head from "next/head";
+import Image from "next/image";
+import LoaderCircle from "@/components/LoaderCircle";
 import NotesPopUp from "@/components/popups/NotesPopUp";
 import OfflinePopUp from "@/components/popups/OfflinePopUp";
+import SettingsBtn from "@/components/btns/SettingsBtn";
+import toast from "react-hot-toast";
 import useLoadContent from "@/hooks/useLoadContent";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
-import defaultCover from "@/public/cover.webp";
-import { popupsAtom, referrerAtom } from "@/utils/atoms";
+import { animated, useSpring } from "@react-spring/web";
+import { AuthAction, withUser } from "next-firebase-auth";
 import { COLLECTION, EMPTY_BOOK } from "@/utils/consts";
 import { deformatTitle, isLoaned, translateStateBook } from "@/utils/helpers";
 import { dismissNotification, notification } from "@/utils/notifications";
+import { doc, setDoc } from "firebase/firestore";
+import { isEqual, noop, union } from "es-toolkit";
+import { popupsAtom, referrerAtom } from "@/utils/atoms";
+import { twMerge } from "tailwind-merge";
+import { useEffect, useState } from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { useTranslation } from "react-i18next";
+// import ShareBtn from "@/components/btns/ShareBtn";
 import type {
   Book,
   BookData,
@@ -23,15 +34,12 @@ import type {
   Handler,
   SetState,
 } from "@/utils/types";
-import { animated, useSpring } from "@react-spring/web";
-import { isEqual, noop, union } from "es-toolkit";
 import {
   type Auth,
   getAuth,
   onAuthStateChanged,
   type Unsubscribe,
 } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
 import {
   Trash as DeleteIcon,
   SquarePen as EditIcon,
@@ -42,15 +50,7 @@ import {
   Tag as StateIcon,
   User as UserIcon,
 } from "lucide-react";
-import { AuthAction, withUser } from "next-firebase-auth";
-import Head from "next/head";
-import Image from "next/image";
 import { type NextRouter, useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
-import { useTranslation } from "react-i18next";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { twMerge } from "tailwind-merge";
 
 export default withUser({
   whenAuthed: AuthAction.RENDER,

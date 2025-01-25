@@ -1,5 +1,11 @@
-import { searchAtom, stateAtom } from "@/utils/atoms";
+import AddBookBtn from "./btns/AddBookBtn";
+import AppIcon from "./AppIcon";
+import Select from "react-select";
 import { formatState, selectStyles } from "@/utils/helpers";
+import { searchAtom, stateAtom } from "@/utils/atoms";
+import { useMemo } from "react";
+import { useRecoilState } from "recoil";
+import { useTranslation } from "react-i18next";
 import type {
   Component,
   EventSelect,
@@ -7,12 +13,6 @@ import type {
   InputEvent,
   SelectOpt,
 } from "@/utils/types";
-import { useMemo } from "react";
-import { useTranslation } from "react-i18next";
-import Select from "react-select";
-import { useRecoilState } from "recoil";
-import AppIcon from "./AppIcon";
-import AddBookBtn from "./btns/AddBookBtn";
 
 function SearchIndex(): Component {
   const [t] = useTranslation("global"),
@@ -50,6 +50,7 @@ function SearchIndex(): Component {
               className="focus:outline-0 focus:border-rose-300/10 backdrop-blur-[2px] input join-item w-[230px] sm:w-[270px] h-14 bg-slate-800/60 border-2 border-rose-300/10 placeholder:text-slate-300/70 text-sm sm:text-lg text-slate-300 placeholder:w-full"
               placeholder={t("placeholder-search")}
               type="search"
+              autoFocus
             />
             <Select
               className="join-item capitalize text-sm sm:text-[16px]"

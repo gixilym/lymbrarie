@@ -1,9 +1,14 @@
+import DialogContainer from "../DialogContainer";
+import FieldsBook from "../FieldsBook";
 import useLoadContent from "@/hooks/useLoadContent";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
 import { COLLECTION, EMPTY_BOOK } from "@/utils/consts";
-import { isLoaned, len, normalizeText, tLC } from "@/utils/helpers";
+import { delay, isEqual, union } from "es-toolkit";
 import { dismissNotification, notification } from "@/utils/notifications";
+import { doc, setDoc } from "firebase/firestore";
+import { isLoaned, len, normalizeText, tLC } from "@/utils/helpers";
+import { useTranslation } from "react-i18next";
 import type {
   Book,
   BookData,
@@ -12,8 +17,6 @@ import type {
   InputEvent,
   SelectEvent,
 } from "@/utils/types";
-import { delay, isEqual, union } from "es-toolkit";
-import { doc, setDoc } from "firebase/firestore";
 import { type NextRouter, useRouter } from "next/router";
 import {
   type FormEvent,
@@ -22,9 +25,8 @@ import {
   useRef,
   useState,
 } from "react";
-import { useTranslation } from "react-i18next";
-import DialogContainer from "../DialogContainer";
-import FieldsBook from "../FieldsBook";
+import { useRecoilState } from "recoil";
+import { coverAtom } from "@/utils/atoms";
 
 function NewBookPopUp({ UID }: Props): Component {
   const { closePopUp } = usePopUp(),
@@ -39,7 +41,8 @@ function NewBookPopUp({ UID }: Props): Component {
     [errorKey, setErrorKey] = useState<string>(""),
     [addClicked, setAddClicked] = useState<boolean>(false),
     [isCustomGender, setIsCustomGender] = useState<boolean>(false),
-    [cusGenderVal, setCusGenderVal] = useState<string>("");
+    [cusGenderVal, setCusGenderVal] = useState<string>(""),
+    [coverLoading] = useRecoilState(coverAtom);
 
   useEffect(() => {
     (async function () {
@@ -61,6 +64,13 @@ function NewBookPopUp({ UID }: Props): Component {
     setBook({
       ...book,
       data: { ...book.data, [key]: value },
+    });
+  }
+
+  function handleImage(image: string): void {
+    setBook({
+      ...book,
+      data: { ...book.data, image },
     });
   }
 
@@ -192,8 +202,6 @@ function NewBookPopUp({ UID }: Props): Component {
       id="add_book"
       divClass="!w-full items-end !justify-start lg:justify-between"
     >
-      {/* <HeaderPopUp icon={<Icon size={25} />} title={t("new-book")} /> */}
-
       <FieldsBook
         errorKey={errorKey}
         handleChange={handleChange}
@@ -202,6 +210,7 @@ function NewBookPopUp({ UID }: Props): Component {
         isCustomGender={isCustomGender}
         handleGender={handleGender}
         handleState={handleState}
+        handleImage={handleImage}
         isLoaned={isLoaned(book.data.state ?? "")}
       />
       <form
@@ -213,7 +222,7 @@ function NewBookPopUp({ UID }: Props): Component {
         <div className="w-full justify-end gap-x-4 items-center flex flex-col md:flex-row h-10">
           <div className="flex gap-x-2">
             <button
-              disabled={isLoading}
+              disabled={isLoading || coverLoading}
               type="button"
               onClick={() => closePopUp("add_book")}
               className="btn text-lg sm:text-xl w-32 font-normal bg-slate-800 hover:bg-slate-700 text-slate-300"
@@ -221,7 +230,7 @@ function NewBookPopUp({ UID }: Props): Component {
               {t("cancel")}
             </button>
             <button
-              disabled={isLoading}
+              disabled={isLoading || coverLoading}
               type="submit"
               className="btn bg-blue-500 font-medium sm:font-semibold text-black hover:bg-blue-400 duration-100 text-lg sm:text-xl w-32 tracking-wide"
             >

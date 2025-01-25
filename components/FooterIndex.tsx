@@ -1,7 +1,11 @@
-import usePopUp from "@/hooks/usePopUp";
+import Image from "next/image";
+import Link from "next/link";
 import logo from "@/public/favicon.ico";
-import type { Component } from "@/utils/types";
+import usePopUp from "@/hooks/usePopUp";
 import { isNull } from "es-toolkit";
+import { useTranslation } from "react-i18next";
+import { useUser, withUser } from "next-firebase-auth";
+import type { Component } from "@/utils/types";
 import {
   Heart as HeartIcon,
   Home,
@@ -10,11 +14,7 @@ import {
   MessageCircleQuestion as SupportIcon,
   User as UserIcon,
 } from "lucide-react";
-import { useUser, withUser } from "next-firebase-auth";
-import Image from "next/image";
-import Link from "next/link";
 import { type NextRouter, useRouter } from "next/router";
-import { useTranslation } from "react-i18next";
 
 export default withUser()(FooterIndex);
 
@@ -42,7 +42,18 @@ function FooterIndex(): Component {
         />
         <span translate="no">Copyright &copy; 2025 Lymbrarie</span>
       </div>
-      <div className="flex flex-row flex-wrap gap-y-4 py-1 items-start sm:items-center pl-3 sm:pl-0 justify-evenly w-full h-auto sm:w-auto sm:gap-x-6">
+      <div className="flex flex-row flex-wrap gap-y-4 py-1 items-start sm:items-center justify-evenly w-full h-auto sm:w-auto sm:gap-x-6">
+        {location.pathname != "/" && (
+          <Link
+            href="/"
+            scroll={false}
+            className="duration-75 cursor-pointer hover:underline flex gap-x-2 justify-center items-center"
+          >
+            <Home size={18} />
+            <p className="text-sm sm:text-[16px]">{t("home")}</p>
+          </Link>
+        )}
+
         {!isHomePath && (
           <>
             <div
@@ -85,20 +96,10 @@ function FooterIndex(): Component {
           <Link
             href="/privacypolicy"
             scroll={false}
-            className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline"
+            className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline mr-2 sm:mr-6"
           >
             <PrivacyIcon size={18} />
             <p className="text-sm sm:text-[16px]">{t("privacy-policy")}</p>
-          </Link>
-        )}
-        {location.pathname != "/" && (
-          <Link
-            href="/"
-            scroll={false}
-            className="mr-2 sm:mr-6 duration-75 cursor-pointer hover:underline flex gap-x-2 justify-center items-center"
-          >
-            <Home size={18} />
-            <p className="text-sm sm:text-[16px]">{t("home")}</p>
           </Link>
         )}
       </div>

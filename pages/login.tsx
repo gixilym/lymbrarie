@@ -1,9 +1,14 @@
+import Head from "next/head";
+import Image from "next/image";
+import Link from "next/link";
 import LoaderCircle from "@/components/LoaderCircle";
-import useLocalStorage from "@/hooks/useLocalStorage";
 import logo from "@/public/favicon.ico";
-import { GithubIcon, GoogleIcon } from "@/utils/svgs";
-import type { Component } from "@/utils/types";
+import useLocalStorage from "@/hooks/useLocalStorage";
 import { animated, useSpring } from "@react-spring/web";
+import { AuthAction, withUser } from "next-firebase-auth";
+import { GithubIcon, GoogleIcon } from "@/utils/svgs";
+import { useTranslation } from "react-i18next";
+import type { Component } from "@/utils/types";
 import {
   type Auth,
   getAuth,
@@ -11,11 +16,6 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
-import { AuthAction, withUser } from "next-firebase-auth";
-import Head from "next/head";
-import Image from "next/image";
-import Link from "next/link";
-import { useTranslation } from "react-i18next";
 
 export default withUser({
   whenAuthed: AuthAction.REDIRECT_TO_APP,
@@ -53,7 +53,7 @@ function LoginPage(): Component {
   }
 
   return (
-    <section className="absolute top-0 right-0 min-h-screen w-full flex flex-col items-center gap-y-20 justify-center bg-transparent sm:pt-10">
+    <section className="absolute top-0 right-0 min-h-screen w-full flex flex-col items-center gap-y-20 justify-center bg-transparent sm:pt-4">
       <Head>
         <meta name="title" content="Lymbrarie - Tu biblioteca personal" />
         <meta
@@ -116,18 +116,6 @@ flex items-center min-w-[330px] sm:w-full max-w-[413px] h-[60px] rounded-lg dura
           </div>
         </div>
       </animated.div>
-      <div className="hidden sm:flex relative border-4 border-violet-900/30 rounded-lg p-4 bg-violet-900/20 mb-16 justify-start flex-col items-center">
-        <p className="absolute text-2xl lg:text-3xl w-full text-center text-slate-100">
-          {t("know-lymbrarie")}
-        </p>
-        <video
-          src="/demo.mp4"
-          muted
-          controls
-          className="w-[600px] lg:w-[700px] aspect-video h-full p-2 pt-4"
-          preload="auto"
-        />
-      </div>
     </section>
   );
 }

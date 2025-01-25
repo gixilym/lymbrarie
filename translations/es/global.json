@@ -130,7 +130,6 @@
     "copy-notes": "Por favor, copia y guardalas en otro sitio para no perder los cambios e intenta de nuevo más tarde.",
     "copied": "Copiado",
     "copy": "Copiar",
-    "know-lymbrarie": "¡Conoce Lymbrarie!",
     "err-share": "Error al compartir",
     "loading": "Cargando...",
     "buy-coffee": "Invitame un Café",
@@ -148,5 +147,11 @@
     "question-5": "¿Lymbrarie tiene una aplicación móvil?",
     "answer-5": "Por ahora, Lymbrarie no tiene una aplicación móvil oficial, pero está en los planes desarrollar una para Android. Mientras tanto, puedes instalar la versión web directamente desde tu navegador, tanto en PC como celular.",
     "back":  "Volver",
-    "version": "Versión"
+    "version": "Versión",
+    "current-state": "Estado actual",
+    "literary-gender": "Género literario",
+    "select-cover-image": "Selecciona una imagen de portada",
+    "generating-cover": "Generando portada...",
+    "cover-list": "¡Portada lista!",
+    "err-loading-cover": "Error cargando portada, reintentalo"
 }

@@ -129,7 +129,6 @@
     "copy-notes": "Please copy and save them elsewhere to avoid losing changes and try again later.",
     "copied": "Copied",
     "copy": "Copy",
-    "know-lymbrarie": "Know Lymbrarie!",
     "err-share": "Error sharing",
     "loading": "Loading...",
     "buy-coffee": "Buy me a Coffee",
@@ -147,5 +146,11 @@
     "question-5": "Does Lymbrarie have a mobile application?",
     "answer-5": "For now, Lymbrarie does not have an official mobile application, but plans are underway to develop one for Android. In the meantime, you can install the web version directly from your browser, both on PC and mobile.",
     "back": "Back",
-    "version": "Version"
+    "version": "Version",
+    "current-state": "Current state",
+    "literary-gender": "Literary gender",
+    "select-cover-image": "Select a cover image",
+    "generating-cover": "Generating cover...",
+    "cover-list": "Cover list!",
+    "err-loading-cover": "Error loading cover, try again"
 }

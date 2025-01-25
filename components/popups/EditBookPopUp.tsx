@@ -1,7 +1,13 @@
+import DialogContainer from "../DialogContainer";
+import FieldsBook from "../FieldsBook";
 import useLoadContent from "@/hooks/useLoadContent";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
 import { COLLECTION, EMPTY_BOOK, GENDERS } from "@/utils/consts";
+import { delay, isEqual, union } from "es-toolkit";
+import { dismissNotification, notification } from "@/utils/notifications";
+import { doc, setDoc } from "firebase/firestore";
+import { useTranslation } from "react-i18next";
 import {
   deformatTitle,
   formatTitle,
@@ -10,7 +16,6 @@ import {
   normalizeText,
   tLC,
 } from "@/utils/helpers";
-import { dismissNotification, notification } from "@/utils/notifications";
 import type {
   Book,
   BookData,
@@ -19,8 +24,6 @@ import type {
   InputEvent,
   SelectEvent,
 } from "@/utils/types";
-import { delay, isEqual, union } from "es-toolkit";
-import { doc, setDoc } from "firebase/firestore";
 import { type NextRouter, useRouter } from "next/router";
 import {
   type FormEvent,
@@ -29,9 +32,6 @@ import {
   useRef,
   useState,
 } from "react";
-import { useTranslation } from "react-i18next";
-import DialogContainer from "../DialogContainer";
-import FieldsBook from "../FieldsBook";
 
 function EditBookPopUp(props: Props): Component {
   const { data: dataBook, documentId } = props,
@@ -101,6 +101,10 @@ function EditBookPopUp(props: Props): Component {
     const gender: string = e.target?.value.trim();
     setBook({ ...book, gender });
     setIsCustomGender(isEqual(gender, "custom"));
+  }
+
+  function handleImage(image: string): void {
+    setBook({ ...book, image });
   }
 
   async function editBook(e: FormEvent): Promise<void> {
@@ -227,7 +231,6 @@ function EditBookPopUp(props: Props): Component {
       id="edit_book"
       divClass="!justify-start lg:justify-between"
     >
-      {/* <HeaderPopUp icon={<Icon size={25} />} title={t("edit-book")} /> */}
       <FieldsBook
         errorKey={errorKey}
         handleChange={handleChange}
@@ -236,6 +239,7 @@ function EditBookPopUp(props: Props): Component {
         isCustomGender={isCustomGender}
         handleGender={handleGender}
         handleState={handleState}
+        handleImage={handleImage}
         isLoaned={isLoaned(book?.state)}
         defaultValueTitle={data?.title}
         defaultValueAuthor={data?.author}

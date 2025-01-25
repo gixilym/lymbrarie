@@ -1,19 +1,23 @@
-"use client"
-import AddYourFirstBook from "@/components/AddYourFirstBook";
+"use client";
 import AccelerationAlert from "@/components/alerts/AccelerationAlert";
+import AddYourFirstBook from "@/components/AddYourFirstBook";
+import Bot from "@/components/Bot";
 import ListSection from "@/components/ListSection";
 import LoaderBook from "@/components/LoaderBook";
 import LoaderCircle from "@/components/LoaderCircle";
 import PopUps from "@/components/PopUps";
 import SearchIndex from "@/components/SearchIndex";
 import useLocalStorage from "@/hooks/useLocalStorage";
-import { referrerAtom, zeroAtom } from "@/utils/atoms";
+import { animated, useSpring } from "@react-spring/web";
 import { getDocuments, syncDocuments } from "@/utils/documents";
 import { len } from "@/utils/helpers";
-import { showNotifications } from "@/utils/notifications";
-import type { Book, Component, SyncDocs } from "@/utils/types";
-import { animated, useSpring } from "@react-spring/web";
 import { noop } from "es-toolkit";
+import { referrerAtom, zeroAtom } from "@/utils/atoms";
+import { showNotifications } from "@/utils/notifications";
+import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import { useTranslation } from "react-i18next";
+import type { Book, Component, SyncDocs } from "@/utils/types";
 import {
   type Auth,
   getAuth,
@@ -21,9 +25,6 @@ import {
   type Unsubscribe,
 } from "firebase/auth";
 import { AuthAction, type User, useUser, withUser } from "next-firebase-auth";
-import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useRecoilState } from "recoil";
 
 export default withUser({
   whenAuthed: AuthAction.RENDER,
@@ -119,11 +120,13 @@ function Index(): Component {
   return (
     <animated.main
       style={styles}
-      className="flex flex-col justify-start items-center w-full sm:max-w-[950px] h-full gap-y-6">
+      className="flex flex-col justify-start items-center w-full sm:max-w-[950px] h-full gap-y-6"
+    >
       <SearchIndex />
       {showFirstBook ? <AddYourFirstBook /> : <ListSection myBooks={myBooks} />}
       <PopUps profileImg={profileImg} profileName={profileName} UID={UID} />
       <AccelerationAlert />
+      <Bot />
     </animated.main>
   );
 }

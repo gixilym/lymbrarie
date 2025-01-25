@@ -1,9 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: false,
+  reactStrictMode: true,
   env: { FIREBASE_API_KEY: process.env.FIREBASE_API_KEY },
   compiler: { removeConsole: process.env.NODE_ENV == "production" },
   images: {
+    unoptimized: false,
     remotePatterns: [
       {
         protocol: "https",
