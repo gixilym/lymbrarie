@@ -3,7 +3,6 @@ import AppIcon from "./AppIcon";
 import Select from "react-select";
 import { formatState, selectStyles } from "@/utils/helpers";
 import { searchAtom, stateAtom } from "@/utils/atoms";
-import { useMemo } from "react";
 import { useRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
 import type {
@@ -18,7 +17,6 @@ function SearchIndex(): Component {
   const [t] = useTranslation("global"),
     [value, setValue] = useRecoilState<string>(searchAtom),
     [selectVal, setSelectStateVal] = useRecoilState<string>(stateAtom),
-    placeholder: string = useMemo(() => formatState(selectVal, t), [selectVal]),
     handleSearch: Handler<InputEvent, void> = (e: InputEvent) =>
       setValue(e.target.value),
     handleSelect: Handler<string, void> = (val: string) =>
@@ -57,7 +55,7 @@ function SearchIndex(): Component {
               id="select-state"
               isSearchable={false}
               options={options}
-              placeholder={placeholder}
+              placeholder={formatState(selectVal, t)}
               value={selectVal}
               styles={selectStyles(selectVal == "", false)}
               onChange={(e: EventSelect) => handleSelect(e.value)}
