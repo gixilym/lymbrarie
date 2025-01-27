@@ -1,11 +1,10 @@
 import useLocalStorage from "@/hooks/useLocalStorage";
-import { animListAtom, searchAtom, stateAtom } from "@/utils/atoms";
-import { len } from "@/utils/helpers";
-import type { Component } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
+import { animListAtom, searchAtom, stateAtom } from "@/utils/atoms";
 import { noop } from "es-toolkit";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
+import type { Component } from "@/utils/types";
 
 function ListBooks({ listBooks }: Props): Component {
   const [searchVal] = useRecoilState<string>(searchAtom),

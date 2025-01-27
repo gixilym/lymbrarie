@@ -45,7 +45,7 @@ function ProfilePopUp({ profileImg, profileName }: Props): Component {
     return (
       <>
         <HeaderPopUp icon={<Icon size={25} />} title={t("profile")} />
-        <div className="w-full flex flex-col lg:flex-row justify-center gap-6 items-center text-slate-300">
+        <div className="w-full flex flex-col sm:flex-row justify-center gap-6 items-center text-slate-300">
           <div className="flex flex-col justify-center items-center lg:max-w-[200px] w-full">
             <Image
               alt="avatar"
