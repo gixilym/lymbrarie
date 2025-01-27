@@ -26,7 +26,6 @@ import { twMerge } from "tailwind-merge";
 import { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
-// import ShareBtn from "@/components/btns/ShareBtn";
 import type {
   Book,
   BookData,
@@ -51,6 +50,7 @@ import {
   User as UserIcon,
 } from "lucide-react";
 import { type NextRouter, useRouter } from "next/router";
+import ShareBtn from "@/components/btns/ShareBtn";
 
 export default withUser({
   whenAuthed: AuthAction.RENDER,
@@ -306,7 +306,7 @@ function BookId(): Component {
                 </li>
               </ul>
             </div>
-            {/* <ShareBtn img={book?.data?.image || defaultCover} title={title} /> */}
+            <ShareBtn title={title} />
           </animated.div>
         </div>
       </article>

@@ -1,4 +1,6 @@
-import { isEqual, isNull } from "es-toolkit";
+import { COLLECTION, MAINTENANCE } from './consts';
+import { isEqual, isNull } from 'es-toolkit';
+import { len } from './helpers';
 import type { Unsubscribe } from "firebase/auth";
 import {
   getDocs,
@@ -8,8 +10,6 @@ import {
   type QuerySnapshot,
   where,
 } from "firebase/firestore";
-import { COLLECTION, MAINTENANCE } from "./consts";
-import { len } from "./helpers";
 import type { Book, Doc, SyncDocs } from "./types";
 
 async function getDocuments(UID: string): Promise<List> {

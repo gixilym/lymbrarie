@@ -1,25 +1,24 @@
 import useLoadContent from "@/hooks/useLoadContent";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
-import { searchAtom, zeroAtom } from "@/utils/atoms";
-import { COLLECTION } from "@/utils/consts";
-import { len } from "@/utils/helpers";
-import { dismissNotification, notification } from "@/utils/notifications";
-import type { Book, Component, SetState } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
-import { isEqual } from "es-toolkit";
+import { COLLECTION } from "@/utils/consts";
 import { deleteDoc, doc } from "firebase/firestore";
+import { dismissNotification, notification } from "@/utils/notifications";
+import { isEqual } from "es-toolkit";
+import { len } from "@/utils/helpers";
+import { NextRouter, useRouter } from "next/router";
+import { searchAtom, zeroAtom } from "@/utils/atoms";
 import { TriangleAlert as WarningIcon } from "lucide-react";
-import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { useRouter } from "next/router";
-import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
+import { useTranslation } from "react-i18next";
+import type { Book, Component, SetState } from "@/utils/types";
 
 function DeleteBookPopUp({ documentId, title }: Props): Component {
   const [t] = useTranslation("global"),
     { closePopUp } = usePopUp(),
     [animations] = useLocalStorage("animations", true),
-    router: AppRouterInstance = useRouter(),
+    router: NextRouter = useRouter(),
     setSearchVal: SetState = useSetRecoilState<string>(searchAtom),
     setZeroBooks: SetState = useSetRecoilState<boolean>(zeroAtom),
     [cacheBooks, setCacheBooks] = useLocalStorage("cache-books", null),
@@ -67,11 +66,13 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
   return (
     <dialog
       onClick={() => closePopUp("delete_book")}
-      className="select-none backdrop-blur-md w-full h-full fixed top-0 z-50 flex justify-center items-start pt-10 bg-transparent px-6 sm:px-0">
+      className="select-none backdrop-blur-md w-full h-full fixed top-0 z-50 flex justify-center items-start pt-10 bg-transparent px-6 sm:px-0"
+    >
       <animated.div
         onClick={e => e.stopPropagation()}
         style={styles}
-        className="modal-box mt-28 sm:mt-20 w-full">
+        className="modal-box mt-28 sm:mt-20 w-full"
+      >
         <div className="flex flex-row justify-start items-end sm:items-start gap-x-4">
           <WarningIcon size={25} />
           <p className="font-bold tracking-wide text-sm sm:text-lg">
@@ -84,20 +85,23 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
             <button
               disabled={isLoading}
               onClick={() => closePopUp("delete_book")}
-              className="btn font-thin bg-slate-700 hover:bg-slate-600 text-slate-300 text-sm sm:text-lg">
+              className="btn font-thin bg-slate-700 hover:bg-slate-600 text-slate-300 text-sm sm:text-lg"
+            >
               {t("cancel")}
             </button>
             {isLoading ? (
               <button
                 disabled
-                className="btn font-thin cursor-default text-white text-sm sm:text-lg w-26">
+                className="btn font-thin cursor-default text-white text-sm sm:text-lg w-26"
+              >
                 {t("deleting")}
               </button>
             ) : (
               <button
                 onClick={deleteDocument}
                 type="button"
-                className="btn font-thin bg-red-800/90 hover:bg-red-700 text-white text-sm sm:text-lg w-26">
+                className="btn font-thin bg-red-800/90 hover:bg-red-700 text-white text-sm sm:text-lg w-26"
+              >
                 {t("delete-book")}
               </button>
             )}

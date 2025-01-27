@@ -1,7 +1,7 @@
 "use client";
 import AccelerationAlert from "@/components/alerts/AccelerationAlert";
 import AddYourFirstBook from "@/components/AddYourFirstBook";
-import Bot from "@/components/Bot";
+// import Bot from "@/components/Bot";
 import ListSection from "@/components/ListSection";
 import LoaderBook from "@/components/LoaderBook";
 import LoaderCircle from "@/components/LoaderCircle";
@@ -126,7 +126,7 @@ function Index(): Component {
       {showFirstBook ? <AddYourFirstBook /> : <ListSection myBooks={myBooks} />}
       <PopUps profileImg={profileImg} profileName={profileName} UID={UID} />
       <AccelerationAlert />
-      <Bot />
+      {/* <Bot /> */}
     </animated.main>
   );
 }
