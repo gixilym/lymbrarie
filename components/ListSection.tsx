@@ -126,6 +126,12 @@ const ListSection: MemoComponent = memo(function B({ myBooks }: Props) {
         />
       </div>
       <ListBooks listBooks={renderList} />
+      {/* <Link
+        href="/credits"
+        className="mb-20 text-sm opacity-80 hover:opacity-100"
+      >
+        créditos
+      </Link> */}
     </section>
   );
 });
