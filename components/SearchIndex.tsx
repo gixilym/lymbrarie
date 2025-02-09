@@ -1,5 +1,6 @@
 import AddBookBtn from "./btns/AddBookBtn";
 import AppIcon from "./AppIcon";
+import LogInBtn from "./btns/LogInBtn";
 import Select from "react-select";
 import { formatState, selectStyles } from "@/utils/helpers";
 import { searchAtom, stateAtom } from "@/utils/atoms";
@@ -13,7 +14,7 @@ import type {
   SelectOpt,
 } from "@/utils/types";
 
-function SearchIndex(): Component {
+function SearchIndex({ UID }: { UID: string | null }): Component {
   const [t] = useTranslation("global"),
     [value, setValue] = useRecoilState<string>(searchAtom),
     [selectVal, setSelectStateVal] = useRecoilState<string>(stateAtom),
@@ -61,7 +62,7 @@ function SearchIndex(): Component {
               onChange={(e: EventSelect) => handleSelect(e.value)}
             />
           </div>
-          <AddBookBtn text={t("new-book")} />
+          {UID ? <AddBookBtn text={t("new-book")} /> : <LogInBtn />}
         </div>
       </form>
     </header>

@@ -22,7 +22,7 @@ function usePopUp(): PopUp {
     closePopUp("settings");
     closePopUp("profile");
     closePopUp("support");
-    closePopUp("donations");
+    closePopUp("login")
   }
 
   return { closePopUp, openPopUp, closeBookPopUps, closeAllPopUps };

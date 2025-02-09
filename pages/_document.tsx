@@ -11,7 +11,7 @@ function Document(): Component {
         <meta name="title" content="Lymbrarie - Tu biblioteca personal" />
         <meta
           name="description"
-          content="Organiza y lleva un seguimiento de tus lecturas"
+          content="La mejor forma de gestionar tu biblioteca"
         />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://lymbrarie.com/" />
@@ -21,7 +21,7 @@ function Document(): Component {
         />
         <meta
           property="og:description"
-          content="Organiza y lleva un seguimiento de tus lecturas"
+          content="La mejor forma de gestionar tu biblioteca"
         />
         <meta
           property="og:image"
@@ -35,7 +35,7 @@ function Document(): Component {
         />
         <meta
           property="twitter:description"
-          content="Organiza y lleva un seguimiento de tus lecturas"
+          content="La mejor forma de gestionar tu biblioteca"
         />
         <meta
           property="twitter:image"

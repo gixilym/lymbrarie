@@ -1,9 +1,6 @@
 "use client";
-import AccelerationAlert from "@/components/alerts/AccelerationAlert";
 import AddYourFirstBook from "@/components/AddYourFirstBook";
-// import Bot from "@/components/Bot";
 import ListSection from "@/components/ListSection";
-import LoaderBook from "@/components/LoaderBook";
 import LoaderCircle from "@/components/LoaderCircle";
 import PopUps from "@/components/PopUps";
 import SearchIndex from "@/components/SearchIndex";
@@ -12,11 +9,11 @@ import { animated, useSpring } from "@react-spring/web";
 import { getDocuments, syncDocuments } from "@/utils/documents";
 import { len } from "@/utils/helpers";
 import { noop } from "es-toolkit";
-import { referrerAtom, zeroAtom } from "@/utils/atoms";
 import { showNotifications } from "@/utils/notifications";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
+import { zeroAtom } from "@/utils/atoms";
 import type { Book, Component, SyncDocs } from "@/utils/types";
 import {
   type Auth,
@@ -25,6 +22,7 @@ import {
   type Unsubscribe,
 } from "firebase/auth";
 import { AuthAction, type User, useUser, withUser } from "next-firebase-auth";
+import useLoadContent from "@/hooks/useLoadContent";
 
 export default withUser({
   whenAuthed: AuthAction.RENDER,
@@ -45,11 +43,10 @@ function Index(): Component {
     [, setAllTitles] = useLocalStorage("all-titles", []),
     [booksIsEmpty, setBooksIsEmpty] = useState<boolean | null>(null),
     [animations] = useLocalStorage("animations", true),
-    [loading, setLoading] = useState<boolean>(false),
+    { startLoading, isLoading, finishLoading } = useLoadContent(),
     [newNoti] = useLocalStorage("added", false),
     [deletedNoti] = useLocalStorage("deleted", false),
     [zeroBooks] = useRecoilState<boolean>(zeroAtom),
-    [referrerBookPath] = useRecoilState<boolean>(referrerAtom),
     showFirstBook: boolean = booksIsEmpty || zeroBooks,
     [styles, api] = useSpring(() => ({
       from: { opacity: animations ? 0 : 1 },
@@ -96,13 +93,13 @@ function Index(): Component {
     if (Array.isArray(cacheBooks) || !navigator.onLine)
       return setMyBooks(cacheBooks ?? []);
 
-    setLoading(true);
+    startLoading();
     const { books, isEmpty } = await getDocuments(UID);
     setMyBooks(books);
     setBooksIsEmpty(isEmpty);
     setCacheBooks(books);
     setAllTitles(books.map((b: Book) => b?.data?.title ?? ""));
-    setLoading(false);
+    finishLoading();
   }
 
   function animateList(): void {
@@ -114,19 +111,21 @@ function Index(): Component {
     });
   }
 
-  if (loading && referrerBookPath) return <LoaderCircle />;
-  if (loading && !referrerBookPath) return <LoaderBook />;
+  if (isLoading) return <LoaderCircle />;
 
   return (
     <animated.main
       style={styles}
       className="flex flex-col justify-start items-center w-full sm:max-w-[950px] h-full gap-y-6"
     >
-      <SearchIndex />
+      <SearchIndex UID={UID} />
       {showFirstBook ? <AddYourFirstBook /> : <ListSection myBooks={myBooks} />}
-      <PopUps profileImg={profileImg} profileName={profileName} UID={UID} />
-      <AccelerationAlert />
-      {/* <Bot /> */}
+      <PopUps
+        profileImg={profileImg}
+        profileName={profileName}
+        UID={UID}
+        isGuest={false}
+      />
     </animated.main>
   );
 }

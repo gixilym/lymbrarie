@@ -7,7 +7,7 @@ export default function initAuth(): void {
     authPageURL: "/login",
     appPageURL: "/",
     loginAPIEndpoint: "/api/login",
-    logoutAPIEndpoint: "/api/logout",
+    logoutAPIEndpoint: "/",
     onLoginRequestError: err => console.error(err),
     onLogoutRequestError: err => console.error(err),
     firebaseAdminInitConfig: {

@@ -1,13 +1,13 @@
-import type { Component } from "@/utils/types";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
+import type { Component } from "@/utils/types";
 
 function NotFound(): Component {
   const [t] = useTranslation("global");
 
   return (
     <section className="grid place-items-center text-slate-300">
-      <div className="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6 mt-20">
+      <div className="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6 mt-16">
         <div className="mx-auto max-w-screen-sm text-center">
           <p className="mb-4 text-7xl tracking-tight font-extrabold lg:text-9xl">
             404
@@ -18,7 +18,8 @@ function NotFound(): Component {
 
           <Link
             href="/"
-            className="inline-flex bg-primary-600 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg px-5 py-2.5 text-center dark:focus:ring-primary-900 my-4">
+            className="inline-flex bg-primary-600 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg px-5 py-2.5 text-center dark:focus:ring-primary-900 my-4"
+          >
             <u className="text-xl sm:text-2xl">{t("home")}</u>
           </Link>
         </div>

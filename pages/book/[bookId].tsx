@@ -10,6 +10,7 @@ import LoaderCircle from "@/components/LoaderCircle";
 import NotesPopUp from "@/components/popups/NotesPopUp";
 import OfflinePopUp from "@/components/popups/OfflinePopUp";
 import SettingsBtn from "@/components/btns/SettingsBtn";
+import ShareBtn from "@/components/btns/ShareBtn";
 import toast from "react-hot-toast";
 import useLoadContent from "@/hooks/useLoadContent";
 import useLocalStorage from "@/hooks/useLocalStorage";
@@ -21,18 +22,12 @@ import { deformatTitle, isLoaned, translateStateBook } from "@/utils/helpers";
 import { dismissNotification, notification } from "@/utils/notifications";
 import { doc, setDoc } from "firebase/firestore";
 import { isEqual, noop, union } from "es-toolkit";
-import { popupsAtom, referrerAtom } from "@/utils/atoms";
+import { popupsAtom } from "@/utils/atoms";
 import { twMerge } from "tailwind-merge";
 import { useEffect, useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
-import type {
-  Book,
-  BookData,
-  Component,
-  Handler,
-  SetState,
-} from "@/utils/types";
+import type { Book, BookData, Component, Handler } from "@/utils/types";
 import {
   type Auth,
   getAuth,
@@ -50,7 +45,6 @@ import {
   User as UserIcon,
 } from "lucide-react";
 import { type NextRouter, useRouter } from "next/router";
-import ShareBtn from "@/components/btns/ShareBtn";
 
 export default withUser({
   whenAuthed: AuthAction.RENDER,
@@ -84,7 +78,6 @@ function BookId(): Component {
     notesProps = { updateNotes, notes, setNotes, isLoading, loadingFav },
     [popup] = useRecoilState<any>(popupsAtom),
     handleRouteChange: Handler<void, void> = () => closeBookPopUps(),
-    setReferrer: SetState = useSetRecoilState(referrerAtom),
     [stylesImg] = useSpring(() => ({
       from: { opacity: animations ? 0 : 1 },
       to: { opacity: 1 },
@@ -103,7 +96,6 @@ function BookId(): Component {
     }));
 
   useEffect(() => {
-    setReferrer(true);
     router.events.on("routeChangeStart", handleRouteChange);
     return () => router.events.off("routeChangeStart", handleRouteChange);
   }, []);
@@ -193,7 +185,7 @@ function BookId(): Component {
       )}
 
       <BackBtn hidden />
-      <Breadcrumbs title={book?.data?.title ?? ""} />
+      <Breadcrumbs title={book?.data?.title ?? ""} isGuest={false} />
       <article
         id="screenshot"
         className="w-full sm:w-[700px] h-[290px] flex flex-col sm:flex-row gap-y-12 justify-start items-center sm:items-start backdrop-blur-[2.5px] relative mt-20 xl:mt-0 sm:mt-12"

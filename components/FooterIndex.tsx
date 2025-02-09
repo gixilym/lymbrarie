@@ -1,108 +1,74 @@
 import Image from "next/image";
 import Link from "next/link";
-import logo from "@/public/favicon.ico";
-import usePopUp from "@/hooks/usePopUp";
-import { isNull } from "es-toolkit";
+import { twJoin } from "tailwind-merge";
+import { usePathname } from "next/navigation";
 import { useTranslation } from "react-i18next";
-import { useUser, withUser } from "next-firebase-auth";
 import type { Component } from "@/utils/types";
-import {
-  Heart as HeartIcon,
-  Home,
-  Info,
-  Shield as PrivacyIcon,
-  MessageCircleQuestion as SupportIcon,
-  User as UserIcon,
-} from "lucide-react";
-import { type NextRouter, useRouter } from "next/router";
-
-export default withUser()(FooterIndex);
 
 function FooterIndex(): Component {
   const [t] = useTranslation("global"),
-    { openPopUp } = usePopUp(),
-    { id }: { id: string | null } = useUser(),
-    { pathname }: NextRouter = useRouter(),
-    isHomePath: boolean = pathname != "/",
-    dontShow: boolean =
-      isNull(id) || pathname == "/login" || pathname == "/logout";
+    path: string = usePathname(),
+    isMobile: boolean = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-  if (dontShow) return <></>;
+  if (
+    (isMobile && path?.includes("/book")) ||
+    (isMobile && path?.includes("/guest"))
+  )
+    return <></>;
 
   return (
-    <footer className="flex select-none footer absolute bottom-0 w-full flex-col-reverse sm:flex-row justify-between items-center sm:p-4 bg-slate-900 border-t-2 border-gray-800 py-2 sm:py-0 sm:h-[60px] text-gray-400">
-      <div className="hidden sm:grid items-center grid-flow-col px-4 sm:px-0">
-        <Image
-          loading="lazy"
-          width={30}
-          height={30}
-          className="border rounded-full border-gray-700"
-          src={logo}
-          alt="logo"
-        />
-        <span translate="no">Copyright &copy; 2025 Lymbrarie</span>
-      </div>
-      <div className="flex flex-row flex-wrap gap-y-4 py-1 items-start sm:items-center justify-evenly w-full h-auto sm:w-auto sm:gap-x-6">
-        {location.pathname != "/" && (
-          <Link
-            href="/"
-            scroll={false}
-            className="duration-75 cursor-pointer hover:underline flex gap-x-2 justify-center items-center"
-          >
-            <Home size={18} />
-            <p className="text-sm sm:text-[16px]">{t("home")}</p>
-          </Link>
-        )}
-
-        {!isHomePath && (
-          <>
-            <div
-              onClick={() => openPopUp("profile")}
-              className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline"
-            >
-              <UserIcon size={19} />
-              <p className="text-sm sm:text-[16px] hover:underline duration-75 cursor-pointer ">
-                {t("profile")}
-              </p>
-            </div>
-            <div
-              className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline "
-              onClick={() => openPopUp("donations")}
-            >
-              <HeartIcon size={18} />
-              <p className="text-sm sm:text-[16px]">{t("donate")}</p>
-            </div>
-            <div
-              onClick={() => openPopUp("support")}
-              className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline "
-            >
-              <Info size={18} />
-              <p className="text-sm sm:text-[16px]">{t("support")}</p>
-            </div>
-          </>
-        )}
-
-        {location.pathname != "/faq" && (
-          <Link
-            href="/faq"
-            scroll={false}
-            className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline"
-          >
-            <SupportIcon size={18} />
-            <p className="text-sm sm:text-[16px]">FAQ</p>
-          </Link>
-        )}
-        {location.pathname != "/privacypolicy" && (
-          <Link
-            href="/privacypolicy"
-            scroll={false}
-            className="flex duration-75 cursor-pointer flex-row justify-start items-center gap-x-2 hover:underline mr-2 sm:mr-6"
-          >
-            <PrivacyIcon size={18} />
-            <p className="text-sm sm:text-[16px]">{t("privacy-policy")}</p>
-          </Link>
-        )}
-      </div>
+    <footer
+      className={twJoin(
+        path?.includes("/book") && "mt-20",
+        "footer bg-base-200 text-base-content p-10 w-[100vw]"
+      )}
+    >
+      <aside>
+        <Image src="/favicon.ico" alt="logo" width={40} height={40} />
+        <p>Copyright &copy; {new Date().getFullYear()} Lymbrarie</p>
+        <Link href="/" className="link link-hover">
+          {t("home")}
+        </Link>
+      </aside>
+      <nav>
+        <p className="footer-title">{t("support")}</p>
+        <Link
+          className="link link-hover"
+          href="mailto:gixi.tsx@gmail.com"
+          target="_blank"
+          rel="noreferrer"
+        >
+          gixi.tsx@gmail.com
+        </Link>
+        <Link href="/faq" className="link link-hover">
+          FAQ
+        </Link>
+      </nav>
+      <nav>
+        <p className="footer-title">{t("legal")}</p>
+        <Link href="/termsofuse" className="link link-hover">
+          {t("terms")}
+        </Link>
+        <Link href="/privacypolicy" className="link link-hover">
+          {t("privacy-policy")}
+        </Link>
+      </nav>
+      <nav>
+        <p className="footer-title">Extra</p>
+        <Link href="/donations" className="link link-hover">
+          {t("donations")}
+        </Link>
+        <Link
+          href="https://www.flaticon.es/icono-gratis/libro_806197"
+          referrerPolicy="no-referrer"
+          target="_blank"
+          className="link link-hover"
+        >
+          {t("icon-of")} Freepik
+        </Link>
+      </nav>
     </footer>
   );
 }
+
+export default FooterIndex;

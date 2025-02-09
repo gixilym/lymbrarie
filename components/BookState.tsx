@@ -21,7 +21,7 @@ function BookState({ state, showDetails }: Props): Component {
         return { text: t("new-book-pending"), bg: "bg-orange-600/30" };
 
       case "Borrowed":
-        return { text: t("loanedto"), bg: "bg-orange-600/30" };
+        return { text: t("loanedto"), bg: "bg-blue-600/30" };
 
       default:
         return { text: "", bg: "" };

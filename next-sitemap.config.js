@@ -6,9 +6,13 @@ module.exports = {
     "/error",
     "/book/**",
     "/login",
-    "/logout",
     "/faq",
     "/privacypolicy",
+    "/termsofuse",
+    "/guest",
+    "/credits",
+    "/404",
+    "/guest/**",
   ],
   robotsTxtOptions: {
     additionalSitemaps: [

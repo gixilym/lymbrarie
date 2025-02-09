@@ -1,7 +1,11 @@
+import DialogContainer from "../DialogContainer";
+import HeaderPopUp from "../HeaderPopUp";
+import NotesAlert from "../alerts/NotesAlert";
 import useLoadContent from "@/hooks/useLoadContent";
 import usePopUp from "@/hooks/usePopUp";
+import { delay, noop } from "es-toolkit";
+import { useTranslation } from "react-i18next";
 import type { Component } from "@/utils/types";
-import { delay } from "es-toolkit";
 import {
   CircleX as ExitIcon,
   Notebook as Icon,
@@ -15,10 +19,6 @@ import {
   useEffect,
   useState,
 } from "react";
-import { useTranslation } from "react-i18next";
-import DialogContainer from "../DialogContainer";
-import HeaderPopUp from "../HeaderPopUp";
-import NotesAlert from "../alerts/NotesAlert";
 
 function NotesPopUp(props: Props): Component {
   const [t] = useTranslation("global"),
@@ -26,7 +26,7 @@ function NotesPopUp(props: Props): Component {
     router: NextRouter = useRouter(),
     [hasChanges, setHasChanges] = useState<boolean>(false),
     [showAlert, setShowAlert] = useState<boolean>(false),
-    { notes, setNotes, updateNotes, loadingFav } = props,
+    { notes, setNotes, updateNotes, loadingFav, isGuest } = props,
     [originalNotes, setOriginalNotes] = useState<string>(notes),
     { startLoading, isLoading } = useLoadContent();
 
@@ -101,7 +101,7 @@ function NotesPopUp(props: Props): Component {
     >
       <div className="w-full h-full flex flex-col justify-between items-center gap-y-6 relative">
         <HeaderPopUp icon={<Icon size={27} />} title={t("notes")} />
-        {hasChanges && !loadingFav && (
+        {!isGuest && hasChanges && !loadingFav && (
           <button
             className="btn bg-green-400 backdrop-blur-sm font-thin text-sm sm:text-lg text-black hover:bg-green-300 opacity-95 absolute bottom-0 right-0"
             onClick={saveContent}
@@ -115,11 +115,16 @@ function NotesPopUp(props: Props): Component {
           value={notes}
           spellCheck={false}
           disabled={loadingFav}
-          onChange={handleChangeContent}
+          onChange={isGuest ? noop : handleChangeContent}
           autoFocus
           placeholder="..."
           className="h-full pb-14 pl-2 !pr-8 text-sm md:text-lg resize-none border-none focus:ring-0 focus:outline-none w-full bg-transparent text-slate-200 placeholder:text-gray-200 text-pretty"
         />
+        {isGuest && (
+          <p className="w-full text-sm text-slate-300 text-center">
+            {t("notes-guest")}
+          </p>
+        )}
       </div>
 
       {showAlert && <NotesAlert />}
@@ -143,4 +148,5 @@ interface Props {
   setNotes: Dispatch<SetStateAction<string>>;
   loadingFav: boolean;
   updateNotes: () => void;
+  isGuest?: boolean;
 }

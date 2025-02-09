@@ -22,6 +22,7 @@ const popupsAtom: RecoilState<any> = atom({
     donations: false,
     offline: false,
     updates: false,
+    login: false
   },
 });
 
@@ -35,16 +36,11 @@ const animListAtom: RecoilState<boolean> = atom({
   default: false,
 });
 
-const referrerAtom: RecoilState<boolean> = atom({
-  key: "referrer-atom",
-  default: false,
-});
-
 const coverAtom: RecoilState<boolean> = atom({
   key: "cover-atom",
   default: false,
-});
+})
 
 
-export { animListAtom, popupsAtom, referrerAtom, searchAtom, stateAtom, zeroAtom, coverAtom };
+export { animListAtom, popupsAtom, searchAtom, stateAtom, zeroAtom, coverAtom};
 

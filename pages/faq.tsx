@@ -21,24 +21,25 @@ function FAQ(): Component {
   return (
     <animated.section
       style={styles}
-      className="max-w-2xl w-full space-y-4 pb-24">
+      className="max-w-2xl w-full space-y-4 pb-24"
+    >
       <Link
         href="/"
-        className="w-full p-4 text-xl underline text-center sm:text-start">
+        className="w-full p-4 text-xl underline text-center sm:text-start"
+      >
         {t("back")}
       </Link>
       <div className="max-w-3xl w-full p-4 h-full">
-        <p className="text-3xl sm:text-4xl font-bold mb-10 w-full text-center sm:text-start">
-          {t("faq")}
-        </p>
         <ul className="space-y-4">
           {faqItems(t).map((item, i) => (
             <li
               key={i}
-              className="border-2 border-gray-800 rounded-lg overflow-hidden">
+              className="border-2 border-gray-800 rounded-lg overflow-hidden"
+            >
               <button
                 className="w-full text-left p-4 focus:outline-none cursor-default bg-gray-900 transition-colors duration-200"
-                onClick={() => toggleItem(i)}>
+                onClick={() => toggleItem(i)}
+              >
                 <span className="float-left pr-3 pt-0.5">
                   {openItem == i ? <ChevronUp /> : <ChevronRight />}
                 </span>

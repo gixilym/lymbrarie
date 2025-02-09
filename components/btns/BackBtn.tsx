@@ -1,19 +1,21 @@
-import type { Component } from "@/utils/types";
-import { ArrowLeft as Icon } from "lucide-react";
 import Link from "next/link";
-import { type NextRouter, useRouter } from "next/router";
+import { ArrowLeft as Icon } from "lucide-react";
 import { twMerge } from "tailwind-merge";
+import type { Component } from "@/utils/types";
 
-function BackBtn({ hidden }: { hidden: boolean }): Component {
-  const { pathname }: NextRouter = useRouter();
-
+function BackBtn({
+  hidden,
+  isGuest,
+}: {
+  hidden: boolean;
+  isGuest?: boolean;
+}): Component {
   return (
     <Link
-      href="/"
+      href={isGuest ? "/guest" : "/"}
       className={twMerge(
         hidden ? "flex sm:hidden" : "flex",
-        pathname.includes("/book/") ? "w-full" : "w-max",
-        "absolute top-10 xl:top-[72px] xl:pt-2 right-[150px] 2xl:left-[20rem] opacity-90 justify-center items-center"
+        "absolute top-10 right-[150px] opacity-90 justify-center items-center w-full"
       )}
     >
       <Icon

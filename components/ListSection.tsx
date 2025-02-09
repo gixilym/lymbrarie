@@ -1,18 +1,19 @@
-import HomeBtn from "@/components/btns/HomeBtn";
-import useLocalStorage from "@/hooks/useLocalStorage";
-import { searchAtom, stateAtom } from "@/utils/atoms";
-import { len, normalizeText, tLC } from "@/utils/helpers";
-import type { Book, BookData, Component, MemoComponent } from "@/utils/types";
-import { isEqual, isNull, orderBy, round, shuffle } from "es-toolkit";
-import { memo, useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useRecoilState } from "recoil";
 import BookCard from "./BookCard";
-import ListBooks from "./ListBooks";
-import NoMatchesText from "./NoMatchesText";
 import DetailsBtn from "./btns/DetailsBtn";
 import FavoritesBtn from "./btns/FavoritesBtn";
+import ListBooks from "./ListBooks";
+import NoMatchesText from "./NoMatchesText";
 import SortBtn from "./btns/SortBtn";
+import useLocalStorage from "@/hooks/useLocalStorage";
+import usePopUp from "@/hooks/usePopUp";
+import { BoltIcon, UserRoundIcon } from "lucide-react";
+import { isEqual, isNull, orderBy, round, shuffle } from "es-toolkit";
+import { len, normalizeText, tLC } from "@/utils/helpers";
+import { memo, useEffect, useMemo, useState } from "react";
+import { searchAtom, stateAtom } from "@/utils/atoms";
+import { useRecoilState } from "recoil";
+import { useTranslation } from "react-i18next";
+import type { Book, BookData, Component, MemoComponent } from "@/utils/types";
 
 const ListSection: MemoComponent = memo(function B({ myBooks }: Props) {
   const [t] = useTranslation("global"),
@@ -25,7 +26,8 @@ const ListSection: MemoComponent = memo(function B({ myBooks }: Props) {
     [ascToDesc, setAscToDesc] = useState<boolean | null>(ascLS),
     [showFavsLS, setShowFavsLS] = useLocalStorage("show-favs", false),
     [showFavs, setShowFavs] = useState<boolean>(showFavsLS),
-    myFavs: Book[] = myBooks.filter((b: Book) => b?.data?.isFav);
+    myFavs: Book[] = myBooks.filter((b: Book) => b?.data?.isFav),
+    { openPopUp } = usePopUp();
 
   useEffect(() => {
     const resetScroll = (): void => setScroll(0);
@@ -117,21 +119,28 @@ const ListSection: MemoComponent = memo(function B({ myBooks }: Props) {
   return (
     <section className="w-full px-4 sm:px-0 sm:w-[620px] flex flex-col justify-between items-center gap-y-7 relative">
       <div className="flex justify-start w-full items-end px-2.5">
-        <HomeBtn />
+        <button
+          onClick={() => openPopUp("profile")}
+          title={t("profile")}
+          className="btn btn-ghost btn-square"
+        >
+          <UserRoundIcon size={28} />
+        </button>
         <DetailsBtn showDetails={showDetails} onClick={changeDetails} />
         <SortBtn ascToDesc={ascToDesc} alternateSort={alternateSort} />
         <FavoritesBtn
           showFavs={showFavs}
           alternateFavorites={alternateFavorites}
         />
+        <button
+          onClick={() => openPopUp("settings")}
+          title={t("settings")}
+          className="btn btn-ghost btn-square"
+        >
+          <BoltIcon size={28} />
+        </button>
       </div>
       <ListBooks listBooks={renderList} />
-      {/* <Link
-        href="/credits"
-        className="mb-20 text-sm opacity-80 hover:opacity-100"
-      >
-        créditos
-      </Link> */}
     </section>
   );
 });

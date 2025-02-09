@@ -8,8 +8,8 @@ import { useTranslation } from "react-i18next";
 import type { Component, EventSelect, Handler, SelectOpt } from "@/utils/types";
 import {
   Sparkles as AnimationsIcon,
+  BoltIcon,
   Languages as LanguagesIcon,
-  Settings as SettingsIcon,
   Library as StateIcon,
 } from "lucide-react";
 import { type NextRouter, useRouter } from "next/router";
@@ -25,6 +25,7 @@ function SettingsPopUp(): Component {
     handleSelect: Handler<string, void> = (val: string) => {
       changeLanguage(val);
       setLanguage(val);
+      reload();
     },
     options: SelectOpt = [
       { value: "es", label: "Español" },
@@ -33,7 +34,7 @@ function SettingsPopUp(): Component {
 
   return (
     <DialogContainer id="settings">
-      <HeaderPopUp icon={<SettingsIcon size={25} />} title={t("settings")} />
+      <HeaderPopUp icon={<BoltIcon size={28} />} title={t("settings")} />
 
       <div className="w-full flex flex-col justify-between items-center gap-y-10 text-slate-200 pt-16 lg:pt-0">
         <div className="w-full sm:w-[90%] flex flex-col sm:flex-row gap-y-3 justify-between sm:items-center items-start pl-20 sm:pl-0 gap-x-3 sm:gap-x-0">

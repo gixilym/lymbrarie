@@ -1,20 +1,10 @@
 import type { Component } from "@/utils/types";
-import { animated, useSpring } from "@react-spring/web";
 
 function LoaderCircle(): Component {
-  const [styles] = useSpring(() => ({
-    from: { opacity: 0 },
-    to: { opacity: 1 },
-    config: { duration: 300 },
-    delay: 150,
-  }));
-
   return (
-    <animated.div
-      style={styles}
-      className="mt-20 w-full h-full flex justify-center items-start opacity-80">
+    <div className="w-full h-screen absolute top-0 left-0 flex items-start pt-20 justify-center z-[999] bg-gradient-to-br from-purple-950 via-slate-900 to-slate-950">
       <span className="loading loading-spinner text-secondary w-14" />
-    </animated.div>
+    </div>
   );
 }
 

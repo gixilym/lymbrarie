@@ -10,14 +10,12 @@ import { useTranslation } from "react-i18next";
 function ErrorPage(): Component {
   const [t] = useTranslation("global"),
     notes: string | undefined = useRouter()?.query?.notes?.toString(),
-    [, setAcceleration] = useLocalStorage("acceleration", false),
     [lang, setLang] = useLocalStorage("language", "en"),
     [state, setState] = useLocalStorage("state", true),
     [animations, setAnimations] = useLocalStorage("animations", true);
 
   function clearData(): void {
     clearStorage();
-    setAcceleration(false);
     setLang(lang);
     setAnimations(animations);
     setState(state);
@@ -44,7 +42,8 @@ function ErrorPage(): Component {
       <Link
         href="/"
         onClick={clearData}
-        className="text-2xl sm:text-3xl underline w-full text-center lowercase hover:text-slate-300 duration-75">
+        className="text-2xl sm:text-3xl underline w-full text-center lowercase hover:text-slate-300 duration-75"
+      >
         {t("reload")}
       </Link>
     </section>

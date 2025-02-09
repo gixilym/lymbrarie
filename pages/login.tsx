@@ -2,13 +2,21 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import LoaderCircle from "@/components/LoaderCircle";
-import logo from "@/public/favicon.ico";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { animated, useSpring } from "@react-spring/web";
 import { AuthAction, withUser } from "next-firebase-auth";
 import { GithubIcon, GoogleIcon } from "@/utils/svgs";
+import { notification } from "@/utils/notifications";
 import { useTranslation } from "react-i18next";
-import type { Component } from "@/utils/types";
+import {
+  BookMarked,
+  BookOpen,
+  ChevronDown,
+  GhostIcon,
+  Sparkles,
+  CircleAlert,
+} from "lucide-react";
+import type { Component, Timer } from "@/utils/types";
 import {
   type Auth,
   getAuth,
@@ -16,18 +24,13 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
-
-export default withUser({
-  whenAuthed: AuthAction.REDIRECT_TO_APP,
-  whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
-  whenUnauthedAfterInit: AuthAction.RENDER,
-  LoaderComponent: LoaderCircle,
-})(LoginPage);
+import FooterIndex from "@/components/FooterIndex";
 
 function LoginPage(): Component {
   const auth: Auth = getAuth(),
     [t] = useTranslation("global"),
     [animations] = useLocalStorage("animations", true),
+    [language, setLanguage] = useLocalStorage("language", "es"),
     [styles] = useSpring(() => ({
       from: { opacity: animations ? 0 : 1 },
       to: { opacity: 1 },
@@ -38,6 +41,7 @@ function LoginPage(): Component {
     try {
       await signInWithPopup(auth, provider);
     } catch (err: any) {
+      notification("error", t("login-error"));
       console.error(`catch 'logIn' ${err.message}`);
     }
   }
@@ -53,35 +57,54 @@ function LoginPage(): Component {
   }
 
   return (
-    <section className="absolute top-0 right-0 min-h-screen w-full flex flex-col items-center gap-y-20 justify-center bg-transparent">
+    <animated.section
+      style={styles}
+      className="bg-gradient-to-br from-purple-950 via-slate-900 to-slate-950 flex items-center flex-col justify-between top-0 right-0 min-h-screen w-full gap-y-20 md:gap-y-24 bg-transparent"
+    >
       <Head>
         <meta name="title" content="Lymbrarie - Tu biblioteca personal" />
         <meta
           name="description"
-          content="Organiza y lleva un seguimiento de tus lecturas"
+          content="La mejor forma de gestionar tu biblioteca"
         />
       </Head>
-      <animated.div
-        style={styles}
-        className="border-0 sm:border-2 border-slate-700/70 relative pt-10 sm:rounded-lg bg-slate-900 flex flex-col gap-y-10 justify-start sm:justify-center items-center w-full max-w-[580px] pb-20 min-h-screen sm:min-h-min"
-      >
-        <p className="text-xs sm:text-sm tracking-tight text-slate-200 border border-slate-500/40 rounded px-2 py-1 absolute top-2.5 right-2.5 bg-purple-600/30">
-          {t("version")} 2.0
-        </p>
-        <div className="w-full flex flex-col justify-start items-center gap-y-4">
+
+      <header className="relative flex items-center justify-between w-full max-w-3xl pt-6 px-6 lg:px-0">
+        <div className="flex items-center gap-x-3">
           <Image
-            className="w-20 h-20 border-2 border-slate-500/70 rounded-full"
-            src={logo}
+            width={40}
+            height={40}
+            className="border rounded-full border-gray-700"
+            src="/favicon.ico"
             alt="logo"
           />
-          <h4 className="text-xl sm:text-3xl tracking-tight  w-full text-center text-slate-200">
-            {t("welcome")}
-          </h4>
-          <p className="text-sm sm:text-lg text-center text-slate-300/85">
-            {t("book-find")}
-          </p>
+          <h1 className="text-xl font-semibold">Lymbrarie</h1>
         </div>
-        <div className="w-full flex flex-col justify-start items-center gap-y-3">
+
+        <div className="flex items-center gap-x-2 justify-center [&>span]:text-sm">
+          <span>ES</span>
+          <input
+            type="checkbox"
+            className="toggle"
+            defaultChecked={language == "en"}
+            onChange={() => {
+              setLanguage(language == "es" ? "en" : "es");
+              const timer: Timer = setTimeout(() => location.reload(), 180);
+              return () => clearTimeout(timer);
+            }}
+          />
+          <span>EN</span>
+        </div>
+      </header>
+
+      <section className="z-50 flex w-full flex-col items-center justify-center max-w-2xl gap-y-4 relative">
+        <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight w-full text-center text-balance">
+          {t("welcome")}
+        </h2>
+        <p className="text-lg md:text-xl text-gray-300/90 w-full max-w-lg text-pretty text-center mb-4 mt-1">
+          {t("manage-library")}
+        </p>
+        <div className="pt-2 items-center justify-center flex flex-col gap-y-3">
           <button
             type="button"
             onClick={withGoogle}
@@ -100,24 +123,76 @@ flex items-center min-w-[330px] sm:w-full max-w-[413px] h-[60px] rounded-lg dura
             <GithubIcon className="w-7 h-7" />
             <p className="text-sm sm:text-xl text-white">{t("with-github")}</p>
           </button>
-          <div className="absolute bottom-3 w-full cursor-default text-xs text-slate-400/80 sm:text-[16px] flex flex-col justify-center items-center gap-y-2">
-            <Link
-              className="hover:underline duration-100 hover:text-slate-400"
-              href="/faq"
-            >
-              FAQ
-            </Link>
-            <Link
-              className="hover:underline duration-100 hover:text-slate-400"
-              href="/privacypolicy"
-            >
-              {t("privacy-policy")}
-            </Link>
-          </div>
+          <Link
+            href="/guest"
+            className="justify-center sm:justify-start pr-4 sm:pr-0 sm:pl-[43px]
+              bg-slate-950/50 flex items-center w-[330px] sm:w-full max-w-[400px] h-14 sm:h-[58px] gap-x-6 rounded-lg duration-150 hover:bg-slate-950/80"
+          >
+            <GhostIcon className="w-8 h-8 text-slate-200" />
+            <p className="text-sm sm:text-xl text-slate-100">
+              {t("access-guest")}
+            </p>
+          </Link>
+          <Link
+            href="#sect"
+            className="hidden sm:flex justify-center items-center w-max animate-bounce"
+          >
+            <ChevronDown size={36} className="opacity-50" />
+          </Link>
         </div>
-      </animated.div>
-    </section>
+      </section>
+
+      <section
+        id="sect"
+        className="flex flex-wrap justify-center items-center gap-16 max-w-4xl w-full mb-20"
+      >
+        <article className="relative bg-slate-900/90 z-50 w-[350px] border border-slate-800 rounded-lg p-4 md:p-6">
+          <BookOpen className="h-8 w-8 text-purple-400 mb-4" />
+          <p className="text-lg md:text-xl font-semibold text-slate-100 mb-2">
+            {t("organize")}
+          </p>
+          <p className="text-sm md:text-lg text-gray-300/85">
+            {t("organize-descp")}
+          </p>
+        </article>
+        <article className="relative bg-slate-900/90 z-50 w-[350px] border border-slate-800 rounded-lg p-4 md:p-6">
+          <BookMarked className="h-8 w-8 text-purple-400 mb-4" />
+          <p className="text-lg md:text-xl font-semibold text-slate-100 mb-2">
+            {t("tracking")}
+          </p>
+          <p className="text-sm md:text-lg text-gray-300/85">
+            {t("tracking-descp")}
+          </p>
+        </article>
+        <article className="relative bg-slate-900/90 z-50 w-[350px] border border-slate-800 rounded-lg p-4 md:p-6">
+          <Sparkles className="h-8 w-8 text-purple-400 mb-4" />
+          <p className="text-lg md:text-xl font-semibold text-slate-100 mb-2">
+            {t("discover")}
+          </p>
+          <p className="text-sm md:text-lg text-gray-300/85">
+            {t("discover-descp")}
+          </p>
+        </article>
+        <article className="relative bg-slate-900/90 z-50 w-[350px] border-red-400/20 border-2 rounded-lg p-4 md:p-6">
+          <CircleAlert className="h-8 w-8 text-red-400 mb-4" />
+          <p className="text-lg md:text-xl font-semibold text-slate-100 mb-2">
+            {t("important")}
+          </p>
+          <p className="text-sm md:text-[16px] text-gray-300/85">
+            {t("warning-login")}
+          </p>
+        </article>
+      </section>
+      <FooterIndex />
+    </animated.section>
   );
 }
+
+export default withUser({
+  whenAuthed: AuthAction.REDIRECT_TO_APP,
+  whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
+  whenUnauthedAfterInit: AuthAction.RENDER,
+  LoaderComponent: LoaderCircle,
+})(LoginPage);
 
 type Providers = GithubAuthProvider | GoogleAuthProvider;

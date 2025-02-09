@@ -7,10 +7,14 @@ import CardWithDetails from "./CardWithDetails";
 import CardWithOutDetails from "./CardWithoutDetails";
 
 function BookCard({ data, showDetails }: Props): Component {
-  const { push }: NextRouter = useRouter(),
+  const { push, pathname }: NextRouter = useRouter(),
     title = formatTitle(data.title ?? ""),
+    isGuest: boolean = pathname.includes(`/guest`),
     img: string = data.image || defaultCover.src,
-    onClick = (): Promise<boolean> => push(`/book/${title}`),
+    onClick = (): Promise<boolean> => {
+      if (isGuest) return guestPath();
+      return push(`/book/${title}`);
+    },
     formatState = (): Component => fnState(data.state ?? "", showDetails),
     withDetails: Details = {
       title: data.title ?? "",
@@ -25,6 +29,34 @@ function BookCard({ data, showDetails }: Props): Component {
       formatState,
       title: data.title ?? "",
     } as const;
+
+  function guestPath(): Promise<boolean> {
+    switch (data.title) {
+      case "Orgullo y Prejuicio":
+        return push("/guest/0");
+
+      case "Pride and Prejudice":
+        return push("/guest/0");
+
+      case "1984":
+        return push("/guest/1");
+
+      case "El Código Da Vinci":
+        return push("/guest/2");
+
+      case "The Da Vinci Code":
+        return push("/guest/2");
+
+      case "Harry Potter y la Piedra Filosofal":
+        return push("/guest/3");
+
+      case "Harry Potter and the Philosopher's Stone":
+        return push("/guest/3");
+
+      default:
+        return push("/login");
+    }
+  }
 
   if (showDetails) return <CardWithDetails {...withDetails} />;
   return <CardWithOutDetails {...withOutDetails} />;

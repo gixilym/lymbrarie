@@ -1,10 +1,10 @@
-import useLocalStorage from "@/hooks/useLocalStorage";
-import type { Component } from "@/utils/types";
-import { animated, useSpring } from "@react-spring/web";
 import Link from "next/link";
+import useLocalStorage from "@/hooks/useLocalStorage";
+import { animated, useSpring } from "@react-spring/web";
 import { useTranslation } from "react-i18next";
+import type { Component } from "@/utils/types";
 
-function PrivacyPolicyPage(): Component {
+function TermsOfUsePage(): Component {
   const [t] = useTranslation("global"),
     [animations] = useLocalStorage("animations", true),
     [styles] = useSpring(() => ({
@@ -24,9 +24,15 @@ function PrivacyPolicyPage(): Component {
       >
         {t("back")}
       </Link>
-      <p className="mt-20 xl:mt-14">{t("privacy-1")}</p>
-      <p>{t("privacy-2")}</p>
-      <p>{t("privacy-3")}</p>
+      <p className="mt-20 xl:mt-14">{t("terms-1")}</p>
+      <p>{t("terms-2")}</p>
+      <p>{t("terms-3")}</p>
+      <p> {t("terms-4")}</p>
+      <p> {t("terms-5")}</p>
+      <p> {t("terms-6")}</p>
+      <p> {t("terms-7")}</p>
+      <p> {t("terms-8")}</p>
+      <p> {t("terms-9")}</p>
       <p> {t("privacy-4")}</p>
       <address className="text-sm sm:text-lg w-full">
         <Link
@@ -42,4 +48,4 @@ function PrivacyPolicyPage(): Component {
   );
 }
 
-export default PrivacyPolicyPage;
+export default TermsOfUsePage;

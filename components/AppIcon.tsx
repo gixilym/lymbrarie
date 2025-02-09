@@ -26,7 +26,7 @@ function AppIcon(): Component {
           Lymbrarie
         </p>
       </MyLink>
-      <div className="flex lg:hidden w-[93.5%] justify-center gap-x-3 items-center py-2 rounded-2xl mb-4  border-purple-700/10 border-2 bg-purple-700/10">
+      <div className="flex lg:hidden w-[93.5%] max-w-3xl justify-center gap-x-3 items-center py-2 rounded-2xl mb-4  border-purple-700/10 border-2 bg-purple-700/10">
         <Image src={icon} width={35} height={35} alt="logo" />
         <p className="text-xl text-purple-200/90" translate="no">
           Lymbrarie
