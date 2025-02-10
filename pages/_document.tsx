@@ -43,6 +43,13 @@ function Document(): Component {
         />
       </Head>
       <Providers>
+        <a
+          rel="me"
+          href="https://mastodon.social/@lymbrarie"
+          style={{ display: "none" }}
+        >
+          Mastodon
+        </a>
         <Main />
         <NextScript />
       </Providers>
