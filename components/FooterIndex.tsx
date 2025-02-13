@@ -24,11 +24,22 @@ function FooterIndex(): Component {
       )}
     >
       <aside>
-        <Image src="/favicon.ico" alt="logo" width={40} height={40} />
-        <p>Copyright &copy; {new Date().getFullYear()} Lymbrarie</p>
-        <Link href="/" className="link link-hover">
-          {t("home")}
-        </Link>
+        <div className="flex gap-x-4 mb-2 items-end justify-start">
+          <Image src="/favicon.ico" alt="logo" width={30} height={30} />
+          <Link href="/" className="link link-hover">
+            {t("home")}
+          </Link>
+        </div>
+        <p>
+          Lymbrarie {t("unlicense")}{" "}
+          <Link
+            className="hover:underline font-semibold"
+            target="_blank"
+            href="https://unlicense.org"
+          >
+            UNLICENSE
+          </Link>
+        </p>
       </aside>
       <nav>
         <p className="footer-title">{t("support")}</p>

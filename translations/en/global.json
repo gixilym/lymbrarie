@@ -193,5 +193,8 @@
   "notes-book-3": "One of the most iconic books in the genre, ideal for appealing to both youngsters and adults who enjoy magic and adventure.",
   "cover-book-3": "https://res.cloudinary.com/dgs55s8qh/image/upload/v1738887192/rzwrdddmd31petsmmwzr.jpg",
   "warning-login": "Lymbrarie is NOT a social network to share reviews, follow users or give likes. It is a private space designed to record your reading.",
-  "important": "Important"
+  "important": "Important",
+  "star": "Star on Github",
+  "unlicense": "is under license from",
+  "open-source": "is an open source project"
 }

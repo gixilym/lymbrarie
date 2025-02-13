@@ -1,3 +1,4 @@
+import FooterIndex from "@/components/FooterIndex";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,6 +16,9 @@ import {
   GhostIcon,
   Sparkles,
   CircleAlert,
+  StarIcon,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import type { Component, Timer } from "@/utils/types";
 import {
@@ -24,7 +28,6 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
-import FooterIndex from "@/components/FooterIndex";
 
 function LoginPage(): Component {
   const auth: Auth = getAuth(),
@@ -183,6 +186,27 @@ flex items-center min-w-[330px] sm:w-full max-w-[413px] h-[60px] rounded-lg dura
           </p>
         </article>
       </section>
+
+      <Link
+        href="https://github.com/gixilym/lymbrarie"
+        target="_blank"
+        className="link link-hover opacity-70 hover:opacity-100 flex items-center justify-center gap-x-1 w-full text-center px-4 sm:px-0"
+      >
+        <ChevronRight className="hidden sm:block w-4 h-4" />
+        <span className="text-sm sm:text-lg">Lymbrarie {t("open-source")}</span>
+        <ChevronLeft className="hidden sm:block w-4 h-4" />
+      </Link>
+
+      <Link
+        target="_blank"
+        href="https://github.com/gixilym/lymbrarie"
+        className="bg-black/40 border border-yellow-300/10 hover:border-yellow-300/25 justify-between px-2 items-center max-w gap-x-3 h-9 rounded-xl duration-150 fixed bottom-2 right-4 z-50 cursor-pointer backdrop-blur-xl hidden sm:flex"
+      >
+        <GithubIcon className="w-5 h-5 opacity-80" />
+        <p className="text-sm text-slate-300">{t("star")}</p>
+        <StarIcon className="w-4 h-4 text-yellow-300" />
+      </Link>
+
       <FooterIndex />
     </animated.section>
   );

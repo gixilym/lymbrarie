@@ -185,7 +185,7 @@
   "cover-book-0": "https://res.cloudinary.com/dgs55s8qh/image/upload/v1738724247/z9ezuo9vxi5lfqk38eqp.webp",
   "notes-guest": "(Debes iniciar sesión para guardar notas)",
   "dystopia": "Distopía",
-  "notes-book-1": "Una distopia clásica que sigue siendo relevante hoy en día. Ideal para quienes buscan una lectura profunda.",
+  "notes-book-1": "Una distopía clásica que sigue siendo relevante hoy en día. Ideal para quienes buscan una lectura profunda.",
   "name-book-2": "El Código Da Vinci",
   "notes-book-2": "Una novela de ritmo rápido que combina historia, religión y acertijos en una trama intrigante.",
   "cover-book-2": "https://res.cloudinary.com/dgs55s8qh/image/upload/v1738724580/izddg9gjnjrpvkrxz4it.webp",
@@ -194,5 +194,8 @@
   "notes-book-3": "Una de las novelas más populares de la literatura juvenil, perfecta para quienes buscan aventuras y magia.",
   "cover-book-3": "https://res.cloudinary.com/dgs55s8qh/image/upload/v1714770522/f1uc15e9qzttwemahtq8.webp",
   "warning-login": "Lymbrarie NO es una red social para compartir reseñas, seguir usuarios o dar likes. Es un espacio privado para registrar tus lecturas.",
-  "important": "Importante"
+  "important": "Importante",
+  "star": "Estrella en Github",
+  "unlicense": "está bajo la licencia de",
+  "open-source": "es un proyecto de código abierto"
 }
