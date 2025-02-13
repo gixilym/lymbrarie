@@ -7,7 +7,7 @@ import { COLLECTION, EMPTY_BOOK } from "@/utils/consts";
 import { delay, isEqual, union } from "es-toolkit";
 import { dismissNotification, notification } from "@/utils/notifications";
 import { doc, setDoc } from "firebase/firestore";
-import { isLoaned, len, normalizeText, tLC } from "@/utils/helpers";
+import { isLent, len, normalizeText, tLC } from "@/utils/helpers";
 import { useTranslation } from "react-i18next";
 import type {
   Book,
@@ -118,11 +118,10 @@ function NewBookPopUp({ UID }: Props): Component {
         isCustomGender && isEqual(len(cusGenderVal), 0),
       maxLengthGender: boolean = isCustomGender && len(cusGenderVal) > 24,
       emptyLoaned: boolean =
-        isLoaned(book?.data?.state ?? "") &&
+        isLent(book?.data?.state ?? "") &&
         isEqual(book?.data?.loaned?.trim(), ""),
       maxLengthLoaned: boolean =
-        isLoaned(book?.data?.state ?? "") &&
-        len(book?.data?.loaned ?? "0") > 24,
+        isLent(book?.data?.state ?? "") && len(book?.data?.loaned ?? "0") > 24,
       validateURL: RegExp =
         /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/,
       validateImg: boolean =
@@ -177,13 +176,13 @@ function NewBookPopUp({ UID }: Props): Component {
     }
 
     if (emptyLoaned) {
-      setErrorKey("loaned-input");
+      setErrorKey("lent-input");
       notification("error", t("empty-loaned"));
       return false;
     }
 
     if (maxLengthLoaned) {
-      setErrorKey("loaned-input");
+      setErrorKey("lent-input");
       notification("error", t("loaned-too-long"));
       return false;
     }
@@ -211,7 +210,7 @@ function NewBookPopUp({ UID }: Props): Component {
         handleGender={handleGender}
         handleState={handleState}
         handleImage={handleImage}
-        isLoaned={isLoaned(book.data.state ?? "")}
+        isLent={isLent(book.data.state ?? "")}
       />
       <form
         onSubmit={newBook}

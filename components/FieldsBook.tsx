@@ -6,7 +6,7 @@ import { twMerge } from "tailwind-merge";
 import { useTranslation } from "react-i18next";
 import type { Component, InputEvent } from "@/utils/types";
 import {
-  UserRoundSearch as BorrowedIcon,
+  UserRoundSearch as LentIcon,
   Type as CustomIcon,
   Tag as GenderIcon,
   Library as StateIcon,
@@ -25,7 +25,7 @@ function FieldsBook(props: Props): Component {
       isCustomGender,
       handleGender,
       handleState,
-      isLoaned,
+      isLent,
       defaultValueTitle = "",
       defaultValueAuthor = "",
       defaultValueGender = "",
@@ -151,7 +151,7 @@ function FieldsBook(props: Props): Component {
         <label
           htmlFor="state-select"
           className={twMerge(
-            isLoaned ? "w-2/4" : "w-full",
+            isLent ? "w-2/4" : "w-full",
             isLoading ? "bg-base-200" : "bg-transparent input-bordered",
             "input flex items-center sm:text-xl text-lg sm:w-full h-14"
           )}
@@ -176,20 +176,20 @@ function FieldsBook(props: Props): Component {
             <option value="Reading">{t("new-book-reading")}</option>
             <option value="Read">{t("new-book-read")}</option>
             <option value="Pending">{t("new-book-pending")}</option>
-            <option value="Borrowed">{t("new-book-borrowed")}</option>
+            <option value="Lent">{t("new-book-lent")}</option>
           </select>
         </label>
-        {isLoaned && (
+        {isLent && (
           <label
-            htmlFor="loaned-input"
+            htmlFor="lent-input"
             className={twMerge(
-              isEqual("loaned-input", errorKey) && "border-2 border-red-500",
+              isEqual("lent-input", errorKey) && "border-2 border-red-500",
               "input input-bordered flex items-center sm:text-xl text-xs w-2/4 sm:w-full h-14"
             )}
           >
-            <BorrowedIcon size={18} className="mt-0.5 mr-2" />
+            <LentIcon size={18} className="mt-0.5 mr-2" />
             <input
-              id="loaned-input"
+              id="lent-input"
               disabled={isLoading}
               onChange={handleChange}
               name="loaned"
@@ -245,7 +245,7 @@ interface Props {
   handleGender: ChangeEventHandler<HTMLSelectElement>;
   handleState: (state: string) => void;
   handleImage: (newURL: string) => void;
-  isLoaned: boolean;
+  isLent: boolean;
   defaultValueTitle?: string;
   defaultValueAuthor?: string;
   defaultValueGender?: string;

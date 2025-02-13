@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 
 function ErrorPage(): Component {
   const [t] = useTranslation("global"),
-    notes: string | undefined = useRouter()?.query?.notes?.toString(),
+    notes: string = useRouter()?.query?.notes?.toString() ?? "",
     [lang, setLang] = useLocalStorage("language", "en"),
     [state, setState] = useLocalStorage("state", true),
     [animations, setAnimations] = useLocalStorage("animations", true);
@@ -24,7 +24,7 @@ function ErrorPage(): Component {
   if (notes) return <ErrorNotes notes={notes} />;
 
   return (
-    <section className="w-full h-full justify-start items-center flex flex-col pt-10 gap-y-10">
+    <section className="w-full h-full justify-start items-center flex flex-col pt-10 gap-y-10 mb-20">
       <div className="w-full justify-center items-center flex">
         <Icon size={90} />
       </div>

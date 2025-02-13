@@ -13,7 +13,7 @@ function translateStateBook(state: string, t: Translate): string {
     case "Pending":
       return t("new-book-pending");
 
-    case "Borrowed":
+    case "Lent":
       return t("loanedto");
 
     default:
@@ -89,8 +89,8 @@ function formatState(val: string, t: Translate): string {
     case "Pending":
       return t("new-book-pending");
 
-    case "Borrowed":
-      return t("new-book-borrowed");
+    case "Lent":
+      return t("new-book-lent");
 
     default:
       return t("new-book-all");
@@ -105,7 +105,7 @@ const removeItem: Handler<string, void> = item =>
 
 const clearStorage: Handler<void, void> = () => localStorage?.clear();
 
-const isLoaned: Handler<string, boolean> = state => isEqual(state, "Borrowed");
+const isLent: Handler<string, boolean> = state => isEqual(state, "Lent");
 
 const tLC: Handler<string, string> = val => val?.toLowerCase().trim();
 
@@ -122,7 +122,7 @@ export {
   deformatTitle,
   formatState,
   formatTitle,
-  isLoaned,
+  isLent,
   len,
   normalizeText,
   removeItem,

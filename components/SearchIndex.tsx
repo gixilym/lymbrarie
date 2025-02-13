@@ -31,8 +31,8 @@ function SearchIndex({ UID }: { UID: string | null }): Component {
       { value: "Read", label: "\xA0>\xA0\xA0" + t("new-book-read") },
       { value: "Pending", label: "\xA0>\xA0\xA0" + t("new-book-pending") },
       {
-        value: "Borrowed",
-        label: "\xA0>\xA0\xA0" + t("new-book-borrowed"),
+        value: "Lent",
+        label: "\xA0>\xA0\xA0" + t("new-book-lent"),
       },
     ] as const;
 

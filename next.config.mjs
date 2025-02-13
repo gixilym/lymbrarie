@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   env: {
     FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,
-    OPENAI_KEY: process.env.OPENAI_KEY,
+    // OPENAI_KEY: process.env.OPENAI_KEY,
   },
   compiler: { removeConsole: process.env.NODE_ENV == "production" },
   images: {

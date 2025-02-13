@@ -18,7 +18,7 @@ import usePopUp from "@/hooks/usePopUp";
 import { animated, useSpring } from "@react-spring/web";
 import { AuthAction, withUser } from "next-firebase-auth";
 import { COLLECTION, EMPTY_BOOK } from "@/utils/consts";
-import { deformatTitle, isLoaned, translateStateBook } from "@/utils/helpers";
+import { deformatTitle, isLent, translateStateBook } from "@/utils/helpers";
 import { dismissNotification, notification } from "@/utils/notifications";
 import { doc, setDoc } from "firebase/firestore";
 import { isEqual, noop, union } from "es-toolkit";
@@ -229,8 +229,7 @@ function BookId(): Component {
                 <LibraryIcon size={18} />
                 <p className="text-sm sm:text-[16px] overflow-ellipsis overflow-hidden whitespace-nowrap w-full">
                   {translateStateBook(book?.data?.state ?? "", t)}
-                  {isLoaned(book?.data?.state ?? "") &&
-                    ` ${book?.data?.loaned}`}
+                  {isLent(book?.data?.state ?? "") && ` ${book?.data?.loaned}`}
                 </p>
               </div>
             )}

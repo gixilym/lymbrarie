@@ -16,7 +16,7 @@ function ErrorNotes({ notes }: { notes: string }): Component {
   }
 
   return (
-    <div className="w-full h-full justify-start items-center flex flex-col pt-10 gap-y-10 text-slate-600 mx-4 sm:mx-0">
+    <div className="w-full h-full justify-start items-center flex flex-col pt-10 gap-y-10 text-slate-600 mx-4 sm:mx-0 mb-20">
       <div className="flex flex-col justify-start items-center gap-y-6 w-full max-w-[700px]">
         <span className="text-xl md:text-3xl tracking-tight font-bold lg:text-4xl text-center uppercase text-red-400">
           {t("warning")}

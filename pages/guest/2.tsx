@@ -120,7 +120,7 @@ function Page2(): Component {
             <div className="flex flex-row justify-start items-center gap-x-2 w-full">
               <LibraryIcon size={18} />
               <p className="text-sm sm:text-[16px] overflow-ellipsis overflow-hidden whitespace-nowrap w-full">
-                {t("new-book-borrowed") + " " + t("a")} Maria
+                {t("new-book-lent") + " " + t("a")} Maria
               </p>
             </div>
           </div>

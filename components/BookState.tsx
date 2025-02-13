@@ -20,7 +20,7 @@ function BookState({ state, showDetails }: Props): Component {
       case "Pending":
         return { text: t("new-book-pending"), bg: "bg-orange-600/30" };
 
-      case "Borrowed":
+      case "Lent":
         return { text: t("loanedto"), bg: "bg-blue-600/30" };
 
       default:

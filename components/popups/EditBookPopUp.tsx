@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 import {
   deformatTitle,
   formatTitle,
-  isLoaned,
+  isLent,
   len,
   normalizeText,
   tLC,
@@ -115,7 +115,7 @@ function EditBookPopUp(props: Props): Component {
     startLoading();
     notification("loading", t("editing"));
 
-    const loaned: string = isLoaned(book.state) ? book.loaned : "",
+    const loaned: string = isLent(book.state) ? book.loaned : "",
       data: Book = { ...book, loaned } as const,
       oldVersion: any[] = cacheBooks.filter((b: Book) => b.id != documentId),
       newVersion: Book[] = union(oldVersion, [{ id: documentId, data }]),
@@ -150,9 +150,9 @@ function EditBookPopUp(props: Props): Component {
       maxLengthGender: boolean =
         isCustomGender && len(cusGenderVal ?? "0") > 24,
       emptyLoaned: boolean =
-        isLoaned(book.state ?? "") && isEqual(book.loaned?.trim(), ""),
+        isLent(book.state ?? "") && isEqual(book.loaned?.trim(), ""),
       maxLengthLoaned: boolean =
-        isLoaned(book.state ?? "") && len(book.loaned ?? "0") > 24,
+        isLent(book.state ?? "") && len(book.loaned ?? "0") > 24,
       validateURL: RegExp =
         /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/,
       validateImg: boolean =
@@ -206,13 +206,13 @@ function EditBookPopUp(props: Props): Component {
     }
 
     if (emptyLoaned) {
-      setErrorKey("loaned-input");
+      setErrorKey("lent-input");
       notification("error", t("empty-loaned"));
       return false;
     }
 
     if (maxLengthLoaned) {
-      setErrorKey("loaned-input");
+      setErrorKey("lent-input");
       notification("error", t("loaned-too-long"));
       return false;
     }
@@ -240,7 +240,7 @@ function EditBookPopUp(props: Props): Component {
         handleGender={handleGender}
         handleState={handleState}
         handleImage={handleImage}
-        isLoaned={isLoaned(book?.state)}
+        isLent={isLent(book?.state)}
         defaultValueTitle={data?.title}
         defaultValueAuthor={data?.author}
         defaultValueGender={data?.gender}

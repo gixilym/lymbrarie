@@ -22,7 +22,7 @@
   "new-book-read": "Leído",
   "new-book-reading": "Leyendo",
   "new-book-pending": "Pendiente",
-  "new-book-borrowed": "Prestado",
+  "new-book-lent": "Prestado",
   "generate-link": "genera el URL de tu portada aquí",
   "loanedto": "Prestado a",
   "profile": "Perfil",

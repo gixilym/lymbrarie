@@ -17,9 +17,9 @@ function ProfilePopUp({ profileImg, profileName, isGuest }: Props): Component {
       Read: 0,
       Reading: 0,
       Pending: 0,
-      Borrowed: 0,
+      Lent: 0,
     }),
-    { Read, Reading, Pending, Borrowed }: States = stateCounts,
+    { Read, Reading, Pending, Lent }: States = stateCounts,
     [cacheBooks] = useLocalStorage("cache-books", null);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ function ProfilePopUp({ profileImg, profileName, isGuest }: Props): Component {
         Read: 0,
         Reading: 0,
         Pending: 0,
-        Borrowed: 0,
+        Lent: 0,
       };
 
       cacheBooks.forEach((b: Book) => {
@@ -90,14 +90,14 @@ function ProfilePopUp({ profileImg, profileName, isGuest }: Props): Component {
                 {t("loaned")}
               </p>
               <span className="text-lg sm:text-2xl font-thin text-slate-200 w-full text-center max-w-28 overflow-hidden overflow-ellipsis">
-                {isGuest ? 1 : Borrowed}
+                {isGuest ? 1 : Lent}
               </span>
             </div>
             <div className="absolute -bottom-16 space-y-2 border-2 border-slate-600/60 rounded-lg flex flex-col justify-center items-center py-2 w-full">
               <p className="capitalize text-sm sm:text-xl font-medium">
                 Total:&nbsp;&nbsp;
                 <span className="text-lg sm:text-2xl font-thin text-slate-200 w-full text-center max-w-28 overflow-hidden overflow-ellipsis">
-                  {isGuest ? 4 : sum([Read, Borrowed, Reading, Pending])}
+                  {isGuest ? 4 : sum([Read, Lent, Reading, Pending])}
                 </span>
               </p>
             </div>
@@ -128,4 +128,4 @@ interface Props {
 
 type States = { [key: string]: number };
 
-type BookState = "Read" | "Reading" | "Pending" | "Borrowed";
+type BookState = "Read" | "Reading" | "Pending" | "Lent";

@@ -1,6 +1,7 @@
 import Providers from "@/components/I18Provider";
-import type { Component } from "@/utils/types";
+import { BASE_URL } from "@/utils/consts";
 import { Head, Html, Main, NextScript } from "next/document";
+import type { Component } from "@/utils/types";
 
 function Document(): Component {
   return (
@@ -14,7 +15,7 @@ function Document(): Component {
           content="La mejor forma de gestionar tu biblioteca"
         />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://lymbrarie.com/" />
+        <meta property="og:url" content={BASE_URL} />
         <meta
           property="og:title"
           content="Lymbrarie - Tu biblioteca personal"
@@ -28,7 +29,7 @@ function Document(): Component {
           content="https://res.cloudinary.com/dgs55s8qh/image/upload/v1721421179/uyp9sym1kgwcbbt3z07r.png"
         />
         <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content="https://lymbrarie.com/" />
+        <meta property="twitter:url" content={BASE_URL} />
         <meta
           property="twitter:title"
           content="Lymbrarie - Tu biblioteca personal"

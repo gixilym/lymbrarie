@@ -2,7 +2,7 @@
   "name": "lymbrarie",
   "version": "2.0.0",
   "private": true,
-  "license": "Apache-2.0",
+  "license": "UNLICENSED",
   "author": {
     "name": "gixi",
     "url": "https://gixi.dev",
@@ -34,7 +34,6 @@
     "next": "^14.2.7",
     "next-firebase-auth": "^1.1.0",
     "next-sitemap": "^4.2.3",
-    "openai": "^4.80.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-dropzone": "^14.2.3",

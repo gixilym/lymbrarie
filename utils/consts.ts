@@ -10,9 +10,6 @@ const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dgs55s8qh/image/upload";
 
 const COLLECTION: CollectionReference = collection(DB, "lymbrarie_books");
 
-const COVER_URL:string  =
-"https://res.cloudinary.com/dgs55s8qh/image/upload/v1737679478/qjyfilncj8xo7p3kn1yl.webp";
-
 const GENDERS: string[] = [
   "no-gender",
   "custom",
@@ -60,6 +57,5 @@ export {
   EMPTY_BOOK,
   GENDERS,
   MAINTENANCE,
-  COVER_URL,
 };
 

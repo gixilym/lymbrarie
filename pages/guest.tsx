@@ -78,7 +78,7 @@ function getGuestBooks(t: Translate): Book[] {
         loaned: "",
         notes: t("notes-book-2"),
         owner: "guest",
-        state: "Borrowed",
+        state: "Lent",
         title: t("name-book-2"),
       },
     },
