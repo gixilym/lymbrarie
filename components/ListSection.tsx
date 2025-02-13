@@ -7,8 +7,8 @@ import SortBtn from "./btns/SortBtn";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
 import { BoltIcon, UserRoundIcon } from "lucide-react";
-import { isEqual, isNull, orderBy, round, shuffle } from "es-toolkit";
-import { len, normalizeText, tLC } from "@/utils/helpers";
+import { deburr, isEqual, isNull, orderBy, round, shuffle } from "es-toolkit";
+import { len, tLC } from "@/utils/helpers";
 import { memo, useEffect, useMemo, useState } from "react";
 import { searchAtom, stateAtom } from "@/utils/atoms";
 import { useRecoilState } from "recoil";
@@ -69,8 +69,9 @@ const ListSection: MemoComponent = memo(function B({ myBooks }: Props) {
   function where(value: string, state: string): Book[] {
     const checkState = (b: BookData) => !state || isEqual(b.state, stateVal),
       checkTitle = (b: BookData) =>
-        normalizeText(tLC(b.title ?? ""))?.includes(normalizeText(tLC(value))),
-      checkAuthor = (b: BookData) => tLC(b.author ?? "")?.includes(tLC(value)),
+        deburr(tLC(b.title ?? ""))?.includes(deburr(tLC(value))),
+      checkAuthor = (b: BookData) =>
+        deburr(tLC(b.author ?? ""))?.includes(deburr(tLC(value))),
       books: Book[] = showFavs ? myFavs : myBooks;
 
     return books.filter(

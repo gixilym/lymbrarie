@@ -1,4 +1,4 @@
-import { isEqual } from "es-toolkit";
+import { isEqual } from 'es-toolkit';
 import type { StylesConfig } from "react-select";
 import type { Handler, Translate } from "./types";
 
@@ -97,9 +97,6 @@ function formatState(val: string, t: Translate): string {
   }
 }
 
-const normalizeText: Handler<string, string> = text =>
-  text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-
 const removeItem: Handler<string, void> = item =>
   localStorage?.removeItem(item);
 
@@ -124,7 +121,6 @@ export {
   formatTitle,
   isLent,
   len,
-  normalizeText,
   removeItem,
   selectStyles,
   tLC,

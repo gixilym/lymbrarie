@@ -4,10 +4,12 @@ import useLoadContent from "@/hooks/useLoadContent";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
 import { COLLECTION, EMPTY_BOOK } from "@/utils/consts";
-import { delay, isEqual, union } from "es-toolkit";
+import { coverAtom } from "@/utils/atoms";
+import { deburr, delay, isEqual, union } from "es-toolkit";
 import { dismissNotification, notification } from "@/utils/notifications";
 import { doc, setDoc } from "firebase/firestore";
-import { isLent, len, normalizeText, tLC } from "@/utils/helpers";
+import { isLent, len, tLC } from "@/utils/helpers";
+import { useRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
 import type {
   Book,
@@ -25,8 +27,6 @@ import {
   useRef,
   useState,
 } from "react";
-import { useRecoilState } from "recoil";
-import { coverAtom } from "@/utils/atoms";
 
 function NewBookPopUp({ UID }: Props): Component {
   const { closePopUp } = usePopUp(),
@@ -110,7 +110,7 @@ function NewBookPopUp({ UID }: Props): Component {
   function validateFields(): boolean {
     const title: string = tLC(book?.data?.title ?? ""),
       repeteadTitle: boolean = allTitles.some((t: string) =>
-        isEqual(normalizeText(tLC(t)), normalizeText(tLC(title)))
+        isEqual(deburr(tLC(t)), deburr(tLC(title)))
       ),
       maxTitleLength: boolean = len(title) > 80,
       maxAuthorLength: boolean = len(book?.data?.author ?? "0") > 34,
