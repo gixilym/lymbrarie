@@ -1,40 +1,22 @@
-import type { Component } from "@/utils/types";
-import { ChevronRight as ArrowIcon, BookIcon, LibraryIcon } from "lucide-react";
 import Link from "next/link";
+import { ChevronLeft as Icon } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import type { Component } from "@/utils/types";
 
-function Breadcrumbs({ title, isGuest }: Props): Component {
+function Breadcrumbs({ isGuest }: { isGuest: boolean }): Component {
   const [t] = useTranslation("global");
 
   return (
-    <div className="w-full max-w-[700px] absolute top-10 hidden sm:block opacity-70">
-      <ul className="gap-x-2 flex justify-start items-end text-[17px] overflow-hidden">
-        <li>
-          <Link
-            href={isGuest ? "/guest" : "/"}
-            className="flex justify-start items-center cursor-pointer hover:underline gap-x-1"
-          >
-            <LibraryIcon size={16} />
-            <span className="capitalize">{t("books")}</span>
-          </Link>
-        </li>
-        <ArrowIcon size={23} />
-        <li className="w-full">
-          <div className="flex justify-start items-center gap-x-1 cursor-default w-full">
-            <BookIcon size={14} />
-            <span className="overflow-ellipsis overflow-hidden whitespace-nowrap w-11/12 max-w-[350px]">
-              {title}
-            </span>
-          </div>
-        </li>
-      </ul>
+    <div className="w-full max-w-[715px] absolute top-10 hidden sm:block">
+      <Link
+        href={isGuest ? "/guest" : "/"}
+        className="flex justify-start items-center cursor-pointer hover:underline gap-x-2 w-max opacity-70 hover:opacity-100"
+      >
+        <Icon size={22} />
+        <span className="capitalize text-xl">{t("home")}</span>
+      </Link>
     </div>
   );
 }
 
 export default Breadcrumbs;
-
-type Props = {
-  title: string;
-  isGuest: boolean;
-};

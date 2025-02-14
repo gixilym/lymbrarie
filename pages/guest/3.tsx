@@ -65,7 +65,7 @@ function Page2(): Component {
   return (
     <animated.section
       style={stylesSection}
-      className="flex flex-col justify-cnter items-center w-full gap-y-6 sm:pb-10 sm:pt-20 h-full sm:pl-20 sm:mb-20"
+      className="flex flex-col justify-cnter items-center w-full gap-y-6 sm:pb-10 sm:pt-10 h-full sm:pl-20 sm:mb-20 sm:mt-8"
     >
       <Head>
         <title translate="no">{t("name-book-3")}</title>
@@ -73,7 +73,7 @@ function Page2(): Component {
 
       <div
         className={twMerge(
-          isMobile ? "hidden" : "block",
+          isMobile ? "hidden" : "hidden md:block",
           "absolute top-10 left-4"
         )}
       >
@@ -83,7 +83,7 @@ function Page2(): Component {
       {popup.notes && <NotesPopUp {...notesProps} />}
 
       <BackBtn hidden isGuest />
-      <Breadcrumbs title={t("name-book-3")} isGuest />
+      <Breadcrumbs isGuest />
       <article
         id="screenshot"
         className="w-full sm:w-[700px] h-[290px] flex flex-col sm:flex-row gap-y-12 justify-start items-center sm:items-start backdrop-blur-[2.5px] relative mt-20 xl:mt-0 sm:mt-12"

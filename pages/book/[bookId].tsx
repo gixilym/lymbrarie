@@ -170,7 +170,7 @@ function BookId(): Component {
         <title translate="no">{book?.data?.title || "Lymbrarie"}</title>
       </Head>
       {!isMobile && (
-        <div className="absolute top-10 left-4">
+        <div className="absolute top-10 left-4 hidden md:block">
           <AppIcon />
         </div>
       )}
@@ -185,10 +185,10 @@ function BookId(): Component {
       )}
 
       <BackBtn hidden />
-      <Breadcrumbs title={book?.data?.title ?? ""} isGuest={false} />
+      <Breadcrumbs isGuest={false} />
       <article
         id="screenshot"
-        className="w-full sm:w-[700px] h-[290px] flex flex-col sm:flex-row gap-y-12 justify-start items-center sm:items-start backdrop-blur-[2.5px] relative mt-20 xl:mt-0 sm:mt-12"
+        className="w-full sm:w-[700px] h-[290px] flex flex-col sm:flex-row gap-y-12 justify-start items-center sm:items-start backdrop-blur-[2.5px] relative"
       >
         <Cover
           priority

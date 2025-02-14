@@ -15,12 +15,12 @@ function BackBtn({
       href={isGuest ? "/guest" : "/"}
       className={twMerge(
         hidden ? "flex sm:hidden" : "flex",
-        "absolute top-10 right-[150px] opacity-90 justify-center items-center w-full"
+        "absolute top-10 right-[150px] opacity-90 justify-center items-center w-full z-50"
       )}
     >
       <Icon
         size={45}
-        className="z-30 cursor-pointer duration-150 hover:brightness-200"
+        className="cursor-pointer duration-150 hover:brightness-200"
       />
     </Link>
   );

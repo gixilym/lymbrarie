@@ -68,7 +68,7 @@ function LoginPage(): Component {
         <meta name="title" content="Lymbrarie - Tu biblioteca personal" />
         <meta
           name="description"
-          content="La mejor forma de gestionar tu biblioteca"
+          content="La mejor forma de organizar tu biblioteca"
         />
       </Head>
 
