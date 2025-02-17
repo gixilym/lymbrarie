@@ -10,7 +10,6 @@ function NotesAlert(): Component {
       className="alert alert-error bg-red-400 font-semibold text-sm sm:text-[16px] flex justify-start items-end mb-10 sm:mb-0"
     >
       <svg
-        xmlns="http://www.w3.org/2000/svg"
         className="h-6 w-6 shrink-0 stroke-current"
         fill="none"
         viewBox="0 0 24 24"

@@ -7,7 +7,6 @@ const GoogleIcon = (props: SVG): Component => (
     width="1em"
     height="1em"
     viewBox="0 0 256 262"
-    xmlns="http://www.w3.org/2000/svg"
     preserveAspectRatio="xMidYMid"
     {...props}
   >
@@ -36,7 +35,6 @@ const GithubIcon = (props: SVG): Component => (
     width="1em"
     height="1em"
     fill="rgb(225, 228, 232)"
-    xmlns="http://www.w3.org/2000/svg"
     preserveAspectRatio="xMidYMid"
     {...props}
   >
