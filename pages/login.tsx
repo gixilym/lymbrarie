@@ -1,3 +1,4 @@
+import Favicon from "@/public/favicon.ico";
 import FooterIndex from "@/components/FooterIndex";
 import Head from "next/head";
 import Image from "next/image";
@@ -75,11 +76,12 @@ function LoginPage(): Component {
       <header className="relative flex items-center justify-between w-full max-w-3xl pt-6 px-6 lg:px-0">
         <div className="flex items-center gap-x-3">
           <Image
-            width={40}
-            height={40}
+            width={38}
+            height={38}
             className="border rounded-full border-gray-700"
-            src="/favicon.ico"
+            src={Favicon.src}
             alt="logo"
+            loading="eager"
           />
           <h1 className="text-xl font-semibold">Lymbrarie</h1>
         </div>
@@ -90,6 +92,7 @@ function LoginPage(): Component {
             type="checkbox"
             className="toggle"
             defaultChecked={language == "en"}
+            aria-label="Change language"
             onChange={() => {
               setLanguage(language == "es" ? "en" : "es");
               const timer: Timer = setTimeout(() => location.reload(), 180);
