@@ -26,6 +26,7 @@ function ListBooks({ listBooks }: Props): Component {
     <animated.ul
       style={styles}
       className="mb-36 flex flex-col justify-start w-full items-center gap-y-4 sm:overflow-hidden h-auto"
+      data-testid="list-books"
     >
       {listBooks}
     </animated.ul>

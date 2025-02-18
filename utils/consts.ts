@@ -1,10 +1,12 @@
-import { DB } from '@/database/initAuth';
+import { DB } from "@/database/initAuth";
 import { collection, type CollectionReference } from "firebase/firestore";
 import type { Book } from "./types";
 
 const MAINTENANCE: boolean = false;
 
 const BASE_URL: string = "https://lymbrarie.com";
+
+const LOCAL_URL: string = "http://localhost:3000";
 
 const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dgs55s8qh/image/upload";
 
@@ -53,9 +55,10 @@ const EMPTY_BOOK: Book = {
 
 export {
   BASE_URL,
-  CLOUDINARY_URL, COLLECTION,
+  CLOUDINARY_URL,
+  COLLECTION,
   EMPTY_BOOK,
   GENDERS,
   MAINTENANCE,
+  LOCAL_URL,
 };
-

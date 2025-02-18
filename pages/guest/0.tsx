@@ -106,7 +106,7 @@ function Page0(): Component {
             <div className="flex flex-row justify-start items-center gap-x-2 w-full">
               <UserIcon size={18} />
               <p className="text-sm sm:text-[16px] overflow-ellipsis overflow-hidden whitespace-nowrap w-full">
-                Dan Brown
+                Jane Austen
               </p>
             </div>
 

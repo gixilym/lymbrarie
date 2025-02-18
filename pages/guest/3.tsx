@@ -114,14 +114,14 @@ function Page2(): Component {
             <div className="flex flex-row justify-start items-center gap-x-2 w-full">
               <StateIcon size={18} />
               <p className="text-sm sm:text-[16px] capitalize overflow-ellipsis overflow-hidden whitespace-nowrap w-full">
-                Thriller
+                {t("fantasy")}
               </p>
             </div>
 
             <div className="flex flex-row justify-start items-center gap-x-2 w-full">
               <LibraryIcon size={18} />
               <p className="text-sm sm:text-[16px] overflow-ellipsis overflow-hidden whitespace-nowrap w-full">
-                {t("new-book-reading")}
+                {t("new-book-read")}
               </p>
             </div>
           </div>

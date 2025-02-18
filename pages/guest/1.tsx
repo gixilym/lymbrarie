@@ -106,14 +106,14 @@ function Page1(): Component {
             <div className="flex flex-row justify-start items-center gap-x-2 w-full">
               <UserIcon size={18} />
               <p className="text-sm sm:text-[16px] overflow-ellipsis overflow-hidden whitespace-nowrap w-full">
-                Dan Brown
+                George Orwell
               </p>
             </div>
 
             <div className="flex flex-row justify-start items-center gap-x-2 w-full">
               <StateIcon size={18} />
               <p className="text-sm sm:text-[16px] capitalize overflow-ellipsis overflow-hidden whitespace-nowrap w-full">
-                {t("gender-book-0")}
+                {t("dystopia")}
               </p>
             </div>
 
