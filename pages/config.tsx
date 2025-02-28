@@ -1,0 +1,140 @@
+import LoaderCircle from "@/components/LoaderCircle";
+import Select from "react-select";
+import useGuest from "@/hooks/useGuest";
+import useLocalStorage from "@/hooks/useLocalStorage";
+import { animate, clearStorage, len, selectStyles } from "@/utils/helpers";
+import { animated, useSpring } from "@react-spring/web";
+import { Auth, getAuth } from "firebase/auth";
+import { AuthAction, withUser } from "next-firebase-auth";
+import { NextRouter, useRouter } from "next/router";
+import { PAGES } from "@/utils/consts";
+import { useTranslation } from "react-i18next";
+import type { Component, EventSelect, Handler, SelectOpt } from "@/utils/types";
+import {
+  AmpersandIcon,
+  CircleIcon,
+  LanguagesIcon,
+  LibraryIcon,
+  MegaphoneIcon,
+  SparklesIcon,
+} from "lucide-react";
+import ConfigOption from "@/components/ConfigOption";
+
+export default withUser({
+  whenAuthed: AuthAction.RENDER,
+  whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
+  whenUnauthedAfterInit: AuthAction.RENDER,
+  LoaderComponent: LoaderCircle,
+})(ConfigPage);
+
+function ConfigPage(): Component {
+  const auth: Auth = getAuth(),
+    [t, { changeLanguage }] = useTranslation("global"),
+    { push, reload }: NextRouter = useRouter(),
+    [language, setLanguage] = useLocalStorage("language", "es"),
+    [animations, setAnimations] = useLocalStorage("animations", true),
+    [state, setState] = useLocalStorage("state", true),
+    [recommendations, setRecom] = useLocalStorage("recommendations", true),
+    [circles, setCircles] = useLocalStorage("circles", true),
+    [lang, setLang] = useLocalStorage("language", true),
+    { isGuest } = useGuest(),
+    [username, setUsername] = useLocalStorage("username", ""),
+    formatLang: Handler<void, string> = () =>
+      language == "en" ? "English" : "Español",
+    handleSelect: Handler<string, void> = (val: string) => {
+      changeLanguage(val);
+      setLanguage(val);
+      reload();
+    },
+    options: SelectOpt = [
+      { value: "es", label: "Español" },
+      { value: "en", label: "English" },
+    ] as const,
+    [styles] = useSpring(() => animate(0, 1, 400));
+
+  function handleUsername(e: any): void {
+    if (len(username) > 38) return;
+    else setUsername(e.target.value);
+  }
+
+  function forgetSession(): void {
+    clearStorage();
+    setLang(lang);
+    setAnimations(animations);
+    setState(state);
+    auth.signOut();
+    push(PAGES.LOGIN);
+  }
+  return (
+    <animated.section
+      style={styles}
+      className="relative max-w-4xl w-full px-4 sm:px-0 mb-16 lg:mb-36 text-slate-200/90 flex flex-col justify-start items-center gap-y-12"
+    >
+      <div className="w-full space-y-4 bg-slate-900/40 backdrop-blur-sm p-8 rounded-2xl border border-violet-500/20">
+        <ConfigOption
+          isSelect
+          Icon={LanguagesIcon}
+          label={t("language")}
+          selectOpts={
+            <Select
+              className="sm:w-[220px] w-full"
+              id={t("language")}
+              isSearchable={false}
+              options={options}
+              placeholder={formatLang()}
+              value={language}
+              styles={selectStyles(true, true)}
+              onChange={(e: EventSelect) => handleSelect(e.value)}
+            />
+          }
+        />
+
+        <ConfigOption
+          isInput
+          inputVal={username}
+          handleChange={handleUsername}
+          Icon={AmpersandIcon}
+          label={t("username")}
+        />
+
+        <ConfigOption
+          label={t("recommendations")}
+          textBtn={recommendations ? t("enabled") : t("disabled")}
+          Icon={MegaphoneIcon}
+          action={() => setRecom(!recommendations)}
+        />
+
+        <ConfigOption
+          label={t("show-state")}
+          textBtn={state ? t("enabled") : t("disabled")}
+          Icon={LibraryIcon}
+          action={() => setState(!state)}
+        />
+
+        <ConfigOption
+          label={t("animations")}
+          textBtn={animations ? t("enabled") : t("disabled")}
+          Icon={SparklesIcon}
+          action={() => setAnimations(!animations)}
+        />
+
+        <ConfigOption
+          label={t("circles-bk")}
+          textBtn={circles ? t("enabled") : t("disabled")}
+          Icon={CircleIcon}
+          action={() => setCircles(!circles)}
+        />
+      </div>
+
+      {!isGuest && (
+        <button
+          type="button"
+          onClick={forgetSession}
+          className="px-8 py-3 rounded-xl bg-red-500/60 border border-red-500/20 hover:bg-red-500/80 hover:border-red-500/30 transition-colors text-red-50 text-lg"
+        >
+          {t("logout")}
+        </button>
+      )}
+    </animated.section>
+  );
+}

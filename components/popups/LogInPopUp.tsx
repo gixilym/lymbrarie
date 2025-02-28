@@ -10,11 +10,11 @@ function LogInPopUp(): Component {
   return (
     <DialogContainer id="login" divClass="items-center">
       <HeaderPopUp icon={<Icon size={30} />} title={t("guest-mode")} />
-      <p className="text-lg sm:text-2xl tracking-wide text-center sm:px-6 text-pretty text-slate-300">
+      <p className="text-lg sm:text-2xl tracking-wide text-center sm:px-8 py-6 text-balance text-slate-300/90 font-light w-full">
         {t("login-fn")}
       </p>
 
-      <div className="modal-action pt-1 w-full justify-center items-center">
+      <div className="modal-action w-full flex justify-center items-center pt-4 pb-2">
         <LogInBtn />
       </div>
     </DialogContainer>

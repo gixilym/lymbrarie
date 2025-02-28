@@ -1,0 +1,93 @@
+import cover from "@/public/cover.webp";
+import fnState from "./BookState";
+import Image from "next/image";
+import { animate, formatTitle } from "@/utils/helpers";
+import { animated, useSpring } from "@react-spring/web";
+import { Book as BookIcon, Tag as GenderIcon, UserIcon } from "lucide-react";
+import { BOOK_RECO, PAGES } from "@/utils/consts";
+import type { Component } from "@/utils/types";
+import { type NextRouter, useRouter } from "next/router";
+
+function BookCardRecommendation({ showDetails }: Props): Component {
+  const { push }: NextRouter = useRouter(),
+    onClick = (): Promise<boolean> =>
+      push(`${PAGES.RECOMMENDATION}/${formatTitle(BOOK_RECO.title ?? "")}`),
+    state = (): Component => fnState("Recommended", true),
+    [styles] = useSpring(() => animate(0, 1, 300));
+
+  if (showDetails) {
+    return (
+      <animated.li
+        style={styles}
+        onClick={onClick}
+        className="mx-4 bg-slate-900/40 backdrop-blur-sm border border-l-0 border-violet-500/20 hover:border-violet-500/30 rounded-xl relative h-[130px] flex gap-x-5 w-full sm:w-[600px] max-w-[600px] cursor-pointer hover:scale-[0.98] duration-300"
+      >
+        {state()}
+        <div className="bg-violet-500/10 p-1.5 rounded-l-xl h-full">
+          <Image
+            loading="lazy"
+            src={BOOK_RECO.image || cover.src}
+            width={75}
+            height={130}
+            alt="cover"
+            className="w-[75px] h-full aspect-[2/3] rounded-lg select-none object-cover"
+          />
+        </div>
+
+        <div className="flex flex-col justify-between items-start gap-y-1 h-full w-[300px] sm:w-[490px] py-2 pr-3">
+          <div className="flex flex-row justify-start items-center gap-x-2 w-full pl-1">
+            <p className="text-slate-200/90 text-sm sm:text-xl font-light overflow-hidden overflow-ellipsis whitespace-nowrap max-w-full">
+              {BOOK_RECO.title}
+            </p>
+          </div>
+          <div className="sm:pl-1 w-full space-y-1 sm:space-y-2 text-slate-300/80">
+            <div className="flex flex-row justify-start items-center gap-x-2">
+              <div className="bg-violet-500/20 p-[5.3px] rounded-lg">
+                <UserIcon size={14} className="text-violet-400" />
+              </div>
+              <p className="text-sm sm:text-base capitalize line-clamp-1">
+                {BOOK_RECO.author}
+              </p>
+            </div>
+            <div className="flex flex-row justify-start items-start gap-x-2">
+              <div className="bg-violet-500/20 p-[5.3px] rounded-lg">
+                <GenderIcon size={14} className="text-violet-400" />
+              </div>
+              <p className="text-sm sm:text-base capitalize line-clamp-1">
+                {BOOK_RECO.gender}
+              </p>
+            </div>
+          </div>
+        </div>
+      </animated.li>
+    );
+  }
+
+  return (
+    <li
+      onClick={onClick}
+      className="mx-4 bg-slate-900/40 backdrop-blur-sm border border-violet-500/10 
+        hover:border-violet-500/30 rounded-xl relative h-[60px] 
+        flex items-center w-full sm:w-[600px] max-w-[600px] cursor-pointer 
+        hover:scale-[0.98] duration-300 px-4"
+    >
+      <div className="flex justify-between items-center w-full">
+        <div className="flex items-center gap-x-3 w-full">
+          <div className="bg-violet-500/15 p-2 rounded-lg">
+            <BookIcon className="w-5.5 h-5.5 text-violet-400" />
+          </div>
+          <p className="text-base sm:text-lg text-slate-200 font-medium line-clamp-1">
+            {BOOK_RECO.title}
+          </p>
+        </div>
+        {state()}
+      </div>
+    </li>
+  );
+}
+
+export default BookCardRecommendation;
+
+interface Props {
+  showDetails: boolean;
+}

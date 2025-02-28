@@ -1,11 +1,12 @@
 import ErrorNotes from "@/components/ErrorNotes";
+import Link from "next/link";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { clearStorage } from "@/utils/helpers";
-import type { Component } from "@/utils/types";
 import { OctagonAlert as Icon } from "lucide-react";
-import Link from "next/link";
+import { PAGES } from "@/utils/consts";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
+import type { Component } from "@/utils/types";
 
 function ErrorPage(): Component {
   const [t] = useTranslation("global"),
@@ -40,7 +41,7 @@ function ErrorPage(): Component {
         <a href="mailto:gixi.tsx@gmail.com">gixi.tsx@gmail.com</a>
       </address>
       <Link
-        href="/"
+        href={PAGES.HOME}
         onClick={clearData}
         className="text-2xl sm:text-3xl underline w-full text-center lowercase hover:text-slate-300 duration-75"
       >

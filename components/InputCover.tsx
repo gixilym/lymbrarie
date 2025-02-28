@@ -51,13 +51,16 @@ function InputCover({ isLoading, handleImage }: Props): Component {
 
   return (
     <div
-      className={twMerge(
-        loading ? "bg-base-200" : "bg-transparent input-bordered",
-        "input border-dashed border-[1.5px] flex items-center sm:text-xl w-full text-sm h-14 mb-1 cursor-pointer relative"
-      )}
       {...getRootProps()}
+      className={twMerge(
+        "flex items-center w-full bg-slate-900/40 backdrop-blur-sm rounded-xl px-4 h-14",
+        "border-[1.5px] border-violet-500/20 border-dashed hover:border-violet-500/30 transition-colors",
+        "cursor-pointer relative",
+        loading && "opacity-50"
+      )}
     >
-      <ImgIcon size={18} className="mt-0.5 mr-2" />
+      <ImgIcon size={18} className="text-violet-300 mr-3 flex-shrink-0" />
+
       <input
         {...getInputProps()}
         accept="image/*"
@@ -65,24 +68,13 @@ function InputCover({ isLoading, handleImage }: Props): Component {
         name="image"
         id="image-input"
         disabled={loading}
+        className="hidden"
       />
 
       {errImg ? (
-        <p
-          className={twMerge(
-            loading ? "opacity-20" : "opacity-100",
-            "text-red-200 pl-2 sm:text-xl text-sm"
-          )}
-        >
-          {t("err-loading-cover")}
-        </p>
+        <p className="text-red-300 text-lg">{t("err-loading-cover")}</p>
       ) : (
-        <p
-          className={twMerge(
-            loading ? "opacity-30" : "opacity-100",
-            "sm:text-xl text-sm select-none text-center pl-2 tracking-wide text-slate-400"
-          )}
-        >
+        <p className="text-slate-300 text-sm sm:text-lg select-none">
           {acceptedFiles[0] && !coverLoading
             ? t("cover-list")
             : coverLoading
@@ -90,17 +82,20 @@ function InputCover({ isLoading, handleImage }: Props): Component {
             : t("select-cover-image")}
         </p>
       )}
+
       {showImg && (
-        <Image
-          width={30}
-          height={30}
-          src={URL.createObjectURL(acceptedFiles[0])}
-          alt="Cover"
-          className={twMerge(
-            loading ? "opacity-30" : "opacity-100",
-            "w-8 h-full py-2.5 absolute top-0 right-6"
-          )}
-        />
+        <div className="absolute right-4 h-full py-2">
+          <Image
+            width={30}
+            height={30}
+            src={URL.createObjectURL(acceptedFiles[0])}
+            alt="Cover"
+            className={twMerge(
+              "w-8 h-full object-cover rounded-md",
+              loading && "opacity-50"
+            )}
+          />
+        </div>
       )}
     </div>
   );

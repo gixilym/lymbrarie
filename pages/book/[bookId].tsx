@@ -1,7 +1,4 @@
-import AppIcon from "@/components/AppIcon";
-import BackBtn from "@/components/btns/BackBtn";
-import Breadcrumbs from "@/components/Breadcrumbs";
-import defaultCover from "@/public/cover.webp";
+import DEFAULT_COVER from "@/public/cover.webp";
 import DeleteBookPopUp from "@/components/popups/DeleteBookPopUp";
 import EditBookPopUp from "@/components/popups/EditBookPopUp";
 import Head from "next/head";
@@ -17,9 +14,15 @@ import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
 import { animated, useSpring } from "@react-spring/web";
 import { AuthAction, withUser } from "next-firebase-auth";
-import { COLLECTION, EMPTY_BOOK } from "@/utils/consts";
-import { deformatTitle, isLent, translateStateBook } from "@/utils/helpers";
-import { dismissNotification, notification } from "@/utils/notifications";
+import { COLLECTION, EMPTY_BOOK, PAGES } from "@/utils/consts";
+import {
+  animate,
+  deformatTitle,
+  isLent,
+  tLC,
+  translateStateBook,
+} from "@/utils/helpers";
+import { dismissNoti, notification } from "@/utils/notifications";
 import { doc, setDoc } from "firebase/firestore";
 import { isEqual, noop, union } from "es-toolkit";
 import { popupsAtom } from "@/utils/atoms";
@@ -45,6 +48,7 @@ import {
   User as UserIcon,
 } from "lucide-react";
 import { type NextRouter, useRouter } from "next/router";
+import BackBtn from "@/components/btns/BackBtn";
 
 export default withUser({
   whenAuthed: AuthAction.RENDER,
@@ -54,13 +58,12 @@ export default withUser({
 })(BookId);
 
 function BookId(): Component {
-  const { openPopUp, closePopUp, closeBookPopUps } = usePopUp(),
-    auth: Auth = getAuth(),
+  const auth: Auth = getAuth(),
     [t] = useTranslation("global"),
     router: NextRouter = useRouter(),
+    { openPopUp, closePopUp, closeBookPopUps } = usePopUp(),
     bookTitle: string = router.query.bookId?.toString() ?? "",
     title: string = deformatTitle(bookTitle),
-    [animations] = useLocalStorage("animations", true),
     { isLoading, finishLoading } = useLoadContent(),
     Cover: any = animated(Image),
     [book, setBook] = useState<any>(EMPTY_BOOK),
@@ -69,7 +72,6 @@ function BookId(): Component {
     [loadingFav, setLoadingFav] = useState<boolean>(false),
     [cacheBooks, setCacheBooks] = useLocalStorage("cache-books", null),
     [allTitles] = useLocalStorage("all-titles", []),
-    isMobile: boolean = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent),
     myFavs: BookData[] = cacheBooks
       .map((b: Book) => b?.data)
       .filter((b: BookData) => b?.isFav),
@@ -78,22 +80,9 @@ function BookId(): Component {
     notesProps = { updateNotes, notes, setNotes, isLoading, loadingFav },
     [popup] = useRecoilState<any>(popupsAtom),
     handleRouteChange: Handler<void, void> = () => closeBookPopUps(),
-    [stylesImg] = useSpring(() => ({
-      from: { opacity: animations ? 0 : 1 },
-      to: { opacity: 1 },
-      delay: 200,
-      config: { duration: 200 },
-    })),
-    [stylesIcons] = useSpring(() => ({
-      from: { opacity: animations ? 0 : 1 },
-      to: { opacity: 1 },
-      config: { duration: 1000 },
-    })),
-    [stylesSection] = useSpring(() => ({
-      from: { opacity: animations ? 0 : 1 },
-      to: { opacity: 1 },
-      config: { duration: 500 },
-    }));
+    [stylesImg] = useSpring(() => animate(0, 1, 200, 200)),
+    [stylesIcons] = useSpring(() => animate(0, 1, 1000)),
+    [stylesSection] = useSpring(() => animate(0, 1, 500));
 
   useEffect(() => {
     router.events.on("routeChangeStart", handleRouteChange);
@@ -109,7 +98,7 @@ function BookId(): Component {
   }, [bookTitle, auth]);
 
   useEffect(() => {
-    if (notExist) router.push("/");
+    if (notExist) router.push(PAGES.HOME);
   }, [notExist]);
 
   function getCacheBook(): void {
@@ -136,10 +125,10 @@ function BookId(): Component {
       router.reload();
     } catch (err: any) {
       closePopUp("notes");
-      router.push(`/error?notes=${notes}`);
+      router.push(`${PAGES.ERROR}?notes=${notes}`);
       console.error(`catch 'updateNotes' ${err.message}`);
     } finally {
-      dismissNotification();
+      dismissNoti();
     }
   }
 
@@ -156,7 +145,7 @@ function BookId(): Component {
       setCacheBooks(newVersion);
       router.reload();
     } catch (err: any) {
-      router.push("/error");
+      router.push(PAGES.ERROR);
       console.error(`catch 'toggleFav' ${err.message}`);
     }
   }
@@ -164,16 +153,12 @@ function BookId(): Component {
   return (
     <animated.section
       style={stylesSection}
-      className="flex flex-col justify-center items-center w-full gap-y-6 sm:pb-10 sm:pt-20 h-full sm:pl-20"
+      className="flex flex-col justify-start items-center w-full relative"
     >
       <Head>
         <title translate="no">{book?.data?.title || "Lymbrarie"}</title>
       </Head>
-      {!isMobile && (
-        <div className="absolute top-10 left-4 hidden md:block">
-          <AppIcon />
-        </div>
-      )}
+
       {popup.offline && <OfflinePopUp />}
       {popup.edit_book && <EditBookPopUp data={book} documentId={documentId} />}
       {popup.notes && <NotesPopUp {...notesProps} />}
@@ -184,93 +169,109 @@ function BookId(): Component {
         />
       )}
 
-      <BackBtn hidden />
-      <Breadcrumbs isGuest={false} />
+      <BackBtn />
+
       <article
         id="screenshot"
-        className="w-full sm:w-[700px] h-[290px] flex flex-col sm:flex-row gap-y-12 justify-start items-center sm:items-start backdrop-blur-[2.5px] relative"
+        className="w-full max-w-4xl bg-slate-900/40 backdrop-blur-sm border border-violet-500/20 
+          md:rounded-2xl p-8 flex flex-col sm:flex-row gap-8 relative items-center justify-center"
       >
-        <Cover
-          priority
-          style={stylesImg}
-          className="select-none aspect-[200/300] w-[200px] h-[300px] object-center object-fill rounded-md"
-          src={book?.data?.image || defaultCover}
-          width={200}
-          height={300}
-          alt="cover"
-        />
+        <div className="flex-shrink-0">
+          <div className="md:bg-violet-500/10 p-1.5 rounded-xl">
+            <Cover
+              priority
+              style={stylesImg}
+              className="select-none w-[200px] h-[300px] aspect-[2/3] rounded-lg object-cover"
+              src={book?.data?.image || DEFAULT_COVER.src}
+              width={200}
+              height={300}
+              alt="cover"
+            />
+          </div>
+        </div>
 
-        <div className="flex flex-col justify-between items-start w-[100vw] sm:w-full max-w-[500px] sm:h-full px-10 sm:px-4 pb-2.5">
-          <div className="flex flex-col justify-start items-start w-full h-full gap-y-2">
-            <p className="text-xl sm:text-[28px] font-bold tracking-wide sm:min-h-20 h-auto overflow-ellipsis overflow-hidden whitespace-wrap w-full">
+        <div className="flex flex-col justify-between w-full gap-y-6">
+          <div className="space-y-8">
+            <p className="text-2xl sm:text-3xl font-semibold text-slate-200 line-clamp-2">
               {book?.data?.title}
             </p>
 
-            {book?.data?.author && (
-              <div className="flex flex-row justify-start items-center gap-x-2 w-full">
-                <UserIcon size={18} />
-                <p className="text-sm sm:text-[16px] overflow-ellipsis overflow-hidden whitespace-nowrap w-full">
-                  {book?.data?.author}
-                </p>
-              </div>
-            )}
+            <div className="space-y-3 text-slate-300">
+              {book?.data?.author && (
+                <div className="flex items-center gap-x-3">
+                  <div className="bg-violet-500/20 p-2 rounded-lg">
+                    <UserIcon size={18} className="text-violet-300" />
+                  </div>
+                  <p className="text-base sm:text-lg">{book?.data?.author}</p>
+                </div>
+              )}
 
-            {book?.data?.gender && book?.data?.gender != "no-gender" && (
-              <div className="flex flex-row justify-start items-center gap-x-2 w-full">
-                <StateIcon size={18} />
-                <p className="text-sm sm:text-[16px] capitalize overflow-ellipsis overflow-hidden whitespace-nowrap w-full">
-                  {t(book?.data?.gender)}
-                </p>
-              </div>
-            )}
+              {book?.data?.gender && book?.data?.gender != "no-gender" && (
+                <div className="flex items-center gap-x-3">
+                  <div className="bg-violet-500/20 p-2 rounded-lg">
+                    <StateIcon size={18} className="text-violet-300" />
+                  </div>
+                  <p className="text-base sm:text-lg capitalize">
+                    {t(tLC(book?.data?.gender))}
+                  </p>
+                </div>
+              )}
 
-            {book?.data?.state && (
-              <div className="flex flex-row justify-start items-center gap-x-2 w-full">
-                <LibraryIcon size={18} />
-                <p className="text-sm sm:text-[16px] overflow-ellipsis overflow-hidden whitespace-nowrap w-full">
-                  {translateStateBook(book?.data?.state ?? "", t)}
-                  {isLent(book?.data?.state ?? "") && ` ${book?.data?.loaned}`}
-                </p>
-              </div>
-            )}
+              {book?.data?.state && (
+                <div className="flex items-center gap-x-3">
+                  <div className="bg-violet-500/20 p-2 rounded-lg">
+                    <LibraryIcon size={18} className="text-violet-300" />
+                  </div>
+                  <p className="text-base sm:text-lg">
+                    {translateStateBook(book?.data?.state ?? "", t)}
+                    {isLent(book?.data?.state ?? "") &&
+                      ` ${book?.data?.loaned}`}
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
+
           <animated.div
             id="icons"
             style={stylesIcons}
-            className="flex items-center justify-center gap-x-2"
+            className="flex items-center gap-x-3"
           >
             <button
               onClick={() => openPopUp("notes")}
-              className="btn btn-square bg-slate-700/30 sm:bg-slate-700/25 hover:bg-slate-700/50 border-2 border-slate-700/40 mt-4 sm:mt-0 mb-1"
+              className="btn btn-square bg-slate-700/30 sm:bg-slate-700/25 hover:bg-slate-700/50 border-2 border-slate-700/40 mb-1 mt-4 sm:mt-0"
             >
-              <NotesIcon className="w-6 h-6 sm:w-7 sm:h-8" />
+              <NotesIcon className="w-6 h-6" />
             </button>
-            <div className="dropdown dropdown-top dropdown-right opacity-100 flex sm:block items-end justify-center">
+
+            <div className="dropdown dropdown-top dropdown-right">
               <SettingsBtn />
+
               <ul
                 tabIndex={0}
                 className={twMerge(
                   loadingFav ? "hidden" : "block",
-                  "mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-[240px]"
+                  "mt-3 z-[1] shadow menu menu-sm dropdown-content rounded-xl border border-violet-500/20 w-[240px] bg-slate-800 mb-1 text-white"
                 )}
               >
                 <li
+                  className="hover:bg-violet-500/15 transition-colors rounded-xl"
                   onClick={() =>
                     navigator.onLine ? toggleFav() : openPopUp("offline")
                   }
                 >
                   <div className="flex flex-row items-center justify-start gap-x-3">
                     {checkFav ? (
-                      <FavoriteIcon size={18} />
+                      <FavoriteIcon size={18} className="text-violet-300" />
                     ) : (
-                      <RemoveFavIcon size={18} />
+                      <RemoveFavIcon size={18} className="text-violet-300" />
                     )}
                     <p>{t(checkFav ? "remove-fav" : "add-fav")}</p>
                   </div>
                 </li>
 
                 <li
-                  className="py-1.5"
+                  className="my-1.5 hover:bg-violet-500/15 transition-colors rounded-xl"
                   onClick={() =>
                     navigator.onLine
                       ? openPopUp("edit_book")
@@ -278,12 +279,13 @@ function BookId(): Component {
                   }
                 >
                   <div className="flex flex-row items-center justify-start gap-x-3">
-                    <EditIcon size={18} />
+                    <EditIcon size={18} className="text-violet-300" />
                     <p>{t("edit-book")}</p>
                   </div>
                 </li>
 
                 <li
+                  className="hover:bg-violet-500/15 transition-colors rounded-xl"
                   onClick={() =>
                     navigator.onLine
                       ? openPopUp("delete_book")
@@ -291,12 +293,13 @@ function BookId(): Component {
                   }
                 >
                   <div className="flex flex-row items-center justify-start gap-x-3">
-                    <DeleteIcon size={18} />
+                    <DeleteIcon size={18} className="text-violet-300" />
                     <p>{t("delete-book")}</p>
                   </div>
                 </li>
               </ul>
             </div>
+
             <ShareBtn title={title} />
           </animated.div>
         </div>

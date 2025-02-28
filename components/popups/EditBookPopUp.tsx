@@ -3,10 +3,10 @@ import FieldsBook from "../FieldsBook";
 import useLoadContent from "@/hooks/useLoadContent";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
-import { COLLECTION, EMPTY_BOOK, GENDERS } from "@/utils/consts";
+import { COLLECTION, EMPTY_BOOK, GENDERS, PAGES } from "@/utils/consts";
 import { deburr, delay, isEqual, union } from "es-toolkit";
 import { deformatTitle, formatTitle, isLent, len, tLC } from "@/utils/helpers";
-import { dismissNotification, notification } from "@/utils/notifications";
+import { dismissNoti, notification } from "@/utils/notifications";
 import { doc, setDoc } from "firebase/firestore";
 import { useTranslation } from "react-i18next";
 import type {
@@ -113,7 +113,7 @@ function EditBookPopUp(props: Props): Component {
       oldVersion: any[] = cacheBooks.filter((b: Book) => b.id != documentId),
       newVersion: Book[] = union(oldVersion, [{ id: documentId, data }]),
       titlePage: string = formatTitle(book.title),
-      newPath: string = `/book/${titlePage}`,
+      newPath: string = `${PAGES.BOOK}/${titlePage}`,
       newTitles: string[] = union(allTitles, [book.title]);
 
     try {
@@ -122,10 +122,10 @@ function EditBookPopUp(props: Props): Component {
       setAllTitles(newTitles);
       router.replace(newPath).then(() => router.reload());
     } catch (err: any) {
-      router.push("/error");
+      router.push(PAGES.ERROR);
       console.error(`catch 'editBook' ${err.message}`);
     } finally {
-      dismissNotification();
+      dismissNoti();
     }
   }
 
@@ -252,14 +252,22 @@ function EditBookPopUp(props: Props): Component {
           disabled={isLoading}
           type="button"
           onClick={() => closePopUp("edit_book")}
-          className="btn text-lg w-auto font-thin bg-slate-800 hover:bg-slate-700 text-slate-300"
+          className="px-4 py-2 rounded-xl bg-slate-900/60 
+            border border-violet-500/15 
+            hover:bg-slate-900/80 hover:border-violet-500/30 
+            transition-colors disabled:opacity-50 
+            text-slate-400 text-lg"
         >
           {t("cancel")}
         </button>
         <button
           disabled={editDisabled || isLoading}
           type="submit"
-          className="btn bg-blue-500 text-black hover:bg-blue-400 duration-100 text-lg w-24 px-2"
+          className="px-8 py-2 rounded-xl
+            bg-violet-500/20 border border-violet-500/20 
+            hover:bg-violet-500/30 hover:border-violet-500/30 
+            transition-colors disabled:opacity-50
+            text-violet-50 text-lg font-medium"
         >
           {t("edit-confirm")}
         </button>

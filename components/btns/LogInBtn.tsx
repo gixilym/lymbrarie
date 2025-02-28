@@ -1,7 +1,8 @@
 import Link from "next/link";
+import usePopUp from "@/hooks/usePopUp";
+import { PAGES } from "@/utils/consts";
 import { useTranslation } from "react-i18next";
 import type { Component } from "@/utils/types";
-import usePopUp from "@/hooks/usePopUp";
 
 function LogInBtn(): Component {
   const [t] = useTranslation("global");
@@ -9,9 +10,9 @@ function LogInBtn(): Component {
 
   return (
     <Link
-      href="/"
+      href={PAGES.LOGIN}
       onClick={() => closePopUp("login")}
-      className="cursor-pointer transition-all font-thin bg-blue-700 hover:bg-blue-700/80 text-white px-4 py-4 rounded-xl border-blue-600 border-b-[4px] active:border-b-[2px] active:brightness-90 active:translate-y-[2px] text-sm tracking-wider opacity-85 flex-row justify-start items-center gap-x-3"
+      className="cursor-pointer transition-all font-medium bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-500 hover:to-blue-600 text-white px-4 py-4 rounded-xl border-b-4 border-blue-900 active:border-b-2 active:brightness-95 active:translate-y-[1px] text-sm tracking-wide shadow-md flex items-center gap-x-3 duration-100"
     >
       {t("login-start")}
     </Link>

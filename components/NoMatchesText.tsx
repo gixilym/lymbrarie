@@ -1,20 +1,18 @@
-import useLocalStorage from "@/hooks/useLocalStorage";
-import type { Component } from "@/utils/types";
+import { animate } from "@/utils/helpers";
 import { animated, useSpring } from "@react-spring/web";
+import { useTranslation } from "react-i18next";
+import type { Component } from "@/utils/types";
 
-function NoMatchesText({ t }: any): Component {
-  const [animations] = useLocalStorage("animations", true);
-  const [styles] = useSpring(() => ({
-    from: { opacity: animations ? 0 : 1 },
-    to: { opacity: 1 },
-  }));
+function NoMatchesText({ txt }: { txt: string }): Component {
+  const [t] = useTranslation("global");
+  const [styles] = useSpring(() => animate(0, 1, 200, 200));
 
   return (
     <animated.p
       style={styles}
       className="text-gray-200/70 text-lg sm:text-2xl  font-normal w-full text-center mt-8 h-12"
     >
-      {t}
+      {t(txt)}
     </animated.p>
   );
 }

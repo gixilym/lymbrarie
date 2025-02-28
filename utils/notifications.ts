@@ -41,10 +41,10 @@ function showNotifications(
   }
 }
 
-function dismissNotification(id?: string): void {
+function dismissNoti(id?: string): void {
   return id ? toast.dismiss(id) : toast.dismiss();
 }
 
-export { dismissNotification, notification, showNotifications };
+export { dismissNoti, notification, showNotifications };
 
 type Notis = "success" | "error" | "loading";

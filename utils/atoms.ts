@@ -17,12 +17,10 @@ const popupsAtom: RecoilState<any> = atom({
     edit_book: false,
     delete_book: false,
     profile: false,
-    support: false,
     settings: false,
-    donations: false,
     offline: false,
-    updates: false,
-    login: false
+    login: false,
+    recommendation: false,
   },
 });
 
@@ -39,8 +37,19 @@ const animListAtom: RecoilState<boolean> = atom({
 const coverAtom: RecoilState<boolean> = atom({
   key: "cover-atom",
   default: false,
-})
+});
 
+const menuAtom: RecoilState<boolean> = atom({
+  key: "menu-atom",
+  default: false,
+});
 
-export { animListAtom, popupsAtom, searchAtom, stateAtom, zeroAtom, coverAtom};
-
+export {
+  animListAtom,
+  popupsAtom,
+  searchAtom,
+  stateAtom,
+  zeroAtom,
+  coverAtom,
+  menuAtom,
+};

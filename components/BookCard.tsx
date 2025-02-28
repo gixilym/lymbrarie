@@ -1,20 +1,21 @@
-import defaultCover from "@/public/cover.webp";
-import { formatTitle } from "@/utils/helpers";
-import type { BookData, Component } from "@/utils/types";
-import { useRouter, type NextRouter } from "next/router";
-import fnState from "./BookState";
+import BookCardSearched from "./BookCardSearched";
 import CardWithDetails from "./CardWithDetails";
 import CardWithOutDetails from "./CardWithoutDetails";
+import Cover from "@/public/cover.webp";
+import fnState from "./BookState";
+import useGuest from "@/hooks/useGuest";
+import { formatTitle, pathIs } from "@/utils/helpers";
+import { PAGES } from "@/utils/consts";
+import { useTranslation } from "react-i18next";
+import type { BookData, Component } from "@/utils/types";
+import { useRouter, type NextRouter } from "next/router";
 
 function BookCard({ data, showDetails }: Props): Component {
-  const { push, pathname }: NextRouter = useRouter(),
-    title = formatTitle(data.title ?? ""),
-    isGuest: boolean = pathname.includes(`/guest`),
-    img: string = data.image || defaultCover.src,
-    onClick = (): Promise<boolean> => {
-      if (isGuest) return guestPath();
-      return push(`/book/${title}`);
-    },
+  const { push }: NextRouter = useRouter(),
+    [t] = useTranslation("global"),
+    title: string = formatTitle(data.title ?? ""),
+    { isGuest } = useGuest(),
+    img: string = data.image || Cover.src,
     formatState = (): Component => fnState(data.state ?? "", showDetails),
     withDetails: Details = {
       title: data.title ?? "",
@@ -28,38 +29,66 @@ function BookCard({ data, showDetails }: Props): Component {
       onClick,
       formatState,
       title: data.title ?? "",
+    } as const,
+    searchedProps: SearchedProps = {
+      title: data.title ?? "",
+      author: data.author ?? t("unknown-author"),
+      image: img,
+      notes: data.notes ?? "...",
+      owner: data.owner ?? t("guest"),
+      gender: data.gender ?? "",
+      isFav: data.isFav ?? false,
+      loaned: data.loaned ?? "",
+      state: data.state ?? "",
     } as const;
+
+  function onClick(): Promise<boolean> {
+    if (isGuest) return guestPath();
+    return push(`${PAGES.BOOK}/${title}`);
+  }
 
   function guestPath(): Promise<boolean> {
     switch (data.title) {
       case "Orgullo y Prejuicio":
-        return push("/guest/0");
+        return push(`${PAGES.GUEST}/0`);
 
       case "Pride and Prejudice":
-        return push("/guest/0");
+        return push(`${PAGES.GUEST}/0`);
 
       case "1984":
-        return push("/guest/1");
+        return push(`${PAGES.GUEST}/1`);
 
       case "El Código Da Vinci":
-        return push("/guest/2");
+        return push(`${PAGES.GUEST}/2`);
 
       case "The Da Vinci Code":
-        return push("/guest/2");
+        return push(`${PAGES.GUEST}/2`);
 
       case "Harry Potter y la Piedra Filosofal":
-        return push("/guest/3");
+        return push(`${PAGES.GUEST}/3`);
 
       case "Harry Potter and the Philosopher's Stone":
-        return push("/guest/3");
+        return push(`${PAGES.GUEST}/3`);
 
       default:
-        return push("/login");
+        return push(PAGES.LOGIN);
     }
   }
 
-  if (showDetails) return <CardWithDetails {...withDetails} />;
-  return <CardWithOutDetails {...withOutDetails} />;
+  function renderCard(): Component {
+    switch (true) {
+      case pathIs(PAGES.SEARCH):
+        return <BookCardSearched {...searchedProps} />;
+
+      case showDetails:
+        return <CardWithDetails {...withDetails} />;
+
+      default:
+        return <CardWithOutDetails {...withOutDetails} />;
+    }
+  }
+
+  return renderCard();
 }
 
 export default BookCard;
@@ -76,4 +105,16 @@ interface Details {
   img?: string;
   gender?: string;
   author?: string;
+}
+
+interface SearchedProps {
+  title: string;
+  author: string;
+  notes: string;
+  image: string;
+  owner: string;
+  gender: string;
+  isFav: boolean;
+  loaned: string;
+  state: string;
 }

@@ -1,27 +1,17 @@
 import Link from "next/link";
-import { ArrowLeft as Icon } from "lucide-react";
-import { twMerge } from "tailwind-merge";
+import useGuest from "@/hooks/useGuest";
+import { ArrowLeft } from "lucide-react";
+import { PAGES } from "@/utils/consts";
 import type { Component } from "@/utils/types";
 
-function BackBtn({
-  hidden,
-  isGuest,
-}: {
-  hidden: boolean;
-  isGuest?: boolean;
-}): Component {
+function BackBtn(): Component {
+  const { isGuest } = useGuest();
   return (
     <Link
-      href={isGuest ? "/guest" : "/"}
-      className={twMerge(
-        hidden ? "flex sm:hidden" : "flex",
-        "absolute top-10 right-[150px] opacity-90 justify-center items-center w-full z-50"
-      )}
+      href={isGuest ? PAGES.GUEST : PAGES.HOME}
+      className="sm:hidden absolute z-20 left-4 top-4"
     >
-      <Icon
-        size={45}
-        className="cursor-pointer duration-150 hover:brightness-200"
-      />
+      <ArrowLeft className="h-12 w-12" />
     </Link>
   );
 }

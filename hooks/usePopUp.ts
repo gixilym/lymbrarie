@@ -1,6 +1,6 @@
 import { popupsAtom } from "@/utils/atoms";
-import type { Handler, PopUpsIds } from "@/utils/types";
 import { useRecoilState } from "recoil";
+import type { Handler, PopUpsIds } from "@/utils/types";
 
 function usePopUp(): PopUp {
   const [modal, setModals] = useRecoilState<any>(popupsAtom);
@@ -15,14 +15,12 @@ function usePopUp(): PopUp {
     closePopUp("edit_book");
     closePopUp("add_book");
     closePopUp("notes");
+    closePopUp("recommendation");
   }
 
   function closeAllPopUps(): void {
     closeBookPopUps();
-    closePopUp("settings");
-    closePopUp("profile");
-    closePopUp("support");
-    closePopUp("login")
+    closePopUp("login");
   }
 
   return { closePopUp, openPopUp, closeBookPopUps, closeAllPopUps };

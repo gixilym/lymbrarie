@@ -1,32 +1,36 @@
 import Image from "next/image";
 import Link from "next/link";
+import { PAGES } from "@/utils/consts";
+import { pathIs } from "@/utils/helpers";
 import { twJoin } from "tailwind-merge";
-import { usePathname } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import type { Component } from "@/utils/types";
 
 function FooterIndex(): Component {
   const [t] = useTranslation("global"),
-    path: string = usePathname(),
-    isMobile: boolean = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    isMobile: boolean = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent),
+    dontShow: boolean =
+      isMobile &&
+      (pathIs(PAGES.RECOMMENDATION) ||
+        pathIs(PAGES.BOOK) ||
+        pathIs(PAGES.GUEST));
 
-  if (
-    (isMobile && path?.includes("/book")) ||
-    (isMobile && path?.includes("/guest"))
-  )
-    return <></>;
+  if (dontShow) return <></>;
 
   return (
     <footer
       className={twJoin(
-        path?.includes("/book") && "mt-20",
-        "footer bg-base-200 text-base-content p-10 w-[100vw]"
+        "footer bg-base-200 text-base-content p-10 w-[100vw]",
+        (pathIs(PAGES.RECOMMENDATION) ||
+          pathIs(PAGES.BOOK) ||
+          pathIs(PAGES.GUEST)) &&
+          "mt-20"
       )}
     >
       <aside>
         <div className="flex gap-x-4 mb-2 items-end justify-start">
           <Image src="/favicon.ico" alt="logo" width={30} height={30} />
-          <Link href="/" className="link link-hover">
+          <Link href={PAGES.HOME} className="link link-hover">
             {t("home")}
           </Link>
         </div>
@@ -51,22 +55,22 @@ function FooterIndex(): Component {
         >
           gixi.tsx@gmail.com
         </Link>
-        <Link href="/faq" className="link link-hover">
+        <Link href={PAGES.FAQ} className="link link-hover">
           FAQ
         </Link>
       </nav>
       <nav>
         <p className="footer-title">{t("legal")}</p>
-        <Link href="/termsofuse" className="link link-hover">
+        <Link href={PAGES.TERMSOFUSE} className="link link-hover">
           {t("terms")}
         </Link>
-        <Link href="/privacypolicy" className="link link-hover">
+        <Link href={PAGES.PRIVACYPOLICY} className="link link-hover">
           {t("privacy-policy")}
         </Link>
       </nav>
       <nav>
         <p className="footer-title">Extra</p>
-        <Link href="/donations" className="link link-hover">
+        <Link href={PAGES.DONATIONS} className="link link-hover">
           {t("donations")}
         </Link>
         <Link

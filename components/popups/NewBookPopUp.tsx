@@ -3,10 +3,11 @@ import FieldsBook from "../FieldsBook";
 import useLoadContent from "@/hooks/useLoadContent";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
-import { COLLECTION, EMPTY_BOOK } from "@/utils/consts";
+import useTitles from "@/hooks/useTitles";
+import { COLLECTION, EMPTY_BOOK, PAGES } from "@/utils/consts";
 import { coverAtom } from "@/utils/atoms";
-import { deburr, delay, isEqual, union } from "es-toolkit";
-import { dismissNotification, notification } from "@/utils/notifications";
+import { delay, isEqual, union } from "es-toolkit";
+import { dismissNoti, notification } from "@/utils/notifications";
 import { doc, setDoc } from "firebase/firestore";
 import { isLent, len, tLC } from "@/utils/helpers";
 import { useRecoilState } from "recoil";
@@ -36,13 +37,14 @@ function NewBookPopUp({ UID }: Props): Component {
     [book, setBook] = useState<Book>(EMPTY_BOOK),
     { isLoading, startLoading } = useLoadContent(),
     [cacheBooks, setCacheBooks] = useLocalStorage("cache-books", null),
-    [allTitles] = useLocalStorage("all-titles", []),
     [, setShowNoti] = useLocalStorage("added", false),
     [errorKey, setErrorKey] = useState<string>(""),
     [addClicked, setAddClicked] = useState<boolean>(false),
     [isCustomGender, setIsCustomGender] = useState<boolean>(false),
     [cusGenderVal, setCusGenderVal] = useState<string>(""),
-    [coverLoading] = useRecoilState(coverAtom);
+    [coverLoading] = useRecoilState(coverAtom),
+    formatTitle: string = tLC(book?.data?.title ?? ""),
+    { isRepeated } = useTitles(formatTitle);
 
   useEffect(() => {
     (async function () {
@@ -100,19 +102,15 @@ function NewBookPopUp({ UID }: Props): Component {
       setShowNoti(true);
       router.reload();
     } catch (err: any) {
-      router.push("/error");
+      router.push(PAGES.ERROR);
       console.error(`catch 'newBook' ${err.message}`);
     } finally {
-      dismissNotification();
+      dismissNoti();
     }
   }
 
   function validateFields(): boolean {
-    const title: string = tLC(book?.data?.title ?? ""),
-      repeteadTitle: boolean = allTitles.some((t: string) =>
-        isEqual(deburr(tLC(t)), deburr(tLC(title)))
-      ),
-      maxTitleLength: boolean = len(title) > 80,
+    const maxTitleLength: boolean = len(formatTitle) > 80,
       maxAuthorLength: boolean = len(book?.data?.author ?? "0") > 34,
       emptyCustomGender: boolean =
         isCustomGender && isEqual(len(cusGenderVal), 0),
@@ -128,12 +126,12 @@ function NewBookPopUp({ UID }: Props): Component {
         len(book?.data?.image ?? "0") > 0 &&
         !validateURL.test(book?.data?.image ?? "");
 
-    if (!title) {
+    if (!formatTitle) {
       setErrorKey("title-input");
       notification("error", t("empty-title"));
       return false;
     }
-    if (repeteadTitle) {
+    if (isRepeated) {
       setErrorKey("title-input");
       notification("error", t("repeated-title"));
       return false;
@@ -145,13 +143,13 @@ function NewBookPopUp({ UID }: Props): Component {
       return false;
     }
 
-    if (title.includes("@")) {
+    if (formatTitle.includes("@")) {
       setErrorKey("title-input");
       notification("error", t("@"));
       return false;
     }
 
-    if (title.includes("_")) {
+    if (formatTitle.includes("_")) {
       setErrorKey("title-input");
       notification("error", t("_"));
       return false;
@@ -212,30 +210,38 @@ function NewBookPopUp({ UID }: Props): Component {
         handleImage={handleImage}
         isLent={isLent(book.data.state ?? "")}
       />
+
       <form
         onSubmit={newBook}
         ref={formRef}
         method="dialog"
-        className="flex justify-center items-center font-public max-w-full pt-2"
+        className="w-full border-violet-500/10"
       >
-        <div className="w-full justify-end gap-x-4 items-center flex flex-col md:flex-row h-10">
-          <div className="flex gap-x-2">
-            <button
-              disabled={isLoading || coverLoading}
-              type="button"
-              onClick={() => closePopUp("add_book")}
-              className="btn text-lg sm:text-xl w-32 font-normal bg-slate-800 hover:bg-slate-700 text-slate-300"
-            >
-              {t("cancel")}
-            </button>
-            <button
-              disabled={isLoading || coverLoading}
-              type="submit"
-              className="btn bg-blue-500 font-medium sm:font-semibold text-black hover:bg-blue-400 duration-100 text-lg sm:text-xl w-32 tracking-wide"
-            >
-              {t("add")}
-            </button>
-          </div>
+        <div className="flex justify-end items-center gap-x-3 mt-3">
+          <button
+            disabled={isLoading || coverLoading}
+            type="button"
+            onClick={() => closePopUp("add_book")}
+            className="px-4 py-2 rounded-xl bg-slate-900/60 
+            border border-violet-500/15 
+            hover:bg-slate-900/80 hover:border-violet-500/30 
+            transition-colors disabled:opacity-50 
+            text-slate-400 text-lg"
+          >
+            {t("cancel")}
+          </button>
+
+          <button
+            disabled={isLoading || coverLoading}
+            type="submit"
+            className="px-8 py-2 rounded-xl
+            bg-violet-500/20 border border-violet-500/20 
+            hover:bg-violet-500/30 hover:border-violet-500/30 
+            transition-colors disabled:opacity-50
+            text-violet-50 text-lg font-medium"
+          >
+            {t("add")}
+          </button>
         </div>
       </form>
     </DialogContainer>

@@ -43,13 +43,10 @@ type PopUpsIds =
   | "add_book"
   | "edit_book"
   | "delete_book"
-  | "profile"
-  | "support"
-  | "settings"
   | "offline"
-  | "updates"
   | "notes"
-  | "login";
+  | "login"
+  | "recommendation";
 
 interface Book {
   id: string;

@@ -1,6 +1,6 @@
 import { DB } from "@/database/initAuth";
 import { collection, type CollectionReference } from "firebase/firestore";
-import type { Book } from "./types";
+import type { Book, BookData } from "./types";
 
 const MAINTENANCE: boolean = false;
 
@@ -11,6 +11,8 @@ const LOCAL_URL: string = "http://localhost:3000";
 const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dgs55s8qh/image/upload";
 
 const COLLECTION: CollectionReference = collection(DB, "lymbrarie_books");
+
+const API_BOOKS: string = "https://www.googleapis.com/books/v1/volumes";
 
 const GENDERS: string[] = [
   "no-gender",
@@ -53,6 +55,36 @@ const EMPTY_BOOK: Book = {
   },
 } as const;
 
+const BOOK_RECO: BookData = {
+  owner: "all",
+  title: "El Rey Serpiente",
+  state: "Recommended",
+  author: "Jeff Zentver",
+  image:
+    "https://res.cloudinary.com/dgs55s8qh/image/upload/v1739910195/dn4yymb1zvkduwy5b4v6.jpg",
+  gender: "Misterio",
+  loaned: "",
+  notes:
+    "Una novela esperanzadora sobre la relación entre adolescentes y sus dificultades para iniciar una nueva vida.",
+  isFav: false,
+} as const;
+
+const PAGES: Pages = {
+  GUEST: "/guest",
+  SEARCH: "/search",
+  HOME: "/",
+  LOGIN: "/login",
+  PROFILE: "/profile",
+  CONFIG: "/config",
+  FAQ: "/faq",
+  TERMSOFUSE: "/termsofuse",
+  PRIVACYPOLICY: "/privacypolicy",
+  DONATIONS: "/donations",
+  BOOK: "/book",
+  RECOMMENDATION: "/recommendation",
+  ERROR: "/error",
+};
+
 export {
   BASE_URL,
   CLOUDINARY_URL,
@@ -61,4 +93,23 @@ export {
   GENDERS,
   MAINTENANCE,
   LOCAL_URL,
+  BOOK_RECO,
+  API_BOOKS,
+  PAGES,
 };
+
+interface Pages {
+  GUEST: string;
+  SEARCH: string;
+  HOME: string;
+  LOGIN: string;
+  PROFILE: string;
+  CONFIG: string;
+  FAQ: string;
+  TERMSOFUSE: string;
+  PRIVACYPOLICY: string;
+  DONATIONS: string;
+  BOOK: string;
+  RECOMMENDATION: string;
+  ERROR: string;
+}

@@ -1,55 +1,74 @@
 import Link from "next/link";
-import useLocalStorage from "@/hooks/useLocalStorage";
+import { animate } from "@/utils/helpers";
 import { animated, useSpring } from "@react-spring/web";
-import { CoffeeIcon, CoinsIcon } from "lucide-react";
+import { CoffeeIcon, CoinsIcon, HeartIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import type { Component } from "@/utils/types";
 
 function DonationsPage(): Component {
-  const [t] = useTranslation("global"),
-    [animations] = useLocalStorage("animations", true),
-    [styles] = useSpring(() => ({
-      from: { opacity: animations ? 0 : 1 },
-      to: { opacity: 1 },
-      config: { duration: 400 },
-    }));
+  const [t] = useTranslation("global");
+  const [styles] = useSpring(() => animate(0, 1, 400));
 
   return (
     <animated.section
       style={styles}
-      className="relative w-full mb-24 text-slate-200/90 text-sm sm:text-xl flex flex-col justify-start items-center gap-y-8"
+      className="relative max-w-3xl w-full px-6 sm:px-0 mb-16 lg:mb-36 text-slate-200/90 flex flex-col justify-start items-center gap-6 md:gap-y-12"
     >
-      <Link
-        href="/"
-        className="text-xl underline text-center sm:text-start max-w"
-      >
-        {t("back")}
-      </Link>
-      <p className="text-sm sm:text-xl px-8 sm:px-0 text-center w-full max-w-xl text-pretty text-slate-200 mb-6 mt-2">
-        {t("donations-text")}
-      </p>
-      <div className="w-full flex flex-col gap-y-4 justify-center items-center">
-        <Link
-          href="https://cafecito.app/gixilym"
-          rel="noopener noreferrer"
-          target="_blank"
-          className="flex justify-center items-center gap-x-4 px-4 py-2 rounded-lg border-2 border-rose-300 bg-rose-400 duration-100 hover:bg-rose-400/90 text-black font-semibold w-full max-w-[300px]"
-        >
-          <CoffeeIcon size={25} />
-          <span className="tracking-wide">{t("buy-coffee")}</span>
-        </Link>
-        <Link
-          href="https://paypal.com/paypalme/gixilym"
-          rel="noopener noreferrer"
-          target="_blank"
-          className="flex justify-center items-center gap-x-4 px-4 py-2 rounded-lg border-2 border-blue-300 bg-blue-400 duration-100 hover:bg-blue-400/90 text-black w-full max-w-[300px]"
-        >
-          <CoinsIcon size={25} />
-          <span className="tracking-wide font-semibold">{t("paypal")}</span>
-        </Link>
+      <div className="w-full flex flex-col items-center gap-y-6 bg-slate-900/40 rounded-2xl p-8 backdrop-blur-sm border border-violet-500/20">
+        <div className="relative">
+          <div className="bg-violet-500/20 p-4 rounded-full">
+            <HeartIcon size={40} className="text-rose-400" />
+          </div>
+        </div>
+        <p className="text-3xl font-semibold text-center bg-gradient-to-r from-rose-400 via-violet-400 to-blue-400 text-transparent bg-clip-text">
+          {t("support-project")}
+        </p>
+        <p className="text-lg text-center max-w-xl text-slate-300">
+          {t("donations-text")}
+        </p>
       </div>
 
-      <p className="text-xl text-center w-full">❤️ {t("thanks")} ❤️</p>
+      <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="bg-slate-900/40 backdrop-blur-sm p-8 rounded-xl border border-rose-500/20 flex flex-col items-center gap-y-6 transition-all">
+          <div className="bg-rose-400/20 p-4 rounded-full transition-transform">
+            <CoffeeIcon size={35} className="text-rose-400" />
+          </div>
+          <p className="text-2xl font-medium text-rose-200">
+            {t("buy-coffee")}
+          </p>
+          <Link
+            href="https://cafecito.app/gixilym"
+            rel="noopener noreferrer"
+            target="_blank"
+            className="mt-4 flex justify-center items-center gap-x-3 px-6 py-3 rounded-lg bg-gradient-to-r from-rose-500 to-rose-400 hover:opacity-85 transition-opacity text-white font-medium w-full max-w-[250px]"
+          >
+            <CoffeeIcon size={20} />
+            <span>Cafecito</span>
+          </Link>
+        </div>
+
+        <div className="bg-slate-900/40 backdrop-blur-sm p-8 rounded-xl border border-blue-500/20 flex flex-col items-center gap-y-6 transition-all">
+          <div className="bg-blue-400/20 p-4 rounded-full transition-transform">
+            <CoinsIcon size={35} className="text-blue-400" />
+          </div>
+          <p className="text-2xl font-medium text-blue-200">{t("paypal")}</p>
+          <Link
+            href="https://paypal.com/paypalme/gixilym"
+            rel="noopener noreferrer"
+            target="_blank"
+            className="mt-4 flex justify-center items-center gap-x-3 px-6 py-3 rounded-lg bg-gradient-to-r from-blue-500 to-blue-400 hover:opacity-85 transition-opacity text-white font-medium w-full max-w-[250px]"
+          >
+            <CoinsIcon size={20} />
+            <span>PayPal</span>
+          </Link>
+        </div>
+      </div>
+
+      <p className="text-xl font-medium flex items-center justify-center gap-x-2">
+        <HeartIcon size={20} className="text-rose-300" />
+        <span className="text-rose-100">{t("thanks")}</span>
+        <HeartIcon size={20} className="text-rose-300" />
+      </p>
     </animated.section>
   );
 }

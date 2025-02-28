@@ -1,6 +1,5 @@
 import type { Component, PopUpsIds } from "@/utils/types";
 import { animated, useSpring } from "@react-spring/web";
-
 import type { MouseEventHandler } from "react";
 import { noop } from "es-toolkit";
 import { twJoin } from "tailwind-merge";
@@ -22,13 +21,14 @@ function DialogContainer(props: Props): Component {
   return (
     <dialog
       onClick={handleClick}
-      className="w-full h-full fixed top-0 z-40 flex justify-center items-start bg-transparent backdrop-blur-md"
+      className="w-full h-full fixed top-0 z-40 flex justify-center items-start 
+        bg-slate-950/60 backdrop-blur-sm"
     >
       <animated.div
         style={styles}
         onClick={e => e.stopPropagation()}
         className={twJoin(
-          "modal-box sm:max-w-[600px] w-full min-h-screen sm:min-h-0 sm:h-[450px] overflow-x-hidden rounded-none sm:rounded-2xl flex flex-col gap-y-3 border-2 relative z-50 border-blue-300/10 [&>label>input]:placeholder:text-gray-400 sm:mt-10 overflow-y-auto justify-between",
+          "w-full sm:max-w-[600px] min-h-screen sm:min-h-0 sm:h-[450px] bg-slate-900/95 backdrop-blur-sm border border-violet-500/20 rounded-none sm:rounded-xl relative z-50 sm:mt-10 flex flex-col gap-y-3 overflow-y-auto justify-between p-6",
           divClass
         )}
       >

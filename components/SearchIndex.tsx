@@ -1,9 +1,10 @@
 import AddBookBtn from "./btns/AddBookBtn";
-import AppIcon from "./AppIcon";
 import LogInBtn from "./btns/LogInBtn";
 import Select from "react-select";
+import useGuest from "@/hooks/useGuest";
 import { formatState, selectStyles } from "@/utils/helpers";
-import { searchAtom, stateAtom } from "@/utils/atoms";
+import { menuAtom, searchAtom, stateAtom } from "@/utils/atoms";
+import { twMerge } from "tailwind-merge";
 import { useRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
 import type {
@@ -14,10 +15,12 @@ import type {
   SelectOpt,
 } from "@/utils/types";
 
-function SearchIndex({ UID }: { UID: string | null }): Component {
+function SearchIndex(): Component {
   const [t] = useTranslation("global"),
+    { isGuest } = useGuest(),
     [value, setValue] = useRecoilState<string>(searchAtom),
     [selectVal, setSelectStateVal] = useRecoilState<string>(stateAtom),
+    [menuIsOpen] = useRecoilState(menuAtom),
     handleSearch: Handler<InputEvent, void> = (e: InputEvent) =>
       setValue(e.target.value),
     handleSelect: Handler<string, void> = (val: string) =>
@@ -37,22 +40,26 @@ function SearchIndex({ UID }: { UID: string | null }): Component {
     ] as const;
 
   return (
-    <header className="z-10 w-full mb-0 sm:mb-10 justify-center items-center flex flex-col lg:flex-row h-26 relative">
-      <AppIcon />
-      <form className="w-full sm:w-max flex flex-col items-center justify-center select-none px-6 sm:px-0">
-        <div className="w-full h-max flex flex-col sm:flex-row gap-y-2 sm:gap-y-0 sm:gap-x-2 justify-start items-center">
-          <div className="join">
+    <div
+      className={twMerge(
+        menuIsOpen ? "hidden" : "flex",
+        "w-full mb-0 sm:mb-10 flex-col items-center gap-y-8"
+      )}
+    >
+      <form className="w-full max-w-3xl flex flex-col items-center justify-center select-none px-6 sm:px-0">
+        <div className="w-full flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <div className="join w-full sm:w-auto">
             <input
               id="input-search"
               value={value}
               onChange={handleSearch}
               className="focus:outline-0 focus:border-rose-300/10 backdrop-blur-[2px] input join-item w-[230px] sm:w-[270px] h-14 bg-slate-800/60 border-2 border-rose-300/10 placeholder:text-slate-300/70 text-sm sm:text-lg text-slate-300 placeholder:w-full"
-              placeholder={t("placeholder-search")}
+              placeholder={t("placeholder-library")}
               type="search"
               autoFocus
             />
             <Select
-              className="join-item capitalize text-sm sm:text-[16px]"
+              className="join-item capitalize text-sm text-slate-900"
               id="select-state"
               isSearchable={false}
               options={options}
@@ -62,10 +69,11 @@ function SearchIndex({ UID }: { UID: string | null }): Component {
               onChange={(e: EventSelect) => handleSelect(e.value)}
             />
           </div>
-          {UID ? <AddBookBtn text={t("new-book")} /> : <LogInBtn />}
+
+          {isGuest ? <LogInBtn /> : <AddBookBtn text={t("new-book")} />}
         </div>
       </form>
-    </header>
+    </div>
   );
 }
 

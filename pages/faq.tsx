@@ -1,34 +1,22 @@
-import useLocalStorage from "@/hooks/useLocalStorage";
-import type { Component, Handler, Translate } from "@/utils/types";
+import { animate } from "@/utils/helpers";
 import { animated, useSpring } from "@react-spring/web";
 import { ChevronRight, ChevronUp } from "lucide-react";
-import Link from "next/link";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import type { Component, Handler, Translate } from "@/utils/types";
 
 function FAQ(): Component {
   const [t] = useTranslation("global"),
     [openItem, setOpenItem] = useState<number | null>(null),
     toggleItem: Handler<number, void> = (index: number) =>
       setOpenItem(openItem === index ? null : index),
-    [animations] = useLocalStorage("animations", true),
-    [styles] = useSpring(() => ({
-      from: { opacity: animations ? 0 : 1 },
-      to: { opacity: 1 },
-      config: { duration: 400 },
-    }));
+    [styles] = useSpring(() => animate(0, 1, 400));
 
   return (
     <animated.section
       style={styles}
       className="max-w-2xl w-full space-y-4 pb-24"
     >
-      <Link
-        href="/"
-        className="w-full p-4 text-xl underline text-center sm:text-start"
-      >
-        {t("back")}
-      </Link>
       <div className="max-w-3xl w-full p-4 h-full">
         <ul className="space-y-4">
           {faqItems(t).map((item, i) => (

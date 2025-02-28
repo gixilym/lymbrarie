@@ -1,6 +1,7 @@
 import DialogContainer from "../DialogContainer";
 import HeaderPopUp from "../HeaderPopUp";
 import NotesAlert from "../alerts/NotesAlert";
+import useGuest from "@/hooks/useGuest";
 import useLoadContent from "@/hooks/useLoadContent";
 import usePopUp from "@/hooks/usePopUp";
 import { delay, noop } from "es-toolkit";
@@ -23,10 +24,11 @@ import {
 function NotesPopUp(props: Props): Component {
   const [t] = useTranslation("global"),
     { closePopUp } = usePopUp(),
+    { isGuest } = useGuest(),
     router: NextRouter = useRouter(),
     [hasChanges, setHasChanges] = useState<boolean>(false),
     [showAlert, setShowAlert] = useState<boolean>(false),
-    { notes, setNotes, updateNotes, loadingFav, isGuest } = props,
+    { notes, setNotes, updateNotes, loadingFav } = props,
     [originalNotes, setOriginalNotes] = useState<string>(notes),
     { startLoading, isLoading } = useLoadContent();
 
@@ -97,19 +99,24 @@ function NotesPopUp(props: Props): Component {
   return (
     <DialogContainer
       id="notes"
-      divClass="!max-w-[850px] !h-full !max-h-[93vh] sm:!mt-6 !overflow-y-hidden"
+      divClass="!max-w-[850px] !h-full !max-h-[93vh] sm:!mt-6 !overflow-y-hidden !bg-slate-800"
     >
       <div className="w-full h-full flex flex-col justify-between items-center gap-y-6 relative">
         <HeaderPopUp icon={<Icon size={27} />} title={t("notes")} />
+
         {!isGuest && hasChanges && !loadingFav && (
           <button
-            className="btn bg-green-400 backdrop-blur-sm font-thin text-sm sm:text-lg text-black hover:bg-green-300 opacity-95 absolute bottom-0 right-0"
             onClick={saveContent}
+            className="absolute bottom-0 right-0 p-2.5 rounded-xl 
+            bg-violet-500/50 border border-violet-500/80 
+            hover:bg-violet-500/30 hover:border-violet-500/30 
+            transition-colors flex items-center gap-x-2"
           >
-            <SaveIcon size={20} />
-            {t("save")}
+            <SaveIcon size={20} className="text-violet-200" />
+            <span className="text-white text-sm sm:text-base">{t("save")}</span>
           </button>
         )}
+
         <textarea
           id="notes"
           value={notes}
@@ -118,10 +125,13 @@ function NotesPopUp(props: Props): Component {
           onChange={isGuest ? noop : handleChangeContent}
           autoFocus
           placeholder="..."
-          className="h-full pb-14 pl-2 !pr-8 text-sm md:text-lg resize-none border-none focus:ring-0 focus:outline-none w-full bg-transparent text-slate-200 placeholder:text-gray-200 text-pretty"
+          className="h-full pb-14 pl-3 pr-6 text-sm md:text-lg resize-none 
+          border-none focus:ring-0 focus:outline-none w-full bg-transparent 
+          text-slate-200 placeholder:text-slate-400/60 text-pretty"
         />
+
         {isGuest && (
-          <p className="w-full text-sm text-slate-300 text-center">
+          <p className="w-full text-sm text-slate-300/80 text-center">
             {t("notes-guest")}
           </p>
         )}
@@ -133,9 +143,12 @@ function NotesPopUp(props: Props): Component {
         disabled={isLoading}
         type="button"
         onClick={handleClosePopUp}
-        className="btn btn-ghost btn-square w-12 h-12 rounded-full backdrop-blur-xl absolute top-3.5 right-3"
+        className="absolute top-4 right-4 p-2 rounded-xl 
+        bg-violet-500/20 border border-violet-500/20 
+        hover:bg-violet-500/30 hover:border-violet-500/30 
+        transition-colors disabled:opacity-50"
       >
-        <ExitIcon size={38} />
+        <ExitIcon size={24} className="text-violet-200" />
       </button>
     </DialogContainer>
   );
@@ -148,5 +161,4 @@ interface Props {
   setNotes: Dispatch<SetStateAction<string>>;
   loadingFav: boolean;
   updateNotes: () => void;
-  isGuest?: boolean;
 }

@@ -38,7 +38,8 @@ function IsOffline(): Component {
         className={twMerge(
           isOffline ? "bg-red-500/80" : "bg-green-500/80",
           "flex justify-center items-center p-4 rounded-xl gap-x-4"
-        )}>
+        )}
+      >
         <div className="flex items-center space-x-2">
           {isOffline ? (
             <>
@@ -58,7 +59,8 @@ function IsOffline(): Component {
         </div>
         <button
           onClick={() => setIsVisible(false)}
-          className="text-white hover:text-red-200 transition-colors">
+          className="text-white hover:text-red-200 transition-colors"
+        >
           <X className="w-5 h-5" />
         </button>
       </div>

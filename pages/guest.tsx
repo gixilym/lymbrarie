@@ -1,41 +1,28 @@
-import icon from "@/public/favicon.ico";
+import IndexBanner from "@/components/banners/IndexBanner";
 import ListSection from "@/components/ListSection";
-import PopUps from "@/components/PopUps";
 import SearchIndex from "@/components/SearchIndex";
-import useLocalStorage from "@/hooks/useLocalStorage";
+import { animate } from "@/utils/helpers";
 import { animated, useSpring } from "@react-spring/web";
 import { useTranslation } from "react-i18next";
-import { useUser, withUser } from "next-firebase-auth";
 import type { Book, Component, Translate } from "@/utils/types";
 
-export default withUser()(GuestMode);
-
-function GuestMode(): Component {
-  const user = useUser(),
-    [t] = useTranslation("global"),
-    [animations] = useLocalStorage("animations", true),
-    [styles] = useSpring(() => ({
-      from: { opacity: animations ? 0 : 1 },
-      to: { opacity: 1 },
-      config: { duration: 1000 },
-    }));
+function GuestPage(): Component {
+  const [t] = useTranslation("global");
+  const [styles] = useSpring(() => animate(0, 1, 1000));
 
   return (
     <animated.main
       style={styles}
       className="flex flex-col justify-start items-center w-full sm:max-w-[950px] h-full gap-y-6"
     >
-      <SearchIndex UID={user?.id} />
-      <ListSection myBooks={getGuestBooks(t)} />
-      <PopUps
-        profileImg={icon as any}
-        profileName={t("guest")}
-        UID="Guest"
-        isGuest
-      />
+      <IndexBanner username={t("guest")} />
+      <SearchIndex />
+      <ListSection myBooks={getGuestBooks(t)} isSearch={false} />
     </animated.main>
   );
 }
+
+export default GuestPage;
 
 function getGuestBooks(t: Translate): Book[] {
   return [

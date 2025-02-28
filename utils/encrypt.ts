@@ -1,7 +1,7 @@
 import { Rabbit, enc } from "crypto-js";
 import { isNull } from "es-toolkit";
 
-const key: string = process.env.NEXT_PUBLIC_DECRYPT as string;
+const key = process.env.NEXT_PUBLIC_DECRYPT as string;
 
 function decrypt(data: any): any {
   if (isNull(data)) return null;

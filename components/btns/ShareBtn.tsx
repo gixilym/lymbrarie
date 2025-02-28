@@ -17,6 +17,7 @@ function ShareBtn({ title }: Props): Component {
 
     const watermark = document.createElement("div") as HTMLDivElement;
     watermark.textContent = "lymbrarie.com";
+    content.style.borderRadius = "0px";
     watermark.style.position = "absolute";
     watermark.style.bottom = "8px";
     watermark.style.right = "12px";
@@ -30,7 +31,8 @@ function ShareBtn({ title }: Props): Component {
 
       content.style.padding = "";
       content.style.border = "";
-      content.style.height = "290px";
+      content.style.borderRadius = "16px";
+      content.style.height = "377.333px";
       icons.style.display = "flex";
       content.removeChild(watermark);
 
@@ -44,7 +46,7 @@ function ShareBtn({ title }: Props): Component {
   return (
     <button
       onClick={shareInDesktop}
-      className="btn btn-square bg-slate-700/30  sm:bg-slate-700/25 hover:bg-slate-700/50 border-2 border-slate-700/40 mb-1 mt-4 sm:mt-0 "
+      className="btn btn-square bg-slate-700/30 sm:bg-slate-700/25 hover:bg-slate-700/50 border-2 border-slate-700/40 mb-1 mt-4 sm:mt-0"
     >
       <Icon className="w-5 h-5 sm:w-[26px] sm:h-[26px]" />
     </button>

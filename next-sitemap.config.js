@@ -10,9 +10,13 @@ module.exports = {
     "/privacypolicy",
     "/termsofuse",
     "/guest",
-    "/credits",
     "/404",
+    "/guest",
     "/guest/**",
+    "/recommendation/**",
+    "/config",
+    "/donations",
+    "/profile",
   ],
   robotsTxtOptions: {
     additionalSitemaps: [

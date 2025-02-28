@@ -5,8 +5,6 @@ import ListBooks from "./ListBooks";
 import NoMatchesText from "./NoMatchesText";
 import SortBtn from "./btns/SortBtn";
 import useLocalStorage from "@/hooks/useLocalStorage";
-import usePopUp from "@/hooks/usePopUp";
-import { BoltIcon, UserRoundIcon } from "lucide-react";
 import { deburr, isEqual, isNull, orderBy, round, shuffle } from "es-toolkit";
 import { len, tLC } from "@/utils/helpers";
 import { memo, useEffect, useMemo, useState } from "react";
@@ -15,7 +13,10 @@ import { useRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
 import type { Book, BookData, Component, MemoComponent } from "@/utils/types";
 
-const ListSection: MemoComponent = memo(function B({ myBooks }: Props) {
+const ListSection: MemoComponent = memo(function B({
+  myBooks,
+  isSearch,
+}: Props) {
   const [t] = useTranslation("global"),
     [searchVal] = useRecoilState<string>(searchAtom),
     [stateVal] = useRecoilState<string>(stateAtom),
@@ -26,8 +27,7 @@ const ListSection: MemoComponent = memo(function B({ myBooks }: Props) {
     [ascToDesc, setAscToDesc] = useState<boolean | null>(ascLS),
     [showFavsLS, setShowFavsLS] = useLocalStorage("show-favs", false),
     [showFavs, setShowFavs] = useState<boolean>(showFavsLS),
-    myFavs: Book[] = myBooks.filter((b: Book) => b?.data?.isFav),
-    { openPopUp } = usePopUp();
+    myFavs: Book[] = myBooks.filter((b: Book) => b?.data?.isFav);
 
   useEffect(() => {
     const resetScroll = (): void => setScroll(0);
@@ -41,7 +41,7 @@ const ListSection: MemoComponent = memo(function B({ myBooks }: Props) {
     return () => removeEventListener("scroll", handleScroll);
   }, [myBooks]);
 
-  const renderBooks = (arr: Book[]): Component => {
+  function renderBooks(arr: Book[]): Component {
     const data: BookData[] = arr.map((b: Book) => b?.data),
       order: any[] = ascToDesc ? ["asc", "desc"] : ["desc", "asc"],
       books: BookData[] = isNull(ascToDesc)
@@ -57,14 +57,14 @@ const ListSection: MemoComponent = memo(function B({ myBooks }: Props) {
     if (noMatches)
       return (
         <NoMatchesText
-          t={t(showFavs && !searchVal ? "no-favs" : "no-matches")}
+          txt={showFavs && !searchVal ? "no-favs" : "no-matches"}
         />
       );
 
     return books.map((b: BookData) => (
       <BookCard key={b.title} data={b} showDetails={showDetails} />
     ));
-  };
+  }
 
   function where(value: string, state: string): Book[] {
     const checkState = (b: BookData) => !state || isEqual(b.state, stateVal),
@@ -119,29 +119,28 @@ const ListSection: MemoComponent = memo(function B({ myBooks }: Props) {
 
   return (
     <section className="w-full px-4 sm:px-0 sm:w-[620px] flex flex-col justify-between items-center gap-y-7 relative">
-      <div className="flex justify-start w-full items-end px-2.5">
-        <button
-          onClick={() => openPopUp("profile")}
-          title={t("profile")}
-          className="btn btn-ghost btn-square"
-        >
-          <UserRoundIcon size={28} />
-        </button>
-        <DetailsBtn showDetails={showDetails} onClick={changeDetails} />
-        <SortBtn ascToDesc={ascToDesc} alternateSort={alternateSort} />
-        <FavoritesBtn
-          showFavs={showFavs}
-          alternateFavorites={alternateFavorites}
-        />
-        <button
-          onClick={() => openPopUp("settings")}
-          title={t("settings")}
-          className="btn btn-ghost btn-square"
-        >
-          <BoltIcon size={28} />
-        </button>
-      </div>
-      <ListBooks listBooks={renderList} />
+      {!isSearch && (
+        <div className="flex justify-start w-full items-center px-2.5">
+          <DetailsBtn showDetails={showDetails} onClick={changeDetails} />
+          <SortBtn ascToDesc={ascToDesc} alternateSort={alternateSort} />
+          <FavoritesBtn
+            showFavs={showFavs}
+            alternateFavorites={alternateFavorites}
+          />
+          {showFavs && (
+            <p className="pl-4 pt-0.5 text-[15px] text-slate-300/80">
+              {t("favorites")}
+            </p>
+          )}
+        </div>
+      )}
+      <ListBooks
+        isSearch={isSearch}
+        listBooks={renderList}
+        showDetails={showDetails}
+        showFavs={showFavs}
+        ascToDesc={ascToDesc}
+      />
     </section>
   );
 });
@@ -150,4 +149,5 @@ export default ListSection;
 
 interface Props {
   myBooks: Book[];
+  isSearch: boolean;
 }

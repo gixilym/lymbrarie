@@ -1,4 +1,4 @@
-import { isEqual } from 'es-toolkit';
+import { isEqual } from "es-toolkit";
 import type { StylesConfig } from "react-select";
 import type { Handler, Translate } from "./types";
 
@@ -24,6 +24,8 @@ function translateStateBook(state: string, t: Translate): string {
 const selectStyles = (showAll: boolean, normal: boolean): any => ({
   placeholder: (s: StylesConfig<any>) => ({
     ...s,
+    fontSize: "0.9rem",
+    marginLeft: "1rem",
     color: normal
       ? "#e2e8f0"
       : showAll
@@ -32,7 +34,7 @@ const selectStyles = (showAll: boolean, normal: boolean): any => ({
   }),
   singleValue: (s: StylesConfig) => ({
     ...s,
-    fontSize: "1.05rem",
+    fontSize: "1rem",
   }),
   control: (s: StylesConfig) => ({
     ...s,
@@ -40,10 +42,10 @@ const selectStyles = (showAll: boolean, normal: boolean): any => ({
     backgroundColor: normal ? "transparent" : "rgb(30 41 59 / 0.6)",
     borderWidth: normal ? 1 : 2,
     borderColor: normal
-      ? "#374151"
+      ? "rgb(139 92 246 / 0.32)"
       : showAll
       ? "rgb(253 164 175 / 0.1)"
-      : "rgb(253 164 175 / 0.42)",
+      : "rgb(196 181 253 / 0.4)",
     width: normal ? "100%" : "160px",
     height: normal ? "3rem" : "3.5rem",
     boxShadow: 0,
@@ -54,7 +56,7 @@ const selectStyles = (showAll: boolean, normal: boolean): any => ({
     ":hover": {
       borderColor: showAll
         ? "rgb(253 164 175 / 0.1)"
-        : "rgb(253 164 175 / 0.42)",
+        : "rgb(196 181 253 / 0.4)",
     },
   }),
   option: (s: StylesConfig) => ({
@@ -92,9 +94,18 @@ function formatState(val: string, t: Translate): string {
     case "Lent":
       return t("new-book-lent");
 
+    case "Recommended":
+      return t("new-book-recommended");
+
     default:
       return t("new-book-all");
   }
+}
+
+function pathIs(path: string, equal?: boolean): boolean {
+  const pathname: string = window?.location?.pathname;
+  if (equal) return pathname == path;
+  return pathname.includes(path);
 }
 
 const removeItem: Handler<string, void> = item =>
@@ -114,7 +125,20 @@ const deformatTitle: Handler<string, string> = title =>
 
 const len: Handler<string | Array<any>, number> = str => str.length;
 
+const animate = (
+  from: number,
+  to: number,
+  duration: number,
+  delay?: number
+): Animate => ({
+  from: { opacity: from },
+  to: { opacity: to },
+  config: { duration: duration },
+  delay: delay ?? 0,
+});
+
 export {
+  animate,
   clearStorage,
   deformatTitle,
   formatState,
@@ -125,4 +149,11 @@ export {
   selectStyles,
   tLC,
   translateStateBook,
+  pathIs,
 };
+interface Animate {
+  from: { opacity: number };
+  to: { opacity: number };
+  config: { duration: number };
+  delay: number;
+}

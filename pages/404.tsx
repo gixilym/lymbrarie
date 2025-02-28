@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PAGES } from "@/utils/consts";
 import { useTranslation } from "react-i18next";
 import type { Component } from "@/utils/types";
 
@@ -17,7 +18,7 @@ function NotFound(): Component {
           </p>
 
           <Link
-            href="/"
+            href={PAGES.HOME}
             className="inline-flex bg-primary-600 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg px-5 py-2.5 text-center dark:focus:ring-primary-900 my-4"
           >
             <u className="text-xl sm:text-2xl">{t("home")}</u>

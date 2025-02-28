@@ -2,9 +2,9 @@ import useLoadContent from "@/hooks/useLoadContent";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
 import { animated, useSpring } from "@react-spring/web";
-import { COLLECTION } from "@/utils/consts";
+import { COLLECTION, PAGES } from "@/utils/consts";
 import { deleteDoc, doc } from "firebase/firestore";
-import { dismissNotification, notification } from "@/utils/notifications";
+import { dismissNoti, notification } from "@/utils/notifications";
 import { isEqual } from "es-toolkit";
 import { len } from "@/utils/helpers";
 import { NextRouter, useRouter } from "next/router";
@@ -49,10 +49,10 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
         redirectToHome();
       }
     } catch (err: any) {
-      router.push("/error");
+      router.push(PAGES.ERROR);
       console.error(`catch 'deleteDocument' ${err.message}`);
     } finally {
-      dismissNotification();
+      dismissNoti();
     }
   }
 
@@ -71,24 +71,34 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
       <animated.div
         onClick={e => e.stopPropagation()}
         style={styles}
-        className="modal-box mt-28 sm:mt-20 w-full"
+        className="modal-box mt-28 sm:mt-20 w-full bg-slate-900/90 rounded-2xl p-8 backdrop-blur-md border border-violet-500/20"
       >
-        <div className="flex flex-row justify-start items-end sm:items-start gap-x-4">
-          <WarningIcon size={25} />
-          <p className="font-bold tracking-wide text-sm sm:text-lg">
+        <div className="flex flex-row justify-start items-start gap-x-4">
+          <div className="bg-violet-500/20 p-1.5 rounded-lg">
+            <WarningIcon size={25} />
+          </div>
+          <p className="font-bold tracking-wide text-sm sm:text-lg pt-1.5 text-white">
             {t("warning")}
           </p>
         </div>
-        <p className="py-4 text-lg sm:text-xl">{t("delete-message")}</p>
+        <p className="py-4 text-lg sm:text-xl text-violet-100">
+          {t("delete-message")}
+        </p>
         <div className="modal-action">
           <form method="dialog" className="space-x-2">
             <button
               disabled={isLoading}
+              type="button"
               onClick={() => closePopUp("delete_book")}
-              className="btn font-thin bg-slate-700 hover:bg-slate-600 text-slate-300 text-sm sm:text-lg"
+              className="px-4 py-2 rounded-xl bg-slate-900/60 
+            border border-violet-500/15 
+            hover:bg-slate-900/80 hover:border-violet-500/30 
+            transition-colors disabled:opacity-50 
+            text-slate-300 text-lg"
             >
               {t("cancel")}
             </button>
+
             {isLoading ? (
               <button
                 disabled

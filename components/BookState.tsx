@@ -23,6 +23,9 @@ function BookState({ state, showDetails }: Props): Component {
       case "Lent":
         return { text: t("loanedto"), bg: "bg-blue-600/30" };
 
+      case "Recommended":
+        return { text: t("new-book-recommended"), bg: "bg-violet-600/30" };
+
       default:
         return { text: "", bg: "" };
     }
@@ -33,7 +36,8 @@ function BookState({ state, showDetails }: Props): Component {
   return (
     <span
       className={twMerge(
-        `${bg} rounded-md text-xs sm:text-sm w-3/12 min-w-[75px] max-w-[90px] py-0.5 text-center select-none opacity-90`,
+        text.includes("Reco") ? "!w-[100px] sm:!w-[125px]" : "max-w-[90px]",
+        `${bg} text-xs sm:text-sm rounded-md w-3/12 min-w-[75px] py-0.5 text-center select-none opacity-90`,
         showDetails && "absolute bottom-2 right-2 w-24"
       )}
     >

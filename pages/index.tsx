@@ -1,13 +1,13 @@
-"use client";
 import AddYourFirstBook from "@/components/AddYourFirstBook";
+import IndexBanner from "@/components/banners/IndexBanner";
 import ListSection from "@/components/ListSection";
 import LoaderCircle from "@/components/LoaderCircle";
-import PopUps from "@/components/PopUps";
 import SearchIndex from "@/components/SearchIndex";
+import useLoadContent from "@/hooks/useLoadContent";
 import useLocalStorage from "@/hooks/useLocalStorage";
+import { animate, len } from "@/utils/helpers";
 import { animated, useSpring } from "@react-spring/web";
 import { getDocuments, syncDocuments } from "@/utils/documents";
-import { len } from "@/utils/helpers";
 import { noop } from "es-toolkit";
 import { showNotifications } from "@/utils/notifications";
 import { useEffect, useState } from "react";
@@ -22,7 +22,6 @@ import {
   type Unsubscribe,
 } from "firebase/auth";
 import { AuthAction, type User, useUser, withUser } from "next-firebase-auth";
-import useLoadContent from "@/hooks/useLoadContent";
 
 export default withUser({
   whenAuthed: AuthAction.RENDER,
@@ -37,22 +36,18 @@ function Index(): Component {
     [t] = useTranslation("global"),
     [myBooks, setMyBooks] = useState<Book[]>([]),
     UID: string = user.id as string,
-    profileImg: string = user?.photoURL as string,
     profileName: string = user?.displayName as string,
     [cacheBooks, setCacheBooks] = useLocalStorage("cache-books", null),
     [, setAllTitles] = useLocalStorage("all-titles", []),
     [booksIsEmpty, setBooksIsEmpty] = useState<boolean | null>(null),
-    [animations] = useLocalStorage("animations", true),
     { startLoading, isLoading, finishLoading } = useLoadContent(),
     [newNoti] = useLocalStorage("added", false),
     [deletedNoti] = useLocalStorage("deleted", false),
     [zeroBooks] = useRecoilState<boolean>(zeroAtom),
     showFirstBook: boolean = booksIsEmpty || zeroBooks,
-    [styles, api] = useSpring(() => ({
-      from: { opacity: animations ? 0 : 1 },
-      to: { opacity: 1 },
-      config: { duration: 1000 },
-    })),
+    [nameuser] = useLocalStorage("username", ""),
+    username: string = nameuser.trim() == "" ? profileName : nameuser,
+    [styles, api] = useSpring(() => animate(0, 1, 1000)),
     argsSync: SyncDocs = {
       UID,
       cacheBooks,
@@ -104,11 +99,7 @@ function Index(): Component {
 
   function animateList(): void {
     if (newNoti || deletedNoti) return;
-    api.start({
-      from: { opacity: animations ? 0 : 1 },
-      to: { opacity: 1 },
-      config: { duration: 1000 },
-    });
+    api.start(animate(0, 1, 400));
   }
 
   if (isLoading) return <LoaderCircle />;
@@ -118,14 +109,13 @@ function Index(): Component {
       style={styles}
       className="flex flex-col justify-start items-center w-full sm:max-w-[950px] h-full gap-y-6"
     >
-      <SearchIndex UID={UID} />
-      {showFirstBook ? <AddYourFirstBook /> : <ListSection myBooks={myBooks} />}
-      <PopUps
-        profileImg={profileImg}
-        profileName={profileName}
-        UID={UID}
-        isGuest={false}
-      />
+      <IndexBanner username={username} />
+      <SearchIndex />
+      {showFirstBook ? (
+        <AddYourFirstBook />
+      ) : (
+        <ListSection myBooks={myBooks} isSearch={false} />
+      )}
     </animated.main>
   );
 }

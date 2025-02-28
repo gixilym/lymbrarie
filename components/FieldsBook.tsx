@@ -40,11 +40,12 @@ function FieldsBook(props: Props): Component {
       <label
         htmlFor="title-input"
         className={twMerge(
-          isEqual("title-input", errorKey) && "border-2 border-red-500",
-          "input input-bordered flex items-center w-full text-sm sm:text-xl h-14"
+          "flex items-center w-full bg-slate-900/40 backdrop-blur-sm rounded-xl px-4 h-14",
+          "border border-violet-500/20 hover:border-violet-500/30 transition-colors",
+          isEqual("title-input", errorKey) && "!border-red-500/50 !border-2"
         )}
       >
-        <TitleIcon size={18} className="mr-1.5" />
+        <TitleIcon size={18} className="text-violet-300 mr-3" />
         <input
           id="title-input"
           autoFocus
@@ -53,7 +54,8 @@ function FieldsBook(props: Props): Component {
           defaultValue={defaultValueTitle}
           name="title"
           type="text"
-          className="grow px-1 h-14 placeholder:text-slate-100 w-10/12"
+          className="w-full bg-slate-900 text-slate-200 text-lg placeholder:text-slate-300
+              focus:outline-none disabled:opacity-50"
           placeholder={t("placeholder-title")}
         />
       </label>
@@ -61,11 +63,12 @@ function FieldsBook(props: Props): Component {
       <label
         htmlFor="author-input"
         className={twMerge(
-          isEqual("author-input", errorKey) && "border-2 border-red-500",
-          "input input-bordered flex items-center sm:text-xl w-full text-sm h-14"
+          "flex items-center w-full bg-slate-900/40 backdrop-blur-sm rounded-xl px-4 h-14",
+          "border border-violet-500/20 hover:border-violet-500/30 transition-colors",
+          isEqual("author-input", errorKey) && "!border-red-500/50 !border-2"
         )}
       >
-        <UserIcon size={18} className="mt-0.5 mr-2" />
+        <UserIcon size={18} className="text-violet-300 mr-3" />
         <input
           id="author-input"
           disabled={isLoading}
@@ -73,36 +76,25 @@ function FieldsBook(props: Props): Component {
           defaultValue={defaultValueAuthor}
           name="author"
           type="text"
-          className={twMerge(
-            isLoading
-              ? "placeholder:!text-slate-700"
-              : "placeholder:text-slate-100",
-            "grow px-1 h-14 w-10/12"
-          )}
+          className="w-full bg-slate-900 text-slate-200 text-lg placeholder:text-slate-300
+              focus:outline-none disabled:opacity-50"
           placeholder={t("placeholder-author")}
         />
       </label>
 
-      <div className="join w-full space-x-2">
+      <div className="flex gap-x-3 w-full">
         <label
           htmlFor="gender-select"
           className={twMerge(
-            isLoading ? "bg-base-200" : "bg-transparent input-bordered",
-            "w-full input flex items-center sm:text-xl text-lg h-14 sm:w-full"
+            "flex items-center flex-1 bg-slate-900/40 backdrop-blur-sm rounded-xl px-4 h-14",
+            "border border-violet-500/20 hover:border-violet-500/30 transition-colors"
           )}
         >
-          <GenderIcon
-            size={18}
-            className={twMerge(
-              isLoading ? "opacity-20" : "opacity-100",
-              "mt-0.5 mr-2"
-            )}
-          />
+          <GenderIcon size={18} className="text-violet-300 mr-3" />
           <select
             id="gender-select"
             onChange={handleGender}
             disabled={isLoading}
-            className="select input-bordered pl-1.5 border-x-0 rounded-none sm:text-xl text-sm w-full focus:outline-0 h-14 text-slate-400"
             defaultValue={
               applyGender
                 ? defaultValueGender
@@ -110,26 +102,30 @@ function FieldsBook(props: Props): Component {
                 ? "default"
                 : "custom"
             }
+            className="w-full bg-slate-900 text-slate-300 text-lg focus:outline-none disabled:opacity-50 appearance-none cursor-pointer"
           >
-            <option value="default" disabled>
+            <option value="default" disabled className="bg-slate-900">
               {t("literary-gender")}
             </option>
             {GENDERS.map((g: string) => (
-              <option value={g} key={g}>
+              <option key={g} value={g} className="bg-slate-900">
                 {t(g)}
               </option>
             ))}
           </select>
         </label>
+
         {isCustomGender && (
           <label
             htmlFor="gender-input"
             className={twMerge(
-              isEqual("gender-input", errorKey) && "border-2 border-red-500",
-              "input input-bordered flex items-center sm:text-xl text-sm h-14 w-full"
+              "flex items-center flex-1 bg-slate-900/40 backdrop-blur-sm rounded-xl px-4 h-14",
+              "border border-violet-500/20 hover:border-violet-500/30 transition-colors",
+              isEqual("gender-input", errorKey) &&
+                "!border-red-500/50 !border-2"
             )}
           >
-            <CustomIcon size={18} className="mt-0.5 mr-2" />
+            <CustomIcon size={18} className="text-violet-300 mr-3" />
             <input
               id="gender-input"
               onChange={(e: InputEvent) => {
@@ -139,7 +135,8 @@ function FieldsBook(props: Props): Component {
               name="gender"
               disabled={isLoading}
               type="text"
-              className="grow px-1 placeholder:text-slate-500 text-sm sm:text-xl w-full"
+              className="w-full bg-slate-900 text-slate-200 text-lg placeholder:text-slate-300
+                  focus:outline-none disabled:opacity-50"
               placeholder={t("custom")}
               defaultValue={applyGender ? t("my-gender") : defaultValueGender}
             />
@@ -147,47 +144,52 @@ function FieldsBook(props: Props): Component {
         )}
       </div>
 
-      <div className="join w-full space-x-2">
+      <div className="flex gap-x-3 w-full">
         <label
           htmlFor="state-select"
           className={twMerge(
-            isLent ? "w-2/4" : "w-full",
-            isLoading ? "bg-base-200" : "bg-transparent input-bordered",
-            "input flex items-center sm:text-xl text-lg sm:w-full h-14"
+            "flex items-center bg-slate-900/40 backdrop-blur-sm rounded-xl px-4 h-14",
+            "border border-violet-500/20 hover:border-violet-500/30 transition-colors",
+            isLent ? "w-1/2" : "w-full"
           )}
         >
-          <StateIcon
-            size={18}
-            className={twMerge(
-              isLoading ? "opacity-20" : "opacity-100",
-              "mt-0.5"
-            )}
-          />
+          <StateIcon size={18} className="text-violet-300 mr-3" />
           <select
             id="state-select"
             disabled={isLoading}
             onChange={e => handleState(e.target.value)}
-            className="select text-slate-400 input-bordered border-x-0 rounded-none sm:text-xl text-sm w-full focus:outline-0 h-14"
             defaultValue={defaultValueState}
+            className="w-full bg-slate-900 text-slate-300 text-lg 
+                focus:outline-none disabled:opacity-50 appearance-none cursor-pointer"
           >
-            <option value="default" disabled>
+            <option value="default" disabled className="bg-slate-900">
               {t("current-state")}
             </option>
-            <option value="Reading">{t("new-book-reading")}</option>
-            <option value="Read">{t("new-book-read")}</option>
-            <option value="Pending">{t("new-book-pending")}</option>
-            <option value="Lent">{t("new-book-lent")}</option>
+            <option value="Reading" className="bg-slate-900">
+              {t("new-book-reading")}
+            </option>
+            <option value="Read" className="bg-slate-900">
+              {t("new-book-read")}
+            </option>
+            <option value="Pending" className="bg-slate-900">
+              {t("new-book-pending")}
+            </option>
+            <option value="Lent" className="bg-slate-900">
+              {t("new-book-lent")}
+            </option>
           </select>
         </label>
+
         {isLent && (
           <label
             htmlFor="lent-input"
             className={twMerge(
-              isEqual("lent-input", errorKey) && "border-2 border-red-500",
-              "input input-bordered flex items-center sm:text-xl text-xs w-2/4 sm:w-full h-14"
+              "flex items-center w-1/2 bg-slate-900/40 backdrop-blur-sm rounded-xl px-4 h-14",
+              "border border-violet-500/20 hover:border-violet-500/30 transition-colors",
+              isEqual("lent-input", errorKey) && "!border-red-500/50 !border-2"
             )}
           >
-            <LentIcon size={18} className="mt-0.5 mr-2" />
+            <LentIcon size={18} className="text-violet-300 mr-3" />
             <input
               id="lent-input"
               disabled={isLoading}
@@ -195,7 +197,8 @@ function FieldsBook(props: Props): Component {
               name="loaned"
               defaultValue={defaultValueLoaned}
               type="text"
-              className="grow px-1 text-sm sm:text-xl w-full "
+              className="w-full bg-slate-900 text-slate-200 text-lg placeholder:text-slate-300
+                  focus:outline-none disabled:opacity-50"
               placeholder={t("loanedto")}
             />
           </label>
@@ -203,33 +206,6 @@ function FieldsBook(props: Props): Component {
       </div>
 
       <InputCover isLoading={isLoading} handleImage={handleImage} />
-
-      {/* <div className="w-full">
-        <label
-          htmlFor="image-input"
-          className={twMerge(
-            isEqual("image-input", errorKey) && "border-2 border-red-500",
-            "input input-bordered flex items-center sm:text-xl w-full text-sm h-14 mb-1"
-          )}
-        >
-          <ImageIcon size={18} className="mt-0.5 mr-2" />
-          <input
-            id="image-input"
-            disabled={isLoading}
-            onChange={handleChange}
-            defaultValue={defaultValueImg}
-            name="image"
-            type="text"
-            className={twMerge(
-              isLoading
-                ? "placeholder:text-slate-700"
-                : "placeholder:text-slate-400",
-              "grow px-1 w-10/12"
-            )}
-            placeholder={t("placeholder-link")}
-          />
-        </label>
-      </div> */}
     </>
   );
 }
