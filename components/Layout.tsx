@@ -3,7 +3,7 @@ import FooterIndex from "./FooterIndex";
 import HeaderIndex from "./HeaderIndex";
 import IsOffline from "./alerts/IsOfflineAlert";
 import JustClient from "./JustClient";
-import Popups from "./Popups";
+import Popups from "@/components/Popups";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { PAGES } from "@/utils/consts";
 import { Toaster } from "react-hot-toast";
