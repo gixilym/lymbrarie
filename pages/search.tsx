@@ -154,7 +154,7 @@ function SearchPage(): Component {
         onSubmit={onSubmit}
         className="w-full flex flex-col items-center justify-center gap-y-4"
       >
-        <InputSearch query={query} setQuery={setQuery} />
+        <InputSearch query={query} setQuery={setQuery} isLoading={isLoading} />
         <AnnasURL />
       </form>
 
