@@ -3,7 +3,7 @@ import FooterIndex from "./FooterIndex";
 import HeaderIndex from "./HeaderIndex";
 import IsOffline from "./alerts/IsOfflineAlert";
 import JustClient from "./JustClient";
-import Popups from "@/components/Popups";
+import AllPopups from "./AllPopups";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { PAGES } from "@/utils/consts";
 import { Toaster } from "react-hot-toast";
@@ -34,7 +34,7 @@ function Layout({ children }: PropsWithChildren): Component {
         <HeaderIndex />
         {children}
         {circles && <Background />}
-        <Popups UID={user?.id as string} />
+        <AllPopups UID={user?.id as string} />
         {path != PAGES.LOGIN && <FooterIndex />}
       </div>
     </JustClient>
