@@ -3,7 +3,7 @@ import { CLOUDINARY_URL } from "@/utils/consts";
 import { coverAtom } from "@/utils/atoms";
 import { Image as ImgIcon } from "lucide-react";
 import { notification } from "@/utils/notifications";
-import { twMerge } from "tailwind-merge";
+import { twJoin } from "tailwind-merge";
 import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useRecoilState } from "recoil";
@@ -13,7 +13,7 @@ import type { Component } from "@/utils/types";
 function InputCover({ isLoading, handleImage }: Props): Component {
   const [coverLoading, setCoverLoading] = useRecoilState(coverAtom),
     loading: boolean = isLoading || coverLoading,
-    onDrop = useCallback((file: any) => console.log(file), []),
+    onDrop = useCallback((file: any) => console.info(file), []),
     { getRootProps, getInputProps, acceptedFiles } = useDropzone({ onDrop }),
     [errImg, setErrImg] = useState<boolean>(false),
     showImg: boolean = !errImg && acceptedFiles[0] && !loading,
@@ -52,14 +52,20 @@ function InputCover({ isLoading, handleImage }: Props): Component {
   return (
     <div
       {...getRootProps()}
-      className={twMerge(
+      className={twJoin(
         "flex items-center w-full bg-slate-900/40 backdrop-blur-sm rounded-xl px-4 h-14",
-        "border-[1.5px] border-violet-500/20 border-dashed hover:border-violet-500/30 transition-colors",
+        "border-[1.5px] border-violet-500/20 border-dashed border-r-0 hover:border-violet-500/30 transition-colors",
         "cursor-pointer relative",
-        loading && "opacity-50"
+        loading && "border-violet-500/5 pointer-events-none cursor-default"
       )}
     >
-      <ImgIcon size={18} className="text-violet-300 mr-3 flex-shrink-0" />
+      <ImgIcon
+        size={18}
+        className={twJoin(
+          "text-violet-300 mr-3 flex-shrink-0",
+          loading && "animate-spin "
+        )}
+      />
 
       <input
         {...getInputProps()}
@@ -84,13 +90,13 @@ function InputCover({ isLoading, handleImage }: Props): Component {
       )}
 
       {showImg && (
-        <div className="absolute right-4 h-full py-2">
+        <div className="absolute right-0 h-full p-1.5 bg-violet-500/10 rounded-r-xl border-r border-violet-500/20">
           <Image
             width={30}
             height={30}
             src={URL.createObjectURL(acceptedFiles[0])}
-            alt="Cover"
-            className={twMerge(
+            alt="cover"
+            className={twJoin(
               "w-8 h-full object-cover rounded-md",
               loading && "opacity-50"
             )}
