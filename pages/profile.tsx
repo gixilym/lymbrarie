@@ -79,7 +79,7 @@ function ProfilePage(): Component {
           <p className="text-2xl font-semibold text-violet-100">
             {isGuest ? t("guest") : username}
           </p>
-          <p className="text-lg text-slate-300 lowercase">
+          <p className="mb-5 md:mb-0 text-lg text-slate-300 lowercase">
             {isGuest ? t("guest") + "@gmail.com" : email}
           </p>
         </div>

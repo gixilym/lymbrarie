@@ -5,31 +5,44 @@ import Menu from "./Menu";
 import useGuest from "@/hooks/useGuest";
 import { animate, pathIs } from "@/utils/helpers";
 import { animated, useSpring } from "@react-spring/web";
-import { menuAtom } from "@/utils/atoms";
+import { menuAtom, scrollAtom } from "@/utils/atoms";
 import { PAGES } from "@/utils/consts";
-import { twMerge } from "tailwind-merge";
+import { twJoin, twMerge } from "tailwind-merge";
 import { useEffect } from "react";
-import { useRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
+import {
+  type SetterOrUpdater,
+  useRecoilState,
+  useSetRecoilState,
+} from "recoil";
 import type { Component } from "@/utils/types";
+import {
+  LibraryIcon,
+  Search as SearchIcon,
+  User as ProfileIcon,
+  Settings2 as ConfigIcon,
+} from "lucide-react";
 
 function HeaderIndex(): Component {
-  const [t] = useTranslation("global"),
-    { isGuest } = useGuest(),
+  const { isGuest } = useGuest(),
+    [t] = useTranslation("global"),
     [menuIsOpen, setMenuIsOpen] = useRecoilState(menuAtom),
-    [styles] = useSpring(() => animate(0, 1, 400));
+    [styles] = useSpring(() => animate(0, 1, 400, 600)),
+    setScroll: SetterOrUpdater<number> = useSetRecoilState(scrollAtom);
 
   useEffect(() => setMenuIsOpen(false), [location.pathname]);
 
-  if (pathIs(PAGES.LOGIN, true)) return <></>;
+  if (pathIs(PAGES.LOGIN, { exact: true })) return <></>;
 
   return (
     <>
       <animated.header
         style={styles}
         className={twMerge(
-          menuIsOpen && pathIs(PAGES.HOME, true) ? "mb-28" : "mb-10 md:mb-20",
-          "navbar max-w-[1000px] bg-slate-900/80 backdrop-blur-sm md:rounded-2xl px-6 border border-violet-500/20 justify-between"
+          menuIsOpen && pathIs(PAGES.HOME, { exact: true })
+            ? "mb-28"
+            : "mb-10 md:mb-20",
+          "navbar max-w-[1000px] bg-slate-900/80 backdrop-blur-sm md:rounded-2xl px-6 border-b md:border border-violet-500/20 justify-between"
         )}
       >
         <Link
@@ -54,45 +67,72 @@ function HeaderIndex(): Component {
           <Link
             href={isGuest ? PAGES.GUEST : PAGES.HOME}
             className={twMerge(
-              pathIs(PAGES.HOME, true)
+              pathIs(PAGES.HOME, { exact: true })
                 ? "bg-violet-500/15 text-violet-200"
                 : "text-slate-300",
-              "px-4 py-2 rounded-xl transition-colors hover:bg-violet-500/15"
+              "px-4 py-2 rounded-xl transition-colors hover:bg-violet-500/15 flex items-center gap-x-2"
             )}
           >
+            <LibraryIcon
+              className={twJoin(
+                "w-5 h-5",
+                pathIs(PAGES.HOME, { exact: true }) && "text-violet-300/80"
+              )}
+            />
             {t("library")}
           </Link>
           <Link
+            onClick={() => setScroll(0)}
             href={PAGES.SEARCH}
             className={twMerge(
               pathIs(PAGES.SEARCH)
                 ? "bg-violet-500/20 text-violet-200"
                 : "text-slate-300",
-              "px-4 py-2 rounded-xl transition-colors hover:bg-violet-500/20"
+              "px-4 py-2 rounded-xl transition-colors hover:bg-violet-500/20 flex items-center gap-x-2"
             )}
           >
+            <SearchIcon
+              className={twJoin(
+                "w-5 h-5",
+                pathIs(PAGES.SEARCH) && "text-violet-300/80"
+              )}
+            />
             {t("book-finder")}
           </Link>
           <Link
+            onClick={() => setScroll(0)}
             href={PAGES.PROFILE}
             className={twMerge(
               pathIs(PAGES.PROFILE)
                 ? "bg-violet-500/20 text-violet-200"
                 : "text-slate-300",
-              "px-4 py-2 rounded-xl transition-colors hover:bg-violet-500/20"
+              "px-4 py-2 rounded-xl transition-colors hover:bg-violet-500/20 flex items-center gap-x-2"
             )}
           >
+            <ProfileIcon
+              className={twJoin(
+                "w-5 h-5",
+                pathIs(PAGES.PROFILE) && "text-violet-300/80"
+              )}
+            />
             {t("profile")}
           </Link>
           <Link
+            onClick={() => setScroll(0)}
             href={PAGES.CONFIG}
             className={twMerge(
               pathIs(PAGES.CONFIG)
                 ? "bg-violet-500/20 text-violet-200"
                 : "text-slate-300",
-              "px-4 py-2 rounded-xl transition-colors hover:bg-violet-500/20"
+              "px-4 py-2 rounded-xl transition-colors hover:bg-violet-500/20 flex items-center gap-x-2"
             )}
           >
+            <ConfigIcon
+              className={twJoin(
+                "w-5 h-5",
+                pathIs(PAGES.CONFIG) && "text-violet-300/80"
+              )}
+            />
             {t("settings")}
           </Link>
         </nav>

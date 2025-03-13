@@ -1,24 +1,25 @@
+import ConfigOption from "@/components/ConfigOption";
 import LoaderCircle from "@/components/LoaderCircle";
 import Select from "react-select";
 import useGuest from "@/hooks/useGuest";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { animate, clearStorage, len, selectStyles } from "@/utils/helpers";
 import { animated, useSpring } from "@react-spring/web";
-import { Auth, getAuth } from "firebase/auth";
 import { AuthAction, withUser } from "next-firebase-auth";
-import { NextRouter, useRouter } from "next/router";
 import { PAGES } from "@/utils/consts";
 import { useTranslation } from "react-i18next";
+import { type Auth, getAuth } from "firebase/auth";
+import { type NextRouter, useRouter } from "next/router";
 import type { Component, EventSelect, Handler, SelectOpt } from "@/utils/types";
 import {
   AmpersandIcon,
   CircleIcon,
   LanguagesIcon,
   LibraryIcon,
+  LogOutIcon,
   MegaphoneIcon,
   SparklesIcon,
 } from "lucide-react";
-import ConfigOption from "@/components/ConfigOption";
 
 export default withUser({
   whenAuthed: AuthAction.RENDER,
@@ -37,6 +38,7 @@ function ConfigPage(): Component {
     [recommendations, setRecom] = useLocalStorage("recommendations", true),
     [circles, setCircles] = useLocalStorage("circles", true),
     [lang, setLang] = useLocalStorage("language", true),
+    [cacheBooks] = useLocalStorage("cache-books", true),
     { isGuest } = useGuest(),
     [username, setUsername] = useLocalStorage("username", ""),
     formatLang: Handler<void, string> = () =>
@@ -52,13 +54,15 @@ function ConfigPage(): Component {
     ] as const,
     [styles] = useSpring(() => animate(0, 1, 400));
 
-  function handleUsername(e: any): void {
+  function handleUsername(e: EventSelect): void {
     if (len(username) > 38) return;
     else setUsername(e.target.value);
   }
 
   function forgetSession(): void {
     clearStorage();
+    setRecom(recommendations);
+    setCircles(circles);
     setLang(lang);
     setAnimations(animations);
     setState(state);
@@ -68,9 +72,9 @@ function ConfigPage(): Component {
   return (
     <animated.section
       style={styles}
-      className="relative max-w-4xl w-full px-4 sm:px-0 mb-16 lg:mb-36 text-slate-200/90 flex flex-col justify-start items-center gap-y-12"
+      className="relative max-w-4xl w-full mb-16 lg:mb-36 text-slate-200/90 flex flex-col justify-start items-center gap-y-12"
     >
-      <div className="w-full space-y-4 bg-slate-900/40 backdrop-blur-sm p-8 rounded-2xl border border-violet-500/20">
+      <div className="w-full space-y-4 bg-slate-900/40 backdrop-blur-sm p-8 md:rounded-2xl md:border border-violet-500/20">
         <ConfigOption
           isSelect
           Icon={LanguagesIcon}
@@ -101,7 +105,17 @@ function ConfigPage(): Component {
           label={t("recommendations")}
           textBtn={recommendations ? t("enabled") : t("disabled")}
           Icon={MegaphoneIcon}
-          action={() => setRecom(!recommendations)}
+          action={() => {
+            if (
+              recommendations &&
+              Array.isArray(cacheBooks) &&
+              len(cacheBooks) == 0
+            ) {
+              alert(
+                "Debes añadir al menos un libro para desactivar las recomendaciones."
+              );
+            } else setRecom(!recommendations);
+          }}
         />
 
         <ConfigOption
@@ -130,9 +144,10 @@ function ConfigPage(): Component {
         <button
           type="button"
           onClick={forgetSession}
-          className="px-8 py-3 rounded-xl bg-red-500/60 border border-red-500/20 hover:bg-red-500/80 hover:border-red-500/30 transition-colors text-red-50 text-lg"
+          className="px-6 py-3 flex justify-center items-center gap-x-3 rounded-xl bg-red-500/70 border-2 border-red-400/30 hover:bg-red-500/80 hover:border-transparent transition-colors text-red-50 text-lg"
         >
-          {t("logout")}
+          <LogOutIcon size={24} />
+          <span>{t("logout")}</span>
         </button>
       )}
     </animated.section>

@@ -1,22 +1,24 @@
+import { useTranslation } from "react-i18next";
 import type { Component } from "@/utils/types";
 import type { LucideIcon } from "lucide-react";
 
 function ConfigOption(props: Props): Component {
-  const {
-    Icon,
-    label,
-    action,
-    textBtn,
-    isInput,
-    handleChange,
-    inputVal,
-    isSelect,
-    selectOpts,
-  } = props;
+  const [t] = useTranslation("global"),
+    {
+      Icon,
+      label,
+      action,
+      textBtn,
+      isInput,
+      handleChange,
+      inputVal,
+      isSelect,
+      selectOpts,
+    } = props;
 
   if (isSelect)
     return (
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 p-4 bg-slate-900/40 rounded-xl border border-violet-500/10 hover:border-violet-500/20 transition-colors">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 p-4 bg-slate-900/40 rounded-xl border border-violet-500/10 transition-colors">
         <div className="flex items-center gap-x-3">
           <div className="bg-violet-500/20 p-2 rounded-lg">
             <Icon size={24} className="text-violet-400" />
@@ -31,7 +33,7 @@ function ConfigOption(props: Props): Component {
 
   if (isInput)
     return (
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 p-4 bg-slate-900/40 rounded-xl border border-violet-500/10 hover:border-violet-500/20 transition-colors">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 p-4 bg-slate-900/40 rounded-xl border border-violet-500/10 transition-colors">
         <div className="flex items-center gap-x-3">
           <div className="bg-violet-500/20 p-2 rounded-lg">
             <Icon size={24} className="text-violet-400" />
@@ -44,7 +46,7 @@ function ConfigOption(props: Props): Component {
           type="text"
           onChange={handleChange}
           value={inputVal}
-          placeholder="..."
+          placeholder={t("enter-nickname")}
           maxLength={38}
           id={label}
           className="sm:w-[220px] w-full h-11 rounded-xl bg-slate-900/60 border border-violet-500/20 hover:border-violet-500/40 transition-colors text-center focus:outline-none placeholder:text-slate-500"
@@ -53,7 +55,7 @@ function ConfigOption(props: Props): Component {
     );
 
   return (
-    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 p-4 bg-slate-900/40 rounded-xl border border-violet-500/10 hover:border-violet-500/20 transition-colors">
+    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 p-4 bg-slate-900/40 rounded-xl border border-violet-500/10 transition-colors">
       <div className="flex items-center gap-x-3">
         <div className="bg-violet-500/20 p-2 rounded-lg">
           <Icon size={24} className="text-violet-400" />

@@ -17,6 +17,7 @@ module.exports = {
     "/config",
     "/donations",
     "/profile",
+    "/reader/**",
   ],
   robotsTxtOptions: {
     additionalSitemaps: [

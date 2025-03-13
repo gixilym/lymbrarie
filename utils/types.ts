@@ -63,6 +63,7 @@ interface BookData {
   loaned?: string;
   notes?: string;
   isFav?: boolean;
+  url?: string;
 }
 
 interface UserData {
@@ -72,12 +73,18 @@ interface UserData {
   id: string;
 }
 
-interface SyncDocs {
+interface ArgsSync {
   UID: string;
   cacheBooks: Book[] | null;
   setCacheBooks: Dispatch<SetStateAction<Book[] | null>>;
   setMyBooks: Dispatch<SetStateAction<Book[]>>;
   setAllTitles: Dispatch<SetStateAction<string[]>>;
+}
+
+interface ShuffleAtom {
+  data: BookData[];
+  version: string;
+  mode: "shuffle" | null;
 }
 
 export type {
@@ -93,10 +100,11 @@ export type {
   PopUpsIds,
   SelectEvent,
   SetState,
-  SyncDocs,
+  ArgsSync,
   Timer,
   Translate,
   SelectOpt,
   User,
   EventSelect,
+  ShuffleAtom,
 };

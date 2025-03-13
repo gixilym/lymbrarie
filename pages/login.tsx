@@ -4,7 +4,9 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import LoaderCircle from "@/components/LoaderCircle";
-import useLocalStorage from "@/hooks/useLocalStorage";
+import OpenSourceLink from "@/components/OpenSourceLink";
+import StarOnGithubBtn from "@/components/btns/StarOnGithubBtn";
+import ToggleLangBtn from "@/components/btns/ToggleLangBtn";
 import { animate } from "@/utils/helpers";
 import { animated, useSpring } from "@react-spring/web";
 import { AuthAction, withUser } from "next-firebase-auth";
@@ -13,16 +15,13 @@ import { notification } from "@/utils/notifications";
 import { PAGES } from "@/utils/consts";
 import { useTranslation } from "react-i18next";
 import {
-  BookMarked,
-  BookOpen,
+  BookMarkedIcon,
+  BookOpenIcon,
   GhostIcon,
-  Sparkles,
-  CircleAlert,
-  StarIcon,
-  ChevronLeft,
-  ChevronRight,
+  SparklesIcon,
+  CircleAlertIcon,
 } from "lucide-react";
-import type { Component, Timer } from "@/utils/types";
+import type { Component } from "@/utils/types";
 import {
   type Auth,
   getAuth,
@@ -31,10 +30,16 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 
+export default withUser({
+  whenAuthed: AuthAction.REDIRECT_TO_APP,
+  whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
+  whenUnauthedAfterInit: AuthAction.RENDER,
+  LoaderComponent: LoaderCircle,
+})(LoginPage);
+
 function LoginPage(): Component {
   const auth: Auth = getAuth(),
     [t] = useTranslation("global"),
-    [language, setLanguage] = useLocalStorage("language", "es"),
     [styles] = useSpring(() => animate(0, 1, 400));
 
   async function logIn(provider: Providers): Promise<void> {
@@ -81,29 +86,14 @@ function LoginPage(): Component {
           />
           <h1 className="text-xl font-semibold text-slate-100">Lymbrarie</h1>
         </div>
-
-        <div className="flex items-center gap-x-2 justify-center [&>span]:text-sm">
-          <span>ES</span>
-          <input
-            type="checkbox"
-            className="toggle"
-            defaultChecked={language == "en"}
-            aria-label="Change language"
-            onChange={() => {
-              setLanguage(language == "es" ? "en" : "es");
-              const timer: Timer = setTimeout(() => location.reload(), 180);
-              return () => clearTimeout(timer);
-            }}
-          />
-          <span>EN</span>
-        </div>
+        <ToggleLangBtn />
       </header>
 
-      <section className="z-50 flex w-full flex-col items-center justify-center max-w-2xl gap-y-4 relative">
-        <h2 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-violet-300 via-violet-50 to-violet-300 text-transparent bg-clip-text">
+      <section className="px-4 sm:px-0 z-50 flex w-full flex-col items-center justify-center max-w-2xl gap-y-4 relative">
+        <h2 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-violet-300 via-violet-50 to-violet-300 text-transparent bg-clip-text text-center">
           {t("welcome")}
         </h2>
-        <p className="text-lg md:text-xl text-slate-200/90">
+        <p className="text-lg md:text-xl text-slate-200/90 text-center">
           {t("manage-library")}
         </p>
         <div className="pt-6 items-center justify-center flex flex-col gap-y-3">
@@ -144,7 +134,7 @@ function LoginPage(): Component {
       >
         <article className="relative bg-slate-900/40 z-50 w-[350px] border border-slate-800 rounded-lg p-4 md:p-6">
           <div className="bg-violet-500/20 p-3 rounded-lg w-max mb-4">
-            <BookOpen className="h-6 w-6 text-violet-400" />
+            <BookOpenIcon className="h-6 w-6 text-violet-400" />
           </div>
           <p className="text-lg md:text-xl font-semibold text-slate-100 mb-2">
             {t("organize")}
@@ -155,7 +145,7 @@ function LoginPage(): Component {
         </article>
         <article className="relative bg-slate-900/40 z-50 w-[350px] border border-slate-800 rounded-lg p-4 md:p-6">
           <div className="bg-violet-500/20 p-3 rounded-lg w-max mb-4">
-            <BookMarked className="h-6 w-6 text-violet-400" />
+            <BookMarkedIcon className="h-6 w-6 text-violet-400" />
           </div>
           <p className="text-lg md:text-xl font-semibold text-slate-100 mb-2">
             {t("tracking")}
@@ -166,7 +156,7 @@ function LoginPage(): Component {
         </article>
         <article className="relative bg-slate-900/40 z-50 w-[350px] border border-slate-800 rounded-lg p-4 md:p-6">
           <div className="bg-violet-500/20 p-3 rounded-lg w-max mb-4">
-            <Sparkles className="h-6 w-6 text-violet-400" />
+            <SparklesIcon className="h-6 w-6 text-violet-400" />
           </div>
           <p className="text-lg md:text-xl font-semibold text-slate-100 mb-2">
             {t("discover")}
@@ -177,7 +167,7 @@ function LoginPage(): Component {
         </article>
         <article className="relative bg-slate-900/40 z-50 w-[350px] border-red-400/20 border-2 rounded-lg p-4 md:p-6">
           <div className="bg-red-500/20 p-3 rounded-lg w-max mb-4">
-            <CircleAlert className="h-6 w-6 text-red-400" />
+            <CircleAlertIcon className="h-6 w-6 text-red-400" />
           </div>
           <p className="text-lg md:text-xl font-semibold text-slate-100 mb-2">
             {t("important")}
@@ -189,38 +179,13 @@ function LoginPage(): Component {
       </section>
 
       <div className="space-y-4 mb-8">
-        <Link
-          href="https://github.com/gixilym/lymbrarie"
-          target="_blank"
-          className="flex items-center justify-center gap-x-2 text-slate-400 hover:text-violet-300 transition-colors"
-        >
-          <ChevronRight className="w-3.5 h-3.5" />
-          <span className="text-[16px]">Lymbrarie {t("open-source")}</span>
-          <ChevronLeft className="w-3.5 h-3.5" />
-        </Link>
-
-        <Link
-          target="_blank"
-          href="https://github.com/gixilym/lymbrarie"
-          className="fixed bottom-4 right-4 bg-slate-950/60 backdrop-blur-sm border border-violet-500/20 
-            hover:border-violet-500/40 px-4 py-2 rounded-xl flex items-center gap-x-3 transition-all"
-        >
-          <GithubIcon className="w-5 h-5" />
-          <span className="text-slate-300">{t("star")}</span>
-          <StarIcon className="w-4 h-4 text-yellow-300" />
-        </Link>
+        <OpenSourceLink />
+        <StarOnGithubBtn />
       </div>
 
       <FooterIndex />
     </animated.section>
   );
 }
-
-export default withUser({
-  whenAuthed: AuthAction.REDIRECT_TO_APP,
-  whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
-  whenUnauthedAfterInit: AuthAction.RENDER,
-  LoaderComponent: LoaderCircle,
-})(LoginPage);
 
 type Providers = GithubAuthProvider | GoogleAuthProvider;

@@ -4,14 +4,10 @@ import NotesAlert from "../alerts/NotesAlert";
 import useGuest from "@/hooks/useGuest";
 import useLoadContent from "@/hooks/useLoadContent";
 import usePopUp from "@/hooks/usePopUp";
+import { CircleX as ExitIcon, NotebookIcon, SaveIcon } from "lucide-react";
 import { delay, noop } from "es-toolkit";
 import { useTranslation } from "react-i18next";
 import type { Component } from "@/utils/types";
-import {
-  CircleX as ExitIcon,
-  Notebook as Icon,
-  Save as SaveIcon,
-} from "lucide-react";
 import { type NextRouter, useRouter } from "next/router";
 import {
   type ChangeEvent,
@@ -25,18 +21,18 @@ function NotesPopUp(props: Props): Component {
   const [t] = useTranslation("global"),
     { closePopUp } = usePopUp(),
     { isGuest } = useGuest(),
-    router: NextRouter = useRouter(),
+    { events }: NextRouter = useRouter(),
     [hasChanges, setHasChanges] = useState<boolean>(false),
     [showAlert, setShowAlert] = useState<boolean>(false),
-    { notes, setNotes, updateNotes, loadingFav } = props,
+    { notes, setNotes, updateNotes, loadingFav, title } = props,
     [originalNotes, setOriginalNotes] = useState<string>(notes),
     { startLoading, isLoading } = useLoadContent();
 
   useEffect(() => {
-    router.events.on("routeChangeStart", handleRouteChange);
+    events.on("routeChangeStart", handleRouteChange);
     addEventListener("beforeunload", handleBeforeUnload);
     return () => {
-      router.events.off("routeChangeStart", handleRouteChange);
+      events.off("routeChangeStart", handleRouteChange);
       removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, [hasChanges]);
@@ -70,7 +66,7 @@ function NotesPopUp(props: Props): Component {
       const confirmClose: boolean = confirm(t("unsaved-changes"));
       if (!confirmClose) {
         setNotes(originalNotes);
-        router.events.emit("routeChangeError");
+        events.emit("routeChangeError");
         throw "Route change aborted";
       } else closePopUp("notes");
     }
@@ -102,7 +98,7 @@ function NotesPopUp(props: Props): Component {
       divClass="!max-w-[850px] !h-full !max-h-[93vh] sm:!mt-6 !overflow-y-hidden !bg-slate-800"
     >
       <div className="w-full h-full flex flex-col justify-between items-center gap-y-6 relative">
-        <HeaderPopUp icon={<Icon size={27} />} title={t("notes")} />
+        <HeaderPopUp icon={<NotebookIcon size={27} />} title={t("notes")} />
 
         {!isGuest && hasChanges && !loadingFav && (
           <button
@@ -110,7 +106,7 @@ function NotesPopUp(props: Props): Component {
             className="absolute bottom-0 right-0 p-2.5 rounded-xl 
             bg-violet-500/50 border border-violet-500/80 
             hover:bg-violet-500/30 hover:border-violet-500/30 
-            transition-colors flex items-center gap-x-2"
+            transition-colors flex items-center gap-x-2 backdrop-blur-md"
           >
             <SaveIcon size={20} className="text-violet-200" />
             <span className="text-white text-sm sm:text-base">{t("save")}</span>
@@ -118,16 +114,16 @@ function NotesPopUp(props: Props): Component {
         )}
 
         <textarea
-          id="notes"
+          id="textarea-notes"
           value={notes}
           spellCheck={false}
           disabled={loadingFav}
           onChange={isGuest ? noop : handleChangeContent}
           autoFocus
-          placeholder="..."
+          placeholder={`${t("placeholder-notes")} '${title}'\xA0.\xA0.\xA0.`}
           className="h-full pb-14 pl-3 pr-6 text-sm md:text-lg resize-none 
           border-none focus:ring-0 focus:outline-none w-full bg-transparent 
-          text-slate-200 placeholder:text-slate-400/60 text-pretty"
+          text-slate-200 placeholder:text-slate-400 text-pretty"
         />
 
         {isGuest && (
@@ -161,4 +157,5 @@ interface Props {
   setNotes: Dispatch<SetStateAction<string>>;
   loadingFav: boolean;
   updateNotes: () => void;
+  title: string;
 }

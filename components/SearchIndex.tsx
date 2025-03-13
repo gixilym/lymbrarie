@@ -5,6 +5,7 @@ import useGuest from "@/hooks/useGuest";
 import { formatState, selectStyles } from "@/utils/helpers";
 import { menuAtom, searchAtom, stateAtom } from "@/utils/atoms";
 import { twMerge } from "tailwind-merge";
+import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
 import type {
@@ -38,6 +39,8 @@ function SearchIndex(): Component {
         label: "\xA0>\xA0\xA0" + t("new-book-lent"),
       },
     ] as const;
+
+  useEffect(() => setSelectStateVal(""), [location.pathname]);
 
   return (
     <div

@@ -1,4 +1,3 @@
-import Providers from "@/components/I18Provider";
 import { BASE_URL } from "@/utils/consts";
 import { Head, Html, Main, NextScript } from "next/document";
 import type { Component } from "@/utils/types";
@@ -43,17 +42,15 @@ function Document(): Component {
           content="https://res.cloudinary.com/dgs55s8qh/image/upload/v1721421179/uyp9sym1kgwcbbt3z07r.png"
         />
       </Head>
-      <Providers>
-        <a
-          rel="me"
-          href="https://mastodon.social/@lymbrarie"
-          style={{ display: "none" }}
-        >
-          Mastodon
-        </a>
-        <Main />
-        <NextScript />
-      </Providers>
+      <a
+        rel="me"
+        href="https://mastodon.social/@lymbrarie"
+        style={{ display: "none" }}
+      >
+        Mastodon
+      </a>
+      <Main />
+      <NextScript />
     </Html>
   );
 }

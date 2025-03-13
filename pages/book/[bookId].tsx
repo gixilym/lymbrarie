@@ -1,3 +1,4 @@
+import BackBtn from "@/components/btns/BackBtn";
 import DEFAULT_COVER from "@/public/cover.webp";
 import DeleteBookPopUp from "@/components/popups/DeleteBookPopUp";
 import EditBookPopUp from "@/components/popups/EditBookPopUp";
@@ -15,13 +16,6 @@ import usePopUp from "@/hooks/usePopUp";
 import { animated, useSpring } from "@react-spring/web";
 import { AuthAction, withUser } from "next-firebase-auth";
 import { COLLECTION, EMPTY_BOOK, PAGES } from "@/utils/consts";
-import {
-  animate,
-  deformatTitle,
-  isLent,
-  tLC,
-  translateStateBook,
-} from "@/utils/helpers";
 import { dismissNoti, notification } from "@/utils/notifications";
 import { doc, setDoc } from "firebase/firestore";
 import { isEqual, noop, union } from "es-toolkit";
@@ -30,6 +24,13 @@ import { twMerge } from "tailwind-merge";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
+import {
+  animate,
+  deformatTitle,
+  isLent,
+  tLC,
+  translateStateBook,
+} from "@/utils/helpers";
 import type { Book, BookData, Component, Handler } from "@/utils/types";
 import {
   type Auth,
@@ -48,7 +49,6 @@ import {
   User as UserIcon,
 } from "lucide-react";
 import { type NextRouter, useRouter } from "next/router";
-import BackBtn from "@/components/btns/BackBtn";
 
 export default withUser({
   whenAuthed: AuthAction.RENDER,
@@ -77,7 +77,7 @@ function BookId(): Component {
       .filter((b: BookData) => b?.isFav),
     checkFav: boolean = myFavs.some((b: BookData) => isEqual(b?.title, title)),
     notExist: boolean = !allTitles.includes(title),
-    notesProps = { updateNotes, notes, setNotes, isLoading, loadingFav },
+    notesProps = { updateNotes, notes, setNotes, isLoading, loadingFav, title },
     [popup] = useRecoilState<any>(popupsAtom),
     handleRouteChange: Handler<void, void> = () => closeBookPopUps(),
     [stylesImg] = useSpring(() => animate(0, 1, 200, 200)),
@@ -197,38 +197,33 @@ function BookId(): Component {
             </p>
 
             <div className="space-y-3 text-slate-300">
-              {book?.data?.author && (
-                <div className="flex items-center gap-x-3">
-                  <div className="bg-violet-500/20 p-2 rounded-lg">
-                    <UserIcon size={18} className="text-violet-300" />
-                  </div>
-                  <p className="text-base sm:text-lg">{book?.data?.author}</p>
+              <div className="flex items-center gap-x-3">
+                <div className="bg-violet-500/20 p-2 rounded-lg">
+                  <UserIcon size={18} className="text-violet-300" />
                 </div>
-              )}
+                <p className="text-base sm:text-lg">
+                  {book?.data?.author || t("unknown-author")}
+                </p>
+              </div>
 
-              {book?.data?.gender && book?.data?.gender != "no-gender" && (
-                <div className="flex items-center gap-x-3">
-                  <div className="bg-violet-500/20 p-2 rounded-lg">
-                    <StateIcon size={18} className="text-violet-300" />
-                  </div>
-                  <p className="text-base sm:text-lg capitalize">
-                    {t(tLC(book?.data?.gender))}
-                  </p>
+              <div className="flex items-center gap-x-3">
+                <div className="bg-violet-500/20 p-2 rounded-lg">
+                  <StateIcon size={18} className="text-violet-300" />
                 </div>
-              )}
+                <p className="text-base sm:text-lg capitalize">
+                  {t(tLC(book?.data?.gender))}
+                </p>
+              </div>
 
-              {book?.data?.state && (
-                <div className="flex items-center gap-x-3">
-                  <div className="bg-violet-500/20 p-2 rounded-lg">
-                    <LibraryIcon size={18} className="text-violet-300" />
-                  </div>
-                  <p className="text-base sm:text-lg">
-                    {translateStateBook(book?.data?.state ?? "", t)}
-                    {isLent(book?.data?.state ?? "") &&
-                      ` ${book?.data?.loaned}`}
-                  </p>
+              <div id="state-cont" className="flex items-center gap-x-3">
+                <div className="bg-violet-500/20 p-2 rounded-lg">
+                  <LibraryIcon size={18} className="text-violet-300" />
                 </div>
-              )}
+                <p className="text-base sm:text-lg">
+                  {translateStateBook(book?.data?.state ?? "", t)}
+                  {isLent(book?.data?.state ?? "") && ` ${book?.data?.loaned}`}
+                </p>
+              </div>
             </div>
           </div>
 

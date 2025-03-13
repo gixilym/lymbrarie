@@ -5,47 +5,74 @@ import ListBooks from "./ListBooks";
 import NoMatchesText from "./NoMatchesText";
 import SortBtn from "./btns/SortBtn";
 import useLocalStorage from "@/hooks/useLocalStorage";
-import { deburr, isEqual, isNull, orderBy, round, shuffle } from "es-toolkit";
-import { len, tLC } from "@/utils/helpers";
+import { deburr, isEqual, isNull, orderBy, shuffle } from "es-toolkit";
+import { len, pathIs, tLC } from "@/utils/helpers";
 import { memo, useEffect, useMemo, useState } from "react";
-import { searchAtom, stateAtom } from "@/utils/atoms";
+import { PAGES } from "@/utils/consts";
+import {
+  scrollAtom,
+  searchAtom,
+  shuffleAtom,
+  stateAtom,
+  showFavsAtom,
+} from "@/utils/atoms";
 import { useRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
-import type { Book, BookData, Component, MemoComponent } from "@/utils/types";
+import type {
+  Book,
+  BookData,
+  Component,
+  MemoComponent,
+  ShuffleAtom,
+} from "@/utils/types";
 
-const ListSection: MemoComponent = memo(function B({
-  myBooks,
-  isSearch,
-}: Props) {
-  const [t] = useTranslation("global"),
+const ListSection: MemoComponent = memo(function B(props: Props) {
+  const { myBooks, isSearch } = props,
+    [t] = useTranslation("global"),
     [searchVal] = useRecoilState<string>(searchAtom),
     [stateVal] = useRecoilState<string>(stateAtom),
     [showDetailsLS, setShowDetailsLS] = useLocalStorage("show-details", true),
     [showDetails, setShowDetails] = useState<boolean>(showDetailsLS),
-    [scroll, setScroll] = useLocalStorage("scroll", 0),
+    [scroll] = useRecoilState(scrollAtom),
     [ascLS, setAscLS] = useLocalStorage("asc", true),
     [ascToDesc, setAscToDesc] = useState<boolean | null>(ascLS),
-    [showFavsLS, setShowFavsLS] = useLocalStorage("show-favs", false),
-    [showFavs, setShowFavs] = useState<boolean>(showFavsLS),
-    myFavs: Book[] = myBooks.filter((b: Book) => b?.data?.isFav);
+    [showFavs, setShowFavs] = useRecoilState<boolean>(showFavsAtom),
+    [shuffledData, setShuffledData] = useRecoilState<ShuffleAtom>(shuffleAtom),
+    myFavs: Book[] = myBooks.filter((b: Book) => b?.data?.isFav),
+    filteredBooks: Book[] = useMemo(
+      () => where(searchVal, stateVal),
+      [searchVal, stateVal, showFavs, myBooks]
+    );
 
   useEffect(() => {
-    const resetScroll = (): void => setScroll(0);
-    addEventListener("beforeunload", resetScroll);
-    return () => removeEventListener("beforeunload", resetScroll);
-  }, []);
-
-  useEffect(() => {
-    scrollTo({ top: scroll, behavior: "instant" });
-    addEventListener("scroll", handleScroll);
-    return () => removeEventListener("scroll", handleScroll);
+    if (pathIs(PAGES.HOME, { exact: true })) {
+      scrollTo({ top: scroll, behavior: "instant" });
+    }
   }, [myBooks]);
+
+  useEffect(() => {
+    if (isNull(ascToDesc) && len(filteredBooks) > 0) {
+      const needsNewShuffle: boolean =
+        !shuffledData ||
+        shuffledData.version !== JSON.stringify(filteredBooks) ||
+        shuffledData.mode !== "shuffle";
+
+      if (needsNewShuffle) {
+        const data: BookData[] = filteredBooks.map(b => b.data);
+        setShuffledData({
+          data: shuffle(data),
+          version: JSON.stringify(filteredBooks),
+          mode: "shuffle",
+        });
+      }
+    }
+  }, [filteredBooks, ascToDesc]);
 
   function renderBooks(arr: Book[]): Component {
     const data: BookData[] = arr.map((b: Book) => b?.data),
-      order: any[] = ascToDesc ? ["asc", "desc"] : ["desc", "asc"],
+      order: Order = ascToDesc ? ["asc", "desc"] : ["desc", "asc"],
       books: BookData[] = isNull(ascToDesc)
-        ? shuffle(data)
+        ? shuffledData?.data || []
         : orderBy(data, ["title", "author"], order),
       noMatches: boolean =
         (isEqual(len(arr), 0) && !isEqual(searchVal, "")) ||
@@ -80,17 +107,12 @@ const ListSection: MemoComponent = memo(function B({
     );
   }
 
-  function handleScroll(): void {
-    const position: number = Number(round(scrollY, 0));
-    setScroll(position);
-  }
-
   function changeDetails(): void {
     setShowDetails(!showDetails);
     setShowDetailsLS(!showDetails);
   }
 
-  function alternateSort(): void {
+  function toggleSort(): void {
     switch (ascToDesc) {
       case true:
         setAscToDesc(false);
@@ -107,14 +129,17 @@ const ListSection: MemoComponent = memo(function B({
     }
   }
 
-  function alternateFavorites(): void {
-    setShowFavs(!showFavs);
-    setShowFavsLS(!showFavs);
-  }
-
   const renderList: Component = useMemo(
     () => renderBooks(where(searchVal, stateVal)),
-    [searchVal, stateVal, showDetails, ascToDesc, showFavs, myBooks]
+    [
+      searchVal,
+      stateVal,
+      showDetails,
+      ascToDesc,
+      showFavs,
+      myBooks,
+      shuffledData,
+    ]
   );
 
   return (
@@ -122,11 +147,8 @@ const ListSection: MemoComponent = memo(function B({
       {!isSearch && (
         <div className="flex justify-start w-full items-center px-2.5">
           <DetailsBtn showDetails={showDetails} onClick={changeDetails} />
-          <SortBtn ascToDesc={ascToDesc} alternateSort={alternateSort} />
-          <FavoritesBtn
-            showFavs={showFavs}
-            alternateFavorites={alternateFavorites}
-          />
+          <SortBtn ascToDesc={ascToDesc} toggleSort={toggleSort} />
+          <FavoritesBtn toggleFavs={() => setShowFavs(!showFavs)} />
           {showFavs && (
             <p className="pl-4 pt-0.5 text-[15px] text-slate-300/80">
               {t("favorites")}
@@ -151,3 +173,5 @@ interface Props {
   myBooks: Book[];
   isSearch: boolean;
 }
+
+type Order = ("asc" | "desc")[];

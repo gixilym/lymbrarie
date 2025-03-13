@@ -1,6 +1,6 @@
-import { COLLECTION, MAINTENANCE } from './consts';
-import { isEqual, isNull } from 'es-toolkit';
-import { len } from './helpers';
+import { COLLECTION, MAINTENANCE, PAGES } from "./consts";
+import { isEqual, isNull } from "es-toolkit";
+import { len } from "./helpers";
 import type { Unsubscribe } from "firebase/auth";
 import {
   getDocs,
@@ -10,7 +10,7 @@ import {
   type QuerySnapshot,
   where,
 } from "firebase/firestore";
-import type { Book, Doc, SyncDocs } from "./types";
+import type { Book, Doc, ArgsSync } from "./types";
 
 async function getDocuments(UID: string): Promise<List> {
   const books: Book[] = [];
@@ -24,8 +24,8 @@ async function getDocuments(UID: string): Promise<List> {
       isEmpty = res.empty;
     } catch (err: any) {
       if (MAINTENANCE) {
-         location.href = "/error";
-         console.error(`catch 'getDocuments' ${err.message}`);
+        console.error(`catch 'getDocuments' ${err.message}`);
+        location.href = PAGES.ERROR;
       }
     }
   }
@@ -33,17 +33,17 @@ async function getDocuments(UID: string): Promise<List> {
   return { books, isEmpty };
 }
 
-async function syncDocuments(props: SyncDocs) {
-  const { UID, cacheBooks, setCacheBooks, setMyBooks, setAllTitles } = props;
-  if (isNull(UID)) return;
+async function syncDocuments(props: ArgsSync): Promise<Sync> {
+  if (isNull(props.UID)) return;
+
   try {
-    const myQuery: Query = query(COLLECTION, where("owner", "==", UID));
+    const myQuery: Query = query(COLLECTION, where("owner", "==", props.UID));
     const unsub: Unsubscribe = onSnapshot(myQuery, (qs: QuerySnapshot) => {
       const remoteBooks: Book[] = qs.docs.map((d: Doc) => ({
           id: d?.id,
           data: d?.data(),
         })),
-        localBooks: Book[] = cacheBooks ?? [],
+        localBooks: Book[] = props.cacheBooks ?? [],
         hasChanges: boolean =
           len(localBooks) != len(remoteBooks) ||
           remoteBooks?.some(
@@ -51,19 +51,21 @@ async function syncDocuments(props: SyncDocs) {
           );
 
       if (hasChanges) {
-        setCacheBooks(remoteBooks);
-        setMyBooks(remoteBooks);
-        setAllTitles(remoteBooks.map(b => b?.data?.title ?? ""));
+        props.setCacheBooks(remoteBooks);
+        props.setMyBooks(remoteBooks);
+        props.setAllTitles(remoteBooks.map(b => b?.data?.title ?? ""));
       } else return;
     });
 
     return unsub;
   } catch (err: any) {
     console.error(`catch 'syncDocuments' ${err.message}`);
-     return (location.pathname = "/error");
+    return (location.pathname = PAGES.ERROR);
   }
 }
 
 export { getDocuments, syncDocuments };
 
 type List = { books: Book[]; isEmpty: boolean };
+
+type Sync = Unsubscribe | void | string;

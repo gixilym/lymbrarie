@@ -3,7 +3,7 @@ import { CLOUDINARY_URL } from "@/utils/consts";
 import { coverAtom } from "@/utils/atoms";
 import { Image as ImgIcon } from "lucide-react";
 import { notification } from "@/utils/notifications";
-import { twJoin } from "tailwind-merge";
+import { twJoin, twMerge } from "tailwind-merge";
 import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useRecoilState } from "recoil";
@@ -17,6 +17,7 @@ function InputCover({ isLoading, handleImage }: Props): Component {
     { getRootProps, getInputProps, acceptedFiles } = useDropzone({ onDrop }),
     [errImg, setErrImg] = useState<boolean>(false),
     showImg: boolean = !errImg && acceptedFiles[0] && !loading,
+    isSpanish: boolean = useTranslation("global").i18n.language == "es",
     [t] = useTranslation("global");
 
   useEffect(() => {
@@ -52,10 +53,9 @@ function InputCover({ isLoading, handleImage }: Props): Component {
   return (
     <div
       {...getRootProps()}
-      className={twJoin(
-        "flex items-center w-full bg-slate-900/40 backdrop-blur-sm rounded-xl px-4 h-14",
-        "border-[1.5px] border-violet-500/20 border-dashed border-r-0 hover:border-violet-500/30 transition-colors",
-        "cursor-pointer relative",
+      className={twMerge(
+        "flex items-center w-full bg-slate-900/40 backdrop-blur-sm rounded-xl px-4 h-14 border-[1.5px] border-violet-500/20 border-dashed hover:border-violet-500/30 transition-colors cursor-pointer relative",
+        showImg && "border-r-0",
         loading && "border-violet-500/5 pointer-events-none cursor-default"
       )}
     >
@@ -63,7 +63,7 @@ function InputCover({ isLoading, handleImage }: Props): Component {
         size={18}
         className={twJoin(
           "text-violet-300 mr-3 flex-shrink-0",
-          loading && "animate-spin "
+          coverLoading && "animate-spin "
         )}
       />
 
@@ -80,7 +80,12 @@ function InputCover({ isLoading, handleImage }: Props): Component {
       {errImg ? (
         <p className="text-red-300 text-lg">{t("err-loading-cover")}</p>
       ) : (
-        <p className="text-slate-300 text-sm sm:text-lg select-none">
+        <p
+          className={twMerge(
+            isSpanish ? "text-sm sm:text-lg" : "text-lg",
+            "text-slate-300 select-none"
+          )}
+        >
           {acceptedFiles[0] && !coverLoading
             ? t("cover-list")
             : coverLoading
@@ -90,7 +95,7 @@ function InputCover({ isLoading, handleImage }: Props): Component {
       )}
 
       {showImg && (
-        <div className="absolute right-0 h-full p-1.5 bg-violet-500/10 rounded-r-xl border-r border-violet-500/20">
+        <div className="absolute right-0 h-full p-1 bg-violet-500/10 rounded-r-xl border-r border-violet-500/20">
           <Image
             width={30}
             height={30}

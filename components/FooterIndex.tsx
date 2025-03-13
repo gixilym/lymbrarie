@@ -28,9 +28,9 @@ function FooterIndex(): Component {
       )}
     >
       <aside>
-        <div className="flex gap-x-4 mb-2 items-end justify-start">
+        <div className="flex gap-x-4 mb-2 items-end justify-end">
           <Image src="/favicon.ico" alt="logo" width={30} height={30} />
-          <Link href={PAGES.HOME} className="link link-hover">
+          <Link href={PAGES.HOME} className="link link-hover footer-title">
             {t("home")}
           </Link>
         </div>
@@ -47,6 +47,9 @@ function FooterIndex(): Component {
       </aside>
       <nav>
         <p className="footer-title">{t("support")}</p>
+        <Link href={PAGES.FAQ} className="link link-hover">
+          FAQ
+        </Link>
         <Link
           className="link link-hover"
           href="mailto:gixi.tsx@gmail.com"
@@ -54,9 +57,6 @@ function FooterIndex(): Component {
           rel="noreferrer"
         >
           gixi.tsx@gmail.com
-        </Link>
-        <Link href={PAGES.FAQ} className="link link-hover">
-          FAQ
         </Link>
       </nav>
       <nav>

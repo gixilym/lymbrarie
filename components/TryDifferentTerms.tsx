@@ -1,11 +1,10 @@
-import type { Component } from "@/utils/types";
 import { SearchXIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import type { Component } from "@/utils/types";
 
-function TryDifferentTerms({ condition }: { condition: boolean }): Component {
+function TryDifferentTerms(): Component {
   const [t] = useTranslation("global");
 
-  if (!condition) return <></>;
   return (
     <div className="w-full max-w-lg flex flex-col items-center justify-center gap-y-6 bg-slate-900/40 backdrop-blur-sm p-8 rounded-xl border border-violet-500/20">
       <div className="bg-violet-500/20 p-4 rounded-full">

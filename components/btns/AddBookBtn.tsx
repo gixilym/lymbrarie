@@ -29,16 +29,6 @@ function AddBookBtn({ text }: { text: string }): Component {
         rounded-2xl text-violet-200 space-y-1 relative overflow-hidden"
       >
         <li>
-          <Link
-            href={PAGES.SEARCH}
-            className="flex items-center gap-x-3 px-4 py-3 rounded-xl
-            hover:bg-violet-500/20 transition-colors relative z-20"
-          >
-            <SearchIcon size={17} className="text-violet-300" />
-            <span>{t("search-book")}</span>
-          </Link>
-        </li>
-        <li>
           <button
             type="button"
             onClick={handleManualAdd}
@@ -48,6 +38,16 @@ function AddBookBtn({ text }: { text: string }): Component {
             <CirclePlusIcon size={18} className="text-violet-300" />
             <span>{t("add-manually")}</span>
           </button>
+        </li>
+        <li>
+          <Link
+            href={PAGES.SEARCH}
+            className="flex items-center gap-x-3 px-4 py-3 rounded-xl
+            hover:bg-violet-500/20 transition-colors relative z-20"
+          >
+            <SearchIcon size={17} className="text-violet-300" />
+            <span>{t("search-book")}</span>
+          </Link>
         </li>
       </ul>
     </div>

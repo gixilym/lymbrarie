@@ -1,19 +1,19 @@
 import useLocalStorage from "@/hooks/useLocalStorage";
-import { animListAtom } from "@/utils/atoms";
+import { animListAtom, showFavsAtom } from "@/utils/atoms";
+import { twMerge } from "tailwind-merge";
+import { useRecoilState } from "recoil";
+import { useTranslation } from "react-i18next";
 import type { Component } from "@/utils/types";
 import {
   BookmarkCheck as FavoriteCheckIcon,
   Bookmark as FavoriteIcon,
 } from "lucide-react";
-import type { MouseEventHandler } from "react";
-import { useTranslation } from "react-i18next";
-import { useRecoilState } from "recoil";
-import { twMerge } from "tailwind-merge";
 
-function FavoritesBtn({ showFavs, alternateFavorites }: Props): Component {
-  const [t] = useTranslation("global");
-  const [animations] = useLocalStorage("animations", true);
-  const [animate, setAnimate] = useRecoilState<boolean>(animListAtom);
+function FavoritesBtn({ toggleFavs }: Props): Component {
+  const [t] = useTranslation("global"),
+    [showFavs] = useRecoilState<boolean>(showFavsAtom),
+    [animations] = useLocalStorage("animations", true),
+    [animate, setAnimate] = useRecoilState<boolean>(animListAtom);
 
   return (
     <button
@@ -22,8 +22,8 @@ function FavoritesBtn({ showFavs, alternateFavorites }: Props): Component {
         showFavs ? "bg-slate-700/45" : "bg-transparent",
         "btn btn-ghost btn-square"
       )}
-      onClick={e => {
-        alternateFavorites(e);
+      onClick={() => {
+        toggleFavs();
         if (animations) setAnimate(!animate);
       }}
     >
@@ -35,6 +35,5 @@ function FavoritesBtn({ showFavs, alternateFavorites }: Props): Component {
 export default FavoritesBtn;
 
 interface Props {
-  showFavs: boolean;
-  alternateFavorites: MouseEventHandler<HTMLButtonElement>;
+  toggleFavs: () => void;
 }

@@ -1,10 +1,10 @@
-import useLocalStorage from "@/hooks/useLocalStorage";
 import global_en from "@/translations/en/global.json";
 import global_es from "@/translations/es/global.json";
-import type { Component } from "@/utils/types";
 import i18next from "i18next";
-import { type PropsWithChildren, useEffect } from "react";
+import useLocalStorage from "@/hooks/useLocalStorage";
 import { I18nextProvider as Provider } from "react-i18next";
+import type { Component } from "@/utils/types";
+import { type PropsWithChildren, useEffect } from "react";
 
 i18next.init({
   interpolation: { escapeValue: false },
@@ -13,11 +13,11 @@ i18next.init({
 });
 
 function I18Provider({ children }: PropsWithChildren): Component {
-  const [lng] = useLocalStorage("language", "es");
+  const [lang] = useLocalStorage("language", "es");
 
   useEffect(() => {
-    i18next.changeLanguage(lng);
-  }, [lng]);
+    i18next.changeLanguage(lang);
+  }, [lang]);
 
   return <Provider i18n={i18next}>{children}</Provider>;
 }

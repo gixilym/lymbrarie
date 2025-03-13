@@ -54,8 +54,7 @@ function FieldsBook(props: Props): Component {
           defaultValue={defaultValueTitle}
           name="title"
           type="text"
-          className="w-full bg-slate-900 text-slate-200 text-lg placeholder:text-slate-300
-              focus:outline-none disabled:opacity-50"
+          className="w-full bg-slate-900/40 text-slate-200 text-lg placeholder:text-slate-400 focus:outline-none disabled:opacity-50"
           placeholder={t("placeholder-title")}
         />
       </label>
@@ -76,7 +75,7 @@ function FieldsBook(props: Props): Component {
           defaultValue={defaultValueAuthor}
           name="author"
           type="text"
-          className="w-full bg-slate-900 text-slate-200 text-lg placeholder:text-slate-300
+          className="w-full bg-slate-900/40 text-slate-200 text-lg placeholder:text-slate-400
               focus:outline-none disabled:opacity-50"
           placeholder={t("placeholder-author")}
         />
@@ -102,13 +101,17 @@ function FieldsBook(props: Props): Component {
                 ? "default"
                 : "custom"
             }
-            className="w-full bg-slate-900 text-slate-300 text-lg focus:outline-none disabled:opacity-50 appearance-none cursor-pointer"
+            className="w-full bg-slate-900/50 text-slate-300 text-lg focus:outline-none disabled:opacity-50 appearance-none cursor-pointer"
           >
             <option value="default" disabled className="bg-slate-900">
               {t("literary-gender")}
             </option>
             {GENDERS.map((g: string) => (
-              <option key={g} value={g} className="bg-slate-900">
+              <option
+                key={g}
+                value={g}
+                className="bg-slate-900/40 text-slate-200"
+              >
                 {t(g)}
               </option>
             ))}
@@ -135,7 +138,7 @@ function FieldsBook(props: Props): Component {
               name="gender"
               disabled={isLoading}
               type="text"
-              className="w-full bg-slate-900 text-slate-200 text-lg placeholder:text-slate-300
+              className="w-full bg-slate-900/40 text-slate-200 text-lg placeholder:text-slate-400
                   focus:outline-none disabled:opacity-50"
               placeholder={t("custom")}
               defaultValue={applyGender ? t("my-gender") : defaultValueGender}
@@ -159,7 +162,7 @@ function FieldsBook(props: Props): Component {
             disabled={isLoading}
             onChange={e => handleState(e.target.value)}
             defaultValue={defaultValueState}
-            className="w-full bg-slate-900 text-slate-300 text-lg 
+            className="w-full bg-slate-900/40 text-slate-300 text-lg 
                 focus:outline-none disabled:opacity-50 appearance-none cursor-pointer"
           >
             <option value="default" disabled className="bg-slate-900">
@@ -197,7 +200,7 @@ function FieldsBook(props: Props): Component {
               name="loaned"
               defaultValue={defaultValueLoaned}
               type="text"
-              className="w-full bg-slate-900 text-slate-200 text-lg placeholder:text-slate-300
+              className="w-full bg-slate-900/40 text-slate-200 text-lg placeholder:text-slate-400
                   focus:outline-none disabled:opacity-50"
               placeholder={t("loanedto")}
             />

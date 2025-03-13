@@ -1,4 +1,5 @@
 import { atom, type RecoilState } from "recoil";
+import type { ShuffleAtom } from "./types";
 
 const searchAtom: RecoilState<string> = atom({
   key: "search-atom",
@@ -44,6 +45,25 @@ const menuAtom: RecoilState<boolean> = atom({
   default: false,
 });
 
+const scrollAtom: RecoilState<number> = atom({
+  key: "scroll-atom",
+  default: 0,
+});
+
+const shuffleAtom = atom<ShuffleAtom>({
+  key: "shuffle-atom",
+  default: {
+    data: [],
+    version: "",
+    mode: null,
+  },
+});
+
+const showFavsAtom: RecoilState<boolean> = atom({
+  key: "show-favs-atom",
+  default: false,
+});
+
 export {
   animListAtom,
   popupsAtom,
@@ -52,4 +72,7 @@ export {
   zeroAtom,
   coverAtom,
   menuAtom,
+  scrollAtom,
+  shuffleAtom,
+  showFavsAtom,
 };

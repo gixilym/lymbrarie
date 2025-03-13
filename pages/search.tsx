@@ -11,12 +11,17 @@ import useLocalStorage from "@/hooks/useLocalStorage";
 import { animate, len, tLC } from "@/utils/helpers";
 import { animated, useSpring } from "@react-spring/web";
 import { API_BOOKS, PAGES } from "@/utils/consts";
-import { Auth, getAuth, onAuthStateChanged, Unsubscribe } from "firebase/auth";
-import { AuthAction, useUser, withUser } from "next-firebase-auth";
+import {
+  type Auth,
+  getAuth,
+  onAuthStateChanged,
+  Unsubscribe,
+} from "firebase/auth";
 import { deburr, noop } from "es-toolkit";
 import { FormEvent, useEffect, useState } from "react";
 import { notification } from "@/utils/notifications";
 import { useTranslation } from "react-i18next";
+import { AuthAction, type User, useUser, withUser } from "next-firebase-auth";
 import type { Book, Component } from "@/utils/types";
 import { useRouter, type NextRouter } from "next/router";
 
@@ -30,7 +35,7 @@ export default withUser({
 })(SearchPage);
 
 function SearchPage(): Component {
-  const user = useUser(),
+  const user: User = useUser(),
     auth: Auth = getAuth(),
     router: NextRouter = useRouter(),
     [t] = useTranslation("global"),
@@ -77,19 +82,20 @@ function SearchPage(): Component {
       };
       const res: Response = await fetch(ENDPOINT, options);
       const data = await res.json();
-      const books: Book[] = (data.items || []).map((item: any) => {
+      const books: Book[] = (data.items || []).map((b: GoogleBook) => {
         return {
-          id: item?.id,
+          id: b?.id,
           data: {
-            title: item?.volumeInfo?.title,
-            author: item?.volumeInfo?.authors?.join(", "),
-            notes: item?.volumeInfo?.description ?? "",
-            gender: item.volumeInfo?.categories?.join(", ") || "no-gender",
+            title: b?.volumeInfo?.title,
+            author: b?.volumeInfo?.authors?.join(", "),
+            notes: b?.volumeInfo?.description ?? "",
+            gender: b?.volumeInfo?.categories?.join(", ") || "no-gender",
+            image: b?.volumeInfo?.imageLinks?.thumbnail,
+            url: b?.volumeInfo?.canonicalVolumeLink,
+            loaned: "",
             state: "Pending",
             isFav: false,
-            loaned: "",
             owner: user?.id,
-            image: item?.volumeInfo?.imageLinks?.thumbnail,
           },
         };
       });
@@ -140,15 +146,13 @@ function SearchPage(): Component {
   return (
     <animated.section
       style={styles}
-      className="relative max-w-4xl w-full px-6 sm:px-0 mb-16 lg:mb-36 text-slate-200/90 flex flex-col justify-start items-center gap-y-12 min-h-[350px]"
+      className="relative max-w-4xl w-full px-3 sm:px-0 mb-16 lg:mb-36 text-slate-200/90 flex flex-col justify-start items-center gap-y-12 min-h-[350px]"
     >
       <Head>
         <title>Lymbrarie - {t("books-finder")}</title>
-        <meta name="description" content={t("and-add}")} />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <SearchBanner condition={showIcon} />
+      {showIcon && <SearchBanner />}
 
       <form
         onSubmit={onSubmit}
@@ -172,20 +176,52 @@ function SearchPage(): Component {
             <div className="w-full max-w-3xl flex flex-col justify-center items-center gap-y-6">
               <ResultsFrom queryVal={queryVal} clearResults={clearResults} />
               <ListSection myBooks={booksResults} isSearch />
-              <p
-                onClick={clearResults}
-                className="text-sm w-full max-w-sm text-pretty text-slate-400 text-center hover:text-slate-200 duration-75 cursor-default"
-              >
-                {t("if-try")}
-              </p>
             </div>
           )
         )}
 
-        <TryDifferentTerms
-          condition={len(booksResults) == 0 && queryVal != "" && !isLoading}
-        />
+        {len(booksResults) == 0 && queryVal != "" && !isLoading && (
+          <TryDifferentTerms />
+        )}
       </animated.div>
     </animated.section>
   );
 }
+
+type GoogleBook = {
+  kind: string;
+  id: string;
+  etag: string;
+  selfLink: string;
+  volumeInfo: {
+    title: string;
+    authors?: string[];
+    publisher?: string;
+    publishedDate?: string;
+    description?: string;
+    industryIdentifiers?: Array<{
+      type: string;
+      identifier: string;
+    }>;
+    pageCount?: number;
+    categories?: string[];
+    imageLinks?: {
+      smallThumbnail: string;
+      thumbnail: string;
+    };
+    language?: string;
+    canonicalVolumeLink: string;
+  };
+  saleInfo: {
+    country: string;
+    saleability: string;
+    isEbook: boolean;
+  };
+  accessInfo: {
+    country: string;
+    viewability: string;
+    pdf: {
+      isAvailable: boolean;
+    };
+  };
+};

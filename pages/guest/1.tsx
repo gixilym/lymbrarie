@@ -34,6 +34,7 @@ function GuestPage1(): Component {
       loadingFav: false,
       isGuest: true,
       updateNotes: () => {},
+      title: "",
     },
     [popup] = useRecoilState<any>(popupsAtom),
     [stylesImg] = useSpring(() => animate(0, 1, 200, 200)),

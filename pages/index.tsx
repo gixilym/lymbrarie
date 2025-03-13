@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
 import { zeroAtom } from "@/utils/atoms";
-import type { Book, Component, SyncDocs } from "@/utils/types";
+import type { Book, Component, ArgsSync } from "@/utils/types";
 import {
   type Auth,
   getAuth,
@@ -44,11 +44,11 @@ function Index(): Component {
     [newNoti] = useLocalStorage("added", false),
     [deletedNoti] = useLocalStorage("deleted", false),
     [zeroBooks] = useRecoilState<boolean>(zeroAtom),
-    showFirstBook: boolean = booksIsEmpty || zeroBooks,
+    showFirstBookMsg: boolean = booksIsEmpty || zeroBooks,
     [nameuser] = useLocalStorage("username", ""),
     username: string = nameuser.trim() == "" ? profileName : nameuser,
     [styles, api] = useSpring(() => animate(0, 1, 1000)),
-    argsSync: SyncDocs = {
+    argsSync: ArgsSync = {
       UID,
       cacheBooks,
       setCacheBooks,
@@ -111,7 +111,7 @@ function Index(): Component {
     >
       <IndexBanner username={username} />
       <SearchIndex />
-      {showFirstBook ? (
+      {showFirstBookMsg ? (
         <AddYourFirstBook />
       ) : (
         <ListSection myBooks={myBooks} isSearch={false} />

@@ -1,6 +1,11 @@
+import useLocalStorage from "@/hooks/useLocalStorage";
 import type { Component } from "@/utils/types";
 
 function Background(): Component {
+  const [circles] = useLocalStorage("circles", true);
+
+  if (!circles) return <></>;
+
   return (
     <>
       <span className="fixed z-0 pointer-events-none right-0 h-[480px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(255,0,182,.15),rgba(255,255,255,0))]" />

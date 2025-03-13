@@ -1,27 +1,27 @@
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { animListAtom } from "@/utils/atoms";
-import type { Component } from "@/utils/types";
 import { isNull } from "es-toolkit";
+import { useRecoilState } from "recoil";
+import { useTranslation } from "react-i18next";
+import type { Component } from "@/utils/types";
 import {
   Shuffle as ShuffleIcon,
   ArrowDownAZ as SortAZIcon,
   ArrowDownZA as SortZAIcon,
 } from "lucide-react";
-import type { MouseEventHandler } from "react";
-import { useTranslation } from "react-i18next";
-import { useRecoilState } from "recoil";
 
-function SortBtn({ alternateSort, ascToDesc }: Props): Component {
-  const [t] = useTranslation("global");
-  const [animations] = useLocalStorage("animations", true);
-  const [animate, setAnimate] = useRecoilState<boolean>(animListAtom);
+function SortBtn(props: Props): Component {
+  const { toggleSort, ascToDesc } = props,
+    [t] = useTranslation("global"),
+    [animations] = useLocalStorage("animations", true),
+    [animate, setAnimate] = useRecoilState<boolean>(animListAtom);
 
   return (
     <button
       title={t("order")}
       className="btn btn-ghost btn-square"
-      onClick={e => {
-        alternateSort(e);
+      onClick={() => {
+        toggleSort();
         if (animations) setAnimate(!animate);
       }}
     >
@@ -36,5 +36,5 @@ export default SortBtn;
 
 interface Props {
   ascToDesc: boolean | null;
-  alternateSort: MouseEventHandler<HTMLButtonElement>;
+  toggleSort: () => void;
 }

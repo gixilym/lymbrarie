@@ -1,86 +1,21 @@
+import AddBookToLibraryBtn from "./btns/AddBookToLibraryBtn";
 import Image from "next/image";
-import useLoadContent from "@/hooks/useLoadContent";
-import useLocalStorage from "@/hooks/useLocalStorage";
-import usePopUp from "@/hooks/usePopUp";
-import useTitles from "@/hooks/useTitles";
-import { animate, formatTitle } from "@/utils/helpers";
-import { animated, useSpring } from "@react-spring/web";
-import { CheckIcon, PlusIcon } from "lucide-react";
-import { COLLECTION, PAGES } from "@/utils/consts";
-import { doc, setDoc } from "firebase/firestore";
-import { isNull, union } from "es-toolkit";
-import { NextRouter, useRouter } from "next/router";
-import { notification } from "@/utils/notifications";
-import { twMerge } from "tailwind-merge";
-import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useUser, withUser } from "next-firebase-auth";
-import type { Book, BookData, Component } from "@/utils/types";
+import type { BookData, Component } from "@/utils/types";
 
-export default withUser()(BookCardSearched);
-
-function BookCardSearched(props: Card | any): Component {
-  const user = useUser(),
-    [t] = useTranslation("global"),
-    { title, image, author, notes, gender } = props,
-    [cacheBooks, setCacheBooks] = useLocalStorage("cache-books", null),
-    [isPressed, setIsPressed] = useState<boolean>(false),
-    { startLoading, isLoading, finishLoading } = useLoadContent(),
-    { isRepeated } = useTitles(title),
-    inLibrary: boolean = isRepeated || isPressed,
-    [animations] = useLocalStorage("animations", true),
-    [styles, api] = useSpring(() => animate(0, 1, 300)),
-    { openPopUp } = usePopUp(),
-    { push }: NextRouter = useRouter(),
+function BookCardSearched(props: Card): Component {
+  const { title, image, author, notes, gender, url } = props,
     data: BookData = {
       ...props,
+      //* Los slice son para no exceder el tamaño máximo permitido.
       title: title.replaceAll(/[_@]/g, "-").slice(0, 80),
       author: author.slice(0, 34),
       gender: gender.slice(0, 24),
     };
 
-  useEffect(() => {
-    if (!animations) return;
-    api.start(animate(0, 1, 300));
-  }, [isLoading]);
-
-  async function addBookToLibrary(): Promise<void> {
-    startLoading();
-    try {
-      const newID: string = crypto.randomUUID();
-      await setDoc(doc(COLLECTION, newID), data);
-      setIsPressed(true);
-      const newVersion: Book[] = union(cacheBooks ?? [], [{ id: newID, data }]);
-      setCacheBooks(newVersion);
-    } catch (err: any) {
-      notification("error", t("err-add-book"));
-      console.error(`catch 'addBookToLibrary' ${err.message}`);
-    } finally {
-      finishLoading();
-    }
-  }
-
-  function handleClick(): void {
-    switch (true) {
-      case isNull(user.id):
-        openPopUp("login");
-        break;
-
-      case inLibrary:
-        push(`${PAGES.BOOK}/${formatTitle(title)}`);
-        break;
-
-      default:
-        addBookToLibrary();
-        break;
-    }
-  }
-
   return (
     <li
-      className="mx-4 bg-slate-900/40 backdrop-blur-sm border border-violet-500/20 
-      hover:border-violet-500/30 transition-colors rounded-xl relative h-[200px] md:h-[220px] 
-      flex gap-x-6 w-full sm:w-[600px] max-w-[600px] p-6"
+      className="mx-4 bg-slate-900/40 backdrop-blur-sm border border-violet-500/20 transition-colors rounded-xl relative h-[200px] md:h-[220px] 
+    flex gap-x-6 w-full sm:w-[600px] max-w-[600px] p-6"
     >
       <div className="bg-violet-500/10 p-1.5 rounded-xl h-full">
         <Image
@@ -97,7 +32,8 @@ function BookCardSearched(props: Card | any): Component {
           <div>
             <p
               title={title}
-              className="text-xl font-medium text-slate-200 line-clamp-1 mb-2"
+              onClick={() => window?.open(url, "_blank", "noopener,noreferrer")}
+              className="text-xl font-medium text-slate-200 line-clamp-1 mb-2 hover:underline cursor-pointer"
             >
               {title}
             </p>
@@ -111,41 +47,14 @@ function BookCardSearched(props: Card | any): Component {
             {notes}
           </p>
         </div>
-
-        <animated.div
-          style={styles}
-          className="flex justify-end absolute bottom-6 right-6"
-        >
-          {isLoading ? (
-            <div className="h-10 w-10 hover:bg-violet-500/30 border-violet-500/20 hover:border-violet-500/30 p-2 rounded-xl bg-violet-500/20 border transition-colors backdrop-blur-sm">
-              <span className="loading loading-spinner text-violet-200" />
-            </div>
-          ) : (
-            <button
-              type="button"
-              onClick={e => {
-                e.stopPropagation();
-                handleClick();
-              }}
-              className={twMerge(
-                inLibrary
-                  ? "border-green-300 hover:bg-violet-500/30 border--500/20 hover:border-green-300/20 cursor-pointer"
-                  : "hover:bg-violet-500/30 border-violet-500/20 hover:border-violet-500/30",
-                "h-10 w-10 p-2 rounded-xl bg-violet-900 md:bg-violet-500/20 border transition-colors md:backdrop-blur-sm"
-              )}
-            >
-              {inLibrary ? (
-                <CheckIcon className="w-6 h-6 text-green-300" />
-              ) : (
-                <PlusIcon className="w-6 h-6 text-violet-300" />
-              )}
-            </button>
-          )}
-        </animated.div>
       </div>
+      {/* @ts-ignore-next-line */}
+      <AddBookToLibraryBtn data={data} title={title} />
     </li>
   );
 }
+
+export default BookCardSearched;
 
 interface Card {
   title: string;
@@ -156,4 +65,5 @@ interface Card {
   gender: string;
   isFav: boolean;
   loaned: string;
+  url: string;
 }
