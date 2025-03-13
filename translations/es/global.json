@@ -213,5 +213,6 @@
   "err-add-book": "Error anadiendo libro",
   "circles-bk": "Circulos en el fondo",
   "enter-nickname": "Ingresa tu apodo",
-  "placeholder-notes": "Escribe lo que quieras recordar de "
+  "placeholder-notes": "Escribe lo que quieras recordar de ",
+  "change-cover-image": "Cambiar imagen de portada"
 }

@@ -31,6 +31,7 @@ function FieldsBook(props: Props): Component {
       defaultValueGender = "",
       defaultValueState = "default",
       defaultValueLoaned = "",
+      isEditing,
     } = props,
     [t] = useTranslation("global"),
     applyGender: boolean = GENDERS.includes(tLC(defaultValueGender));
@@ -208,7 +209,11 @@ function FieldsBook(props: Props): Component {
         )}
       </div>
 
-      <InputCover isLoading={isLoading} handleImage={handleImage} />
+      <InputCover
+        isEditing={isEditing}
+        isLoading={isLoading}
+        handleImage={handleImage}
+      />
     </>
   );
 }
@@ -231,4 +236,5 @@ interface Props {
   defaultValueState?: string;
   defaultValueLoaned?: string;
   defaultValueImg?: string;
+  isEditing: boolean;
 }

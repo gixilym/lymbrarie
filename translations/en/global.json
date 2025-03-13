@@ -212,5 +212,6 @@
   "err-add-book": "Error adding book",
   "circles-bk": "Circles in the background",
   "enter-nickname": "Enter your nickname",
-  "placeholder-notes": "Write what you want to remember about "
+  "placeholder-notes": "Write what you want to remember about ",
+  "change-cover-image": "Change cover image"
 }

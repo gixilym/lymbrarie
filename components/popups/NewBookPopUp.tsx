@@ -209,6 +209,7 @@ function NewBookPopUp({ UID }: Props): Component {
         handleState={handleState}
         handleImage={handleImage}
         isLent={isLent(book.data.state ?? "")}
+        isEditing={false}
       />
 
       <form

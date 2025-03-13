@@ -10,8 +10,9 @@ import { useRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
 import type { Component } from "@/utils/types";
 
-function InputCover({ isLoading, handleImage }: Props): Component {
-  const [coverLoading, setCoverLoading] = useRecoilState(coverAtom),
+function InputCover(props: Props): Component {
+  const { isLoading, handleImage, isEditing } = props,
+    [coverLoading, setCoverLoading] = useRecoilState(coverAtom),
     loading: boolean = isLoading || coverLoading,
     onDrop = useCallback((file: any) => console.info(file), []),
     { getRootProps, getInputProps, acceptedFiles } = useDropzone({ onDrop }),
@@ -90,6 +91,8 @@ function InputCover({ isLoading, handleImage }: Props): Component {
             ? t("cover-list")
             : coverLoading
             ? t("generating-cover")
+            : isEditing
+            ? t("change-cover-image")
             : t("select-cover-image")}
         </p>
       )}
@@ -117,4 +120,5 @@ export default InputCover;
 interface Props {
   isLoading: boolean | undefined;
   handleImage: (newUrl: string) => void;
+  isEditing: boolean;
 }

@@ -12,6 +12,7 @@
 
 ## 🟢 Baja Prioridad
 
+> Cuando edito un libro se pierde el estado del scroll.
 > Prueba de lighthouse.
 > Prueba de pagespeed insigths.
 > Seguir con los tests.

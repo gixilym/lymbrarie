@@ -240,6 +240,7 @@ function EditBookPopUp(props: Props): Component {
         defaultValueState={data?.state}
         defaultValueLoaned={data?.loaned}
         defaultValueImg={data?.image}
+        isEditing
       />
 
       <form
@@ -266,7 +267,7 @@ function EditBookPopUp(props: Props): Component {
           className="px-8 py-2 rounded-xl
             bg-violet-500/20 border border-violet-500/20 
             hover:bg-violet-500/30 hover:border-violet-500/30 
-            transition-colors disabled:opacity-50
+            transition-colors disabled:opacity-50 disabled:hover:bg-violet-500/20
             text-violet-50 text-lg font-medium"
         >
           {t("edit-confirm")}
