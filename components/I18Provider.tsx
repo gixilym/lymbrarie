@@ -3,6 +3,7 @@ import global_es from "@/translations/es/global.json";
 import i18next from "i18next";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { I18nextProvider as Provider } from "react-i18next";
+import { isNull } from "es-toolkit";
 import type { Component } from "@/utils/types";
 import { type PropsWithChildren, useEffect } from "react";
 
@@ -16,7 +17,8 @@ function I18Provider({ children }: PropsWithChildren): Component {
   const [lang] = useLocalStorage("language", "es");
 
   useEffect(() => {
-    i18next.changeLanguage(lang);
+    if (isNull(i18next)) return;
+    i18next?.changeLanguage(lang);
   }, [lang]);
 
   return <Provider i18n={i18next}>{children}</Provider>;

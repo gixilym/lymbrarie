@@ -1,6 +1,6 @@
 ## 🔴 Alta Prioridad
 
-> Revisar responsive.
+>
 
 ---
 
@@ -12,6 +12,8 @@
 
 ## 🟢 Baja Prioridad
 
+> Prueba de lighthouse.
+> Prueba de pagespeed insigths.
 > Seguir con los tests.
 > Seguir con el /reader.
 > Implementar hook updateTitles para reemplazar setAllTitles(arr.map).
