@@ -1,7 +1,7 @@
 import cover from "@/public/cover.webp";
 import fnState from "./BookState";
 import Image from "next/image";
-import { animate, formatTitle } from "@/utils/helpers";
+import { animateOpacity, formatTitle } from "@/utils/helpers";
 import { animated, useSpring } from "@react-spring/web";
 import { Book as BookIcon, Tag as GenderIcon, UserIcon } from "lucide-react";
 import { BOOK_RECO, PAGES } from "@/utils/consts";
@@ -13,7 +13,7 @@ function BookCardRecommendation({ showDetails }: Props): Component {
     onClick = (): Promise<boolean> =>
       push(`${PAGES.RECOMMENDATION}/${formatTitle(BOOK_RECO.title ?? "")}`),
     state = (): Component => fnState("Recommended", true),
-    [styles] = useSpring(() => animate(0, 1, 300));
+    [styles] = useSpring(() => animateOpacity(1, 300));
 
   if (showDetails) {
     return (

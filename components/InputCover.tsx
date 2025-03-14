@@ -57,7 +57,8 @@ function InputCover(props: Props): Component {
       className={twMerge(
         "flex items-center w-full bg-slate-900/40 backdrop-blur-sm rounded-xl px-4 h-14 border-[1.5px] border-violet-500/20 border-dashed hover:border-violet-500/30 transition-colors cursor-pointer relative",
         showImg && "border-r-0",
-        loading && "border-violet-500/5 pointer-events-none cursor-default"
+        loading &&
+          "border-violet-500/5 pointer-events-none cursor-default opacity-50"
       )}
     >
       <ImgIcon
@@ -75,7 +76,7 @@ function InputCover(props: Props): Component {
         name="image"
         id="image-input"
         disabled={loading}
-        className="hidden"
+        className="hidden disabled:disabled:opacity-50"
       />
 
       {errImg ? (

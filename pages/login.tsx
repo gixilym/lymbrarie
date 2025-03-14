@@ -7,7 +7,7 @@ import LoaderCircle from "@/components/LoaderCircle";
 import OpenSourceLink from "@/components/OpenSourceLink";
 import StarOnGithubBtn from "@/components/btns/StarOnGithubBtn";
 import ToggleLangBtn from "@/components/btns/ToggleLangBtn";
-import { animate } from "@/utils/helpers";
+import { animateOpacity } from "@/utils/helpers";
 import { animated, useSpring } from "@react-spring/web";
 import { AuthAction, withUser } from "next-firebase-auth";
 import { GithubIcon, GoogleIcon } from "@/utils/svgs";
@@ -40,7 +40,7 @@ export default withUser({
 function LoginPage(): Component {
   const auth: Auth = getAuth(),
     [t] = useTranslation("global"),
-    [styles] = useSpring(() => animate(0, 1, 400));
+    [styles] = useSpring(() => animateOpacity(1, 400));
 
   async function logIn(provider: Providers): Promise<void> {
     try {

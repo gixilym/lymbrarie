@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { animate } from "@/utils/helpers";
+import { animateOpacity } from "@/utils/helpers";
 import { animated, useSpring } from "@react-spring/web";
 import { CoffeeIcon, CoinsIcon, HeartIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -7,7 +7,7 @@ import type { Component } from "@/utils/types";
 
 function DonationsPage(): Component {
   const [t] = useTranslation("global");
-  const [styles] = useSpring(() => animate(0, 1, 400));
+  const [styles] = useSpring(() => animateOpacity(1, 400));
 
   return (
     <animated.section

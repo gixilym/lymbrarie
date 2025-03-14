@@ -1,14 +1,14 @@
 import IndexBanner from "@/components/banners/IndexBanner";
 import ListSection from "@/components/ListSection";
 import SearchIndex from "@/components/SearchIndex";
-import { animate } from "@/utils/helpers";
+import { animateOpacity } from "@/utils/helpers";
 import { animated, useSpring } from "@react-spring/web";
 import { useTranslation } from "react-i18next";
 import type { Book, Component, Translate } from "@/utils/types";
 
 function GuestPage(): Component {
   const [t] = useTranslation("global");
-  const [styles] = useSpring(() => animate(0, 1, 1000));
+  const [styles] = useSpring(() => animateOpacity(1, 1000));
 
   return (
     <animated.main

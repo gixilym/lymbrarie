@@ -1,4 +1,4 @@
-import { animate } from "@/utils/helpers";
+import { animateOpacity } from "@/utils/helpers";
 import { animated, useSpring } from "@react-spring/web";
 import { ChevronRight, ChevronUp } from "lucide-react";
 import { useState } from "react";
@@ -10,7 +10,7 @@ function FAQ(): Component {
     [openItem, setOpenItem] = useState<number | null>(null),
     toggleItem: Handler<number, void> = (index: number) =>
       setOpenItem(openItem === index ? null : index),
-    [styles] = useSpring(() => animate(0, 1, 400));
+    [styles] = useSpring(() => animateOpacity(1, 400));
 
   return (
     <animated.section

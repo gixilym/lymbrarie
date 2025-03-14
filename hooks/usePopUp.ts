@@ -1,6 +1,6 @@
 import { popupsAtom } from "@/utils/atoms";
 import { useRecoilState } from "recoil";
-import type { Handler, PopUpsIds } from "@/utils/types";
+import type { Handler, PopupIds } from "@/utils/types";
 
 function usePopUp(): PopUp {
   const [modal, setModals] = useRecoilState<any>(popupsAtom);
@@ -35,4 +35,4 @@ interface PopUp {
   closeAllPopUps: () => void;
 }
 
-type Pop = Handler<PopUpsIds, void>;
+type Pop = Handler<PopupIds, void>;

@@ -3,7 +3,12 @@ import LoaderCircle from "@/components/LoaderCircle";
 import Select from "react-select";
 import useGuest from "@/hooks/useGuest";
 import useLocalStorage from "@/hooks/useLocalStorage";
-import { animate, clearStorage, len, selectStyles } from "@/utils/helpers";
+import {
+  animateOpacity,
+  clearStorage,
+  len,
+  selectStyles,
+} from "@/utils/helpers";
 import { animated, useSpring } from "@react-spring/web";
 import { AuthAction, withUser } from "next-firebase-auth";
 import { PAGES } from "@/utils/consts";
@@ -52,7 +57,7 @@ function ConfigPage(): Component {
       { value: "es", label: "Español" },
       { value: "en", label: "English" },
     ] as const,
-    [styles] = useSpring(() => animate(0, 1, 400));
+    [styles] = useSpring(() => animateOpacity(1, 400));
 
   function handleUsername(e: EventSelect): void {
     if (len(username) > 38) return;

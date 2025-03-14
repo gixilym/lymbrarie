@@ -3,23 +3,19 @@ import Image from "next/image";
 import Link from "next/link";
 import Menu from "./Menu";
 import useGuest from "@/hooks/useGuest";
-import { animate, pathIs } from "@/utils/helpers";
 import { animated, useSpring } from "@react-spring/web";
+import { animateOpacity, pathIs } from "@/utils/helpers";
 import { menuAtom, scrollAtom } from "@/utils/atoms";
 import { PAGES } from "@/utils/consts";
 import { twJoin, twMerge } from "tailwind-merge";
 import { useEffect } from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
-import {
-  type SetterOrUpdater,
-  useRecoilState,
-  useSetRecoilState,
-} from "recoil";
-import type { Component } from "@/utils/types";
+import type { Component, SetState } from "@/utils/types";
 import {
   LibraryIcon,
-  Search as SearchIcon,
-  User as ProfileIcon,
+  SearchIcon,
+  UserIcon,
   Settings2 as ConfigIcon,
 } from "lucide-react";
 
@@ -27,8 +23,8 @@ function HeaderIndex(): Component {
   const { isGuest } = useGuest(),
     [t] = useTranslation("global"),
     [menuIsOpen, setMenuIsOpen] = useRecoilState(menuAtom),
-    [styles] = useSpring(() => animate(0, 1, 400, 600)),
-    setScroll: SetterOrUpdater<number> = useSetRecoilState(scrollAtom);
+    [styles] = useSpring(() => animateOpacity(1, 400, 600)),
+    setScroll: SetState = useSetRecoilState(scrollAtom);
 
   useEffect(() => setMenuIsOpen(false), [location.pathname]);
 
@@ -109,7 +105,7 @@ function HeaderIndex(): Component {
               "px-4 py-2 rounded-xl transition-colors hover:bg-violet-500/20 flex items-center gap-x-2"
             )}
           >
-            <ProfileIcon
+            <UserIcon
               className={twJoin(
                 "w-5 h-5",
                 pathIs(PAGES.PROFILE) && "text-violet-300/80"

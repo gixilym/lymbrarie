@@ -8,10 +8,10 @@ import { formatTitle, pathIs } from "@/utils/helpers";
 import { PAGES } from "@/utils/consts";
 import { round } from "es-toolkit";
 import { scrollAtom } from "@/utils/atoms";
+import { useSetRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
-import type { BookData, Component } from "@/utils/types";
+import type { BookData, Component, SetState } from "@/utils/types";
 import { useRouter, type NextRouter } from "next/router";
-import { type SetterOrUpdater, useSetRecoilState } from "recoil";
 
 function BookCard({ data, showDetails }: Props): Component {
   const { push }: NextRouter = useRouter(),
@@ -19,7 +19,7 @@ function BookCard({ data, showDetails }: Props): Component {
     title: string = formatTitle(data.title ?? ""),
     { isGuest } = useGuest(),
     img: string = data.image || Cover.src,
-    setScroll: SetterOrUpdater<number> = useSetRecoilState(scrollAtom),
+    setScroll: SetState = useSetRecoilState(scrollAtom),
     formatState = (): Component => fnState(data.state ?? "", showDetails),
     withDetails: Details = {
       title: data.title ?? "",

@@ -2,7 +2,7 @@ import BookCardRecommendation from "./BookCardRecommendation";
 import useGuest from "@/hooks/useGuest";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import useTitles from "@/hooks/useTitles";
-import { animate } from "@/utils/helpers";
+import { animateOpacity } from "@/utils/helpers";
 import { animated, useSpring } from "@react-spring/web";
 import { animListAtom, searchAtom, stateAtom } from "@/utils/atoms";
 import { BOOK_RECO } from "@/utils/consts";
@@ -36,7 +36,7 @@ function ListBooks(props: Props): Component {
 
   useEffect(() => {
     if (!animations) return;
-    api.start(animate(0, 1, 600));
+    api.start(animateOpacity(1, 600));
   }, [animateCard, searchVal, stateVal]);
 
   return (

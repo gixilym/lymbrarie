@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { UserRound } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import type { Component, Book } from "@/utils/types";
-import { animate } from "@/utils/helpers";
+import { animateOpacity } from "@/utils/helpers";
 import useGuest from "@/hooks/useGuest";
 
 export default withUser({
@@ -29,7 +29,7 @@ function ProfilePage(): Component {
     [nameuser] = useLocalStorage("username", ""),
     username = nameuser.trim() == "" ? name : nameuser,
     [cacheBooks] = useLocalStorage("cache-books", null),
-    [styles] = useSpring(() => animate(0, 1, 400)),
+    [styles] = useSpring(() => animateOpacity(1, 400)),
     [stateCounts, setStateCounts] = useState<States>({
       Read: 0,
       Reading: 0,

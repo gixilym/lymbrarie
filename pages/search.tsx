@@ -8,7 +8,7 @@ import SearchBanner from "@/components/banners/SearchBanner";
 import TryDifferentTerms from "@/components/TryDifferentTerms";
 import useLoadContent from "@/hooks/useLoadContent";
 import useLocalStorage from "@/hooks/useLocalStorage";
-import { animate, len, tLC } from "@/utils/helpers";
+import { animateOpacity, len, tLC } from "@/utils/helpers";
 import { animated, useSpring } from "@react-spring/web";
 import { API_BOOKS, PAGES } from "@/utils/consts";
 import {
@@ -45,8 +45,8 @@ function SearchPage(): Component {
     [booksResults, setBooksResults] = useState<Book[]>([]),
     { isLoading, startLoading, finishLoading } = useLoadContent(),
     [animations] = useLocalStorage("animations", true),
-    [styles] = useSpring(() => animate(0, 1, 400)),
-    [stylesSec, api] = useSpring(() => animate(0, 1, 600));
+    [styles] = useSpring(() => animateOpacity(1, 400)),
+    [stylesSec, api] = useSpring(() => animateOpacity(1, 600));
 
   useEffect(() => {
     if (!navigator.onLine) return;
@@ -56,7 +56,7 @@ function SearchPage(): Component {
 
   useEffect(() => {
     if (!animations) return;
-    api.start(animate(0, 1, 600));
+    api.start(animateOpacity(1, 600));
   }, [booksResults, queryVal]);
 
   useEffect(() => {

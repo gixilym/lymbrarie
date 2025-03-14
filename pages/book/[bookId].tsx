@@ -25,7 +25,7 @@ import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
 import {
-  animate,
+  animateOpacity,
   deformatTitle,
   isLent,
   tLC,
@@ -80,9 +80,9 @@ function BookId(): Component {
     notesProps = { updateNotes, notes, setNotes, isLoading, loadingFav, title },
     [popup] = useRecoilState<any>(popupsAtom),
     handleRouteChange: Handler<void, void> = () => closeBookPopUps(),
-    [stylesImg] = useSpring(() => animate(0, 1, 200, 200)),
-    [stylesIcons] = useSpring(() => animate(0, 1, 1000)),
-    [stylesSection] = useSpring(() => animate(0, 1, 500));
+    [stylesImg] = useSpring(() => animateOpacity(1, 200, 200)),
+    [stylesIcons] = useSpring(() => animateOpacity(1, 1000)),
+    [stylesSection] = useSpring(() => animateOpacity(1, 500));
 
   useEffect(() => {
     router.events.on("routeChangeStart", handleRouteChange);

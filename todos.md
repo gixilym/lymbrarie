@@ -13,12 +13,9 @@
 ## 🟢 Baja Prioridad
 
 > Cuando edito un libro se pierde el estado del scroll.
-> Prueba de lighthouse.
-> Prueba de pagespeed insigths.
+> En modo 'shuffle' el valor del arr se modifica al cambiar 'searchVal', 'stateVal' o 'showFavs'.
 > Seguir con los tests.
 > Seguir con el /reader.
-> Implementar hook updateTitles para reemplazar setAllTitles(arr.map).
-> En modo 'shuffle' el valor del arr se modifica al cambiar 'searchVal', 'stateVal' o 'showFavs'.
 
 ---
 

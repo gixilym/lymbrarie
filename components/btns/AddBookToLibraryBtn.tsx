@@ -2,7 +2,7 @@ import useLoadContent from "@/hooks/useLoadContent";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
 import useTitles from "@/hooks/useTitles";
-import { animate, formatTitle } from "@/utils/helpers";
+import { animateOpacity, formatTitle } from "@/utils/helpers";
 import { animated, useSpring } from "@react-spring/web";
 import { CheckIcon, PlusIcon } from "lucide-react";
 import { COLLECTION, PAGES } from "@/utils/consts";
@@ -26,7 +26,7 @@ function AddBookToLibraryBtn(props: Props | any): Component {
     router: NextRouter = useRouter(),
     { openPopUp } = usePopUp(),
     [animations] = useLocalStorage("animations", true),
-    [styles, api] = useSpring(() => animate(0, 1, 300)),
+    [styles, api] = useSpring(() => animateOpacity(1, 300)),
     [isPressed, setIsPressed] = useState<boolean>(false),
     { isRepeated } = useTitles(title),
     inLibrary: boolean = isRepeated || isPressed,
@@ -37,7 +37,7 @@ function AddBookToLibraryBtn(props: Props | any): Component {
 
   useEffect(() => {
     if (!animations) return;
-    api.start(animate(0, 1, 300));
+    api.start(animateOpacity(1, 300));
   }, [isLoading]);
 
   async function addBookToLibrary(): Promise<void> {

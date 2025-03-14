@@ -90,7 +90,10 @@ function FieldsBook(props: Props): Component {
             "border border-violet-500/20 hover:border-violet-500/30 transition-colors"
           )}
         >
-          <GenderIcon size={18} className="text-violet-300 mr-3" />
+          <GenderIcon
+            size={16}
+            className="text-violet-300 mr-3 absolute pointer-events-none"
+          />
           <select
             id="gender-select"
             onChange={handleGender}
@@ -102,7 +105,7 @@ function FieldsBook(props: Props): Component {
                 ? "default"
                 : "custom"
             }
-            className="w-full bg-slate-900/50 text-slate-300 text-lg focus:outline-none disabled:opacity-50 appearance-none cursor-pointer"
+            className="pl-7 w-full bg-slate-900/50 text-slate-300 text-lg focus:outline-none disabled:opacity-50 appearance-none cursor-pointer h-full"
           >
             <option value="default" disabled className="bg-slate-900">
               {t("literary-gender")}
@@ -157,14 +160,16 @@ function FieldsBook(props: Props): Component {
             isLent ? "w-1/2" : "w-full"
           )}
         >
-          <StateIcon size={18} className="text-violet-300 mr-3" />
+          <StateIcon
+            size={18}
+            className="text-violet-300 mr-3 absolute pointer-events-none"
+          />
           <select
             id="state-select"
             disabled={isLoading}
             onChange={e => handleState(e.target.value)}
             defaultValue={defaultValueState}
-            className="w-full bg-slate-900/40 text-slate-300 text-lg 
-                focus:outline-none disabled:opacity-50 appearance-none cursor-pointer"
+            className="pl-7 w-full bg-slate-900/40 text-slate-300 text-lg focus:outline-none disabled:opacity-50 appearance-none cursor-pointer h-full"
           >
             <option value="default" disabled className="bg-slate-900">
               {t("current-state")}

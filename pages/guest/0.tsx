@@ -5,7 +5,7 @@ import LogInPopUp from "@/components/popups/LogInPopUp";
 import NotesPopUp from "@/components/popups/NotesPopUp";
 import SettingsBtn from "@/components/btns/SettingsBtn";
 import usePopUp from "@/hooks/usePopUp";
-import { animate } from "@/utils/helpers";
+import { animateOpacity } from "@/utils/helpers";
 import { animated, useSpring } from "@react-spring/web";
 import { popupsAtom } from "@/utils/atoms";
 import { useRecoilState } from "recoil";
@@ -37,9 +37,9 @@ function GuestPage0(): Component {
       title: "",
     },
     [popup] = useRecoilState<any>(popupsAtom),
-    [stylesImg] = useSpring(() => animate(0, 1, 200, 200)),
-    [stylesIcons] = useSpring(() => animate(0, 1, 1000)),
-    [stylesSection] = useSpring(() => animate(0, 1, 500));
+    [stylesImg] = useSpring(() => animateOpacity(1, 200, 200)),
+    [stylesIcons] = useSpring(() => animateOpacity(1, 1000)),
+    [stylesSection] = useSpring(() => animateOpacity(1, 500));
 
   return (
     <animated.section

@@ -1,11 +1,11 @@
-import { animate } from "@/utils/helpers";
+import { animateOpacity } from "@/utils/helpers";
 import { animated, useSpring } from "@react-spring/web";
 import { useTranslation } from "react-i18next";
 import type { Component } from "@/utils/types";
 
 function NoMatchesText({ txt }: { txt: string }): Component {
   const [t] = useTranslation("global");
-  const [styles] = useSpring(() => animate(0, 1, 200, 200));
+  const [styles] = useSpring(() => animateOpacity(1, 200, 200));
 
   return (
     <animated.p

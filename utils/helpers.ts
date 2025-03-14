@@ -125,20 +125,26 @@ const deformatTitle: Handler<string, string> = title =>
 
 const len: Handler<string | Array<any>, number> = str => str.length;
 
-const animate = (
-  from: number,
+const animateOpacity = (
   to: number,
   duration: number,
   delay?: number
-): Animate => ({
-  from: { opacity: from },
+): AnimateOpacity => ({
+  from: { opacity: 0 },
   to: { opacity: to },
   config: { duration: duration },
   delay: delay ?? 0,
 });
 
+const animatePopup = (): AnimatePopup => ({
+  from: { transform: "scale(0.7)" },
+  to: { transform: "scale(1)" },
+  config: { duration: 120 },
+});
+
 export {
-  animate,
+  animateOpacity,
+  animatePopup,
   clearStorage,
   deformatTitle,
   formatState,
@@ -151,7 +157,7 @@ export {
   translateStateBook,
   pathIs,
 };
-interface Animate {
+interface AnimateOpacity {
   from: { opacity: number };
   to: { opacity: number };
   config: { duration: number };
@@ -160,4 +166,9 @@ interface Animate {
 
 interface PathOptions {
   exact?: boolean;
+}
+interface AnimatePopup {
+  from: { transform: string };
+  to: { transform: string };
+  config: { duration: number };
 }

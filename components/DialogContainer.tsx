@@ -1,22 +1,17 @@
-import type { Component, PopUpsIds } from "@/utils/types";
+import usePopUp from "@/hooks/usePopUp";
 import { animated, useSpring } from "@react-spring/web";
-import type { MouseEventHandler } from "react";
+import { animatePopup } from "@/utils/helpers";
 import { noop } from "es-toolkit";
 import { twJoin } from "tailwind-merge";
-import useLocalStorage from "@/hooks/useLocalStorage";
-import usePopUp from "@/hooks/usePopUp";
+import type { Component, PopupIds } from "@/utils/types";
+import type { MouseEventHandler } from "react";
 
 function DialogContainer(props: Props): Component {
   const { children, divClass, id } = props,
     { closePopUp } = usePopUp(),
     close: boolean = id != "notes" && id != "edit_book",
-    [animations] = useLocalStorage("animations", true),
     handleClick: Fn = () => (close ? closePopUp(id) : noop()),
-    [styles] = useSpring(() => ({
-      from: { transform: animations ? "scale(0.7)" : "scale(1)" },
-      to: { transform: "scale(1)" },
-      config: { duration: 120 },
-    }));
+    [styles] = useSpring(() => animatePopup());
 
   return (
     <dialog
@@ -45,5 +40,5 @@ type Fn = MouseEventHandler<HTMLDialogElement>;
 interface Props {
   divClass?: string;
   children: React.ReactNode;
-  id: PopUpsIds;
+  id: PopupIds;
 }

@@ -39,7 +39,7 @@ type Translate = (key: string) => string;
 
 type SelectOpt = { value: string; label: string }[];
 
-type PopUpsIds =
+type PopupIds =
   | "add_book"
   | "edit_book"
   | "delete_book"
@@ -97,7 +97,7 @@ export type {
   InputEvent,
   MemoComponent,
   Handler,
-  PopUpsIds,
+  PopupIds,
   SelectEvent,
   SetState,
   ArgsSync,
