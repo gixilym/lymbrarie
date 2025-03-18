@@ -143,15 +143,9 @@ function NewBookPopUp({ UID }: Props): Component {
       return false;
     }
 
-    if (formatTitle.includes("@")) {
+    if (formatTitle.includes("/")) {
       setErrorKey("title-input");
-      notification("error", t("@"));
-      return false;
-    }
-
-    if (formatTitle.includes("_")) {
-      setErrorKey("title-input");
-      notification("error", t("_"));
+      notification("error", t("/"));
       return false;
     }
 

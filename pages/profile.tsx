@@ -1,16 +1,16 @@
 import Favicon from "@/public/favicon.ico";
 import Image from "next/image";
 import LoaderCircle from "@/components/LoaderCircle";
+import useGuest from "@/hooks/useGuest";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { animated, useSpring } from "@react-spring/web";
+import { animateOpacity } from "@/utils/helpers";
 import { AuthAction, useUser, withUser } from "next-firebase-auth";
 import { isUndefined, sum } from "es-toolkit";
 import { useEffect, useState } from "react";
 import { UserRound } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import type { Component, Book } from "@/utils/types";
-import { animateOpacity } from "@/utils/helpers";
-import useGuest from "@/hooks/useGuest";
 
 export default withUser({
   whenAuthed: AuthAction.RENDER,

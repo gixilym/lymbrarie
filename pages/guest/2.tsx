@@ -5,7 +5,7 @@ import NotesPopUp from "@/components/popups/NotesPopUp";
 import SettingsBtn from "@/components/btns/SettingsBtn";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
-import { animated, useSpring } from "@react-spring/web";
+import { animated, AnimatedComponent, useSpring } from "@react-spring/web";
 import { popupsAtom } from "@/utils/atoms";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
@@ -26,7 +26,7 @@ function GuestPage2(): Component {
   const { openPopUp } = usePopUp(),
     [t] = useTranslation("global"),
     [animations] = useLocalStorage("animations", true),
-    Cover: any = animated(Image),
+    Cover: AnimatedComponent<typeof Image> = animated(Image),
     [notes, setNotes] = useState<string>(t("notes-book-2")),
     notesProps = {
       notes,

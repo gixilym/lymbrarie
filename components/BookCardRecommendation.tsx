@@ -1,8 +1,8 @@
-import cover from "@/public/cover.webp";
+import Cover from "@/public/cover.webp";
 import fnState from "./BookState";
 import Image from "next/image";
-import { animateOpacity, formatTitle } from "@/utils/helpers";
 import { animated, useSpring } from "@react-spring/web";
+import { animateOpacity } from "@/utils/helpers";
 import { Book as BookIcon, Tag as GenderIcon, UserIcon } from "lucide-react";
 import { BOOK_RECO, PAGES } from "@/utils/consts";
 import type { Component } from "@/utils/types";
@@ -10,23 +10,24 @@ import { type NextRouter, useRouter } from "next/router";
 
 function BookCardRecommendation({ showDetails }: Props): Component {
   const { push }: NextRouter = useRouter(),
-    onClick = (): Promise<boolean> =>
-      push(`${PAGES.RECOMMENDATION}/${formatTitle(BOOK_RECO.title ?? "")}`),
     state = (): Component => fnState("Recommended", true),
-    [styles] = useSpring(() => animateOpacity(1, 300));
+    [styles] = useSpring(() => animateOpacity(1, 300)),
+    path: string = `${PAGES.RECOMMENDATION}/${encodeURIComponent(
+      BOOK_RECO.title ?? ""
+    )}`;
 
   if (showDetails) {
     return (
       <animated.li
         style={styles}
-        onClick={onClick}
+        onClick={() => push(path)}
         className="mx-4 bg-slate-900/40 backdrop-blur-sm border border-l-0 border-violet-500/20 hover:border-violet-500/30 rounded-xl relative h-[130px] flex gap-x-5 w-full sm:w-[600px] max-w-[600px] cursor-pointer hover:scale-[0.98] duration-300"
       >
         {state()}
         <div className="bg-violet-500/10 p-1.5 rounded-l-xl h-full">
           <Image
             loading="lazy"
-            src={BOOK_RECO.image || cover.src}
+            src={BOOK_RECO.image || Cover.src}
             width={75}
             height={130}
             alt="cover"
@@ -65,7 +66,7 @@ function BookCardRecommendation({ showDetails }: Props): Component {
 
   return (
     <li
-      onClick={onClick}
+      onClick={() => push(path)}
       className="mx-4 bg-slate-900/40 backdrop-blur-sm border border-violet-500/10 
         hover:border-violet-500/30 rounded-xl relative h-[60px] 
         flex items-center w-full sm:w-[600px] max-w-[600px] cursor-pointer 

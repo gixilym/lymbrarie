@@ -2,18 +2,18 @@ import BookCardRecommendation from "./BookCardRecommendation";
 import useGuest from "@/hooks/useGuest";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import useTitles from "@/hooks/useTitles";
-import { animateOpacity } from "@/utils/helpers";
 import { animated, useSpring } from "@react-spring/web";
+import { animateOpacity } from "@/utils/helpers";
 import { animListAtom, searchAtom, stateAtom } from "@/utils/atoms";
 import { BOOK_RECO } from "@/utils/consts";
 import { noop } from "es-toolkit";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
-import type { Component } from "@/utils/types";
 import { useTranslation } from "react-i18next";
+import type { Component, SortModes } from "@/utils/types";
 
 function ListBooks(props: Props): Component {
-  const { listBooks, showDetails, showFavs, ascToDesc, isSearch } = props,
+  const { listBooks, showDetails, showFavs, ascSort, isSearch } = props,
     [searchVal] = useRecoilState<string>(searchAtom),
     [stateVal] = useRecoilState<string>(stateAtom),
     [animateCard] = useRecoilState<boolean>(animListAtom),
@@ -26,13 +26,13 @@ function ListBooks(props: Props): Component {
     showReco: boolean =
       recommendations &&
       isSpanish &&
+      ascSort == "asc" &&
       !isGuest &&
       !isRepeated &&
       !isSearch &&
       !searchVal &&
       !stateVal &&
-      !showFavs &&
-      ascToDesc;
+      !showFavs;
 
   useEffect(() => {
     if (!animations) return;
@@ -57,6 +57,6 @@ interface Props {
   listBooks: Component;
   showDetails: boolean;
   showFavs: boolean;
-  ascToDesc: boolean | null;
+  ascSort: SortModes;
   isSearch?: boolean;
 }

@@ -109,19 +109,13 @@ function pathIs(path: string, options?: PathOptions): boolean {
 }
 
 const removeItem: Handler<string, void> = item =>
-  localStorage?.removeItem(item);
+  window?.localStorage?.removeItem(item);
 
-const clearStorage: Handler<void, void> = () => localStorage?.clear();
+const clearStorage: Handler<void, void> = () => window?.localStorage?.clear();
 
 const isLent: Handler<string, boolean> = state => isEqual(state, "Lent");
 
 const tLC: Handler<string, string> = val => val?.toLowerCase().trim();
-
-const formatTitle: Handler<string, string> = title =>
-  title.replaceAll(" ", "_").replaceAll("?", "@");
-
-const deformatTitle: Handler<string, string> = title =>
-  title.replaceAll("_", " ").replaceAll("@", "?");
 
 const len: Handler<string | Array<any>, number> = str => str.length;
 
@@ -146,9 +140,7 @@ export {
   animateOpacity,
   animatePopup,
   clearStorage,
-  deformatTitle,
   formatState,
-  formatTitle,
   isLent,
   len,
   removeItem,

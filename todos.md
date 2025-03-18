@@ -6,21 +6,21 @@
 
 ## 🟡 Media Prioridad
 
->
+> El orden de los libros funciona extraño.
 
 ---
 
 ## 🟢 Baja Prioridad
 
-> Cuando edito un libro se pierde el estado del scroll.
+> Automatizar la recomendación de libros.
 > En modo 'shuffle' el valor del arr se modifica al cambiar 'searchVal', 'stateVal' o 'showFavs'.
-> Seguir con los tests.
-> Seguir con el /reader.
 
 ---
 
 ## Features:
 
+- Seguir con /writer.
+- Seguir con los tests.
 - Unificar las rutas y lógica de las rutas guest y recommendation.
 - Fecha de publicación para cada libro.
 - Opción para buscar librerías cercanas.
@@ -33,3 +33,4 @@
 ## Tener en cuenta
 
 - Los if de navigator.onLine de los useEffect del index son para la PWA.
+- Las recomendaciones se actualizan manulamente en el código (si, sé que está mal).

@@ -95,6 +95,25 @@ function HeaderIndex(): Component {
             />
             {t("book-finder")}
           </Link>
+          {/* //* Seguir con el componente Writer
+            <Link
+            onClick={() => setScroll(0)}
+            href={PAGES.WRITER}
+            className={twMerge(
+              pathIs(PAGES.WRITER)
+                ? "bg-violet-500/20 text-violet-200"
+                : "text-slate-300",
+              "px-4 py-2 rounded-xl transition-colors hover:bg-violet-500/20 flex items-center gap-x-2"
+            )}
+          >
+            <BookOpenIcon
+              className={twJoin(
+                "w-5 h-5 mt-0.5",
+                pathIs(PAGES.WRITER) && "text-violet-300/80"
+              )}
+            />
+            {t("writer")}
+          </Link> */}
           <Link
             onClick={() => setScroll(0)}
             href={PAGES.PROFILE}

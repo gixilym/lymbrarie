@@ -5,9 +5,11 @@ import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
 import { COLLECTION, EMPTY_BOOK, GENDERS, PAGES } from "@/utils/consts";
 import { deburr, delay, isEqual, union } from "es-toolkit";
-import { deformatTitle, formatTitle, isLent, len, tLC } from "@/utils/helpers";
 import { dismissNoti, notification } from "@/utils/notifications";
 import { doc, setDoc } from "firebase/firestore";
+import { isLent, len, tLC } from "@/utils/helpers";
+import { scrollAtom } from "@/utils/atoms";
+import { useRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
 import type {
   Book,
@@ -33,7 +35,7 @@ function EditBookPopUp(props: Props): Component {
     { closePopUp } = usePopUp(),
     router: NextRouter = useRouter(),
     bookId: string = router.query.bookId as string,
-    formatBookId: string = deformatTitle(bookId),
+    formatBookId: string = decodeURIComponent(bookId),
     form: FormRef = useRef<Reference>(null),
     { isLoading, startLoading } = useLoadContent(),
     [book, setBook] = useState<any>(EMPTY_BOOK),
@@ -42,6 +44,8 @@ function EditBookPopUp(props: Props): Component {
     [addClicked, setAddClicked] = useState<boolean>(false),
     [cacheBooks, setCacheBooks] = useLocalStorage("cache-books", null),
     [allTitles, setAllTitles] = useLocalStorage("all-titles", []),
+    [, setScrollLS] = useLocalStorage("scroll-editpopup", 0),
+    [scroll] = useRecoilState(scrollAtom),
     [editDisabled, setEditDisabled] = useState<boolean>(true),
     [errorKey, setErrorKey] = useState<string>(""),
     handleState = (state: string): void => setBook({ ...book, state }),
@@ -112,7 +116,7 @@ function EditBookPopUp(props: Props): Component {
       data: Book = { ...book, loaned } as const,
       oldVersion: any[] = cacheBooks.filter((b: Book) => b.id != documentId),
       newVersion: Book[] = union(oldVersion, [{ id: documentId, data }]),
-      titlePage: string = formatTitle(book.title),
+      titlePage: string = encodeURIComponent(book.title),
       newPath: string = `${PAGES.BOOK}/${titlePage}`,
       newTitles: string[] = union(allTitles, [book.title]);
 
@@ -120,7 +124,8 @@ function EditBookPopUp(props: Props): Component {
       await setDoc(doc(COLLECTION, documentId), data);
       setCacheBooks(newVersion);
       setAllTitles(newTitles);
-      router.replace(newPath).then(() => router.reload());
+      setScrollLS(scroll);
+      await router.push(PAGES.HOME).then(() => router.push(newPath));
     } catch (err: any) {
       router.push(PAGES.ERROR);
       console.error(`catch 'editBook' ${err.message}`);
@@ -156,6 +161,7 @@ function EditBookPopUp(props: Props): Component {
       notification("error", t("empty-title"));
       return false;
     }
+
     if (repeteadTitle) {
       setErrorKey("title-input");
       notification("error", t("repeated-title"));
@@ -168,15 +174,9 @@ function EditBookPopUp(props: Props): Component {
       return false;
     }
 
-    if (title.includes("@")) {
+    if (title.includes("/")) {
       setErrorKey("title-input");
-      notification("error", t("@"));
-      return false;
-    }
-
-    if (title.includes("_")) {
-      setErrorKey("title-input");
-      notification("error", t("_"));
+      notification("error", t("/"));
       return false;
     }
 

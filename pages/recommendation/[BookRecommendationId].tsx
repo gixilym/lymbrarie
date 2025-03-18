@@ -6,7 +6,7 @@ import LogInPopUp from "@/components/popups/LogInPopUp";
 import NotesPopUp from "@/components/popups/NotesPopUp";
 import usePopUp from "@/hooks/usePopUp";
 import { animateOpacity } from "@/utils/helpers";
-import { animated, useSpring } from "@react-spring/web";
+import { animated, AnimatedComponent, useSpring } from "@react-spring/web";
 import { BOOK_RECO } from "@/utils/consts";
 import { popupsAtom } from "@/utils/atoms";
 import { useRecoilState } from "recoil";
@@ -27,8 +27,8 @@ function BookRecommendationId(): Component {
   const user: User = useUser(),
     { openPopUp } = usePopUp(),
     [t] = useTranslation("global"),
-    Cover: any = animated(Image),
-    [notes, setNotes] = useState<string>(t("notes-book-0")),
+    Cover: AnimatedComponent<typeof Image> = animated(Image),
+    [notes, setNotes] = useState<string>(BOOK_RECO.notes ?? ""),
     notesProps = {
       notes,
       setNotes,
@@ -68,7 +68,7 @@ function BookRecommendationId(): Component {
               priority
               style={stylesImg}
               className="select-none w-[200px] h-[300px] aspect-[2/3] rounded-lg object-cover"
-              src={BOOK_RECO.image}
+              src={BOOK_RECO.image ?? ""}
               width={200}
               height={300}
               alt="cover"

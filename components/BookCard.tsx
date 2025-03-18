@@ -4,7 +4,7 @@ import CardWithOutDetails from "./CardWithoutDetails";
 import Cover from "@/public/cover.webp";
 import fnState from "./BookState";
 import useGuest from "@/hooks/useGuest";
-import { formatTitle, pathIs } from "@/utils/helpers";
+import { pathIs } from "@/utils/helpers";
 import { PAGES } from "@/utils/consts";
 import { round } from "es-toolkit";
 import { scrollAtom } from "@/utils/atoms";
@@ -16,7 +16,7 @@ import { useRouter, type NextRouter } from "next/router";
 function BookCard({ data, showDetails }: Props): Component {
   const { push }: NextRouter = useRouter(),
     [t] = useTranslation("global"),
-    title: string = formatTitle(data.title ?? ""),
+    title: string = encodeURIComponent(data.title ?? ""),
     { isGuest } = useGuest(),
     img: string = data.image || Cover.src,
     setScroll: SetState = useSetRecoilState(scrollAtom),

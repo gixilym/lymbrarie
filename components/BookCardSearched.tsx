@@ -7,7 +7,7 @@ function BookCardSearched(props: Card): Component {
     data: BookData = {
       ...props,
       //* Los slice son para no exceder el tamaño máximo permitido.
-      title: title.replaceAll(/[_@]/g, "-").slice(0, 80),
+      title: title.slice(0, 80),
       author: author.slice(0, 34),
       gender: gender.slice(0, 24),
     };

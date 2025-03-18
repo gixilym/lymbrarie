@@ -1,17 +1,48 @@
 import Link from "next/link";
 import { CroissantIcon, MenuIcon } from "lucide-react";
 import { PAGES } from "@/utils/consts";
+import { pathIs } from "@/utils/helpers";
 import { useTranslation } from "react-i18next";
 import type { Component } from "@/utils/types";
 
 function Nav(): Component {
   const [t] = useTranslation("global");
   return (
-    <nav className="absolute top-28 z-10 w-[200px] right-6 bg-slate-900 gap-y-1.5 p-4 rounded-xl flex-col items-start justify-center border border-violet-500/20 flex md:hidden text-slate-200">
-      <Link href={PAGES.HOME}>&gt;&nbsp;&nbsp;{t("library")}</Link>
-      <Link href={PAGES.SEARCH}>&gt;&nbsp;&nbsp;{t("book-finder")}</Link>
-      <Link href={PAGES.PROFILE}>&gt;&nbsp;&nbsp;{t("profile")}</Link>
-      <Link href={PAGES.CONFIG}>&gt;&nbsp;&nbsp;{t("settings")}</Link>
+    <nav className="absolute top-28 z-10 w-[200px] right-6 bg-slate-900 gap-y-3 p-4 rounded-xl flex-col items-start justify-center border border-violet-500/20 flex md:hidden">
+      <Link
+        className={
+          pathIs(PAGES.HOME, { exact: true })
+            ? "text-violet-300/95"
+            : "text-slate-200"
+        }
+        href={PAGES.HOME}
+      >
+        &gt;&nbsp;&nbsp;{t("library")}
+      </Link>
+      <Link
+        className={
+          pathIs(PAGES.SEARCH) ? "text-violet-300/95" : "text-slate-200"
+        }
+        href={PAGES.SEARCH}
+      >
+        &gt;&nbsp;&nbsp;{t("book-finder")}
+      </Link>
+      <Link
+        className={
+          pathIs(PAGES.PROFILE) ? "text-violet-300/95" : "text-slate-200"
+        }
+        href={PAGES.PROFILE}
+      >
+        &gt;&nbsp;&nbsp;{t("profile")}
+      </Link>
+      <Link
+        className={
+          pathIs(PAGES.CONFIG) ? "text-violet-300/95" : "text-slate-200"
+        }
+        href={PAGES.CONFIG}
+      >
+        &gt;&nbsp;&nbsp;{t("settings")}
+      </Link>
     </nav>
   );
 }
@@ -24,7 +55,7 @@ function IconBtn({ menuIsOpen, setMenuIsOpen }: PropsBtn): Component {
       onClick={() => setMenuIsOpen(!menuIsOpen)}
     >
       {menuIsOpen ? (
-        <CroissantIcon className="text-violet-200" size={24} />
+        <CroissantIcon className="text-violet-100" size={24} />
       ) : (
         <MenuIcon className="text-violet-200" size={24} />
       )}

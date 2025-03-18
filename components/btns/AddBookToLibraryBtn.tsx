@@ -2,17 +2,17 @@ import useLoadContent from "@/hooks/useLoadContent";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
 import useTitles from "@/hooks/useTitles";
-import { animateOpacity, formatTitle } from "@/utils/helpers";
 import { animated, useSpring } from "@react-spring/web";
+import { animateOpacity } from "@/utils/helpers";
 import { CheckIcon, PlusIcon } from "lucide-react";
 import { COLLECTION, PAGES } from "@/utils/consts";
 import { doc, setDoc } from "firebase/firestore";
 import { isNull, noop, union } from "es-toolkit";
-import { NextRouter, useRouter } from "next/router";
 import { notification } from "@/utils/notifications";
 import { twJoin, twMerge } from "tailwind-merge";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { type NextRouter, useRouter } from "next/router";
 import { type User, useUser, withUser } from "next-firebase-auth";
 import type { Book, BookData, Component } from "@/utils/types";
 
@@ -74,7 +74,7 @@ function AddBookToLibraryBtn(props: Props | any): Component {
   }
 
   function redirectToBook(): void {
-    router.push(`${PAGES.BOOK}/${formatTitle(title)}`);
+    router.push(`${PAGES.BOOK}/${encodeURIComponent(title)}`);
   }
 
   return (

@@ -75,8 +75,7 @@
   "lymbrarie-is-in-maintenance": "Lymbrarie está en mantenimiento",
   "performing-maintenance-tasks": "Estoy realizando tareas de mantenimiento para mejorar tu experiencia.",
   "please-come-back-later": "Por favor, vuelve más tarde. ¡Prometo no tardar!",
-  "@": "El título no puede contener '@'",
-  "_": "El título no puede contener '_'",
+  "/": "El título no puede contener '/'",
   "empty-custom-gender": "Ingresa un género",
   "empty-loaned": "Prestado a...",
   "no-gender": "Sin asignar",
@@ -214,5 +213,6 @@
   "circles-bk": "Circulos en el fondo",
   "enter-nickname": "Ingresa tu apodo",
   "placeholder-notes": "Escribe lo que quieras recordar de ",
-  "change-cover-image": "Cambiar imagen de portada"
+  "change-cover-image": "Cambiar imagen de portada",
+  "writer": "Escribe"
 }

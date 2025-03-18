@@ -13,7 +13,6 @@ import toast from "react-hot-toast";
 import useLoadContent from "@/hooks/useLoadContent";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
-import { animated, useSpring } from "@react-spring/web";
 import { AuthAction, withUser } from "next-firebase-auth";
 import { COLLECTION, EMPTY_BOOK, PAGES } from "@/utils/consts";
 import { dismissNoti, notification } from "@/utils/notifications";
@@ -24,9 +23,9 @@ import { twMerge } from "tailwind-merge";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
+import { animated, type AnimatedComponent, useSpring } from "@react-spring/web";
 import {
   animateOpacity,
-  deformatTitle,
   isLent,
   tLC,
   translateStateBook,
@@ -63,10 +62,10 @@ function BookId(): Component {
     router: NextRouter = useRouter(),
     { openPopUp, closePopUp, closeBookPopUps } = usePopUp(),
     bookTitle: string = router.query.bookId?.toString() ?? "",
-    title: string = deformatTitle(bookTitle),
+    title: string = decodeURIComponent(bookTitle),
     { isLoading, finishLoading } = useLoadContent(),
-    Cover: any = animated(Image),
-    [book, setBook] = useState<any>(EMPTY_BOOK),
+    Cover: AnimatedComponent<typeof Image> = animated(Image),
+    [book, setBook] = useState<Book>(EMPTY_BOOK),
     [documentId, setDocumentId] = useState<string>(""),
     [notes, setNotes] = useState<string>(""),
     [loadingFav, setLoadingFav] = useState<boolean>(false),
@@ -211,7 +210,7 @@ function BookId(): Component {
                   <StateIcon size={18} className="text-violet-300" />
                 </div>
                 <p className="text-base sm:text-lg capitalize">
-                  {t(tLC(book?.data?.gender))}
+                  {t(tLC(book?.data?.gender ?? ""))}
                 </p>
               </div>
 

@@ -39,7 +39,7 @@ function SearchPage(): Component {
     auth: Auth = getAuth(),
     router: NextRouter = useRouter(),
     [t] = useTranslation("global"),
-    [query, setQuery] = useState(""),
+    [query, setQuery] = useState<string>(""),
     [queryVal, setQueryVal] = useState<string>(""),
     [showIcon, setShowIcon] = useState<boolean>(true),
     [booksResults, setBooksResults] = useState<Book[]>([]),
@@ -73,20 +73,20 @@ function SearchPage(): Component {
     startLoading();
 
     try {
-      const ENDPOINT: string = `${API_BOOKS}?q=${searchQuery}&maxResults=40&key=${KEY}`;
-      const options: RequestInit = {
-        mode: "cors",
-        method: "GET",
-        cache: "default",
-        headers: { "Content-Type": "application/json" },
-      };
-      const res: Response = await fetch(ENDPOINT, options);
-      const data = await res.json();
-      const books: Book[] = (data.items || []).map((b: GoogleBook) => {
-        return {
+      const ENDPOINT: string = `${API_BOOKS}?q=${searchQuery}&maxResults=40&key=${KEY}`,
+        options: RequestInit = {
+          mode: "cors",
+          method: "GET",
+          cache: "default",
+          headers: { "Content-Type": "application/json" },
+        },
+        res: Response = await fetch(ENDPOINT, options),
+        data = await res.json(),
+        books: Book[] = (data.items || []).map((b: GoogleBook) => ({
           id: b?.id,
           data: {
-            title: b?.volumeInfo?.title,
+            //* Slash reemplazado porque genera error en la ruta dinámica.
+            title: (b?.volumeInfo?.title).replaceAll("/", "-"),
             author: b?.volumeInfo?.authors?.join(", "),
             notes: b?.volumeInfo?.description ?? "",
             gender: b?.volumeInfo?.categories?.join(", ") || "no-gender",
@@ -97,12 +97,13 @@ function SearchPage(): Component {
             isFav: false,
             owner: user?.id,
           },
-        };
-      });
+        }));
 
       const uniqueTitles: Set<string> = new Set<string>();
       const uniqueBooks: Book[] = books.filter((b: Book) => {
-        const title: string = deburr(tLC(b.data.title ?? ""));
+        const title: string = deburr(
+          replaceInvalidChars(tLC(b.data.title ?? ""))
+        );
         if (title && !uniqueTitles.has(title)) {
           uniqueTitles.add(title);
           return true;
@@ -186,6 +187,10 @@ function SearchPage(): Component {
       </animated.div>
     </animated.section>
   );
+}
+
+function replaceInvalidChars(str: string): string {
+  return str.replaceAll(/[_@\/]/g, "-");
 }
 
 type GoogleBook = {

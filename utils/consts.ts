@@ -62,10 +62,10 @@ const BOOK_RECO: BookData = {
   author: "Jeff Zentver",
   image:
     "https://res.cloudinary.com/dgs55s8qh/image/upload/v1739910195/dn4yymb1zvkduwy5b4v6.jpg",
-  gender: "Misterio",
+  gender: "Novela juvenil",
   loaned: "",
   notes:
-    "Una novela esperanzadora sobre la relación entre adolescentes y sus dificultades para iniciar una nueva vida.",
+    "Una novela que relata la conflictiva vida de unos adolescentes que viven en un pequeño pueblo. Una familia religiosa, un padre maltratador, una madre misteriosa y más en este título.",
   isFav: false,
 } as const;
 
@@ -83,6 +83,7 @@ const PAGES: Pages = {
   BOOK: "/book",
   RECOMMENDATION: "/recommendation",
   ERROR: "/error",
+  WRITER: "/writer",
 };
 
 export {
@@ -112,4 +113,5 @@ interface Pages {
   BOOK: string;
   RECOMMENDATION: string;
   ERROR: string;
+  WRITER: string;
 }
