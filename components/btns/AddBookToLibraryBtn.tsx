@@ -5,7 +5,7 @@ import useTitles from "@/hooks/useTitles";
 import { animated, useSpring } from "@react-spring/web";
 import { animateOpacity } from "@/utils/helpers";
 import { CheckIcon, PlusIcon } from "lucide-react";
-import { COLLECTION, PAGES } from "@/utils/consts";
+import { COLLECTION_BOOKS, PAGES } from "@/utils/consts";
 import { doc, setDoc } from "firebase/firestore";
 import { isNull, noop, union } from "es-toolkit";
 import { notification } from "@/utils/notifications";
@@ -45,7 +45,7 @@ function AddBookToLibraryBtn(props: Props | any): Component {
     try {
       const newID: string = crypto.randomUUID();
       const newVersion: Book[] = union(cacheBooks ?? [], [{ id: newID, data }]);
-      await setDoc(doc(COLLECTION, newID), data);
+      await setDoc(doc(COLLECTION_BOOKS, newID), data);
       setIsPressed(true);
       setCacheBooks(newVersion);
       if (isRecommended) return redirectToBook();

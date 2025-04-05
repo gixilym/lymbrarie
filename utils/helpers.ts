@@ -25,7 +25,7 @@ function selectStyles(showAll: boolean, normal: boolean): any {
   return {
     placeholder: (s: StylesConfig<any>) => ({
       ...s,
-      fontSize: "0.9rem",
+      // fontSize: "18px",
       textAlign: "center",
       color: normal
         ? "#e2e8f0"
@@ -35,7 +35,7 @@ function selectStyles(showAll: boolean, normal: boolean): any {
     }),
     singleValue: (s: StylesConfig) => ({
       ...s,
-      fontSize: "1rem",
+      // fontSize: "18px",
     }),
     control: (s: StylesConfig) => ({
       ...s,

@@ -27,16 +27,16 @@ function SearchIndex(): Component {
     handleSelect: Handler<string, void> = (val: string) =>
       setSelectStateVal(val),
     options: SelectOpt = [
-      { value: "", label: "\xA0>\xA0\xA0" + t("new-book-all") },
+      { value: "", label: t("new-book-all") },
       {
         value: "Reading",
-        label: "\xA0>\xA0\xA0" + t("new-book-reading"),
+        label: t("new-book-reading"),
       },
-      { value: "Read", label: "\xA0>\xA0\xA0" + t("new-book-read") },
-      { value: "Pending", label: "\xA0>\xA0\xA0" + t("new-book-pending") },
+      { value: "Read", label: t("new-book-read") },
+      { value: "Pending", label: t("new-book-pending") },
       {
         value: "Lent",
-        label: "\xA0>\xA0\xA0" + t("new-book-lent"),
+        label: t("new-book-lent"),
       },
     ] as const;
 
@@ -51,7 +51,7 @@ function SearchIndex(): Component {
     >
       <form className="w-full max-w-3xl flex flex-col items-center justify-center select-none px-6 sm:px-0">
         <div className="w-full flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <div className="join w-full sm:w-auto">
+          <div className="join w-full sm:w-auto max-w-xl">
             <input
               id="input-search"
               value={value}
@@ -62,7 +62,7 @@ function SearchIndex(): Component {
               autoFocus
             />
             <Select
-              className="join-item capitalize text-sm text-slate-900"
+              className="join-item capitalize text-sm sm:text-[17px] text-slate-900"
               id="select-state"
               isSearchable={false}
               options={options}

@@ -1,20 +1,36 @@
 import Cover from "@/public/cover.webp";
 import fnState from "./BookState";
 import Image from "next/image";
+import useLocalStorage from "@/hooks/useLocalStorage";
 import { animated, useSpring } from "@react-spring/web";
 import { animateOpacity } from "@/utils/helpers";
-import { Book as BookIcon, Tag as GenderIcon, UserIcon } from "lucide-react";
 import { BOOK_RECO, PAGES } from "@/utils/consts";
+import { BookIcon, TagIcon, UserIcon, XIcon } from "lucide-react";
+import { notification } from "@/utils/notifications";
+import { useTranslation } from "react-i18next";
+import { useState, type SyntheticEvent } from "react";
 import type { Component } from "@/utils/types";
 import { type NextRouter, useRouter } from "next/router";
 
 function BookCardRecommendation({ showDetails }: Props): Component {
   const { push }: NextRouter = useRouter(),
+    [t] = useTranslation("global"),
     state = (): Component => fnState("Recommended", true),
     [styles] = useSpring(() => animateOpacity(1, 300)),
+    [, setSkipReco] = useLocalStorage(`skip-reco-${BOOK_RECO.title}`, false),
+    [localSkip, setLocalSkip] = useState<boolean>(false),
     path: string = `${PAGES.RECOMMENDATION}/${encodeURIComponent(
       BOOK_RECO.title ?? ""
     )}`;
+
+  function handleSkip(e: SyntheticEvent): void {
+    e.stopPropagation();
+    notification("success", t("skip-reco"));
+    setSkipReco(true);
+    setLocalSkip(true); //* Estado para ocultar la recomendación sin refrescar la página.
+  }
+
+  if (localSkip) return <></>;
 
   if (showDetails) {
     return (
@@ -24,6 +40,13 @@ function BookCardRecommendation({ showDetails }: Props): Component {
         className="mx-4 bg-slate-900/40 backdrop-blur-sm border border-l-0 border-violet-500/20 hover:border-violet-500/30 rounded-xl relative h-[130px] flex gap-x-5 w-full sm:w-[600px] max-w-[600px] cursor-pointer hover:scale-[0.98] duration-300"
       >
         {state()}
+        <button
+          onClick={handleSkip}
+          type="button"
+          className="absolute top-2 right-2 z-10 bg-slate-900 hover:bg-slate-800 transition-colors p-1 rounded-full"
+        >
+          <XIcon className="text-slate-200/90 p-[1px]" size={22} />
+        </button>
         <div className="bg-violet-500/10 p-1.5 rounded-l-xl h-full">
           <Image
             loading="lazy"
@@ -52,7 +75,7 @@ function BookCardRecommendation({ showDetails }: Props): Component {
             </div>
             <div className="flex flex-row justify-start items-start gap-x-2">
               <div className="bg-violet-500/20 p-[5.3px] rounded-lg">
-                <GenderIcon size={14} className="text-violet-400" />
+                <TagIcon size={14} className="text-violet-400" />
               </div>
               <p className="text-sm sm:text-base capitalize line-clamp-1">
                 {BOOK_RECO.gender}

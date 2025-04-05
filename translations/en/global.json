@@ -213,5 +213,6 @@
   "enter-nickname": "Enter your nickname",
   "placeholder-notes": "Write what you want to remember about ",
   "change-cover-image": "Change cover image",
-  "writer": "Write"
+  "writer": "Write",
+  "skip-reco": "Skiped recommendation"
 }

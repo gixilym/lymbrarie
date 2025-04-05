@@ -1,4 +1,4 @@
-import { COLLECTION, MAINTENANCE, PAGES } from "./consts";
+import { COLLECTION_BOOKS, MAINTENANCE, PAGES } from "./consts";
 import { isEqual, isNull } from "es-toolkit";
 import { len } from "./helpers";
 import type { Unsubscribe } from "firebase/auth";
@@ -18,7 +18,7 @@ async function getDocuments(UID: string): Promise<List> {
 
   if (UID) {
     try {
-      const q: Query = query(COLLECTION, where("owner", "==", UID));
+      const q: Query = query(COLLECTION_BOOKS, where("owner", "==", UID));
       const res: QuerySnapshot = await getDocs(q);
       res.forEach((doc: Doc) => books.push({ id: doc.id, data: doc.data() }));
       isEmpty = res.empty;
@@ -37,7 +37,10 @@ async function syncDocuments(props: ArgsSync): Promise<Sync> {
   if (isNull(props.UID)) return;
 
   try {
-    const myQuery: Query = query(COLLECTION, where("owner", "==", props.UID));
+    const myQuery: Query = query(
+      COLLECTION_BOOKS,
+      where("owner", "==", props.UID)
+    );
     const unsub: Unsubscribe = onSnapshot(myQuery, (qs: QuerySnapshot) => {
       const remoteBooks: Book[] = qs.docs.map((d: Doc) => ({
           id: d?.id,

@@ -4,7 +4,7 @@ import useLoadContent from "@/hooks/useLoadContent";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
 import useTitles from "@/hooks/useTitles";
-import { COLLECTION, EMPTY_BOOK, PAGES } from "@/utils/consts";
+import { COLLECTION_BOOKS, EMPTY_BOOK, PAGES } from "@/utils/consts";
 import { coverAtom } from "@/utils/atoms";
 import { delay, isEqual, union } from "es-toolkit";
 import { dismissNoti, notification } from "@/utils/notifications";
@@ -96,7 +96,7 @@ function NewBookPopUp({ UID }: Props): Component {
     try {
       const newID: string = crypto.randomUUID();
       const data: BookData = { ...book.data, owner: UID };
-      await setDoc(doc(COLLECTION, newID), data);
+      await setDoc(doc(COLLECTION_BOOKS, newID), data);
       const newVersion: Book[] = union(cacheBooks ?? [], [{ id: newID, data }]);
       setCacheBooks(newVersion);
       setShowNoti(true);

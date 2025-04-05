@@ -14,7 +14,7 @@ import useLoadContent from "@/hooks/useLoadContent";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
 import { AuthAction, withUser } from "next-firebase-auth";
-import { COLLECTION, EMPTY_BOOK, PAGES } from "@/utils/consts";
+import { COLLECTION_BOOKS, EMPTY_BOOK, PAGES } from "@/utils/consts";
 import { dismissNoti, notification } from "@/utils/notifications";
 import { doc, setDoc } from "firebase/firestore";
 import { isEqual, noop, union } from "es-toolkit";
@@ -114,7 +114,7 @@ function BookId(): Component {
     notification("loading", t("saving"));
     try {
       const bookToDB = { ...book?.data, notes };
-      await setDoc(doc(COLLECTION, book.id), bookToDB);
+      await setDoc(doc(COLLECTION_BOOKS, book.id), bookToDB);
       const updatedNotes: Book = { ...book, data: { ...book?.data, notes } },
         oldVersion: Book[] = cacheBooks.filter(
           (b: Book) => b?.id != documentId
@@ -136,7 +136,7 @@ function BookId(): Component {
       setLoadingFav(true);
       notification("loading", t(checkFav ? "removing" : "adding"));
       const data: BookData = { ...book?.data, isFav: !checkFav };
-      await setDoc(doc(COLLECTION, documentId), data);
+      await setDoc(doc(COLLECTION_BOOKS, documentId), data);
       const oldVersion: Book[] = cacheBooks.filter(
         (b: Book) => b?.id != documentId
       );

@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { PAGES } from "@/utils/consts";
 import { pathIs } from "@/utils/helpers";
@@ -28,12 +27,9 @@ function FooterIndex(): Component {
       )}
     >
       <aside>
-        <div className="flex gap-x-4 mb-2 items-end justify-end">
-          <Image src="/favicon.ico" alt="logo" width={30} height={30} />
-          <Link href={PAGES.HOME} className="link link-hover footer-title">
-            {t("home")}
-          </Link>
-        </div>
+        <Link href={PAGES.HOME} className="link link-hover footer-title">
+          {t("home")}
+        </Link>
         <p>
           Lymbrarie {t("unlicense")}{" "}
           <Link

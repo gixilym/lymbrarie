@@ -3,7 +3,7 @@ import FieldsBook from "../FieldsBook";
 import useLoadContent from "@/hooks/useLoadContent";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
-import { COLLECTION, EMPTY_BOOK, GENDERS, PAGES } from "@/utils/consts";
+import { COLLECTION_BOOKS, EMPTY_BOOK, GENDERS, PAGES } from "@/utils/consts";
 import { deburr, delay, isEqual, union } from "es-toolkit";
 import { dismissNoti, notification } from "@/utils/notifications";
 import { doc, setDoc } from "firebase/firestore";
@@ -121,7 +121,7 @@ function EditBookPopUp(props: Props): Component {
       newTitles: string[] = union(allTitles, [book.title]);
 
     try {
-      await setDoc(doc(COLLECTION, documentId), data);
+      await setDoc(doc(COLLECTION_BOOKS, documentId), data);
       setCacheBooks(newVersion);
       setAllTitles(newTitles);
       setScrollLS(scroll);

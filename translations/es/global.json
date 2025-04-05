@@ -214,5 +214,6 @@
   "enter-nickname": "Ingresa tu apodo",
   "placeholder-notes": "Escribe lo que quieras recordar de ",
   "change-cover-image": "Cambiar imagen de portada",
-  "writer": "Escribe"
+  "writer": "Escribe",
+  "skip-reco": "Recomendación descartada"
 }

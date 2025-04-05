@@ -10,7 +10,12 @@ const LOCAL_URL: string = "http://localhost:3000";
 
 const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dgs55s8qh/image/upload";
 
-const COLLECTION: CollectionReference = collection(DB, "lymbrarie_books");
+const COLLECTION_BOOKS: CollectionReference = collection(DB, "lymbrarie_books");
+
+const COLLECTION_ENTRIES: CollectionReference = collection(
+  DB,
+  "lymbrarie_entries"
+);
 
 const API_BOOKS: string = "https://www.googleapis.com/books/v1/volumes";
 
@@ -57,15 +62,15 @@ const EMPTY_BOOK: Book = {
 
 const BOOK_RECO: BookData = {
   owner: "all",
-  title: "El Rey Serpiente",
+  title: "¡Viven! - La tragedia de los Andes",
   state: "Recommended",
-  author: "Jeff Zentver",
+  author: "Piers Paul Read",
   image:
-    "https://res.cloudinary.com/dgs55s8qh/image/upload/v1739910195/dn4yymb1zvkduwy5b4v6.jpg",
-  gender: "Novela juvenil",
+    "https://res.cloudinary.com/dgs55s8qh/image/upload/v1743807173/rtbw9ominfxxqqhljpzc.webp",
+  gender: "Historia",
   loaned: "",
   notes:
-    "Una novela que relata la conflictiva vida de unos adolescentes que viven en un pequeño pueblo. Una familia religiosa, un padre maltratador, una madre misteriosa y más en este título.",
+    "En 1972 un avión que partía desde Montevideo a Santiago de Chile se estrelló en los Andes, en un sitio desolado e inaccesible. Los sobrevivientes, un grupo de jóvenes jugadores de rugby, se enfrentaron a la adversidad y a la muerte para sobrevivir. La historia de su lucha por la vida es un testimonio de la resistencia humana y la fuerza del espíritu.",
   isFav: false,
 } as const;
 
@@ -89,7 +94,7 @@ const PAGES: Pages = {
 export {
   BASE_URL,
   CLOUDINARY_URL,
-  COLLECTION,
+  COLLECTION_BOOKS,
   EMPTY_BOOK,
   GENDERS,
   MAINTENANCE,
@@ -97,6 +102,7 @@ export {
   BOOK_RECO,
   API_BOOKS,
   PAGES,
+  COLLECTION_ENTRIES,
 };
 
 interface Pages {

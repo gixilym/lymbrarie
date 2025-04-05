@@ -1,260 +1,347 @@
-import { useRef, useState } from "react";
+import WriterBanner from "@/components/banners/WriterBanner";
+import WriterHistory from "@/components/history/WriterHistory";
+import { animated, useSpring } from "@react-spring/web";
+import { animateOpacity, len } from "@/utils/helpers";
+import { COLLECTION_ENTRIES, MAINTENANCE, PAGES } from "@/utils/consts";
+import { dismissNoti, notification } from "@/utils/notifications";
+import { isNull, noop } from "es-toolkit";
+import { twMerge } from "tailwind-merge";
+import { useTranslation } from "react-i18next";
+import {
+  deleteDoc,
+  doc,
+  getDocs,
+  query,
+  Query,
+  QuerySnapshot,
+  setDoc,
+  Timestamp,
+  where,
+} from "firebase/firestore";
+import {
+  ChangeEvent,
+  type RefObject,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   BookOpenIcon,
-  ClockIcon,
-  PencilIcon,
   Maximize2Icon,
   Minimize2Icon,
-  Trash2Icon,
-  TypeIcon,
-  FileEditIcon,
+  SaveIcon,
 } from "lucide-react";
-import type { Component } from "@/utils/types";
+import type { Component, Doc, Entry } from "@/utils/types";
+import { type User, useUser, withUser } from "next-firebase-auth";
+import {
+  type Auth,
+  getAuth,
+  onAuthStateChanged,
+  type Unsubscribe,
+} from "firebase/auth";
+
+export default withUser()(WriterPage);
 
 function WriterPage(): Component {
-  const [currentEntry, setCurrentEntry] = useState<string>("");
-  const [currentTitle, setCurrentTitle] = useState<string>("");
-  const [history, setHistory] = useState<Entry[]>([]);
-  const [editingEntry, setEditingEntry] = useState<Entry | null>(null);
-  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
-  const [showEditMenu, setShowEditMenu] = useState<string | null>(null);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const textareaContainerRef = useRef<HTMLDivElement>(null);
+  const user: User = useUser(),
+    auth: Auth = getAuth(),
+    [t] = useTranslation("global"),
+    [styles] = useSpring(() => animateOpacity(1, 400)),
+    [entry, setEntry] = useState<string>(""),
+    [title, setTitle] = useState<string>(""),
+    [history, setHistory] = useState<Entry[]>([]),
+    [editedEntry, setEditedEntry] = useState<Entry | null>(null),
+    [isFullscreen, setIsFullscreen] = useState<boolean>(false),
+    [showEditMenu, setShowEditMenu] = useState<string | null>(null),
+    [isSaving, setIsSaving] = useState<boolean>(false),
+    textareaRef: RefObject<HTMLTextAreaElement> = useRef(null),
+    containerRef: RefObject<HTMLDivElement> = useRef(null);
 
-  function handleSaveEntry() {
-    if (!currentEntry.trim()) return;
+  useEffect(() => {
+    if (!navigator.onLine) return;
+    const unsub: Unsubscribe = onAuthStateChanged(auth, () => noop());
+    return () => unsub();
+  }, [auth]);
 
-    if (editingEntry) {
-      // Actualizando entrada existente
-      setHistory(prev =>
-        prev.map(entry =>
-          entry.id === editingEntry.id
-            ? {
-                ...entry,
-                title: currentTitle || entry.title,
-                content: currentEntry,
-                timestamp: new Date().toLocaleString(),
+  useEffect(() => {
+    (async function () {
+      const { entries } = await getEntries(user?.id);
+      setHistory(entries);
+    })();
+  }, [user.id]);
+
+  async function handleSaveEntry(): Promise<void> {
+    if (!entry.trim()) return Promise.resolve();
+
+    notification("loading", t("saving"));
+    setIsSaving(true);
+
+    if (editedEntry) {
+      await setDoc(doc(COLLECTION_ENTRIES, editedEntry.id), {
+        ...editedEntry,
+        title: title || editedEntry.title,
+        content: entry,
+        timestamp: createTimestamp(),
+      });
+      setHistory((prev: Entry[]) =>
+        prev.map((i: Entry) =>
+          i.id != editedEntry.id
+            ? i
+            : {
+                ...i,
+                title: title || i.title,
+                content: entry,
+                timestamp: createTimestamp(),
               }
-            : entry
         )
       );
-      setEditingEntry(null);
+      setEditedEntry(null);
     } else {
-      // Creando nueva entrada
       const newEntry: Entry = {
         id: crypto.randomUUID(),
-        title: currentTitle || "Sin título",
-        content: currentEntry,
-        timestamp: new Date().toLocaleString(),
+        title: title || "Sin título",
+        content: entry,
+        timestamp: createTimestamp(),
+        owner: user?.id,
       };
-      setHistory(prev => [newEntry, ...prev]);
+      await setDoc(doc(COLLECTION_ENTRIES, newEntry.id), newEntry);
+      setHistory((prev: Entry[]) => [newEntry, ...prev]);
     }
 
-    setCurrentEntry("");
-    setCurrentTitle("");
-    alert(
-      editingEntry
-        ? "¡Entrada actualizada correctamente!"
-        : "¡Entrada guardada correctamente!"
+    dismissNoti(t("saving"));
+    notification("success", editedEntry ? "Entry updated!" : "Entry saved!");
+    setEntry("");
+    setTitle("");
+    setIsSaving(false);
+  }
+
+  async function handleEditTitle(entry: Entry): Promise<void> {
+    const newTitle: string | null = prompt(
+      "Ingresa el nuevo título:",
+      entry.title
     );
-  }
 
-  function handleEditTitle(entry: Entry) {
-    const newTitle = prompt("Ingresa el nuevo título:", entry.title);
-    if (newTitle !== null) {
-      setHistory(prev =>
-        prev.map(e =>
-          e.id === entry.id
-            ? { ...e, title: newTitle.trim() || "Sin título" }
-            : e
-        )
-      );
+    if (!isNull(newTitle)) {
+      try {
+        notification("loading", t("saving"));
+        await setDoc(doc(COLLECTION_ENTRIES, entry.id), {
+          ...entry,
+          title: newTitle,
+        });
+        setHistory((prev: Entry[]) =>
+          prev.map(i =>
+            i.id === entry.id
+              ? { ...i, title: newTitle.trim() || "Sin título" }
+              : i
+          )
+        );
+      } catch (err: any) {
+        notification("error", "Error actualizando el título");
+        console.error(`catch 'handleEditTitle' ${err.message}`);
+      } finally {
+        dismissNoti();
+      }
     }
+
     setShowEditMenu(null);
   }
 
-  function handleEditContent(entry: Entry) {
-    setCurrentEntry(entry.content);
-    setCurrentTitle(entry.title);
-    setEditingEntry(entry);
+  function handleEditContent(entry: Entry): void {
+    setEntry(entry.content);
+    setTitle(entry.title);
+    setEditedEntry(entry);
     setShowEditMenu(null);
+
+    scrollTo({ top: 300, behavior: "smooth" });
+
+    setTimeout(() => {
+      if (textareaRef.current) {
+        textareaRef.current.focus();
+      }
+    }, 100);
   }
 
-  function handleDeleteEntry(entry: Entry) {
+  async function handleDeleteEntry(entry: Entry): Promise<void> {
     if (confirm("¿Estás seguro de que quieres eliminar esta entrada?")) {
-      setHistory(prev => prev.filter(e => e.id !== entry.id));
+      try {
+        notification("loading", t("deleting"));
+        await deleteDoc(doc(COLLECTION_ENTRIES, entry.id));
+        setHistory((prev: Entry[]) =>
+          prev.filter((i: Entry) => i.id !== entry.id)
+        );
+      } catch (err: any) {
+        notification("error", "Error eliminando la entrada");
+        console.error(`catch 'handleDeleteEntry' ${err.message}`);
+      } finally {
+        dismissNoti(t("deleting"));
+      }
     }
     setShowEditMenu(null);
   }
 
-  function handleCancelEdit() {
-    setCurrentEntry("");
-    setCurrentTitle("");
-    setEditingEntry(null);
+  function handleCancelEdit(): void {
+    setEntry("");
+    setTitle("");
+    setEditedEntry(null);
   }
 
-  async function toggleFullscreen() {
-    if (!textareaContainerRef.current) return;
+  async function toggleFullscreen(): Promise<void> {
+    if (!containerRef.current) return Promise.resolve();
 
-    if (!isFullscreen) {
-      try {
-        await textareaContainerRef.current.requestFullscreen();
-        setIsFullscreen(true);
-        setTimeout(() => textareaRef.current?.focus(), 100);
-      } catch (err) {
-        console.error("Error al entrar en pantalla completa:", err);
-      }
+    if (isFullscreen) {
+      await document.exitFullscreen();
+      setIsFullscreen(false);
     } else {
-      try {
-        await document.exitFullscreen();
-        setIsFullscreen(false);
-      } catch (err) {
-        console.error("Error al salir de pantalla completa:", err);
-      }
+      await containerRef.current.requestFullscreen();
+      setIsFullscreen(true);
     }
   }
 
   return (
-    <section className="relative max-w-3xl w-full px-6 sm:px-0 mb-16 lg:mb-36 text-slate-200/90 flex flex-col justify-start items-center gap-6 md:gap-y-12 z-10">
-      <div className="w-full flex flex-col items-center gap-y-6 bg-slate-900 rounded-2xl pt-6 backdrop-blur-sm border border-violet-500/20">
-        <div className="w-full flex justify-between items-center">
-          <div className="flex items-center gap-x-4 pl-6">
-            <BookOpenIcon size={34} className="text-violet-300" />
-          </div>
+    <animated.section
+      style={styles}
+      className="min-h-screen w-full bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:to-slate-900 px-4 py-8 md:px-8 items-center justify-center flex flex-col"
+    >
+      <WriterBanner />
 
-          <div className="flex gap-x-3 pr-6">
-            {!isFullscreen && (
-              <button
-                onClick={toggleFullscreen}
-                className="btn btn-square btn-ghost"
-              >
-                <Maximize2Icon size={22} />
-              </button>
-            )}
-
-            <button
-              onClick={handleSaveEntry}
-              className="flex justify-center items-center gap-x-2 px-4 py-2 rounded-lg bg-gradient-to-r from-violet-500 to-violet-400 hover:opacity-85 transition-opacity text-white font-medium"
-            >
-              <span>{editingEntry ? "Actualizar" : "Guardar"}</span>
-            </button>
-
-            {editingEntry && (
-              <button
-                onClick={handleCancelEdit}
-                className="flex justify-center items-center gap-x-2 px-4 py-2 rounded-lg bg-slate-700 hover:opacity-85 transition-opacity text-white font-medium"
-              >
-                <span>Cancelar</span>
-              </button>
-            )}
-          </div>
-        </div>
-
-        <div
-          ref={textareaContainerRef}
-          className={`relative w-full  ${
-            isFullscreen
-              ? "!fixed inset-0 bg-transparent flex items-center justify-center p-8"
-              : ""
-          }`}
-        >
-          {isFullscreen && (
+      <div
+        ref={containerRef}
+        className={twMerge(
+          "w-full max-w-3xl mt-20 transition-all duration-300",
+          isFullscreen && "p-8 bg-white dark:bg-slate-900"
+        )}
+      >
+        {/* Writer Header */}
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-semibold text-slate-800 dark:text-slate-100">
+            {editedEntry ? "Editar entrada" : "Nueva entrada"}
+          </h2>
+          <div className="flex gap-3">
             <button
               onClick={toggleFullscreen}
-              className="absolute top-4 right-4 text-violet-400 hover:text-violet-300 transition-colors p-2 rounded-lg bg-slate-700/50"
+              className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              title={
+                isFullscreen
+                  ? "Salir de pantalla completa"
+                  : "Pantalla completa"
+              }
             >
-              <Minimize2Icon size={20} />
+              {isFullscreen ? (
+                <Minimize2Icon className="w-5 h-5 text-slate-600 dark:text-slate-300" />
+              ) : (
+                <Maximize2Icon className="w-5 h-5 text-slate-600 dark:text-slate-300" />
+              )}
             </button>
-          )}
-          <textarea
-            ref={textareaRef}
-            className={`text-pretty w-full p-6 bg-transparent outline-none resize-none text-slate-50 placeholder-slate-400 ${
-              isFullscreen
-                ? "h-full text-lg border-0 max-w-[800px] rounded-md"
-                : "h-[320px]"
-            }`}
-            placeholder="¡Hola! Este es un espacio para que puedas escribir lo que desees..."
-            value={currentEntry}
-            onChange={e => setCurrentEntry(e.target.value)}
-          />
+            <button
+              onClick={() => textareaRef.current?.focus()}
+              title="Ir al editor"
+              className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            >
+              <BookOpenIcon className="w-5 h-5 text-slate-600 dark:text-slate-300" />
+            </button>
+          </div>
         </div>
 
-        {history.length > 0 && (
-          <div className="w-full mt-8">
-            <h3 className="text-xl font-semibold mb-4 flex items-center gap-x-2">
-              <ClockIcon size={24} className="text-violet-400" />
-              Historial de escritos
-            </h3>
-            <div className="space-y-4">
-              {history.map(entry => (
-                <div
-                  key={entry.id}
-                  className="p-4 bg-slate-800/50 rounded-lg border border-violet-500/20 group"
-                >
-                  <div className="flex justify-between items-start mb-2">
-                    <div>
-                      <h4 className="font-medium text-lg mb-1">
-                        {entry.title}
-                      </h4>
-                      <p className="text-sm text-violet-400">
-                        {entry.timestamp}
-                      </p>
-                    </div>
-                    <div className="relative">
-                      <button
-                        onClick={() =>
-                          setShowEditMenu(
-                            showEditMenu === entry.id ? null : entry.id
-                          )
-                        }
-                        className="text-violet-400 hover:text-violet-300 transition-colors p-1 rounded-lg opacity-0 group-hover:opacity-100"
-                        disabled={!!editingEntry}
-                      >
-                        <PencilIcon size={16} />
-                      </button>
-                      {showEditMenu === entry.id && (
-                        <div className="absolute right-0 top-8 w-48 py-2 bg-slate-800 rounded-lg shadow-lg border border-violet-500/20 z-10">
-                          <button
-                            onClick={() => handleEditTitle(entry)}
-                            className="w-full px-4 py-2 text-left hover:bg-slate-700/50 flex items-center gap-x-2"
-                          >
-                            <TypeIcon size={16} />
-                            <span>Cambiar título</span>
-                          </button>
-                          <button
-                            onClick={() => handleEditContent(entry)}
-                            className="w-full px-4 py-2 text-left hover:bg-slate-700/50 flex items-center gap-x-2"
-                          >
-                            <FileEditIcon size={16} />
-                            <span>Editar contenido</span>
-                          </button>
-                          <button
-                            onClick={() => handleDeleteEntry(entry)}
-                            className="w-full px-4 py-2 text-left hover:bg-red-900/30 text-red-400 flex items-center gap-x-2"
-                          >
-                            <Trash2Icon size={16} />
-                            <span>Eliminar</span>
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                  <p className="whitespace-pre-wrap">{entry.content}</p>
-                </div>
-              ))}
-            </div>
+        <input
+          type="text"
+          value={title}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setTitle(e.target.value)
+          }
+          placeholder="Título de la entrada..."
+          className="w-full px-4 py-3 mb-4 text-lg font-medium bg-transparent border rounded-lg border-slate-200 dark:border-slate-700 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-500/20 dark:focus:ring-blue-400/20 outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500 text-slate-800 dark:text-slate-100"
+        />
+
+        <div className="relative">
+          <textarea
+            ref={textareaRef}
+            value={entry}
+            onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+              setEntry(e.target.value)
+            }
+            placeholder="Empieza a escribir aquí..."
+            className="w-full h-[400px] px-4 py-3 text-base bg-transparent border rounded-lg resize-none border-slate-200 dark:border-slate-700 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-2 focus:ring-blue-500/20 dark:focus:ring-blue-400/20 outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500 text-slate-800 dark:text-slate-100 scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-600 scrollbar-track-transparent"
+          />
+
+          <div className="absolute bottom-3 right-3 text-sm text-slate-400 dark:text-slate-500">
+            {len(entry)} caracteres
           </div>
-        )}
+        </div>
+
+        <div className="flex items-center justify-end gap-3 mt-4">
+          {editedEntry && (
+            <button
+              onClick={handleCancelEdit}
+              className="px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+            >
+              Cancelar
+            </button>
+          )}
+          <button
+            onClick={handleSaveEntry}
+            disabled={!entry.trim() || isSaving}
+            className={twMerge(
+              "flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-lg transition-all",
+              "hover:bg-blue-600 focus:ring-2 focus:ring-blue-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
+            )}
+          >
+            <SaveIcon className="w-4 h-4" />
+            {isSaving ? "Guardando..." : editedEntry ? "Actualizar" : "Guardar"}
+          </button>
+        </div>
       </div>
-    </section>
+
+      <div className="w-full max-w-3xl my-16">
+        <WriterHistory
+          history={history}
+          onEditTitle={handleEditTitle}
+          onEditContent={handleEditContent}
+          onDeleteEntry={handleDeleteEntry}
+          showEditMenu={showEditMenu}
+          setShowEditMenu={setShowEditMenu}
+        />
+      </div>
+    </animated.section>
   );
 }
 
-export default WriterPage;
+async function getEntries(UID: string | null): Promise<List> {
+  const entries: any[] = [];
+  let isEmpty: boolean = false;
 
-interface Entry {
-  id: string;
-  title: string;
-  content: string;
-  timestamp: string;
+  if (!isNull(UID)) {
+    try {
+      const q: Query = query(COLLECTION_ENTRIES, where("owner", "==", UID));
+      const res: QuerySnapshot = await getDocs(q);
+      res.forEach((doc: Doc) => entries.push({ ...doc.data() }));
+      isEmpty = res.empty;
+    } catch (err: any) {
+      if (MAINTENANCE) {
+        console.error(`catch 'getEntries' ${err.message}`);
+        location.href = PAGES.ERROR;
+      }
+    }
+  }
+
+  return { entries, isEmpty };
 }
+
+function createTimestamp(): string {
+  const now: Timestamp = Timestamp.now(),
+    date: Date = now.toDate(),
+    options: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      timeZone: "America/Argentina/Buenos_Aires",
+      hour12: true,
+    },
+    data: Intl.DateTimeFormat = new Intl.DateTimeFormat("es-AR", options);
+
+  return `${data.format(date)} UTC-3`;
+}
+
+type List = { entries: Entry[]; isEmpty: boolean };

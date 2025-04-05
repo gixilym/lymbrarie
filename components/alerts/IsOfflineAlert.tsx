@@ -1,8 +1,8 @@
-import type { Component } from "@/utils/types";
-import { Wifi, WifiOff, X } from "lucide-react";
+import { twMerge } from "tailwind-merge";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { twMerge } from "tailwind-merge";
+import { WifiIcon, WifiOffIcon, XIcon } from "lucide-react";
+import type { Component } from "@/utils/types";
 
 function IsOffline(): Component {
   const [t] = useTranslation("global"),
@@ -36,21 +36,21 @@ function IsOffline(): Component {
     <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-end text-white p-4">
       <div
         className={twMerge(
-          isOffline ? "bg-red-500/80" : "bg-green-500/80",
+          isOffline ? "bg-red-500" : "bg-green-500",
           "flex justify-center items-center p-4 rounded-xl gap-x-4"
         )}
       >
         <div className="flex items-center space-x-2">
           {isOffline ? (
             <>
-              <WifiOff className="w-5 h-5" />
+              <WifiOffIcon className="w-5 h-5" />
               <span className="text-sm font-medium">
                 {t("notification-offline")}
               </span>
             </>
           ) : (
             <>
-              <Wifi className="w-5 h-5" />
+              <WifiIcon className="w-5 h-5" />
               <span className="text-sm font-medium">
                 {t("notification-online")}
               </span>
@@ -58,10 +58,11 @@ function IsOffline(): Component {
           )}
         </div>
         <button
+          type="button"
           onClick={() => setIsVisible(false)}
           className="text-white hover:text-red-200 transition-colors"
         >
-          <X className="w-5 h-5" />
+          <XIcon className="w-5 h-5" />
         </button>
       </div>
     </div>

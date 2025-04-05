@@ -47,7 +47,7 @@ function getGuestBooks(t: Translate): Book[] {
         gender: t("dystopia"),
         image:
           "https://res.cloudinary.com/dgs55s8qh/image/upload/v1738724385/nj34sktvxjvjf0nqjutr.webp",
-        isFav: true,
+        isFav: false,
         loaned: "",
         notes: t("notes-book-1"),
         owner: "guest",
@@ -61,7 +61,7 @@ function getGuestBooks(t: Translate): Book[] {
         author: "Dan Brown",
         gender: "Thriller",
         image: t("cover-book-2"),
-        isFav: false,
+        isFav: true,
         loaned: "",
         notes: t("notes-book-2"),
         owner: "guest",

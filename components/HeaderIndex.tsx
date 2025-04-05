@@ -95,8 +95,8 @@ function HeaderIndex(): Component {
             />
             {t("book-finder")}
           </Link>
-          {/* //* Seguir con el componente Writer
-            <Link
+          {/* 
+          <Link
             onClick={() => setScroll(0)}
             href={PAGES.WRITER}
             className={twMerge(

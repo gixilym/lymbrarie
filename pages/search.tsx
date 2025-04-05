@@ -147,7 +147,7 @@ function SearchPage(): Component {
   return (
     <animated.section
       style={styles}
-      className="relative max-w-4xl w-full px-3 sm:px-0 mb-16 lg:mb-36 text-slate-200/90 flex flex-col justify-start items-center gap-y-12 min-h-[350px]"
+      className="relative max-w-4xl w-full px-3 sm:px-0 mb-16 lg:mb-36 text-slate-200/90 flex flex-col justify-start items-center gap-y-6 min-h-[350px]"
     >
       <Head>
         <title>Lymbrarie - {t("books-finder")}</title>
@@ -157,7 +157,7 @@ function SearchPage(): Component {
 
       <form
         onSubmit={onSubmit}
-        className="w-full flex flex-col items-center justify-center gap-y-4"
+        className="w-full flex flex-col items-center justify-center gap-y-4 px-6 sm:px-0"
       >
         <InputSearch query={query} setQuery={setQuery} isLoading={isLoading} />
         <AnnasURL />

@@ -21,12 +21,14 @@ function ListBooks(props: Props): Component {
     [animations] = useLocalStorage("animations", true),
     [styles, api] = useSpring(() => noop()),
     { isRepeated } = useTitles(BOOK_RECO.title ?? ""),
+    [skipReco] = useLocalStorage(`skip-reco-${BOOK_RECO.title}`, false),
     isSpanish: boolean = useTranslation("global").i18n.language == "es",
     { isGuest } = useGuest(),
     showReco: boolean =
       recommendations &&
       isSpanish &&
       ascSort == "asc" &&
+      !skipReco &&
       !isGuest &&
       !isRepeated &&
       !isSearch &&

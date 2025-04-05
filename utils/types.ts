@@ -89,6 +89,14 @@ interface ShuffleAtom {
   mode: "shuffle" | null;
 }
 
+interface Entry {
+  id: string;
+  title: string;
+  content: string;
+  timestamp: string;
+  owner: string | null;
+}
+
 export type {
   SortModes,
   Book,
@@ -110,4 +118,5 @@ export type {
   User,
   EventSelect,
   ShuffleAtom,
+  Entry,
 };

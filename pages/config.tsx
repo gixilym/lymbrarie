@@ -149,7 +149,7 @@ function ConfigPage(): Component {
         <button
           type="button"
           onClick={forgetSession}
-          className="px-6 py-3 flex justify-center items-center gap-x-3 rounded-xl bg-red-500/70 border-2 border-red-400/30 hover:bg-red-500/80 hover:border-transparent transition-colors text-red-50 text-lg"
+          className="mt-4 px-6 py-3 flex justify-center items-center gap-x-3 rounded-xl border-2 border-red-300/70 hover:border-red-400/80 hover:text-red-400  transition-colors text-red-300 text-lg"
         >
           <LogOutIcon size={24} />
           <span>{t("logout")}</span>
