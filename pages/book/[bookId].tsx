@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 import useLoadContent from "@/hooks/useLoadContent";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
+import { animateOpacity, isLent, tLC, translateState } from "@/utils/helpers";
 import { AuthAction, withUser } from "next-firebase-auth";
 import { COLLECTION_BOOKS, EMPTY_BOOK, PAGES } from "@/utils/consts";
 import { dismissNoti, notification } from "@/utils/notifications";
@@ -24,12 +25,6 @@ import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
 import { animated, type AnimatedComponent, useSpring } from "@react-spring/web";
-import {
-  animateOpacity,
-  isLent,
-  tLC,
-  translateStateBook,
-} from "@/utils/helpers";
 import type { Book, BookData, Component, Handler } from "@/utils/types";
 import {
   type Auth,
@@ -219,7 +214,7 @@ function BookId(): Component {
                   <LibraryIcon size={18} className="text-violet-300" />
                 </div>
                 <p className="text-base sm:text-lg">
-                  {translateStateBook(book?.data?.state ?? "", t)}
+                  {translateState(book?.data?.state ?? "", t, false)}
                   {isLent(book?.data?.state ?? "") && ` ${book?.data?.loaned}`}
                 </p>
               </div>

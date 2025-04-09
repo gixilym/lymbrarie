@@ -20,13 +20,14 @@ const COLLECTION_ENTRIES: CollectionReference = collection(
 const API_BOOKS: string = "https://www.googleapis.com/books/v1/volumes";
 
 const GENDERS: string[] = [
-  "no-gender",
   "custom",
+  "no-gender",
   "fiction",
   "non-fiction",
   "religion",
   "mystery",
   "fantasy",
+  "essay",
   "romance",
   "horror",
   "thriller",

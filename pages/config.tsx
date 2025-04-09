@@ -17,7 +17,7 @@ import { type Auth, getAuth } from "firebase/auth";
 import { type NextRouter, useRouter } from "next/router";
 import type { Component, EventSelect, Handler, SelectOpt } from "@/utils/types";
 import {
-  AmpersandIcon,
+  TypeIcon,
   CircleIcon,
   LanguagesIcon,
   LibraryIcon,
@@ -92,7 +92,7 @@ function ConfigPage(): Component {
               options={options}
               placeholder={formatLang()}
               value={language}
-              styles={selectStyles(true, true)}
+              styles={selectStyles(true, true, false)}
               onChange={(e: EventSelect) => handleSelect(e.value)}
             />
           }
@@ -102,7 +102,7 @@ function ConfigPage(): Component {
           isInput
           inputVal={username}
           handleChange={handleUsername}
-          Icon={AmpersandIcon}
+          Icon={TypeIcon}
           label={t("username")}
         />
 

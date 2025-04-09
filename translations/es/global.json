@@ -215,5 +215,8 @@
   "placeholder-notes": "Escribe lo que quieras recordar de ",
   "change-cover-image": "Cambiar imagen de portada",
   "writer": "Escribe",
-  "skip-reco": "Recomendación descartada"
+  "skip-reco": "Recomendación descartada",
+  "abandoned": "Abandonado",
+  "halfway": "A medias",
+  "essay": "Ensayo"
 }

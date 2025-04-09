@@ -2,10 +2,10 @@ import AddBookBtn from "./btns/AddBookBtn";
 import LogInBtn from "./btns/LogInBtn";
 import Select from "react-select";
 import useGuest from "@/hooks/useGuest";
-import { formatState, selectStyles } from "@/utils/helpers";
+import useIsMobile from "@/hooks/useIsMobile";
 import { menuAtom, searchAtom, stateAtom } from "@/utils/atoms";
+import { selectStyles, translateState } from "@/utils/helpers";
 import { twMerge } from "tailwind-merge";
-import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
 import type {
@@ -22,6 +22,7 @@ function SearchIndex(): Component {
     [value, setValue] = useRecoilState<string>(searchAtom),
     [selectVal, setSelectStateVal] = useRecoilState<string>(stateAtom),
     [menuIsOpen] = useRecoilState(menuAtom),
+    { isMobile } = useIsMobile(),
     handleSearch: Handler<InputEvent, void> = (e: InputEvent) =>
       setValue(e.target.value),
     handleSelect: Handler<string, void> = (val: string) =>
@@ -38,9 +39,15 @@ function SearchIndex(): Component {
         value: "Lent",
         label: t("new-book-lent"),
       },
+      {
+        value: "Abandoned",
+        label: t("abandoned"),
+      },
+      {
+        value: "Halfway",
+        label: t("halfway"),
+      },
     ] as const;
-
-  useEffect(() => setSelectStateVal(""), [location.pathname]);
 
   return (
     <div
@@ -56,24 +63,24 @@ function SearchIndex(): Component {
               id="input-search"
               value={value}
               onChange={handleSearch}
-              className="focus:outline-0 focus:border-rose-300/10 backdrop-blur-[2px] input join-item w-[230px] sm:w-[270px] h-14 bg-slate-800/60 border-2 border-rose-300/10 placeholder:text-slate-300/70 text-sm sm:text-lg text-slate-300 placeholder:w-full"
+              className="focus:outline-0 focus:border-rose-300/10 backdrop-blur-[2px] input join-item w-[230px] sm:w-[300px] h-14 bg-slate-800/60 border-2 border-rose-300/10 placeholder:text-slate-300/70 text-sm sm:text-lg text-slate-300 placeholder:w-full"
               placeholder={t("placeholder-library")}
               type="search"
               autoFocus
             />
             <Select
-              className="join-item capitalize text-sm sm:text-[17px] text-slate-900"
+              className="join-item capitalize text-xs md:text-[17px] text-slate-900"
               id="select-state"
               isSearchable={false}
               options={options}
-              placeholder={formatState(selectVal, t)}
+              placeholder={translateState(selectVal, t, true)}
               value={selectVal}
-              styles={selectStyles(selectVal == "", false)}
+              styles={selectStyles(selectVal == "", false, isMobile)}
               onChange={(e: EventSelect) => handleSelect(e.value)}
             />
           </div>
 
-          {isGuest ? <LogInBtn /> : <AddBookBtn text={t("new-book")} />}
+          {isGuest ? <LogInBtn /> : <AddBookBtn />}
         </div>
       </form>
     </div>

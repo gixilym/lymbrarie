@@ -1,6 +1,6 @@
-import type { Component } from "@/utils/types";
-import { useTranslation } from "react-i18next";
 import { twMerge } from "tailwind-merge";
+import { useTranslation } from "react-i18next";
+import type { Component } from "@/utils/types";
 
 export default function fnState(s: string, d: boolean): Component {
   return <BookState state={s} showDetails={d} />;
@@ -26,6 +26,12 @@ function BookState({ state, showDetails }: Props): Component {
       case "Recommended":
         return { text: t("new-book-recommended"), bg: "bg-violet-600/30" };
 
+      case "Abandoned":
+        return { text: t("abandoned"), bg: "bg-red-600/30" };
+
+      case "Halfway":
+        return { text: t("halfway"), bg: "bg-gray-600/30" };
+
       default:
         return { text: "", bg: "" };
     }
@@ -36,12 +42,14 @@ function BookState({ state, showDetails }: Props): Component {
   return (
     <span
       className={twMerge(
-        text.includes("Reco") ? "!w-[100px] sm:!w-[125px]" : "max-w-[90px]",
+        text.includes("Reco") || text.includes("Aban")
+          ? "!w-[100px] sm:!w-[125px]"
+          : "max-w-[90px]",
         `${bg} text-xs sm:text-sm rounded-md w-3/12 min-w-[75px] py-0.5 text-center select-none opacity-90`,
         showDetails && "absolute bottom-2 right-2 w-24"
       )}
     >
-      {text.split(" ")[0]}
+      {text}
     </span>
   );
 }

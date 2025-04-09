@@ -214,5 +214,8 @@
   "placeholder-notes": "Write what you want to remember about ",
   "change-cover-image": "Change cover image",
   "writer": "Write",
-  "skip-reco": "Skiped recommendation"
+  "skip-reco": "Skiped recommendation",
+  "abandoned": "Abandoned",
+  "halfway": "Halfway",
+  "essay": "Essay"
 }

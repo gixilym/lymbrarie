@@ -6,12 +6,13 @@ import { twMerge } from "tailwind-merge";
 import { useTranslation } from "react-i18next";
 import type { Component, InputEvent } from "@/utils/types";
 import {
-  UserRoundSearch as LentIcon,
-  Type as CustomIcon,
-  Tag as GenderIcon,
-  Library as StateIcon,
-  Italic as TitleIcon,
-  User as UserIcon,
+  UserRoundSearchIcon,
+  TypeIcon,
+  TagIcon,
+  LibraryIcon,
+  ItalicIcon,
+  UserIcon,
+  ChevronDownIcon,
 } from "lucide-react";
 import type { ChangeEventHandler } from "react";
 
@@ -46,7 +47,7 @@ function FieldsBook(props: Props): Component {
           isEqual("title-input", errorKey) && "!border-red-500/50 !border-2"
         )}
       >
-        <TitleIcon size={18} className="text-violet-300 mr-3" />
+        <ItalicIcon size={18} className="text-violet-300 mr-3" />
         <input
           id="title-input"
           autoFocus
@@ -90,7 +91,7 @@ function FieldsBook(props: Props): Component {
             "border border-violet-500/20 hover:border-violet-500/30 transition-colors"
           )}
         >
-          <GenderIcon
+          <TagIcon
             size={16}
             className="text-violet-300 mr-3 absolute pointer-events-none"
           />
@@ -105,21 +106,21 @@ function FieldsBook(props: Props): Component {
                 ? "default"
                 : "custom"
             }
-            className="pl-7 w-full bg-slate-900/50 text-slate-300 text-lg focus:outline-none disabled:opacity-50 appearance-none cursor-pointer h-full"
+            className="pl-7 w-full bg-slate-900 text-slate-300 text-lg focus:outline-none disabled:opacity-50 appearance-none cursor-pointer h-full"
           >
-            <option value="default" disabled className="bg-slate-900">
+            <option value="default" disabled>
               {t("literary-gender")}
             </option>
             {GENDERS.map((g: string) => (
-              <option
-                key={g}
-                value={g}
-                className="bg-slate-900/40 text-slate-200"
-              >
+              <option key={g} value={g}>
                 {t(g)}
               </option>
             ))}
           </select>
+          <ChevronDownIcon
+            size={20}
+            className="text-violet-400/70 pointer-events-none absolute right-6"
+          />
         </label>
 
         {isCustomGender && (
@@ -132,7 +133,7 @@ function FieldsBook(props: Props): Component {
                 "!border-red-500/50 !border-2"
             )}
           >
-            <CustomIcon size={18} className="text-violet-300 mr-3" />
+            <TypeIcon size={18} className="text-violet-300 mr-3" />
             <input
               id="gender-input"
               onChange={(e: InputEvent) => {
@@ -156,11 +157,11 @@ function FieldsBook(props: Props): Component {
           htmlFor="state-select"
           className={twMerge(
             "flex items-center bg-slate-900/40 backdrop-blur-sm rounded-xl px-4 h-14",
-            "border border-violet-500/20 hover:border-violet-500/30 transition-colors",
+            "border border-violet-500/20 hover:border-violet-500/30 transition-colors relative",
             isLent ? "w-1/2" : "w-full"
           )}
         >
-          <StateIcon
+          <LibraryIcon
             size={18}
             className="text-violet-300 mr-3 absolute pointer-events-none"
           />
@@ -169,24 +170,22 @@ function FieldsBook(props: Props): Component {
             disabled={isLoading}
             onChange={e => handleState(e.target.value)}
             defaultValue={defaultValueState}
-            className="pl-7 w-full bg-slate-900/40 text-slate-300 text-lg focus:outline-none disabled:opacity-50 appearance-none cursor-pointer h-full"
+            className="pl-7 w-full bg-slate-900 text-slate-300 text-lg focus:outline-none disabled:opacity-50 appearance-none cursor-pointer h-full"
           >
-            <option value="default" disabled className="bg-slate-900">
+            <option value="default" disabled>
               {t("current-state")}
             </option>
-            <option value="Reading" className="bg-slate-900">
-              {t("new-book-reading")}
-            </option>
-            <option value="Read" className="bg-slate-900">
-              {t("new-book-read")}
-            </option>
-            <option value="Pending" className="bg-slate-900">
-              {t("new-book-pending")}
-            </option>
-            <option value="Lent" className="bg-slate-900">
-              {t("new-book-lent")}
-            </option>
+            <option value="Reading">{t("new-book-reading")}</option>
+            <option value="Read">{t("new-book-read")}</option>
+            <option value="Pending">{t("new-book-pending")}</option>
+            <option value="Lent">{t("new-book-lent")}</option>
+            <option value="Abandoned">{t("abandoned")}</option>
+            <option value="Halfway">{t("halfway")}</option>
           </select>
+          <ChevronDownIcon
+            size={20}
+            className="text-violet-400/70 pointer-events-none absolute right-6"
+          />
         </label>
 
         {isLent && (
@@ -198,7 +197,7 @@ function FieldsBook(props: Props): Component {
               isEqual("lent-input", errorKey) && "!border-red-500/50 !border-2"
             )}
           >
-            <LentIcon size={18} className="text-violet-300 mr-3" />
+            <UserRoundSearchIcon size={18} className="text-violet-300 mr-3" />
             <input
               id="lent-input"
               disabled={isLoading}

@@ -10,9 +10,9 @@ function AnnasURL(): Component {
       <Link
         href="https://es.annas-archive.org/search"
         target="_blank"
-        className="opacity-70 hover:opacity-100 duration-75 link link-hover w-max items-center justify-center flex gap-x-1 pr-3.5"
+        className="opacity-70 hover:opacity-100 duration-75 link link-hover w-max items-start sm:items-center justify-center flex sm:gap-x-1.5 pr-3.5"
       >
-        <LinkIcon size={12} className="text-violet-300 mt-[1px]" />
+        <LinkIcon size={12} className="text-violet-300 mt-1 sm:mt-[0.5px]" />
         <p className="text-slate-300">
           {t("annas-text")}{" "}
           <span className="text-violet-300">Anna&apos;s Archive</span>

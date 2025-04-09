@@ -2,41 +2,23 @@ import { isEqual } from "es-toolkit";
 import type { StylesConfig } from "react-select";
 import type { Handler, Translate } from "./types";
 
-function translateStateBook(state: string, t: Translate): string {
-  switch (state) {
-    case "Read":
-      return t("new-book-read");
-
-    case "Reading":
-      return t("new-book-reading");
-
-    case "Pending":
-      return t("new-book-pending");
-
-    case "Lent":
-      return t("loanedto");
-
-    default:
-      return "";
-  }
-}
-
-function selectStyles(showAll: boolean, normal: boolean): any {
+function selectStyles(
+  showAll: boolean,
+  normal: boolean,
+  isMobile: boolean
+): any {
   return {
-    placeholder: (s: StylesConfig<any>) => ({
+    placeholder: (s: StylesConfig) => ({
       ...s,
-      // fontSize: "18px",
-      textAlign: "center",
+      textAlign: "start",
+      width: "100%",
       color: normal
         ? "#e2e8f0"
         : showAll
         ? "rgb(203 213 225 / 0.7)"
         : "rgb(203 213 225)",
     }),
-    singleValue: (s: StylesConfig) => ({
-      ...s,
-      // fontSize: "18px",
-    }),
+    singleValue: (s: StylesConfig) => ({ ...s }),
     control: (s: StylesConfig) => ({
       ...s,
       padding: "0 0.5rem",
@@ -47,16 +29,14 @@ function selectStyles(showAll: boolean, normal: boolean): any {
         : showAll
         ? "rgb(253 164 175 / 0.1)"
         : "rgb(196 181 253 / 0.4)",
-      width: normal ? "100%" : "160px",
+      width: isMobile ? (normal ? "100%" : "135px") : normal ? "100%" : "180px",
       height: normal ? "3rem" : "3.5rem",
       boxShadow: 0,
       borderTopLeftRadius: normal ? "0.8rem" : 0,
       borderBottomLeftRadius: normal ? "0.8rem" : 0,
       borderTopRightRadius: "0.8rem",
       borderBottomRightRadius: "0.8rem",
-      ":hover": {
-        borderColor: "rgb(196 181 253 / 0.4)",
-      },
+      ":hover": { borderColor: "rgb(196 181 253 / 0.4)" },
     }),
     option: (s: StylesConfig) => ({
       ...s,
@@ -76,29 +56,73 @@ function selectStyles(showAll: boolean, normal: boolean): any {
       borderRadius: "0.6rem",
       border: "2px solid rgb(253 164 175 / 0.1)",
     }),
+    dropdownIndicator: (s: StylesConfig) => ({
+      ...s,
+      backgroundColor: "transparent",
+      color: "rgba(167,139,250,0.7)",
+      "&:hover": {
+        backgroundColor: "transparent",
+        color: "rgba(167,139,250,0.7)",
+      },
+    }),
     indicatorSeparator: () => ({ backgroundColor: "transparent" }),
   };
 }
 
-function formatState(val: string, t: Translate): string {
-  switch (val) {
-    case "Read":
-      return t("new-book-read");
+function translateState(
+  state: string,
+  t: Translate,
+  inLibray: boolean
+): string {
+  if (inLibray) {
+    switch (state) {
+      case "Read":
+        return t("new-book-read");
 
-    case "Reading":
-      return t("new-book-reading");
+      case "Reading":
+        return t("new-book-reading");
 
-    case "Pending":
-      return t("new-book-pending");
+      case "Pending":
+        return t("new-book-pending");
 
-    case "Lent":
-      return t("new-book-lent");
+      case "Lent":
+        return t("new-book-lent");
 
-    case "Recommended":
-      return t("new-book-recommended");
+      case "Recommended":
+        return t("new-book-recommended");
 
-    default:
-      return t("new-book-all");
+      case "Abandoned":
+        return t("abandoned");
+
+      case "Halfway":
+        return t("halfway");
+
+      default:
+        return t("new-book-all");
+    }
+  } else {
+    switch (state) {
+      case "Read":
+        return t("new-book-read");
+
+      case "Reading":
+        return t("new-book-reading");
+
+      case "Pending":
+        return t("new-book-pending");
+
+      case "Lent":
+        return t("loanedto");
+
+      case "Abandoned":
+        return t("abandoned");
+
+      case "Halfway":
+        return t("halfway");
+
+      default:
+        return "";
+    }
   }
 }
 
@@ -140,13 +164,12 @@ export {
   animateOpacity,
   animatePopup,
   clearStorage,
-  formatState,
   isLent,
   len,
   removeItem,
   selectStyles,
   tLC,
-  translateStateBook,
+  translateState,
   pathIs,
 };
 interface AnimateOpacity {

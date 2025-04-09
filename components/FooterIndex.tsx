@@ -1,4 +1,5 @@
 import Link from "next/link";
+import useIsMobile from "@/hooks/useIsMobile";
 import { PAGES } from "@/utils/consts";
 import { pathIs } from "@/utils/helpers";
 import { twJoin } from "tailwind-merge";
@@ -7,7 +8,7 @@ import type { Component } from "@/utils/types";
 
 function FooterIndex(): Component {
   const [t] = useTranslation("global"),
-    isMobile: boolean = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent),
+    { isMobile } = useIsMobile(),
     dontShow: boolean =
       isMobile &&
       (pathIs(PAGES.RECOMMENDATION) ||
