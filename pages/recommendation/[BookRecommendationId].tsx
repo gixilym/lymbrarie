@@ -38,7 +38,7 @@ function BookRecommendationId(): Component {
       updateNotes: () => {},
       title: "",
     },
-    [popup] = useRecoilState<any>(popupsAtom),
+    [popup] = useRecoilState(popupsAtom),
     [stylesImg] = useSpring(() => animateOpacity(1, 200, 200)),
     [stylesIcons] = useSpring(() => animateOpacity(1, 1000)),
     [stylesSection] = useSpring(() => animateOpacity(1, 500));

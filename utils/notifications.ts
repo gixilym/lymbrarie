@@ -1,4 +1,3 @@
-import { isEqual } from "es-toolkit";
 import toast from "react-hot-toast";
 import { removeItem } from "./helpers";
 import type { Translate } from "./types";
@@ -6,7 +5,7 @@ import type { Translate } from "./types";
 function notification(noti: Notis, msg: string): void {
   toast[noti](msg, {
     id: msg,
-    duration: isEqual(noti, "loading") ? 50000 : 2000,
+    duration: noti == "loading" ? 50000 : 2000,
     style: {
       backgroundColor: "#202020",
       color: "#fff",

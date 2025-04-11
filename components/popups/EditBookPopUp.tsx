@@ -3,10 +3,10 @@ import FieldsBook from "../FieldsBook";
 import useLoadContent from "@/hooks/useLoadContent";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
-import { COLLECTION_BOOKS, EMPTY_BOOK, GENDERS, PAGES } from "@/utils/consts";
-import { deburr, delay, isEqual, union } from "es-toolkit";
+import { BookAdapters } from "@/adapters/book.adapters";
+import { deburr, delay, isEqual } from "es-toolkit";
 import { dismissNoti, notification } from "@/utils/notifications";
-import { doc, setDoc } from "firebase/firestore";
+import { EMPTY_BOOK, GENDERS, PAGES } from "@/utils/consts";
 import { isLent, len, tLC } from "@/utils/helpers";
 import { scrollAtom } from "@/utils/atoms";
 import { useRecoilState } from "recoil";
@@ -113,15 +113,15 @@ function EditBookPopUp(props: Props): Component {
     notification("loading", t("editing"));
 
     const loaned: string = isLent(book.state) ? book.loaned : "",
-      data: Book = { ...book, loaned } as const,
+      updatedData: BookData = { ...book, loaned } as const,
       oldVersion: any[] = cacheBooks.filter((b: Book) => b.id != documentId),
-      newVersion: Book[] = union(oldVersion, [{ id: documentId, data }]),
+      newVersion: Book[] = [...oldVersion, { id: documentId, data }],
       titlePage: string = encodeURIComponent(book.title),
       newPath: string = `${PAGES.BOOK}/${titlePage}`,
-      newTitles: string[] = union(allTitles, [book.title]);
+      newTitles: string[] = [...allTitles, book.title];
 
     try {
-      await setDoc(doc(COLLECTION_BOOKS, documentId), data);
+      await BookAdapters.manageBook(documentId, updatedData);
       setCacheBooks(newVersion);
       setAllTitles(newTitles);
       setScrollLS(scroll);

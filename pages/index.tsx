@@ -5,9 +5,10 @@ import LoaderCircle from "@/components/LoaderCircle";
 import SearchIndex from "@/components/SearchIndex";
 import useLoadContent from "@/hooks/useLoadContent";
 import useLocalStorage from "@/hooks/useLocalStorage";
-import { animateOpacity, len } from "@/utils/helpers";
+import useTitles from "@/hooks/useTitles";
 import { animated, useSpring } from "@react-spring/web";
-import { getDocuments, syncDocuments } from "@/utils/documents";
+import { animateOpacity, len } from "@/utils/helpers";
+import { BookAdapters } from "@/adapters/book.adapters";
 import { noop } from "es-toolkit";
 import { showNotifications } from "@/utils/notifications";
 import { useEffect, useState } from "react";
@@ -22,7 +23,6 @@ import {
   type Unsubscribe,
 } from "firebase/auth";
 import { AuthAction, type User, useUser, withUser } from "next-firebase-auth";
-import useTitles from "@/hooks/useTitles";
 
 export default withUser({
   whenAuthed: AuthAction.RENDER,
@@ -61,7 +61,7 @@ function Index(): Component {
   useEffect(() => {
     showNotifications(newNoti, deletedNoti, t);
     if (!navigator.onLine) return;
-    syncDocuments(argsSync);
+    BookAdapters.syncBooks(argsSync);
   }, []);
 
   useEffect(() => animateList(), [myBooks]);
@@ -91,7 +91,7 @@ function Index(): Component {
       return setMyBooks(cacheBooks ?? []);
 
     startLoading();
-    const { books, isEmpty } = await getDocuments(UID);
+    const { books, isEmpty } = await BookAdapters.getBooks(UID);
     setMyBooks(books);
     setBooksIsEmpty(isEmpty);
     setCacheBooks(books);

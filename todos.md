@@ -19,11 +19,9 @@
 
 ## Features:
 
-- Seguir con /writer.
 - Seguir con los tests.
 - Unificar las rutas y lógica de las rutas guest y recommendation.
 - Fecha de publicación para cada libro.
-- Opción para buscar librerías cercanas.
 - Utilizar un editor de texto enriquecido para las notas.
 - Chatbot con RAG Component.
 - Crear una nueva colección por cada UID.
@@ -34,3 +32,4 @@
 
 - Los if de navigator.onLine de los useEffect del index son para la PWA.
 - Las recomendaciones se actualizan manulamente en el código (si, sé que está mal).
+- Las peticiones a base de datos se gestionan desde la carpeta 'adapters'.

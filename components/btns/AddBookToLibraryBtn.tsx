@@ -4,11 +4,11 @@ import usePopUp from "@/hooks/usePopUp";
 import useTitles from "@/hooks/useTitles";
 import { animated, useSpring } from "@react-spring/web";
 import { animateOpacity } from "@/utils/helpers";
+import { BookAdapters } from "@/adapters/book.adapters";
 import { CheckIcon, PlusIcon } from "lucide-react";
-import { COLLECTION_BOOKS, PAGES } from "@/utils/consts";
-import { doc, setDoc } from "firebase/firestore";
-import { isNull, noop, union } from "es-toolkit";
+import { isNull, noop } from "es-toolkit";
 import { notification } from "@/utils/notifications";
+import { PAGES } from "@/utils/consts";
 import { twJoin, twMerge } from "tailwind-merge";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -43,9 +43,9 @@ function AddBookToLibraryBtn(props: Props | any): Component {
   async function addBookToLibrary(): Promise<void> {
     startLoading();
     try {
-      const newID: string = crypto.randomUUID();
-      const newVersion: Book[] = union(cacheBooks ?? [], [{ id: newID, data }]);
-      await setDoc(doc(COLLECTION_BOOKS, newID), data);
+      const id: string = crypto.randomUUID();
+      const newVersion: Book[] = [...(cacheBooks ?? []), { id, data }];
+      await BookAdapters.manageBook(id, data);
       setIsPressed(true);
       setCacheBooks(newVersion);
       if (isRecommended) return redirectToBook();

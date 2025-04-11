@@ -1,0 +1,81 @@
+import { COLLECTION_BOOKS, PAGES } from "@/utils/consts";
+import { isEqual, isNull } from "es-toolkit";
+import { len } from "@/utils/helpers";
+import { type Unsubscribe } from "firebase/auth";
+import type { ArgsSync, Book, BookData, Doc } from "@/utils/types";
+import {
+  deleteDoc,
+  doc,
+  getDocs,
+  onSnapshot,
+  type Query,
+  query,
+  type QuerySnapshot,
+  setDoc,
+  where,
+} from "firebase/firestore";
+
+export class BookAdapters {
+  static async getBooks(UID: string): Promise<BooksRes> {
+    const books: Book[] = [];
+    let isEmpty: boolean = false;
+
+    try {
+      const q: Query = query(COLLECTION_BOOKS, where("owner", "==", UID));
+      const res: QuerySnapshot = await getDocs(q);
+      res.forEach((doc: Doc) => books.push({ id: doc.id, data: doc.data() }));
+      isEmpty = res.empty;
+    } catch (err: any) {
+      console.error(`catch 'getBooks' ${err.message}`);
+      location.href = PAGES.ERROR;
+    }
+
+    return { books, isEmpty };
+  }
+
+  static async syncBooks(props: ArgsSync): Promise<SyncRes> {
+    if (isNull(props.UID)) return;
+
+    try {
+      const myQuery: Query = query(
+        COLLECTION_BOOKS,
+        where("owner", "==", props.UID)
+      );
+      const unsub: Unsubscribe = onSnapshot(myQuery, (qs: QuerySnapshot) => {
+        const remoteBooks: Book[] = qs.docs.map((d: Doc) => ({
+            id: d?.id,
+            data: d?.data(),
+          })),
+          localBooks: Book[] = props.cacheBooks ?? [],
+          hasChanges: boolean =
+            len(localBooks) != len(remoteBooks) ||
+            remoteBooks?.some(
+              (doc, i) => !isEqual(doc.data, localBooks[i]?.data)
+            );
+
+        if (hasChanges) {
+          props.setCacheBooks(remoteBooks);
+          props.setMyBooks(remoteBooks);
+          props.setAllTitles(remoteBooks.map(b => b?.data?.title ?? ""));
+        } else return;
+      });
+
+      return unsub;
+    } catch (err: any) {
+      console.error(`catch 'syncBooks' ${err.message}`);
+      location.href = PAGES.ERROR;
+    }
+  }
+
+  static async manageBook(bookId: string, data: BookData): Promise<void> {
+    await setDoc(doc(COLLECTION_BOOKS, bookId), data);
+  }
+
+  static async deleteBook(bookId: string): Promise<void> {
+    await deleteDoc(doc(COLLECTION_BOOKS, bookId));
+  }
+}
+
+type BooksRes = { books: Book[]; isEmpty: boolean };
+
+type SyncRes = Unsubscribe | void;

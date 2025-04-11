@@ -4,10 +4,10 @@ import usePopUp from "@/hooks/usePopUp";
 import useTitles from "@/hooks/useTitles";
 import { animated, useSpring } from "@react-spring/web";
 import { animatePopup, len } from "@/utils/helpers";
-import { COLLECTION_BOOKS, PAGES } from "@/utils/consts";
-import { deleteDoc, doc } from "firebase/firestore";
+import { BookAdapters } from "@/adapters/book.adapters";
 import { dismissNoti, notification } from "@/utils/notifications";
 import { isEqual } from "es-toolkit";
+import { PAGES } from "@/utils/consts";
 import { searchAtom, zeroAtom } from "@/utils/atoms";
 import { TriangleAlert as WarningIcon } from "lucide-react";
 import { useSetRecoilState } from "recoil";
@@ -32,7 +32,7 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
     notification("loading", t("deleting"));
 
     try {
-      await deleteDoc(doc(COLLECTION_BOOKS, documentId));
+      await BookAdapters.deleteBook(documentId);
       setSearchVal("");
       setZeroBooks(isEqual(len(cacheBooks), 1));
       updateData();

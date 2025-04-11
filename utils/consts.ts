@@ -2,8 +2,6 @@ import { DB } from "@/database/initAuth";
 import { collection, type CollectionReference } from "firebase/firestore";
 import type { Book, BookData } from "./types";
 
-const MAINTENANCE: boolean = false;
-
 const BASE_URL: string = "https://lymbrarie.com";
 
 const LOCAL_URL: string = "http://localhost:3000";
@@ -11,11 +9,6 @@ const LOCAL_URL: string = "http://localhost:3000";
 const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dgs55s8qh/image/upload";
 
 const COLLECTION_BOOKS: CollectionReference = collection(DB, "lymbrarie_books");
-
-const COLLECTION_ENTRIES: CollectionReference = collection(
-  DB,
-  "lymbrarie_entries"
-);
 
 const API_BOOKS: string = "https://www.googleapis.com/books/v1/volumes";
 
@@ -89,7 +82,6 @@ const PAGES: Pages = {
   BOOK: "/book",
   RECOMMENDATION: "/recommendation",
   ERROR: "/error",
-  WRITER: "/writer",
 };
 
 export {
@@ -98,12 +90,10 @@ export {
   COLLECTION_BOOKS,
   EMPTY_BOOK,
   GENDERS,
-  MAINTENANCE,
   LOCAL_URL,
   BOOK_RECO,
   API_BOOKS,
   PAGES,
-  COLLECTION_ENTRIES,
 };
 
 interface Pages {
@@ -120,5 +110,4 @@ interface Pages {
   BOOK: string;
   RECOMMENDATION: string;
   ERROR: string;
-  WRITER: string;
 }

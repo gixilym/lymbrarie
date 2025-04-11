@@ -4,11 +4,11 @@ import useLoadContent from "@/hooks/useLoadContent";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
 import useTitles from "@/hooks/useTitles";
-import { COLLECTION_BOOKS, EMPTY_BOOK, PAGES } from "@/utils/consts";
+import { BookAdapters } from "@/adapters/book.adapters";
 import { coverAtom } from "@/utils/atoms";
-import { delay, isEqual, union } from "es-toolkit";
+import { delay, isEqual } from "es-toolkit";
 import { dismissNoti, notification } from "@/utils/notifications";
-import { doc, setDoc } from "firebase/firestore";
+import { EMPTY_BOOK, PAGES } from "@/utils/consts";
 import { isLent, len, tLC } from "@/utils/helpers";
 import { useRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
@@ -94,10 +94,10 @@ function NewBookPopUp({ UID }: Props): Component {
     notification("loading", t("adding"));
 
     try {
-      const newID: string = crypto.randomUUID();
+      const id: string = crypto.randomUUID();
       const data: BookData = { ...book.data, owner: UID };
-      await setDoc(doc(COLLECTION_BOOKS, newID), data);
-      const newVersion: Book[] = union(cacheBooks ?? [], [{ id: newID, data }]);
+      await BookAdapters.manageBook(id, data);
+      const newVersion: Book[] = [...(cacheBooks ?? []), { id, data }];
       setCacheBooks(newVersion);
       setShowNoti(true);
       router.reload();

@@ -15,10 +15,9 @@ import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
 import { animateOpacity, isLent, tLC, translateState } from "@/utils/helpers";
 import { AuthAction, withUser } from "next-firebase-auth";
-import { COLLECTION_BOOKS, EMPTY_BOOK, PAGES } from "@/utils/consts";
+import { EMPTY_BOOK, PAGES } from "@/utils/consts";
 import { dismissNoti, notification } from "@/utils/notifications";
-import { doc, setDoc } from "firebase/firestore";
-import { isEqual, noop, union } from "es-toolkit";
+import { isEqual, noop } from "es-toolkit";
 import { popupsAtom } from "@/utils/atoms";
 import { twMerge } from "tailwind-merge";
 import { useEffect, useState } from "react";
@@ -43,6 +42,7 @@ import {
   User as UserIcon,
 } from "lucide-react";
 import { type NextRouter, useRouter } from "next/router";
+import { BookAdapters } from "@/adapters/book.adapters";
 
 export default withUser({
   whenAuthed: AuthAction.RENDER,
@@ -108,13 +108,13 @@ function BookId(): Component {
   async function updateNotes(): Promise<void> {
     notification("loading", t("saving"));
     try {
-      const bookToDB = { ...book?.data, notes };
-      await setDoc(doc(COLLECTION_BOOKS, book.id), bookToDB);
+      const dataWithUpdatedNotes: BookData = { ...book?.data, notes };
+      await BookAdapters.manageBook(book.id, dataWithUpdatedNotes);
       const updatedNotes: Book = { ...book, data: { ...book?.data, notes } },
         oldVersion: Book[] = cacheBooks.filter(
           (b: Book) => b?.id != documentId
         ),
-        newVersion: Book[] = union(oldVersion, [updatedNotes]);
+        newVersion: Book[] = [...oldVersion, updatedNotes];
       setCacheBooks(newVersion);
       router.reload();
     } catch (err: any) {
@@ -130,12 +130,15 @@ function BookId(): Component {
     try {
       setLoadingFav(true);
       notification("loading", t(checkFav ? "removing" : "adding"));
-      const data: BookData = { ...book?.data, isFav: !checkFav };
-      await setDoc(doc(COLLECTION_BOOKS, documentId), data);
+      const dataWithUpdatedFav: BookData = { ...book?.data, isFav: !checkFav };
+      await BookAdapters.manageBook(documentId, dataWithUpdatedFav);
       const oldVersion: Book[] = cacheBooks.filter(
         (b: Book) => b?.id != documentId
       );
-      const newVersion: Book[] = union(oldVersion, [{ id: documentId, data }]);
+      const newVersion: Book[] = [
+        ...oldVersion,
+        { id: documentId, data: dataWithUpdatedFav },
+      ];
       setCacheBooks(newVersion);
       router.reload();
     } catch (err: any) {

@@ -18,7 +18,6 @@ module.exports = {
     "/donations",
     "/profile",
     "/reader/**",
-    "/writer",
   ],
   robotsTxtOptions: {
     additionalSitemaps: [
