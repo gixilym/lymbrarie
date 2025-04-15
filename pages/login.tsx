@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import LoaderCircle from "@/components/LoaderCircle";
 import OpenSourceLink from "@/components/OpenSourceLink";
-import StarOnGithubBtn from "@/components/btns/StarOnGithubBtn";
 import ToggleLangBtn from "@/components/btns/ToggleLangBtn";
 import { animateOpacity } from "@/utils/helpers";
 import { animated, useSpring } from "@react-spring/web";
@@ -178,10 +177,10 @@ function LoginPage(): Component {
         </article>
       </section>
 
-      <div className="space-y-4 mb-8">
-        <OpenSourceLink />
-        <StarOnGithubBtn />
-      </div>
+      {/* <div className="space-y-4 mb-8"> */}
+      <OpenSourceLink />
+      {/* <StarOnGithubBtn /> */}
+      {/* </div> */}
 
       <FooterIndex />
     </animated.section>
