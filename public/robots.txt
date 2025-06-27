@@ -3,8 +3,8 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://lymbrarie.com
+Host: https://lymbrarie.gixi.dev
 
 # Sitemaps
-Sitemap: https://lymbrarie.com/sitemap.xml
-Sitemap: https://lymbrarie.com/sitemap-0.xml
+Sitemap: https://lymbrarie.gixi.dev/sitemap.xml
+Sitemap: https://lymbrarie.gixi.dev/sitemap-0.xml

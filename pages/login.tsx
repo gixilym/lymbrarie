@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import LoaderCircle from "@/components/LoaderCircle";
 import OpenSourceLink from "@/components/OpenSourceLink";
-import ToggleLangBtn from "@/components/btns/ToggleLangBtn";
 import { animateOpacity } from "@/utils/helpers";
 import { animated, useSpring } from "@react-spring/web";
 import { AuthAction, withUser } from "next-firebase-auth";
@@ -85,7 +84,7 @@ function LoginPage(): Component {
           />
           <h1 className="text-xl font-semibold text-slate-100">Lymbrarie</h1>
         </div>
-        <ToggleLangBtn />
+        {/* <ToggleLangBtn /> */}
       </header>
 
       <section className="px-4 sm:px-0 z-50 flex w-full flex-col items-center justify-center max-w-2xl gap-y-4 relative">

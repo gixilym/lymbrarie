@@ -22,7 +22,6 @@ import {
   LanguagesIcon,
   LibraryIcon,
   LogOutIcon,
-  MegaphoneIcon,
   SparklesIcon,
 } from "lucide-react";
 
@@ -43,7 +42,7 @@ function ConfigPage(): Component {
     [recommendations, setRecom] = useLocalStorage("recommendations", true),
     [circles, setCircles] = useLocalStorage("circles", true),
     [lang, setLang] = useLocalStorage("language", true),
-    [cacheBooks] = useLocalStorage("cache-books", true),
+    // [cacheBooks] = useLocalStorage("cache-books", true),
     { isGuest } = useGuest(),
     [username, setUsername] = useLocalStorage("username", ""),
     formatLang: Handler<void, string> = () =>
@@ -106,7 +105,7 @@ function ConfigPage(): Component {
           label={t("username")}
         />
 
-        <ConfigOption
+        {/* <ConfigOption
           label={t("recommendations")}
           textBtn={recommendations ? t("enabled") : t("disabled")}
           Icon={MegaphoneIcon}
@@ -121,7 +120,7 @@ function ConfigPage(): Component {
               );
             } else setRecom(!recommendations);
           }}
-        />
+        /> */}
 
         <ConfigOption
           label={t("show-state")}

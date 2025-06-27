@@ -1,11 +1,11 @@
 import global_en from "@/translations/en/global.json";
 import global_es from "@/translations/es/global.json";
 import i18next from "i18next";
-import useLocalStorage from "@/hooks/useLocalStorage";
+// import useLocalStorage from "@/hooks/useLocalStorage";
 import { I18nextProvider as Provider } from "react-i18next";
-import { isNull } from "es-toolkit";
+// import { isNull } from "es-toolkit";
 import type { Component } from "@/utils/types";
-import { type PropsWithChildren, useEffect } from "react";
+import { type PropsWithChildren } from "react";
 
 i18next.init({
   interpolation: { escapeValue: false },
@@ -13,15 +13,15 @@ i18next.init({
   resources: { es: { global: global_es }, en: { global: global_en } },
 });
 
-function I18Provider({ children }: PropsWithChildren): Component {
-  const [lang] = useLocalStorage("language", "es");
+export default function I18Provider({
+  children,
+}: PropsWithChildren): Component {
+  // const [lang] = useLocalStorage("language", "es");
 
-  useEffect(() => {
-    if (isNull(i18next)) return;
-    i18next?.changeLanguage(lang);
-  }, [lang]);
+  // useEffect(() => {
+  //   if (isNull(i18next)) return;
+  //   i18next?.changeLanguage(lang);
+  // }, [lang]);
 
   return <Provider i18n={i18next}>{children}</Provider>;
 }
-
-export default I18Provider;

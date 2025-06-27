@@ -1,40 +1,38 @@
-import BookCardRecommendation from "./BookCardRecommendation";
-import useGuest from "@/hooks/useGuest";
 import useLocalStorage from "@/hooks/useLocalStorage";
-import useTitles from "@/hooks/useTitles";
 import { animated, useSpring } from "@react-spring/web";
 import { animateOpacity } from "@/utils/helpers";
 import { animListAtom, searchAtom, stateAtom } from "@/utils/atoms";
-import { BOOK_RECO } from "@/utils/consts";
 import { noop } from "es-toolkit";
-import { useEffect } from "react";
 import { useRecoilState } from "recoil";
-import { useTranslation } from "react-i18next";
 import type { Component, SortModes } from "@/utils/types";
+import { useEffect } from "react";
 
-function ListBooks(props: Props): Component {
-  const { listBooks, showDetails, showFavs, ascSort, isSearch } = props,
+export default function ListBooks(props: Props): Component {
+  const { listBooks } =
+      // showDetails,
+      //  showFavs, ascSort, isSearch }
+      props,
     [searchVal] = useRecoilState<string>(searchAtom),
     [stateVal] = useRecoilState<string>(stateAtom),
     [animateCard] = useRecoilState<boolean>(animListAtom),
-    [recommendations] = useLocalStorage("recommendations", true),
+    // [recommendations] = useLocalStorage("recommendations", true),
     [animations] = useLocalStorage("animations", true),
-    [styles, api] = useSpring(() => noop()),
-    { isRepeated } = useTitles(BOOK_RECO.title ?? ""),
-    [skipReco] = useLocalStorage(`skip-reco-${BOOK_RECO.title}`, false),
-    isSpanish: boolean = useTranslation("global").i18n.language == "es",
-    { isGuest } = useGuest(),
-    showReco: boolean =
-      recommendations &&
-      isSpanish &&
-      ascSort == "asc" &&
-      !skipReco &&
-      !isGuest &&
-      !isRepeated &&
-      !isSearch &&
-      !searchVal &&
-      !stateVal &&
-      !showFavs;
+    [styles, api] = useSpring(() => noop());
+  // { isRepeated } = useTitles(BOOK_RECO.title ?? ""),
+  // [skipReco] = useLocalStorage(`skip-reco-${BOOK_RECO.title}`, false),
+  // isSpanish: boolean = useTranslation("global").i18n.language == "es",
+  // { isGuest } = useGuest()
+  // showReco: boolean =
+  //   recommendations &&
+  //   isSpanish &&
+  //   ascSort == "asc" &&
+  //   !skipReco &&
+  //   !isGuest &&
+  //   !isRepeated &&
+  //   !isSearch &&
+  //   !searchVal &&
+  //   !stateVal &&
+  //   !showFavs;
 
   useEffect(() => {
     if (!animations) return;
@@ -47,13 +45,11 @@ function ListBooks(props: Props): Component {
       className="mb-36 flex flex-col justify-start w-full items-center gap-y-4 sm:overflow-hidden h-auto"
       data-testid="list-books"
     >
-      {showReco && <BookCardRecommendation showDetails={showDetails} />}
+      {/* {showReco && <BookCardRecommendation showDetails={showDetails} />} */}
       {listBooks}
     </animated.ul>
   );
 }
-
-export default ListBooks;
 
 interface Props {
   listBooks: Component;

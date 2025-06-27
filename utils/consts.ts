@@ -2,7 +2,7 @@ import { DB } from "@/database/initAuth";
 import { collection, type CollectionReference } from "firebase/firestore";
 import type { Book, BookData } from "./types";
 
-const BASE_URL: string = "https://lymbrarie.com";
+const BASE_URL: string = "https://lymbrarie.gixi.dev";
 
 const LOCAL_URL: string = "http://localhost:3000";
 
