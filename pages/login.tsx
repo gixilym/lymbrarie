@@ -101,7 +101,7 @@ function LoginPage(): Component {
             className="bg-slate-950/25 hover:bg-slate-950/55 backdrop-blur-sm border border-violet-500/20 hover:border-violet-500/40 
               flex items-center justify-start gap-x-6 px-10 w-full max-w-[410px] h-14 rounded-xl transition-all"
           >
-            <GoogleIcon className="w-7 h-7" />
+            <GoogleIcon className="size-7" />
             <p className="text-lg text-slate-200">{t("with-google")}</p>
           </button>
 
@@ -111,7 +111,7 @@ function LoginPage(): Component {
             className="bg-slate-950/25 hover:bg-slate-950/55 backdrop-blur-sm border border-violet-500/20 hover:border-violet-500/40
               flex items-center justify-start gap-x-6 px-10 w-full max-w-[410px] h-14 rounded-xl transition-all"
           >
-            <GithubIcon className="w-7 h-7" />
+            <GithubIcon className="size-7" />
             <p className="text-lg text-slate-200">{t("with-github")}</p>
           </button>
 
@@ -120,7 +120,7 @@ function LoginPage(): Component {
             className="bg-slate-950/25 hover:bg-slate-950/55 backdrop-blur-sm border border-violet-500/20 hover:border-violet-500/40
               flex items-center justify-start gap-x-6 px-10 w-full max-w-[410px] h-14 rounded-xl transition-all"
           >
-            <GhostIcon className="w-7 h-7 text-violet-300" />
+            <GhostIcon className="size-7 text-violet-300" />
             <p className="text-lg text-slate-200">{t("access-guest")}</p>
           </Link>
         </div>

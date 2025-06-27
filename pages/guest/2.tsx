@@ -114,7 +114,7 @@ function GuestPage2(): Component {
                   <LibraryIcon size={18} className="text-violet-300" />
                 </div>
                 <p className="text-base sm:text-lg">
-                  {t("new-book-lent") + " " + t("a")} Maria
+                  {t("new-book-lent") + " " + t("a")} María
                 </p>
               </div>
             </div>
