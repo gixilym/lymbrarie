@@ -20,11 +20,11 @@ function PrivacyPolicyPage(): Component {
       <address className="text-sm sm:text-lg w-full">
         <Link
           className="text-blue-400 no-underline hover:text-blue-300 cursor-pointer duration-75"
-          href="mailto:gixi.tsx@gmail.com"
+          href="mailto:gixi@lym.software"
           target="_blank"
           rel="noreferrer"
         >
-          gixi.tsx@gmail.com
+          gixi@lym.software
         </Link>
       </address>
     </animated.section>

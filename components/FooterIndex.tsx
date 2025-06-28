@@ -54,11 +54,11 @@ export default function FooterIndex(): Component {
             </Link>
             <Link
               className="link link-hover"
-              href="mailto:gixi.tsx@gmail.com"
+              href="mailto:gixi@lym.software"
               target="_blank"
               rel="noreferrer"
             >
-              gixi.tsx@gmail.com
+              gixi@lym.software
             </Link>
           </nav>
           <nav>
