@@ -54,7 +54,7 @@ function ConfigPage(): Component {
     },
     options: SelectOpt = [
       { value: "es", label: "Español" },
-      { value: "en", label: "English" },
+      // { value: "en", label: "English" },
     ] as const,
     [styles] = useSpring(() => animateOpacity(1, 400));
 

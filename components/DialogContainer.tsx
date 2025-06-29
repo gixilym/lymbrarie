@@ -23,7 +23,7 @@ function DialogContainer(props: Props): Component {
         style={styles}
         onClick={e => e.stopPropagation()}
         className={twJoin(
-          "w-full sm:max-w-[600px] min-h-screen sm:min-h-0 sm:h-[450px] bg-slate-900/95 backdrop-blur-sm border border-violet-500/20 rounded-none sm:rounded-xl relative z-50 sm:mt-10 flex flex-col gap-y-3 overflow-y-auto justify-between p-6",
+          "w-full sm:max-w-[600px] min-h-screen sm:min-h-0 sm:h-[500px] bg-slate-900/95 backdrop-blur-sm border border-violet-500/20 rounded-none sm:rounded-xl relative z-50 sm:mt-10 flex flex-col gap-y-3 overflow-y-auto justify-between p-6",
           divClass
         )}
       >
