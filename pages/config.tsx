@@ -42,7 +42,6 @@ function ConfigPage(): Component {
     [recommendations, setRecom] = useLocalStorage("recommendations", true),
     [circles, setCircles] = useLocalStorage("circles", true),
     [lang, setLang] = useLocalStorage("language", true),
-    // [cacheBooks] = useLocalStorage("cache-books", true),
     { isGuest } = useGuest(),
     [username, setUsername] = useLocalStorage("username", ""),
     formatLang: Handler<void, string> = () =>
@@ -54,7 +53,7 @@ function ConfigPage(): Component {
     },
     options: SelectOpt = [
       { value: "es", label: "Español" },
-      // { value: "en", label: "English" },
+      { value: "en", label: "English" },
     ] as const,
     [styles] = useSpring(() => animateOpacity(1, 400));
 

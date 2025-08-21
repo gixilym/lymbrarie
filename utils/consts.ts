@@ -6,7 +6,7 @@ const BASE_URL: string = "https://lymbrarie.gixi.dev";
 
 const LOCAL_URL: string = "http://localhost:3000";
 
-const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dgs55s8qh/image/upload";
+const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/ducssjlkl/image/upload";
 
 const COLLECTION_BOOKS: CollectionReference = collection(DB, "lymbrarie_books");
 

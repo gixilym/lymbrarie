@@ -4,7 +4,7 @@ import { animated, useSpring } from "@react-spring/web";
 import { useTranslation } from "react-i18next";
 import type { Component } from "@/utils/types";
 
-function PrivacyPolicyPage(): Component {
+export default function PrivacyPolicyPage(): Component {
   const [t] = useTranslation("global");
   const [styles] = useSpring(() => animateOpacity(1, 400));
 
@@ -30,5 +30,3 @@ function PrivacyPolicyPage(): Component {
     </animated.section>
   );
 }
-
-export default PrivacyPolicyPage;

@@ -10,7 +10,9 @@ import { useRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
 import type { Component } from "@/utils/types";
 
-function InputCover(props: Props): Component {
+const preset: string = String(process.env.NEXT_PUBLIC_PRESET);
+
+export default function InputCover(props: Props): Component {
   const { isLoading, handleImage, isEditing } = props,
     [coverLoading, setCoverLoading] = useRecoilState(coverAtom),
     loading: boolean = isLoading || coverLoading,
@@ -33,7 +35,7 @@ function InputCover(props: Props): Component {
 
     try {
       body.append("file", acceptedFiles[0]);
-      body.append("upload_preset", "arjhb0vs");
+      body.append("upload_preset", preset);
 
       const res: Response = await fetch(CLOUDINARY_URL, {
           method: "POST",
@@ -115,8 +117,6 @@ function InputCover(props: Props): Component {
     </div>
   );
 }
-
-export default InputCover;
 
 interface Props {
   isLoading: boolean | undefined;

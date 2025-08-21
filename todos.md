@@ -1,6 +1,6 @@
 ## 🔴 Alta Prioridad
 
->
+> Configurar ModalUpdates.tsx y admin.tsx
 
 ---
 
