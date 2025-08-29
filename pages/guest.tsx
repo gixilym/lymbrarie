@@ -29,8 +29,7 @@ function getGuestBooks(t: Translate): Book[] {
       data: {
         author: "Jane Austen",
         gender: t("gender-book-0"),
-        image:
-          "https://res.cloudinary.com/ducssjlkl/image/upload/v1756501519/z9ezuo9vxi5lfqk38eqp_p9npzv.webp",
+        image: t("cover-book-0"),
         isFav: false,
         loaned: "",
         notes: t("notes-book-0"),
@@ -44,8 +43,7 @@ function getGuestBooks(t: Translate): Book[] {
       data: {
         author: "George Orwell",
         gender: t("dystopia"),
-        image:
-          "https://res.cloudinary.com/ducssjlkl/image/upload/v1756501610/nj34sktvxjvjf0nqjutr_szsfdy.webp",
+        image: t("cover-book-1"),
         isFav: false,
         loaned: "",
         notes: t("notes-book-1"),
@@ -59,8 +57,7 @@ function getGuestBooks(t: Translate): Book[] {
       data: {
         author: "Dan Brown",
         gender: "Thriller",
-        image:
-          "https://res.cloudinary.com/ducssjlkl/image/upload/v1756501595/izddg9gjnjrpvkrxz4it_jze3th.webp",
+        image: t("cover-book-2"),
         isFav: true,
         loaned: "",
         notes: t("notes-book-2"),
@@ -74,8 +71,7 @@ function getGuestBooks(t: Translate): Book[] {
       data: {
         author: "J.K. Rowling",
         gender: t("fantasy"),
-        image:
-          "https://res.cloudinary.com/ducssjlkl/image/upload/v1756501577/f1uc15e9qzttwemahtq8_kqrhpf.webp",
+        image: t("cover-book-3"),
         isFav: false,
         loaned: "",
         notes: t(""),

@@ -5,7 +5,7 @@ import type { Component } from "@/utils/types";
 import { Tag as GenderIcon, User as UserIcon } from "lucide-react";
 import { tLC } from "@/utils/helpers";
 
-function CardWithDetails(props: Card): Component {
+export default function CardWithDetails(props: Card): Component {
   const [t] = useTranslation("global"),
     [state] = useLocalStorage("state", true),
     { title, formatState, img, gender, author, onClick } = props;
@@ -17,14 +17,14 @@ function CardWithDetails(props: Card): Component {
     >
       {state && formatState()}
       {img && (
-        <div className="bg-violet-500/10 p-1.5 rounded-l-xl h-full">
+        <div className="bg-violet-500/10 p-1.5 rounded-l-xl h-full w-[75px]">
           <Image
             loading="lazy"
             src={img}
             width={75}
             height={118}
             alt="cover"
-            className="w-[75px] h-full rounded-lg select-none object-cover"
+            className="rounded-lg select-none object-cover h-full w-full"
           />
         </div>
       )}
@@ -63,8 +63,6 @@ function CardWithDetails(props: Card): Component {
     </li>
   );
 }
-
-export default CardWithDetails;
 
 interface Card {
   title: string;

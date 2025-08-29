@@ -66,7 +66,7 @@ function GuestPage1(): Component {
               priority
               style={stylesImg}
               className="select-none w-[200px] h-[300px] aspect-[2/3] rounded-lg object-cover"
-              src="https://res.cloudinary.com/dgs55s8qh/image/upload/v1738724385/nj34sktvxjvjf0nqjutr.webp"
+              src={t("cover-book-1")}
               width={200}
               height={300}
               alt="cover"
