@@ -10,7 +10,7 @@ import OfflinePopUp from "@/components/popups/OfflinePopUp";
 import SettingsBtn from "@/components/btns/SettingsBtn";
 import ShareBtn from "@/components/btns/ShareBtn";
 import toast from "react-hot-toast";
-import useLoadContent from "@/hooks/useLoadContent";
+import useLoad from "@/hooks/useLoad";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
 import { animateOpacity, isLent, tLC, translateState } from "@/utils/helpers";
@@ -58,7 +58,7 @@ function BookId(): Component {
     { openPopUp, closePopUp, closeBookPopUps } = usePopUp(),
     bookTitle: string = router.query.bookId?.toString() ?? "",
     title: string = decodeURIComponent(bookTitle),
-    { isLoading, finishLoading } = useLoadContent(),
+    { isLoading, finishLoading } = useLoad(),
     Cover: AnimatedComponent<typeof Image> = animated(Image),
     [book, setBook] = useState<Book>(EMPTY_BOOK),
     [documentId, setDocumentId] = useState<string>(""),

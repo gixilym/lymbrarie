@@ -1,4 +1,4 @@
-import useLoadContent from "@/hooks/useLoadContent";
+import useLoad from "@/hooks/useLoad";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
 import useTitles from "@/hooks/useTitles";
@@ -23,7 +23,7 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
     setSearchVal: SetState = useSetRecoilState<string>(searchAtom),
     setZeroBooks: SetState = useSetRecoilState<boolean>(zeroAtom),
     [cacheBooks, setCacheBooks] = useLocalStorage("cache-books", null),
-    { isLoading, startLoading, finishLoading } = useLoadContent(),
+    { isLoading, startLoading, finishLoading } = useLoad(),
     [, setShowNoti] = useLocalStorage("deleted", false),
     [styles] = useSpring(() => animatePopup());
 

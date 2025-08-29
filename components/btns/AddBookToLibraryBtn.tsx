@@ -1,4 +1,4 @@
-import useLoadContent from "@/hooks/useLoadContent";
+import useLoad from "@/hooks/useLoad";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
 import useTitles from "@/hooks/useTitles";
@@ -31,7 +31,7 @@ function AddBookToLibraryBtn(props: Props | any): Component {
     { isRepeated } = useTitles(title),
     inLibrary: boolean = isRepeated || isPressed,
     [cacheBooks, setCacheBooks] = useLocalStorage("cache-books", null),
-    { startLoading, isLoading, finishLoading } = useLoadContent();
+    { startLoading, isLoading, finishLoading } = useLoad();
 
   useEffect(() => setUserId(id), [id]);
 

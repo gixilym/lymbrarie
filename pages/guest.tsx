@@ -6,7 +6,7 @@ import { animated, useSpring } from "@react-spring/web";
 import { useTranslation } from "react-i18next";
 import type { Book, Component, Translate } from "@/utils/types";
 
-function GuestPage(): Component {
+export default function GuestPage(): Component {
   const [t] = useTranslation("global");
   const [styles] = useSpring(() => animateOpacity(1, 1000));
 
@@ -22,8 +22,6 @@ function GuestPage(): Component {
   );
 }
 
-export default GuestPage;
-
 function getGuestBooks(t: Translate): Book[] {
   return [
     {
@@ -31,7 +29,8 @@ function getGuestBooks(t: Translate): Book[] {
       data: {
         author: "Jane Austen",
         gender: t("gender-book-0"),
-        image: t("cover-book-0"),
+        image:
+          "https://res.cloudinary.com/ducssjlkl/image/upload/v1756501519/z9ezuo9vxi5lfqk38eqp_p9npzv.webp",
         isFav: false,
         loaned: "",
         notes: t("notes-book-0"),
@@ -46,7 +45,7 @@ function getGuestBooks(t: Translate): Book[] {
         author: "George Orwell",
         gender: t("dystopia"),
         image:
-          "https://res.cloudinary.com/dgs55s8qh/image/upload/v1738724385/nj34sktvxjvjf0nqjutr.webp",
+          "https://res.cloudinary.com/ducssjlkl/image/upload/v1756501610/nj34sktvxjvjf0nqjutr_szsfdy.webp",
         isFav: false,
         loaned: "",
         notes: t("notes-book-1"),
@@ -60,7 +59,8 @@ function getGuestBooks(t: Translate): Book[] {
       data: {
         author: "Dan Brown",
         gender: "Thriller",
-        image: t("cover-book-2"),
+        image:
+          "https://res.cloudinary.com/ducssjlkl/image/upload/v1756501595/izddg9gjnjrpvkrxz4it_jze3th.webp",
         isFav: true,
         loaned: "",
         notes: t("notes-book-2"),
@@ -74,7 +74,8 @@ function getGuestBooks(t: Translate): Book[] {
       data: {
         author: "J.K. Rowling",
         gender: t("fantasy"),
-        image: t("cover-book-3"),
+        image:
+          "https://res.cloudinary.com/ducssjlkl/image/upload/v1756501577/f1uc15e9qzttwemahtq8_kqrhpf.webp",
         isFav: false,
         loaned: "",
         notes: t(""),

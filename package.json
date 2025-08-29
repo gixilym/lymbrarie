@@ -24,6 +24,7 @@
   "dependencies": {
     "@fontsource/poppins": "^5.0.15",
     "@react-spring/web": "^9.7.4",
+    "@tinymce/tinymce-react": "^6.3.0",
     "crypto-js": "^4.2.0",
     "es-toolkit": "^1.17.0",
     "firebase": "^10.13.1",
@@ -42,7 +43,8 @@
     "react-select": "^5.8.0",
     "recoil": "^0.7.7",
     "sharp": "^0.33.5",
-    "tailwind-merge": "^2.5.2"
+    "tailwind-merge": "^2.5.2",
+    "tinymce": "^8.0.2"
   },
   "devDependencies": {
     "@playwright/test": "^1.50.1",

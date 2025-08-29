@@ -22,7 +22,7 @@ function CardWithDetails(props: Card): Component {
             loading="lazy"
             src={img}
             width={75}
-            height={130}
+            height={118}
             alt="cover"
             className="w-[75px] h-full rounded-lg select-none object-cover"
           />

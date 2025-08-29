@@ -3,7 +3,7 @@ import IndexBanner from "@/components/banners/IndexBanner";
 import ListSection from "@/components/ListSection";
 import LoaderCircle from "@/components/LoaderCircle";
 import SearchIndex from "@/components/SearchIndex";
-import useLoadContent from "@/hooks/useLoadContent";
+import useLoad from "@/hooks/useLoad";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import useTitles from "@/hooks/useTitles";
 import { animated, useSpring } from "@react-spring/web";
@@ -41,7 +41,7 @@ function Index(): Component {
     [cacheBooks, setCacheBooks] = useLocalStorage("cache-books", null),
     [, setAllTitles] = useLocalStorage("all-titles", []),
     [booksIsEmpty, setBooksIsEmpty] = useState<boolean | null>(null),
-    { startLoading, isLoading, finishLoading } = useLoadContent(),
+    { startLoading, isLoading, finishLoading } = useLoad(),
     [newNoti] = useLocalStorage("added", false),
     [deletedNoti] = useLocalStorage("deleted", false),
     [zeroBooks] = useRecoilState<boolean>(zeroAtom),

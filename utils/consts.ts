@@ -82,6 +82,7 @@ const PAGES: Pages = {
   BOOK: "/book",
   RECOMMENDATION: "/recommendation",
   ERROR: "/error",
+  WRITER: "/writer",
 };
 
 export {
@@ -97,6 +98,7 @@ export {
 };
 
 interface Pages {
+  WRITER: string;
   GUEST: string;
   SEARCH: string;
   HOME: string;

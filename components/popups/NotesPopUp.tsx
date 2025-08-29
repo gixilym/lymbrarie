@@ -2,7 +2,7 @@ import DialogContainer from "../DialogContainer";
 import HeaderPopUp from "../HeaderPopUp";
 import NotesAlert from "../alerts/NotesAlert";
 import useGuest from "@/hooks/useGuest";
-import useLoadContent from "@/hooks/useLoadContent";
+import useLoad from "@/hooks/useLoad";
 import usePopUp from "@/hooks/usePopUp";
 import { CircleX as ExitIcon, NotebookIcon, SaveIcon } from "lucide-react";
 import { delay, noop } from "es-toolkit";
@@ -26,7 +26,7 @@ function NotesPopUp(props: Props): Component {
     [showAlert, setShowAlert] = useState<boolean>(false),
     { notes, setNotes, updateNotes, loadingFav, title } = props,
     [originalNotes, setOriginalNotes] = useState<string>(notes),
-    { startLoading, isLoading } = useLoadContent();
+    { startLoading, isLoading } = useLoad();
 
   useEffect(() => {
     events.on("routeChangeStart", handleRouteChange);

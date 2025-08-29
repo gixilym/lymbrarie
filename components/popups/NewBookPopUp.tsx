@@ -1,6 +1,6 @@
 import DialogContainer from "../DialogContainer";
 import FieldsBook from "../FieldsBook";
-import useLoadContent from "@/hooks/useLoadContent";
+import useLoad from "@/hooks/useLoad";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
 import useTitles from "@/hooks/useTitles";
@@ -35,7 +35,7 @@ function NewBookPopUp({ UID }: Props): Component {
     router: NextRouter = useRouter(),
     formRef: FormRef = useRef<Reference>(null),
     [book, setBook] = useState<Book>(EMPTY_BOOK),
-    { isLoading, startLoading } = useLoadContent(),
+    { isLoading, startLoading } = useLoad(),
     [cacheBooks, setCacheBooks] = useLocalStorage("cache-books", null),
     [, setShowNoti] = useLocalStorage("added", false),
     [errorKey, setErrorKey] = useState<string>(""),

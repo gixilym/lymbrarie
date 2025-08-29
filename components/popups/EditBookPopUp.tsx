@@ -1,6 +1,6 @@
 import DialogContainer from "../DialogContainer";
 import FieldsBook from "../FieldsBook";
-import useLoadContent from "@/hooks/useLoadContent";
+import useLoad from "@/hooks/useLoad";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
 import { BookAdapters } from "@/adapters/book.adapters";
@@ -37,7 +37,7 @@ function EditBookPopUp(props: Props): Component {
     bookId: string = router.query.bookId as string,
     formatBookId: string = decodeURIComponent(bookId),
     form: FormRef = useRef<Reference>(null),
-    { isLoading, startLoading } = useLoadContent(),
+    { isLoading, startLoading } = useLoad(),
     [book, setBook] = useState<any>(EMPTY_BOOK),
     customVal: boolean = !GENDERS.includes(tLC(data?.gender ?? "")),
     [isCustomGender, setIsCustomGender] = useState<boolean>(customVal),

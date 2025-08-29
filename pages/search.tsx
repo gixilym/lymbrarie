@@ -6,7 +6,7 @@ import LoaderCircle from "@/components/LoaderCircle";
 import ResultsFrom from "@/components/ResultsFrom";
 import SearchBanner from "@/components/banners/SearchBanner";
 import TryDifferentTerms from "@/components/TryDifferentTerms";
-import useLoadContent from "@/hooks/useLoadContent";
+import useLoad from "@/hooks/useLoad";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { animateOpacity, len, tLC } from "@/utils/helpers";
 import { animated, useSpring } from "@react-spring/web";
@@ -43,7 +43,7 @@ function SearchPage(): Component {
     [queryVal, setQueryVal] = useState<string>(""),
     [showIcon, setShowIcon] = useState<boolean>(true),
     [booksResults, setBooksResults] = useState<Book[]>([]),
-    { isLoading, startLoading, finishLoading } = useLoadContent(),
+    { isLoading, startLoading, finishLoading } = useLoad(),
     [animations] = useLocalStorage("animations", true),
     [styles] = useSpring(() => animateOpacity(1, 400)),
     [stylesSec, api] = useSpring(() => animateOpacity(1, 600));

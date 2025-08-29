@@ -84,6 +84,7 @@ function ConfigPage(): Component {
           label={t("language")}
           selectOpts={
             <Select
+              isDisabled
               className="sm:w-[220px] w-full"
               id={t("language")}
               isSearchable={false}

@@ -12,14 +12,9 @@ import { useEffect } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
 import type { Component, SetState } from "@/utils/types";
-import {
-  LibraryIcon,
-  SearchIcon,
-  UserIcon,
-  Settings2 as ConfigIcon,
-} from "lucide-react";
+import { LibraryIcon, UserIcon, Settings2Icon, SearchIcon } from "lucide-react";
 
-function HeaderIndex(): Component {
+export default function HeaderIndex(): Component {
   const { isGuest } = useGuest(),
     [t] = useTranslation("global"),
     [menuIsOpen, setMenuIsOpen] = useRecoilState(menuAtom),
@@ -77,6 +72,25 @@ function HeaderIndex(): Component {
             />
             {t("library")}
           </Link>
+          {/* <Link
+            onClick={() => setScroll(0)}
+            href={PAGES.WRITER}
+            className={twMerge(
+              pathIs(PAGES.WRITER)
+                ? "bg-violet-500/20 text-violet-200"
+                : "text-slate-300",
+              "px-4 py-2 rounded-xl transition-colors hover:bg-violet-500/20 flex items-center gap-x-2"
+            )}
+          >
+            <PencilIcon
+              className={twJoin(
+                "w-5 h-5",
+                pathIs(PAGES.WRITER) && "text-violet-300/80"
+              )}
+            />
+            {t("writer")}
+          </Link> */}
+
           <Link
             onClick={() => setScroll(0)}
             href={PAGES.SEARCH}
@@ -124,7 +138,7 @@ function HeaderIndex(): Component {
               "px-4 py-2 rounded-xl transition-colors hover:bg-violet-500/20 flex items-center gap-x-2"
             )}
           >
-            <ConfigIcon
+            <Settings2Icon
               className={twJoin(
                 "w-5 h-5",
                 pathIs(PAGES.CONFIG) && "text-violet-300/80"
@@ -140,5 +154,3 @@ function HeaderIndex(): Component {
     </>
   );
 }
-
-export default HeaderIndex;
