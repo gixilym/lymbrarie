@@ -1,4 +1,3 @@
-import I18Provider from "@/components/I18Provider";
 import Layout from "@/components/Layout";
 import initAuth from "@/database/initAuth";
 import "@/globals.css";
@@ -14,17 +13,15 @@ function App({
   pageProps: { session, ...pageProps },
 }: AppProps): Component {
   return (
-    <I18Provider>
-      <RecoilProvider>
-        <Head>
-          <link rel="manifest" href="/manifest.json" />
-          <title translate="no">Lymbrarie</title>
-        </Head>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </RecoilProvider>
-    </I18Provider>
+    <RecoilProvider>
+      <Head>
+        <link rel="manifest" href="/manifest.json" />
+        <title translate="no">Lymbrarie</title>
+      </Head>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </RecoilProvider>
   );
 }
 

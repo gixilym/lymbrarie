@@ -11,13 +11,11 @@ import { PAGES } from "@/utils/consts";
 import { searchAtom, zeroAtom } from "@/utils/atoms";
 import { TriangleAlert as WarningIcon } from "lucide-react";
 import { useSetRecoilState } from "recoil";
-import { useTranslation } from "react-i18next";
 import { type NextRouter, useRouter } from "next/router";
 import type { Book, Component, SetState } from "@/utils/types";
 
 function DeleteBookPopUp({ documentId, title }: Props): Component {
   const { updateTitles } = useTitles(),
-    [t] = useTranslation("global"),
     { closePopUp } = usePopUp(),
     { push }: NextRouter = useRouter(),
     setSearchVal: SetState = useSetRecoilState<string>(searchAtom),
@@ -29,7 +27,7 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
 
   async function deleteDocument(): Promise<void> {
     startLoading();
-    notification("loading", t("deleting"));
+    notification("loading", "Eliminando");
 
     try {
       await BookAdapters.deleteBook(documentId);
@@ -81,11 +79,11 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
             <WarningIcon size={25} />
           </div>
           <p className="font-bold tracking-wide text-sm sm:text-lg pt-1.5 text-white">
-            {t("warning")}
+            Advertencia
           </p>
         </div>
         <p className="py-4 text-lg sm:text-xl text-violet-100">
-          {t("delete-message")}
+          ¿Deseas borrar este libro?
         </p>
         <div className="modal-action">
           <form method="dialog" className="space-x-2">
@@ -99,7 +97,7 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
             transition-colors disabled:opacity-50 
             text-slate-300 text-lg"
             >
-              {t("cancel")}
+              Cancelar
             </button>
 
             {isLoading ? (
@@ -107,7 +105,7 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
                 disabled
                 className="btn font-thin cursor-default text-white text-sm sm:text-lg w-26"
               >
-                {t("deleting")}
+                Eliminando
               </button>
             ) : (
               <button
@@ -115,7 +113,7 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
                 type="button"
                 className="btn font-thin bg-red-800/90 hover:bg-red-700 text-white text-sm sm:text-lg w-26"
               >
-                {t("delete-book")}
+                Eliminar libro
               </button>
             )}
           </form>

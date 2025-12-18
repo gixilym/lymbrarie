@@ -1,7 +1,6 @@
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { animListAtom } from "@/utils/atoms";
 import { useRecoilState } from "recoil";
-import { useTranslation } from "react-i18next";
 import type { Component, SortModes } from "@/utils/types";
 import {
   Shuffle as RandomIcon,
@@ -11,14 +10,13 @@ import {
 
 function SortBtn(props: Props): Component {
   const { toggleSort, ascSort } = props,
-    [t] = useTranslation("global"),
     [animations] = useLocalStorage("animations", true),
     [animate, setAnimate] = useRecoilState<boolean>(animListAtom);
 
   return (
     <button
       type="button"
-      title={t("order")}
+      title="Ordenar"
       className="btn btn-ghost btn-square"
       onClick={() => {
         toggleSort();

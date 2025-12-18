@@ -1,17 +1,16 @@
 import Cover from "@/public/cover.webp";
 import Image from "next/image";
 import useLocalStorage from "@/hooks/useLocalStorage";
-import { useTranslation } from "react-i18next";
+import { translateGender } from "@/utils/helpers";
 import { useState } from "react";
 import type { Component } from "@/utils/types";
 import { Tag as GenderIcon, User as UserIcon } from "lucide-react";
-import { tLC } from "@/utils/helpers";
 
 export default function CardWithDetails(props: Card): Component {
-  const [t] = useTranslation("global"),
-    [state] = useLocalStorage("state", true),
+  const [state] = useLocalStorage("state", true),
     { title, formatState, img, gender, author, onClick } = props,
-    [imgSrc, setImgSrc] = useState<string>(img || Cover.src);
+    [imgSrc, setImgSrc] = useState<string>(img || Cover.src),
+    translatedGender = translateGender(gender || "");
 
   return (
     <li
@@ -52,13 +51,13 @@ export default function CardWithDetails(props: Card): Component {
               </p>
             </div>
           )}
-          {gender && gender != "no-gender" && (
+          {gender && gender != "no-gender" && gender != "Sin asignar" && (
             <div className="flex flex-row justify-start items-start gap-x-2">
               <div className="bg-violet-500/20 p-[5.3px] rounded-lg">
                 <GenderIcon size={14} className="text-violet-400" />
               </div>
               <p className="text-sm sm:text-base capitalize line-clamp-1">
-                {t(tLC(gender))}
+                {translatedGender}
               </p>
             </div>
           )}

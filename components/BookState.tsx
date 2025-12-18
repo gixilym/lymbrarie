@@ -1,5 +1,4 @@
 import { twMerge } from "tailwind-merge";
-import { useTranslation } from "react-i18next";
 import type { Component } from "@/utils/types";
 
 export default function fnState(s: string, d: boolean): Component {
@@ -7,30 +6,35 @@ export default function fnState(s: string, d: boolean): Component {
 }
 
 function BookState({ state, showDetails }: Props): Component {
-  const [t] = useTranslation("global");
-
   function getState(): State {
     switch (state) {
+      case "Leyendo":
       case "Reading":
-        return { text: t("new-book-reading"), bg: "bg-yellow-600/30" };
+        return { text: "Leyendo", bg: "bg-yellow-600/30" };
 
+      case "Leído":
       case "Read":
-        return { text: t("new-book-read"), bg: "bg-green-600/30" };
+        return { text: "Leído", bg: "bg-green-600/30" };
 
+      case "Pendiente":
       case "Pending":
-        return { text: t("new-book-pending"), bg: "bg-orange-600/30" };
+        return { text: "Pendiente", bg: "bg-orange-600/30" };
 
+      case "Prestado":
       case "Lent":
-        return { text: t("loanedto").replace(" a", ""), bg: "bg-blue-600/30" };
+        return { text: "Prestado", bg: "bg-blue-600/30" };
 
+      case "Recomendado":
       case "Recommended":
-        return { text: t("new-book-recommended"), bg: "bg-violet-600/30" };
+        return { text: "Recomendado", bg: "bg-violet-600/30" };
 
+      case "Abandonado":
       case "Abandoned":
-        return { text: t("abandoned"), bg: "bg-red-600/30" };
+        return { text: "Abandonado", bg: "bg-red-600/30" };
 
+      case "A medias":
       case "Halfway":
-        return { text: t("halfway"), bg: "bg-gray-600/30" };
+        return { text: "A medias", bg: "bg-gray-600/30" };
 
       default:
         return { text: "", bg: "" };

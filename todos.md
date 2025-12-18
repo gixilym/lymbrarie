@@ -9,11 +9,10 @@
 
 ## 🟢 Baja Prioridad
 
-- Automatizar la recomendación de libros.
 - En modo 'shuffle' el valor del arr se modifica al cambiar 'searchVal', 'stateVal' o 'showFavs'.
 
 ## Features:
 
-- Unificar las rutas y lógica de las rutas guest y recommendation.
+- Recomendación de libros.
 - Fecha de publicación para cada libro.
 - Crear una nueva colección por cada UID.

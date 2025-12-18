@@ -1,11 +1,8 @@
 import Link from "next/link";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-import { useTranslation } from "react-i18next";
 import type { Component } from "@/utils/types";
 
 function OpenSourceLink(): Component {
-  const [t] = useTranslation("global");
-
   return (
     <Link
       href="https://github.com/gixilym/lymbrarie"
@@ -14,7 +11,7 @@ function OpenSourceLink(): Component {
     >
       <ChevronRightIcon className="w-3.5 h-3.5" />
       <span className="text-sm md:text-[16px]">
-        Lymbrarie {t("open-source")}
+        Lymbrarie es un proyecto de código abierto
       </span>
       <ChevronLeftIcon className="w-3.5 h-3.5" />
     </Link>

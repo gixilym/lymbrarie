@@ -2,12 +2,10 @@ import { animateOpacity } from "@/utils/helpers";
 import { animated, useSpring } from "@react-spring/web";
 import { ChevronRight, ChevronUp } from "lucide-react";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
-import type { Component, Handler, Translate } from "@/utils/types";
+import type { Component, Handler } from "@/utils/types";
 
 function FAQ(): Component {
-  const [t] = useTranslation("global"),
-    [openItem, setOpenItem] = useState<number | null>(null),
+  const [openItem, setOpenItem] = useState<number | null>(null),
     toggleItem: Handler<number, void> = (index: number) =>
       setOpenItem(openItem === index ? null : index),
     [styles] = useSpring(() => animateOpacity(1, 400));
@@ -19,7 +17,7 @@ function FAQ(): Component {
     >
       <div className="max-w-3xl w-full p-4 h-full">
         <ul className="space-y-4">
-          {faqItems(t).map((item, i) => (
+          {faqItems.map((item, i) => (
             <li
               key={i}
               className="border-2 border-gray-800 rounded-lg overflow-hidden"
@@ -48,30 +46,28 @@ function FAQ(): Component {
 
 export default FAQ;
 
-function faqItems(t: Translate): FAQItems[] {
-  return [
-    {
-      question: t("question-1"),
-      answer: t("answer-1"),
-    },
-    {
-      question: t("question-2"),
-      answer: t("answer-2"),
-    },
-    {
-      question: t("question-3"),
-      answer: t("answer-3"),
-    },
-    {
-      question: t("question-4"),
-      answer: t("answer-4"),
-    },
-    {
-      question: t("question-5"),
-      answer: t("answer-5"),
-    },
-  ];
-}
+const faqItems: FAQItems[] = [
+  {
+    question: "¿Qué es Lymbrarie?",
+    answer: "Lymbrarie es una aplicación web para gestionar tu biblioteca personal. Puedes agregar libros, organizarlos por estado de lectura, añadir notas y marcar tus favoritos.",
+  },
+  {
+    question: "¿Es gratis?",
+    answer: "Sí, Lymbrarie es completamente gratuito. No hay costos ocultos ni suscripciones requeridas.",
+  },
+  {
+    question: "¿Necesito crear una cuenta?",
+    answer: "Puedes explorar la aplicación en modo invitado, pero necesitarás una cuenta de Google o GitHub para guardar tu biblioteca personal y sincronizar tus datos.",
+  },
+  {
+    question: "¿Mis datos están seguros?",
+    answer: "Sí, utilizamos Firebase de Google para almacenar tus datos de forma segura. Tus datos personales están protegidos y solo tú tienes acceso a tu biblioteca.",
+  },
+  {
+    question: "¿Puedo usar Lymbrarie en mi móvil?",
+    answer: "Sí, Lymbrarie es completamente responsive y funciona perfectamente en dispositivos móviles, tablets y computadoras de escritorio.",
+  },
+];
 
 type FAQItems = {
   question: string;

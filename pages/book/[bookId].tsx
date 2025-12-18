@@ -13,7 +13,7 @@ import toast from "react-hot-toast";
 import useLoad from "@/hooks/useLoad";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
-import { animateOpacity, isLent, tLC, translateState } from "@/utils/helpers";
+import { animateOpacity, isLent, translateGender, translateState } from "@/utils/helpers";
 import { AuthAction, withUser } from "next-firebase-auth";
 import { EMPTY_BOOK, PAGES } from "@/utils/consts";
 import { dismissNoti, notification } from "@/utils/notifications";
@@ -22,7 +22,6 @@ import { popupsAtom } from "@/utils/atoms";
 import { twMerge } from "tailwind-merge";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { useTranslation } from "react-i18next";
 import { animated, type AnimatedComponent, useSpring } from "@react-spring/web";
 import type { Book, BookData, Component, Handler } from "@/utils/types";
 import {
@@ -53,7 +52,6 @@ export default withUser({
 
 function BookId(): Component {
   const auth: Auth = getAuth(),
-    [t] = useTranslation("global"),
     router: NextRouter = useRouter(),
     { openPopUp, closePopUp, closeBookPopUps } = usePopUp(),
     bookTitle: string = router.query.bookId?.toString() ?? "",
@@ -130,7 +128,7 @@ function BookId(): Component {
   async function toggleFav(): Promise<void> {
     try {
       setLoadingFav(true);
-      notification("loading", t(checkFav ? "removing" : "adding"));
+      notification("loading", checkFav ? "Eliminando de favoritos..." : "Añadiendo a favoritos...");
       const dataWithUpdatedFav: BookData = { ...book?.data, isFav: !checkFav };
       await BookAdapters.manageBook(documentId, dataWithUpdatedFav);
       const oldVersion: Book[] = cacheBooks.filter(
@@ -201,7 +199,7 @@ function BookId(): Component {
                   <UserIcon size={18} className="text-violet-300" />
                 </div>
                 <p className="text-base sm:text-lg">
-                  {book?.data?.author || t("unknown-author")}
+                  {book?.data?.author || "Autor desconocido"}
                 </p>
               </div>
 
@@ -210,7 +208,7 @@ function BookId(): Component {
                   <StateIcon size={18} className="text-violet-300" />
                 </div>
                 <p className="text-base sm:text-lg capitalize">
-                  {t(tLC(book?.data?.gender ?? ""))}
+                  {translateGender(book?.data?.gender ?? "")}
                 </p>
               </div>
 
@@ -219,8 +217,8 @@ function BookId(): Component {
                   <LibraryIcon size={18} className="text-violet-300" />
                 </div>
                 <p className="text-base sm:text-lg">
-                  {translateState(book?.data?.state ?? "", t, false)}
-                  {isLent(book?.data?.state ?? "") && ` ${book?.data?.loaned}`}
+                  {translateState(book?.data?.state ?? "")}
+                  {isLent(translateState(book?.data?.state ?? "")) && ` ${book?.data?.loaned}`}
                 </p>
               </div>
             </div>
@@ -260,7 +258,7 @@ function BookId(): Component {
                     ) : (
                       <RemoveFavIcon size={18} className="text-violet-300" />
                     )}
-                    <p>{t(checkFav ? "remove-fav" : "add-fav")}</p>
+                    <p>{checkFav ? "Quitar de favoritos" : "Añadir a favoritos"}</p>
                   </div>
                 </li>
 
@@ -274,7 +272,7 @@ function BookId(): Component {
                 >
                   <div className="flex flex-row items-center justify-start gap-x-3">
                     <EditIcon size={18} className="text-violet-300" />
-                    <p>{t("edit-book")}</p>
+                    <p>Editar libro</p>
                   </div>
                 </li>
 
@@ -288,7 +286,7 @@ function BookId(): Component {
                 >
                   <div className="flex flex-row items-center justify-start gap-x-3">
                     <DeleteIcon size={18} className="text-violet-300" />
-                    <p>{t("delete-book")}</p>
+                    <p>Eliminar libro</p>
                   </div>
                 </li>
               </ul>

@@ -3,12 +3,10 @@ import useIsMobile from "@/hooks/useIsMobile";
 import { PAGES } from "@/utils/consts";
 import { pathIs } from "@/utils/helpers";
 import { twJoin } from "tailwind-merge";
-import { useTranslation } from "react-i18next";
 import type { Component } from "@/utils/types";
 
 export default function FooterIndex(): Component {
-  const [t] = useTranslation("global"),
-    { isMobile } = useIsMobile(),
+  const { isMobile } = useIsMobile(),
     dontShow: boolean =
       isMobile &&
       (pathIs(PAGES.RECOMMENDATION) ||
@@ -34,10 +32,10 @@ export default function FooterIndex(): Component {
         <div className="footer text-base-content p-10 max-w-[1800px]">
           <aside>
             <Link href={PAGES.HOME} className="link link-hover footer-title">
-              {t("home")}
+              Inicio
             </Link>
             <p>
-              Lymbrarie {t("unlicense")}{" "}
+              Lymbrarie está bajo la licencia de{" "}
               <Link
                 className="hover:underline font-semibold"
                 target="_blank"
@@ -48,7 +46,7 @@ export default function FooterIndex(): Component {
             </p>
           </aside>
           <nav>
-            <p className="footer-title">{t("support")}</p>
+            <p className="footer-title">Soporte</p>
             <Link href={PAGES.FAQ} className="link link-hover">
               FAQ
             </Link>
@@ -62,18 +60,18 @@ export default function FooterIndex(): Component {
             </Link>
           </nav>
           <nav>
-            <p className="footer-title">{t("legal")}</p>
+            <p className="footer-title">Legal</p>
             <Link href={PAGES.TERMSOFUSE} className="link link-hover">
-              {t("terms")}
+              Términos de uso
             </Link>
             <Link href={PAGES.PRIVACYPOLICY} className="link link-hover">
-              {t("privacy-policy")}
+              Política de privacidad
             </Link>
           </nav>
           <nav>
             <p className="footer-title">Extra</p>
             <Link href={PAGES.DONATIONS} className="link link-hover">
-              {t("donations")}
+              Donaciones
             </Link>
             <Link
               href="https://www.flaticon.es/icono-gratis/libro_806197"
@@ -81,7 +79,7 @@ export default function FooterIndex(): Component {
               target="_blank"
               className="link link-hover"
             >
-              {t("icon-of")} Freepik
+              Icono de Freepik
             </Link>
           </nav>
         </div>

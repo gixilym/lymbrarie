@@ -9,13 +9,11 @@ import { PAGES } from "@/utils/consts";
 import { round } from "es-toolkit";
 import { scrollAtom } from "@/utils/atoms";
 import { useSetRecoilState } from "recoil";
-import { useTranslation } from "react-i18next";
 import type { BookData, Component, SetState } from "@/utils/types";
 import { useRouter, type NextRouter } from "next/router";
 
 function BookCard({ data, showDetails }: Props): Component {
   const { push }: NextRouter = useRouter(),
-    [t] = useTranslation("global"),
     title: string = encodeURIComponent(data.title ?? ""),
     { isGuest } = useGuest(),
     img: string = data.image || Cover.src,
@@ -36,10 +34,10 @@ function BookCard({ data, showDetails }: Props): Component {
     } as const,
     searchedProps: SearchedProps = {
       title: data.title ?? "",
-      author: data.author ?? t("unknown-author"),
+      author: data.author ?? "Autor desconocido",
       image: img,
       notes: data.notes ?? "...",
-      owner: data.owner ?? t("guest"),
+      owner: data.owner ?? "Invitado",
       gender: data.gender ?? "",
       isFav: data.isFav ?? false,
       loaned: data.loaned ?? "",

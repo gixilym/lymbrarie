@@ -2,7 +2,6 @@ import useLocalStorage from "@/hooks/useLocalStorage";
 import { animListAtom, showFavsAtom } from "@/utils/atoms";
 import { twMerge } from "tailwind-merge";
 import { useRecoilState } from "recoil";
-import { useTranslation } from "react-i18next";
 import type { Component } from "@/utils/types";
 import {
   BookmarkCheck as FavoriteCheckIcon,
@@ -10,14 +9,13 @@ import {
 } from "lucide-react";
 
 function FavoritesBtn({ toggleFavs }: Props): Component {
-  const [t] = useTranslation("global"),
-    [showFavs] = useRecoilState<boolean>(showFavsAtom),
+  const [showFavs] = useRecoilState<boolean>(showFavsAtom),
     [animations] = useLocalStorage("animations", true),
     [animate, setAnimate] = useRecoilState<boolean>(animListAtom);
 
   return (
     <button
-      title={t("favorites")}
+      title="Favoritos"
       className={twMerge(
         showFavs ? "bg-slate-700/45" : "bg-transparent",
         "btn btn-ghost btn-square"

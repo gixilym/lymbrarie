@@ -7,14 +7,12 @@ import { animateOpacity } from "@/utils/helpers";
 import { BOOK_RECO, PAGES } from "@/utils/consts";
 import { BookIcon, TagIcon, UserIcon, XIcon } from "lucide-react";
 import { notification } from "@/utils/notifications";
-import { useTranslation } from "react-i18next";
 import { useState, type SyntheticEvent } from "react";
 import type { Component } from "@/utils/types";
 import { type NextRouter, useRouter } from "next/router";
 
 function BookCardRecommendation({ showDetails }: Props): Component {
   const { push }: NextRouter = useRouter(),
-    [t] = useTranslation("global"),
     state = (): Component => fnState("Recommended", true),
     [styles] = useSpring(() => animateOpacity(1, 300)),
     [, setSkipReco] = useLocalStorage(`skip-reco-${BOOK_RECO.title}`, false),
@@ -26,7 +24,7 @@ function BookCardRecommendation({ showDetails }: Props): Component {
 
   function handleSkip(e: SyntheticEvent): void {
     e.stopPropagation();
-    notification("success", t("skip-reco"));
+    notification("success", "Recomendación omitida");
     setSkipReco(true);
     setLocalSkip(true); //* Estado para ocultar la recomendación sin refrescar la página.
   }

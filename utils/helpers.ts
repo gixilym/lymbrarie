@@ -1,6 +1,6 @@
 import { isEqual } from "es-toolkit";
 import type { StylesConfig } from "react-select";
-import type { Handler, Translate } from "./types";
+import type { Handler } from "./types";
 
 function selectStyles(
   showAll: boolean,
@@ -69,61 +69,52 @@ function selectStyles(
   };
 }
 
-function translateState(
-  state: string,
-  t: Translate,
-  inLibray: boolean
-): string {
-  if (inLibray) {
-    switch (state) {
-      case "Read":
-        return t("new-book-read");
+function translateGender(gender: string): string {
+  const genderMap: Record<string, string> = {
+    "custom": "Personalizado",
+    "no-gender": "Sin asignar",
+    "fiction": "Ficción",
+    "non-fiction": "No ficción",
+    "religion": "Religión",
+    "mystery": "Misterio",
+    "fantasy": "Fantasía",
+    "essay": "Ensayo",
+    "romance": "Romance",
+    "horror": "Terror",
+    "thriller": "Thriller",
+    "novel": "Novela",
+    "history": "Historia",
+    "biography": "Biografía",
+    "self-help": "Autoayuda",
+    "poetry": "Poesía",
+    "drama": "Drama",
+    "adventure": "Aventura",
+    "psychology": "Psicología",
+    "young-adult": "Juvenil",
+    "children's": "Infantil",
+    "philosophy": "Filosofía",
+    "economy": "Economía",
+    "constabulary": "Policial",
+    "science": "Ciencia",
+    "dystopia": "Distopía",
+  };
 
-      case "Reading":
-        return t("new-book-reading");
+  const lowerGender = gender?.toLowerCase().trim();
+  return genderMap[lowerGender] || gender;
+}
 
-      case "Pending":
-        return t("new-book-pending");
+function translateState(state: string): string {
+  const stateMap: Record<string, string> = {
+    "Reading": "Leyendo",
+    "Read": "Leído",
+    "Pending": "Pendiente",
+    "Lent": "Prestado",
+    "Recommended": "Recomendado",
+    "Abandoned": "Abandonado",
+    "Halfway": "A medias",
+  };
 
-      case "Lent":
-        return t("new-book-lent");
-
-      case "Recommended":
-        return t("new-book-recommended");
-
-      case "Abandoned":
-        return t("abandoned");
-
-      case "Halfway":
-        return t("halfway");
-
-      default:
-        return t("new-book-all");
-    }
-  } else {
-    switch (state) {
-      case "Read":
-        return t("new-book-read");
-
-      case "Reading":
-        return t("new-book-reading");
-
-      case "Pending":
-        return t("new-book-pending");
-
-      case "Lent":
-        return t("loanedto");
-
-      case "Abandoned":
-        return t("abandoned");
-
-      case "Halfway":
-        return t("halfway");
-
-      default:
-        return "";
-    }
-  }
+  return stateMap[state] || state;
 }
 
 function pathIs(path: string, options?: PathOptions): boolean {
@@ -137,7 +128,7 @@ const removeItem: Handler<string, void> = item =>
 
 const clearStorage: Handler<void, void> = () => window?.localStorage?.clear();
 
-const isLent: Handler<string, boolean> = state => isEqual(state, "Lent");
+const isLent: Handler<string, boolean> = state => isEqual(state, "Prestado");
 
 const tLC: Handler<string, string> = val => val?.toLowerCase().trim();
 
@@ -170,6 +161,7 @@ export {
   selectStyles,
   tLC,
   translateState,
+  translateGender,
   pathIs,
 };
 interface AnimateOpacity {

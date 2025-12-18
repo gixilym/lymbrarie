@@ -10,7 +10,6 @@ import { len, pathIs, tLC } from "@/utils/helpers";
 import { memo, useEffect, useMemo, useState } from "react";
 import { PAGES } from "@/utils/consts";
 import { useRecoilState } from "recoil";
-import { useTranslation } from "react-i18next";
 import {
   scrollAtom,
   searchAtom,
@@ -29,7 +28,6 @@ import type {
 
 const ListSection: MemoComponent = memo(function B(props: Props) {
   const { myBooks, isSearch } = props,
-    [t] = useTranslation("global"),
     [searchVal] = useRecoilState<string>(searchAtom),
     [stateVal] = useRecoilState<string>(stateAtom),
     [showDetailsLS, setShowDetailsLS] = useLocalStorage("show-details", true),
@@ -153,7 +151,7 @@ const ListSection: MemoComponent = memo(function B(props: Props) {
           <FavoritesBtn toggleFavs={() => setShowFavs(!showFavs)} />
           {showFavs && (
             <p className="pl-4 pt-0.5 text-[15px] text-slate-300/80">
-              {t("favorites")}
+              Favoritos
             </p>
           )}
         </div>

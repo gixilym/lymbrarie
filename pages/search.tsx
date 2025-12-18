@@ -20,7 +20,6 @@ import {
 import { deburr, noop } from "es-toolkit";
 import { FormEvent, useEffect, useState } from "react";
 import { notification } from "@/utils/notifications";
-import { useTranslation } from "react-i18next";
 import { AuthAction, type User, useUser, withUser } from "next-firebase-auth";
 import type { Book, Component } from "@/utils/types";
 import { useRouter, type NextRouter } from "next/router";
@@ -38,7 +37,6 @@ function SearchPage(): Component {
   const user: User = useUser(),
     auth: Auth = getAuth(),
     router: NextRouter = useRouter(),
-    [t] = useTranslation("global"),
     [query, setQuery] = useState<string>(""),
     [queryVal, setQueryVal] = useState<string>(""),
     [showIcon, setShowIcon] = useState<boolean>(true),
@@ -93,7 +91,7 @@ function SearchPage(): Component {
             image: b?.volumeInfo?.imageLinks?.thumbnail,
             url: b?.volumeInfo?.canonicalVolumeLink,
             loaned: "",
-            state: "Pending",
+            state: "Pendiente",
             isFav: false,
             owner: user?.id,
           },
@@ -111,7 +109,7 @@ function SearchPage(): Component {
       });
       setBooksResults(uniqueBooks);
     } catch (err: any) {
-      notification("error", t("error-search"));
+      notification("error", "Error al buscar libros");
       console.error(`catch 'searchBooks' ${err.message}`);
     } finally {
       finishLoading();
@@ -150,7 +148,7 @@ function SearchPage(): Component {
       className="relative max-w-4xl w-full px-3 sm:px-0 mb-16 lg:mb-36 text-slate-200/90 flex flex-col justify-start items-center gap-y-6 min-h-[350px]"
     >
       <Head>
-        <title>Lymbrarie - {t("books-finder")}</title>
+        <title>Lymbrarie - Buscador de libros</title>
       </Head>
 
       {showIcon && <SearchBanner />}

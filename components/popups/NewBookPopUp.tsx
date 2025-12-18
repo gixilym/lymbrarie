@@ -11,7 +11,6 @@ import { dismissNoti, notification } from "@/utils/notifications";
 import { EMPTY_BOOK, PAGES } from "@/utils/consts";
 import { isLent, len, tLC } from "@/utils/helpers";
 import { useRecoilState } from "recoil";
-import { useTranslation } from "react-i18next";
 import type {
   Book,
   BookData,
@@ -31,7 +30,6 @@ import {
 
 function NewBookPopUp({ UID }: Props): Component {
   const { closePopUp } = usePopUp(),
-    [t] = useTranslation("global"),
     router: NextRouter = useRouter(),
     formRef: FormRef = useRef<Reference>(null),
     [book, setBook] = useState<Book>(EMPTY_BOOK),
@@ -91,7 +89,7 @@ function NewBookPopUp({ UID }: Props): Component {
 
     if (!validateFields()) return;
     startLoading();
-    notification("loading", t("adding"));
+    notification("loading", "Añadiendo...");
 
     try {
       const id: string = crypto.randomUUID();
@@ -128,60 +126,60 @@ function NewBookPopUp({ UID }: Props): Component {
 
     if (!formatTitle) {
       setErrorKey("title-input");
-      notification("error", t("empty-title"));
+      notification("error", "El título no puede estar vacío");
       return false;
     }
     if (isRepeated) {
       setErrorKey("title-input");
-      notification("error", t("repeated-title"));
+      notification("error", "Ya tienes un libro con ese título");
       return false;
     }
 
     if (maxTitleLength) {
       setErrorKey("title-input");
-      notification("error", t("title-too-long"));
+      notification("error", "El título es demasiado largo (máx. 80 caracteres)");
       return false;
     }
 
     if (formatTitle.includes("/")) {
       setErrorKey("title-input");
-      notification("error", t("/"));
+      notification("error", "El título no puede contener el símbolo /");
       return false;
     }
 
     if (maxAuthorLength) {
       setErrorKey("author-input");
-      notification("error", t("author-too-long"));
+      notification("error", "El autor es demasiado largo (máx. 34 caracteres)");
       return false;
     }
 
     if (emptyCustomGender) {
       setErrorKey("gender-input");
-      notification("error", t("empty-custom-gender"));
+      notification("error", "El género personalizado no puede estar vacío");
       return false;
     }
 
     if (maxLengthGender) {
       setErrorKey("gender-input");
-      notification("error", t("custom-gender-too-long"));
+      notification("error", "El género es demasiado largo (máx. 24 caracteres)");
       return false;
     }
 
     if (emptyLoaned) {
       setErrorKey("lent-input");
-      notification("error", t("empty-loaned"));
+      notification("error", "Debes indicar a quién prestaste el libro");
       return false;
     }
 
     if (maxLengthLoaned) {
       setErrorKey("lent-input");
-      notification("error", t("loaned-too-long"));
+      notification("error", "El nombre es demasiado largo (máx. 24 caracteres)");
       return false;
     }
 
     if (validateImg) {
       setErrorKey("image-input");
-      notification("error", t("invalid-url-image"));
+      notification("error", "La URL de la imagen no es válida");
       return false;
     }
 
@@ -223,19 +221,19 @@ function NewBookPopUp({ UID }: Props): Component {
             transition-colors disabled:opacity-50 
             text-slate-400 hover:text-slate-300 text-lg"
           >
-            {t("cancel")}
+            Cancelar
           </button>
 
           <button
             disabled={isLoading || coverLoading}
             type="submit"
             className="px-8 py-2 rounded-xl
-            bg-violet-500/50 border border-violet-500/20 
-            hover:bg-violet-500/60 hover:border-violet-500/30 
+            bg-violet-500/50 border border-violet-500/20
+            hover:bg-violet-500/60 hover:border-violet-500/30
             transition-colors disabled:opacity-50
             text-violet-50 text-lg font-medium"
           >
-            {t("add")}
+            Añadir
           </button>
         </div>
       </form>

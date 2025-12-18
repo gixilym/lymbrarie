@@ -11,7 +11,6 @@ import { notification } from "@/utils/notifications";
 import { PAGES } from "@/utils/consts";
 import { twJoin, twMerge } from "tailwind-merge";
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { type NextRouter, useRouter } from "next/router";
 import { type User, useUser, withUser } from "next-firebase-auth";
 import type { Book, BookData, Component } from "@/utils/types";
@@ -22,7 +21,6 @@ function AddBookToLibraryBtn(props: Props | any): Component {
   const { id }: User = useUser(),
     { data, title, isRecommended } = props,
     [userId, setUserId] = useState<string | null>(id),
-    [t] = useTranslation("global"),
     router: NextRouter = useRouter(),
     { openPopUp } = usePopUp(),
     [animations] = useLocalStorage("animations", true),
@@ -50,7 +48,7 @@ function AddBookToLibraryBtn(props: Props | any): Component {
       setCacheBooks(newVersion);
       if (isRecommended) return redirectToBook();
     } catch (err: any) {
-      notification("error", t("err-add-book"));
+      notification("error", "Error al añadir el libro");
       console.error(`catch 'addBookToLibrary' ${err.message}`);
     } finally {
       finishLoading();

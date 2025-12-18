@@ -11,7 +11,6 @@ import { BOOK_RECO } from "@/utils/consts";
 import { popupsAtom } from "@/utils/atoms";
 import { useRecoilState } from "recoil";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
 import type { Component } from "@/utils/types";
 import {
   Library as LibraryIcon,
@@ -26,7 +25,6 @@ export default withUser()(BookRecommendationId);
 function BookRecommendationId(): Component {
   const user: User = useUser(),
     { openPopUp } = usePopUp(),
-    [t] = useTranslation("global"),
     Cover: AnimatedComponent<typeof Image> = animated(Image),
     [notes, setNotes] = useState<string>(BOOK_RECO.notes ?? ""),
     notesProps = {
@@ -104,7 +102,7 @@ function BookRecommendationId(): Component {
                   <LibraryIcon size={18} className="text-violet-300" />
                 </div>
                 <p className="text-base sm:text-lg">
-                  {t("new-book-recommended")}
+                  Recomendado
                 </p>
               </div>
             </div>
@@ -128,7 +126,7 @@ function BookRecommendationId(): Component {
                 data={{
                   ...BOOK_RECO,
                   owner: user.id,
-                  state: "Pending",
+                  state: "Pendiente",
                 }}
               />
             </animated.div>

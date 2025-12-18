@@ -1,12 +1,10 @@
 import { twMerge } from "tailwind-merge";
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { WifiIcon, WifiOffIcon, XIcon } from "lucide-react";
 import type { Component } from "@/utils/types";
 
 function IsOffline(): Component {
-  const [t] = useTranslation("global"),
-    [isVisible, setIsVisible] = useState<boolean>(false),
+  const [isVisible, setIsVisible] = useState<boolean>(false),
     [isOffline, setIsOffline] = useState<boolean>(false),
     handleOnline = (): void => {
       setIsOffline(false);
@@ -45,14 +43,14 @@ function IsOffline(): Component {
             <>
               <WifiOffIcon className="w-5 h-5" />
               <span className="text-sm font-medium">
-                {t("notification-offline")}
+                Estás desconectado
               </span>
             </>
           ) : (
             <>
               <WifiIcon className="w-5 h-5" />
               <span className="text-sm font-medium">
-                {t("notification-online")}
+                ¡Recuperaste la conexión!
               </span>
             </>
           )}

@@ -3,7 +3,6 @@ import { GENDERS } from "@/utils/consts";
 import { isEqual } from "es-toolkit";
 import { tLC } from "@/utils/helpers";
 import { twMerge } from "tailwind-merge";
-import { useTranslation } from "react-i18next";
 import type { Component, InputEvent } from "@/utils/types";
 import {
   UserRoundSearchIcon,
@@ -34,7 +33,6 @@ function FieldsBook(props: Props): Component {
       defaultValueLoaned = "",
       isEditing,
     } = props,
-    [t] = useTranslation("global"),
     applyGender: boolean = GENDERS.includes(tLC(defaultValueGender));
 
   return (
@@ -57,7 +55,7 @@ function FieldsBook(props: Props): Component {
           name="title"
           type="text"
           className="w-full bg-slate-900/40 text-slate-200 text-lg placeholder:text-slate-400 focus:outline-none disabled:opacity-50"
-          placeholder={t("placeholder-title")}
+          placeholder="Título"
         />
       </label>
 
@@ -79,7 +77,7 @@ function FieldsBook(props: Props): Component {
           type="text"
           className="w-full bg-slate-900/40 text-slate-200 text-lg placeholder:text-slate-400
               focus:outline-none disabled:opacity-50"
-          placeholder={t("placeholder-author")}
+          placeholder="Autor"
         />
       </label>
 
@@ -109,11 +107,11 @@ function FieldsBook(props: Props): Component {
             className="pl-7 w-full bg-slate-900 text-slate-300 text-lg focus:outline-none disabled:opacity-50 appearance-none cursor-pointer h-full"
           >
             <option value="default" disabled>
-              {t("literary-gender")}
+              Género literario
             </option>
             {GENDERS.map((g: string) => (
               <option key={g} value={g}>
-                {t(g)}
+                {g}
               </option>
             ))}
           </select>
@@ -145,8 +143,8 @@ function FieldsBook(props: Props): Component {
               type="text"
               className="w-full bg-slate-900/40 text-slate-200 text-lg placeholder:text-slate-400
                   focus:outline-none disabled:opacity-50"
-              placeholder={t("custom")}
-              defaultValue={applyGender ? t("my-gender") : defaultValueGender}
+              placeholder="Personalizado"
+              defaultValue={applyGender ? "Mi género" : defaultValueGender}
             />
           </label>
         )}
@@ -173,14 +171,14 @@ function FieldsBook(props: Props): Component {
             className="pl-7 w-full bg-slate-900 text-slate-300 text-lg focus:outline-none disabled:opacity-50 appearance-none cursor-pointer h-full"
           >
             <option value="default" disabled>
-              {t("current-state")}
+              Estado actual
             </option>
-            <option value="Reading">{t("new-book-reading")}</option>
-            <option value="Read">{t("new-book-read")}</option>
-            <option value="Pending">{t("new-book-pending")}</option>
-            <option value="Lent">{t("new-book-lent")}</option>
-            <option value="Abandoned">{t("abandoned")}</option>
-            <option value="Halfway">{t("halfway")}</option>
+            <option value="Leyendo">Leyendo</option>
+            <option value="Leído">Leído</option>
+            <option value="Pendiente">Pendiente</option>
+            <option value="Prestado">Prestado</option>
+            <option value="Abandonado">Abandonado</option>
+            <option value="A medias">A medias</option>
           </select>
           <ChevronDownIcon
             size={20}
@@ -207,7 +205,7 @@ function FieldsBook(props: Props): Component {
               type="text"
               className="w-full bg-slate-900/40 text-slate-200 text-lg placeholder:text-slate-400
                   focus:outline-none disabled:opacity-50"
-              placeholder={t("loanedto")}
+              placeholder="Prestado a"
             />
           </label>
         )}

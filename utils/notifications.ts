@@ -1,6 +1,5 @@
 import toast from "react-hot-toast";
 import { removeItem } from "./helpers";
-import type { Translate } from "./types";
 
 function notification(noti: Notis, msg: string): void {
   toast[noti](msg, {
@@ -19,18 +18,17 @@ function notification(noti: Notis, msg: string): void {
 
 function showNotifications(
   newBook: boolean,
-  deleted: boolean,
-  t: Translate
+  deleted: boolean
 ): void {
   switch (true) {
     case newBook: {
       removeItem("added");
-      return notification("success", t("book-added"));
+      return notification("success", "Libro añadido correctamente");
     }
 
     case deleted: {
       removeItem("deleted");
-      return notification("success", t("book-deleted"));
+      return notification("success", "Libro eliminado correctamente");
     }
 
     default: {

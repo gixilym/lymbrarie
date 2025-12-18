@@ -2,11 +2,9 @@ import Link from "next/link";
 import { animateOpacity } from "@/utils/helpers";
 import { animated, useSpring } from "@react-spring/web";
 import { CoinsIcon, HeartIcon } from "lucide-react";
-import { useTranslation } from "react-i18next";
 import type { Component } from "@/utils/types";
 
 function DonationsPage(): Component {
-  const [t] = useTranslation("global");
   const [styles] = useSpring(() => animateOpacity(1, 400));
 
   return (
@@ -21,10 +19,10 @@ function DonationsPage(): Component {
           </div>
         </div>
         <p className="text-3xl font-semibold text-center bg-gradient-to-r from-rose-400 via-violet-400 to-blue-400 text-transparent bg-clip-text">
-          {t("support-project")}
+          Apoya el proyecto
         </p>
         <p className="text-lg text-center max-w-xl text-slate-300">
-          {t("donations-text")}
+          Si disfrutas usando Lymbrarie y te gustaría apoyar el desarrollo continuo, considera hacer una donación. Tu apoyo me ayuda a mantener y mejorar esta aplicación.
         </p>
       </div>
 
@@ -33,7 +31,7 @@ function DonationsPage(): Component {
           <div className="bg-blue-400/20 p-4 rounded-full transition-transform">
             <CoinsIcon size={35} className="text-blue-400" />
           </div>
-          <p className="text-2xl font-medium text-blue-200">{t("paypal")}</p>
+          <p className="text-2xl font-medium text-blue-200">PayPal</p>
           <Link
             href="https://paypal.com/paypalme/gixilym"
             rel="noopener noreferrer"
@@ -48,7 +46,7 @@ function DonationsPage(): Component {
 
       <p className="text-xl font-medium flex items-center justify-center gap-x-2">
         <HeartIcon size={20} className="text-rose-300" />
-        <span className="text-rose-100">{t("thanks")}</span>
+        <span className="text-rose-100">¡Gracias por tu apoyo!</span>
         <HeartIcon size={20} className="text-rose-300" />
       </p>
     </animated.section>

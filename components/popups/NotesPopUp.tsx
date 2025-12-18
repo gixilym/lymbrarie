@@ -5,7 +5,6 @@ import useLoad from "@/hooks/useLoad";
 import usePopUp from "@/hooks/usePopUp";
 import { CircleX as ExitIcon } from "lucide-react";
 import { delay, noop } from "es-toolkit";
-import { useTranslation } from "react-i18next";
 import type { Component, Timer } from "@/utils/types";
 import { Editor } from "@tinymce/tinymce-react";
 import { type Editor as EditorType } from "tinymce";
@@ -18,10 +17,10 @@ import {
 } from "react";
 
 function NotesPopUp(props: Props): Component {
-  const [t] = useTranslation("global"),
-    { closePopUp } = usePopUp(),
+  const { closePopUp } = usePopUp(),
     { isGuest } = useGuest(),
     [showAlert, setShowAlert] = useState<boolean>(false),
+    [editorLoading, setEditorLoading] = useState<boolean>(true),
     { notes, setNotes, updateNotes, loadingFav } = props,
     { isLoading } = useLoad(),
     editorRef = useRef<EditorType | null>(null),
@@ -86,6 +85,11 @@ function NotesPopUp(props: Props): Component {
       divClass="!max-w-[1200px] max-h-[950px] !h-full sm:!mt-6 !overflow-hidden !bg-slate-800 !p-0 !border-4"
     >
       <div className="w-full h-full flex flex-col relative">
+        {editorLoading && (
+          <div className="absolute inset-0 bg-slate-800 flex items-center justify-center z-20">
+            <span className="loading loading-spinner loading-lg text-violet-500" />
+          </div>
+        )}
         <div className="flex-1 w-full overflow-hidden flex flex-col [&_iframe]:!border-0 [&_iframe]:!outline-0 [&_.tox-tinymce]:!border-0 [&_.tox-editor-container]:!border-0">
           <Editor
             tinymceScriptSrc="/tinymce/tinymce.min.js"
@@ -95,6 +99,7 @@ function NotesPopUp(props: Props): Component {
             onEditorChange={isGuest ? noop : handleChangeContent}
             onInit={(_evt, editor) => {
               editorRef.current = editor;
+              setEditorLoading(false);
             }}
             init={{
               theme: "silver",
@@ -129,7 +134,7 @@ function NotesPopUp(props: Props): Component {
         {isGuest && (
           <div className="flex-shrink-0 p-4 bg-slate-800/50 border-t border-violet-500/20">
             <p className="w-full text-sm text-slate-300/80 text-center">
-              {t("notes-guest")}
+              Estás en modo invitado. Las notas no se guardarán.
             </p>
           </div>
         )}

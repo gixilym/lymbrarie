@@ -13,7 +13,6 @@ import { noop } from "es-toolkit";
 import { showNotifications } from "@/utils/notifications";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { useTranslation } from "react-i18next";
 import { zeroAtom } from "@/utils/atoms";
 import type { Book, Component, ArgsSync } from "@/utils/types";
 import {
@@ -34,7 +33,6 @@ export default withUser({
 function Index(): Component {
   const user: User = useUser(),
     auth: Auth = getAuth(),
-    [t] = useTranslation("global"),
     [myBooks, setMyBooks] = useState<Book[]>([]),
     UID: string = user.id as string,
     profileName: string = user?.displayName as string,
@@ -59,7 +57,7 @@ function Index(): Component {
     };
 
   useEffect(() => {
-    showNotifications(newNoti, deletedNoti, t);
+    showNotifications(newNoti, deletedNoti);
     if (!navigator.onLine) return;
     BookAdapters.syncBooks(argsSync);
   }, []);

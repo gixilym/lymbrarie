@@ -1,20 +1,18 @@
-import { useTranslation } from "react-i18next";
 import type { Component } from "@/utils/types";
 import type { LucideIcon } from "lucide-react";
 
 function ConfigOption(props: Props): Component {
-  const [t] = useTranslation("global"),
-    {
-      Icon,
-      label,
-      action,
-      textBtn,
-      isInput,
-      handleChange,
-      inputVal,
-      isSelect,
-      selectOpts,
-    } = props;
+  const {
+    Icon,
+    label,
+    action,
+    textBtn,
+    isInput,
+    handleChange,
+    inputVal,
+    isSelect,
+    selectOpts,
+  } = props;
 
   if (isSelect)
     return (
@@ -46,7 +44,7 @@ function ConfigOption(props: Props): Component {
           type="text"
           onChange={handleChange}
           value={inputVal}
-          placeholder={t("enter-nickname")}
+          placeholder="Ingresa un apodo"
           maxLength={38}
           id={label}
           className="sm:w-[220px] w-full h-11 rounded-xl bg-slate-900/60 border border-violet-500/20 hover:border-violet-500/40 transition-colors text-center focus:outline-none placeholder:text-slate-500"

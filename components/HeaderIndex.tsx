@@ -10,13 +10,11 @@ import { PAGES } from "@/utils/consts";
 import { twJoin, twMerge } from "tailwind-merge";
 import { useEffect } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { useTranslation } from "react-i18next";
 import type { Component, SetState } from "@/utils/types";
 import { LibraryIcon, UserIcon, Settings2Icon } from "lucide-react";
 
 export default function HeaderIndex(): Component {
   const { isGuest } = useGuest(),
-    [t] = useTranslation("global"),
     [menuIsOpen, setMenuIsOpen] = useRecoilState(menuAtom),
     [styles] = useSpring(() => animateOpacity(1, 400, 600)),
     setScroll: SetState = useSetRecoilState(scrollAtom);
@@ -70,7 +68,7 @@ export default function HeaderIndex(): Component {
                 pathIs(PAGES.HOME, { exact: true }) && "text-violet-300/80"
               )}
             />
-            {t("library")}
+            Biblioteca
           </Link>
           {/* <Link
             onClick={() => setScroll(0)}
@@ -88,7 +86,7 @@ export default function HeaderIndex(): Component {
                 pathIs(PAGES.WRITER) && "text-violet-300/80"
               )}
             />
-            {t("writer")}
+            Escritor
           </Link> */}
 
           <Link
@@ -107,7 +105,7 @@ export default function HeaderIndex(): Component {
                 pathIs(PAGES.PROFILE) && "text-violet-300/80"
               )}
             />
-            {t("profile")}
+            Perfil
           </Link>
           <Link
             onClick={() => setScroll(0)}
@@ -125,7 +123,7 @@ export default function HeaderIndex(): Component {
                 pathIs(PAGES.CONFIG) && "text-violet-300/80"
               )}
             />
-            {t("settings")}
+            Configuración
           </Link>
         </nav>
 

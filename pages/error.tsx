@@ -5,12 +5,10 @@ import { clearStorage } from "@/utils/helpers";
 import { OctagonAlert as Icon } from "lucide-react";
 import { PAGES } from "@/utils/consts";
 import { useRouter } from "next/router";
-import { useTranslation } from "react-i18next";
 import type { Component } from "@/utils/types";
 
 function ErrorPage(): Component {
-  const [t] = useTranslation("global"),
-    notes: string = useRouter()?.query?.notes?.toString() ?? "",
+  const notes: string = useRouter()?.query?.notes?.toString() ?? "",
     [lang, setLang] = useLocalStorage("language", "en"),
     [state, setState] = useLocalStorage("state", true),
     [animations, setAnimations] = useLocalStorage("animations", true);
@@ -34,7 +32,7 @@ function ErrorPage(): Component {
           Error
         </span>
         <p className="text-xl md:text-2xl text-center w-full max-w-[650px] text-pretty px-2 md:px-0">
-          {t("unknown")}
+          Ha ocurrido un error inesperado. Si el problema persiste, contacta con soporte.
         </p>
       </div>
       <address className="text-xl md:text-2xl text-center w-full font-bold text-blue-400 hover:text-blue-300 duration-75 ">
@@ -45,7 +43,7 @@ function ErrorPage(): Component {
         onClick={clearData}
         className="text-2xl sm:text-3xl underline w-full text-center lowercase hover:text-slate-300 duration-75"
       >
-        {t("reload")}
+        recargar
       </Link>
     </section>
   );

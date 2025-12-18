@@ -1,9 +1,6 @@
 import { SearchIcon } from "lucide-react";
-import { useTranslation } from "react-i18next";
 
 function InputSearch({ query, setQuery, isLoading }: Props) {
-  const [t] = useTranslation("global");
-
   return (
     <div className="w-full flex justify-center items-center">
       <div className="join w-full max-w-lg">
@@ -12,7 +9,7 @@ function InputSearch({ query, setQuery, isLoading }: Props) {
           id="input-api-books"
           value={query}
           onChange={e => setQuery(e.target.value)}
-          placeholder={t("placeholder-search")}
+          placeholder="Busca por título o autor"
           type="search"
           autoFocus
           className="join-item w-full h-14 bg-slate-800/70 backdrop-blur-sm border-2 border-violet-500/60 rounded-l-xl focus:outline-none focus:border-violet-500/40 transition-colors placeholder:text-slate-300/90 text-lg px-6 border-r-0 placeholder:text-sm sm:placeholder:text-lg"

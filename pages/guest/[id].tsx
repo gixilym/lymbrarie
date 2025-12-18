@@ -4,14 +4,15 @@ import Image from "next/image";
 import LogInPopUp from "@/components/popups/LogInPopUp";
 import NotesPopUp from "@/components/popups/NotesPopUp";
 import SettingsBtn from "@/components/btns/SettingsBtn";
+import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
 import { animateOpacity } from "@/utils/helpers";
-import { animated, AnimatedComponent, useSpring } from "@react-spring/web";
+import { animated, useSpring } from "@react-spring/web";
+import { GUEST_BOOKS } from "@/utils/guestBooks";
 import { popupsAtom } from "@/utils/atoms";
 import { useRecoilState } from "recoil";
+import { useRouter } from "next/router";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
-import type { Component } from "@/utils/types";
 import {
   Trash as DeleteIcon,
   SquarePen as EditIcon,
@@ -21,12 +22,18 @@ import {
   Tag as StateIcon,
   User as UserIcon,
 } from "lucide-react";
+import type { Component } from "@/utils/types";
+import type { AnimatedComponent } from "@react-spring/web";
 
-function GuestPage1(): Component {
-  const { openPopUp } = usePopUp(),
-    [t] = useTranslation("global"),
+export default function GuestBookPage(): Component {
+  const router = useRouter(),
+    { id } = router.query,
+    bookId = Array.isArray(id) ? id[0] : id,
+    bookData = bookId ? GUEST_BOOKS[bookId] : null,
+    { openPopUp } = usePopUp(),
+    [animations] = useLocalStorage("animations", true),
     Cover: AnimatedComponent<typeof Image> = animated(Image),
-    [notes, setNotes] = useState<string>(t("notes-book-1")),
+    [notes, setNotes] = useState<string>(bookData?.notes || ""),
     notesProps = {
       notes,
       setNotes,
@@ -37,9 +44,21 @@ function GuestPage1(): Component {
       title: "",
     },
     [popup] = useRecoilState<any>(popupsAtom),
-    [stylesImg] = useSpring(() => animateOpacity(1, 200, 200)),
-    [stylesIcons] = useSpring(() => animateOpacity(1, 1000)),
-    [stylesSection] = useSpring(() => animateOpacity(1, 500));
+    [stylesImg] = useSpring(() => animateOpacity(animations ? 1 : 0, 200, 200)),
+    [stylesIcons] = useSpring(() => animateOpacity(animations ? 1 : 0, 1000)),
+    [stylesSection] = useSpring(() => animateOpacity(animations ? 1 : 0, 500));
+
+  if (!bookData) {
+    return (
+      <section className="flex flex-col justify-center items-center w-full h-screen">
+        <p className="text-2xl text-slate-200">Book not found</p>
+      </section>
+    );
+  }
+
+  const displayTitle = bookData?.title || "",
+    displayGender = bookData?.gender?.toLowerCase() || "",
+    stateText = bookData?.state || "";
 
   return (
     <animated.section
@@ -47,7 +66,7 @@ function GuestPage1(): Component {
       className="flex flex-col justify-start items-center w-full relative"
     >
       <Head>
-        <title translate="no">{t("name-book-1")}</title>
+        <title translate="no">{displayTitle}</title>
       </Head>
 
       {popup.login && <LogInPopUp />}
@@ -57,7 +76,7 @@ function GuestPage1(): Component {
 
       <article
         id="screenshot"
-        className="w-full max-w-4xl bg-slate-900/40 backdrop-blur-sm border border-violet-500/20 
+        className="w-full max-w-4xl bg-slate-900/40 backdrop-blur-sm border border-violet-500/20
           md:rounded-2xl p-8 flex flex-col sm:flex-row gap-8 relative items-center justify-center"
       >
         <div className="flex-shrink-0">
@@ -66,7 +85,7 @@ function GuestPage1(): Component {
               priority
               style={stylesImg}
               className="select-none w-[200px] h-[300px] aspect-[2/3] rounded-lg object-cover"
-              src={t("cover-book-1")}
+              src={bookData?.image || ""}
               width={200}
               height={300}
               alt="cover"
@@ -77,7 +96,7 @@ function GuestPage1(): Component {
         <div className="flex flex-col justify-between w-full gap-y-6">
           <div className="space-y-8">
             <p className="text-2xl sm:text-3xl font-semibold text-slate-200 line-clamp-2">
-              1984
+              {displayTitle}
             </p>
 
             <div className="space-y-3 text-slate-300">
@@ -85,23 +104,21 @@ function GuestPage1(): Component {
                 <div className="bg-violet-500/20 p-2 rounded-lg">
                   <UserIcon size={18} className="text-violet-300" />
                 </div>
-                <p className="text-base sm:text-lg">George Orwell</p>
+                <p className="text-base sm:text-lg">{bookData?.author}</p>
               </div>
 
               <div className="flex items-center gap-x-3">
                 <div className="bg-violet-500/20 p-2 rounded-lg">
                   <StateIcon size={18} className="text-violet-300" />
                 </div>
-                <p className="text-base sm:text-lg capitalize">
-                  {t("dystopia")}
-                </p>
+                <p className="text-base sm:text-lg capitalize">{displayGender}</p>
               </div>
 
               <div className="flex items-center gap-x-3">
                 <div className="bg-violet-500/20 p-2 rounded-lg">
                   <LibraryIcon size={18} className="text-violet-300" />
                 </div>
-                <p className="text-base sm:text-lg">{t("new-book-pending")}</p>
+                <p className="text-base sm:text-lg">{stateText}</p>
               </div>
             </div>
 
@@ -129,7 +146,7 @@ function GuestPage1(): Component {
                   >
                     <div className="flex flex-row items-center justify-start gap-x-3">
                       <FavoriteIcon size={18} className="text-violet-300" />
-                      <p>{t("add-fav")}</p>
+                      <p>Añadir a favoritos</p>
                     </div>
                   </li>
 
@@ -139,7 +156,7 @@ function GuestPage1(): Component {
                   >
                     <div className="flex flex-row items-center justify-start gap-x-3">
                       <EditIcon size={18} className="text-violet-300" />
-                      <p>{t("edit-book")}</p>
+                      <p>Editar libro</p>
                     </div>
                   </li>
 
@@ -149,7 +166,7 @@ function GuestPage1(): Component {
                   >
                     <div className="flex flex-row items-center justify-start gap-x-3">
                       <DeleteIcon size={18} className="text-violet-300" />
-                      <p>{t("delete-book")}</p>
+                      <p>Eliminar libro</p>
                     </div>
                   </li>
                 </ul>
@@ -161,5 +178,3 @@ function GuestPage1(): Component {
     </animated.section>
   );
 }
-
-export default GuestPage1;

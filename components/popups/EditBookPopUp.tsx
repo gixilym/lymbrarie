@@ -10,7 +10,6 @@ import { EMPTY_BOOK, GENDERS, PAGES } from "@/utils/consts";
 import { isLent, len, tLC } from "@/utils/helpers";
 import { scrollAtom } from "@/utils/atoms";
 import { useRecoilState } from "recoil";
-import { useTranslation } from "react-i18next";
 import type {
   Book,
   BookData,
@@ -31,7 +30,6 @@ import {
 function EditBookPopUp(props: Props): Component {
   const { data: dataBook, documentId } = props,
     data: BookData = dataBook?.data,
-    [t] = useTranslation("global"),
     { closePopUp } = usePopUp(),
     router: NextRouter = useRouter(),
     bookId: string = router.query.bookId as string,
@@ -110,7 +108,7 @@ function EditBookPopUp(props: Props): Component {
 
     if (!validateFields()) return;
     startLoading();
-    notification("loading", t("editing"));
+    notification("loading", "Editando...");
 
     const loaned: string = isLent(book.state) ? book.loaned : "",
       updatedData: BookData = { ...book, loaned } as const,
@@ -158,61 +156,61 @@ function EditBookPopUp(props: Props): Component {
 
     if (!title) {
       setErrorKey("title-input");
-      notification("error", t("empty-title"));
+      notification("error", "El título no puede estar vacío");
       return false;
     }
 
     if (repeteadTitle) {
       setErrorKey("title-input");
-      notification("error", t("repeated-title"));
+      notification("error", "Ya tienes un libro con ese título");
       return false;
     }
 
     if (maxTitleLength) {
       setErrorKey("title-input");
-      notification("error", t("title-too-long"));
+      notification("error", "El título es demasiado largo (máx. 80 caracteres)");
       return false;
     }
 
     if (title.includes("/")) {
       setErrorKey("title-input");
-      notification("error", t("/"));
+      notification("error", "El título no puede contener el símbolo /");
       return false;
     }
 
     if (maxAuthorLength) {
       setErrorKey("author-input");
-      notification("error", t("author-too-long"));
+      notification("error", "El autor es demasiado largo (máx. 34 caracteres)");
       return false;
     }
 
     if (emptyCustomGender) {
       setErrorKey("gender-input");
-      notification("error", t("empty-custom-gender"));
+      notification("error", "El género personalizado no puede estar vacío");
       return false;
     }
 
     if (maxLengthGender) {
       setErrorKey("gender-input");
-      notification("error", t("custom-gender-too-long"));
+      notification("error", "El género es demasiado largo (máx. 24 caracteres)");
       return false;
     }
 
     if (emptyLoaned) {
       setErrorKey("lent-input");
-      notification("error", t("empty-loaned"));
+      notification("error", "Debes indicar a quién prestaste el libro");
       return false;
     }
 
     if (maxLengthLoaned) {
       setErrorKey("lent-input");
-      notification("error", t("loaned-too-long"));
+      notification("error", "El nombre es demasiado largo (máx. 24 caracteres)");
       return false;
     }
 
     if (validateImg) {
       setErrorKey("image-input");
-      notification("error", t("invalid-url-image"));
+      notification("error", "La URL de la imagen no es válida");
       return false;
     }
 
@@ -259,18 +257,18 @@ function EditBookPopUp(props: Props): Component {
             transition-colors disabled:opacity-50 
             text-slate-400 text-lg"
         >
-          {t("cancel")}
+          Cancelar
         </button>
         <button
           disabled={editDisabled || isLoading}
           type="submit"
           className="px-8 py-2 rounded-xl
-            bg-violet-500/20 border border-violet-500/20 
-            hover:bg-violet-500/30 hover:border-violet-500/30 
+            bg-violet-500/20 border border-violet-500/20
+            hover:bg-violet-500/30 hover:border-violet-500/30
             transition-colors disabled:opacity-50 disabled:hover:bg-violet-500/20
             text-violet-50 text-lg font-medium"
         >
-          {t("edit-confirm")}
+          Editar
         </button>
       </form>
     </DialogContainer>

@@ -7,7 +7,6 @@ import { twJoin, twMerge } from "tailwind-merge";
 import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useRecoilState } from "recoil";
-import { useTranslation } from "react-i18next";
 import type { Component } from "@/utils/types";
 
 const preset: string = String(process.env.NEXT_PUBLIC_PRESET);
@@ -19,9 +18,7 @@ export default function InputCover(props: Props): Component {
     onDrop = useCallback((file: any) => console.info(file), []),
     { getRootProps, getInputProps, acceptedFiles } = useDropzone({ onDrop }),
     [errImg, setErrImg] = useState<boolean>(false),
-    showImg: boolean = !errImg && acceptedFiles[0] && !loading,
-    isSpanish: boolean = useTranslation("global").i18n.language == "es",
-    [t] = useTranslation("global");
+    showImg: boolean = !errImg && acceptedFiles[0] && !loading;
 
   useEffect(() => {
     if (acceptedFiles[0]) saveImg();
@@ -46,7 +43,7 @@ export default function InputCover(props: Props): Component {
       handleImage(url);
     } catch (err: any) {
       setErrImg(true);
-      notification("error", t("err-loading-cover"));
+      notification("error", "Error cargando portada, reintentalo");
       console.error(`catch 'saveImg' ${err.message}`);
     } finally {
       setCoverLoading(false);
@@ -82,21 +79,16 @@ export default function InputCover(props: Props): Component {
       />
 
       {errImg ? (
-        <p className="text-red-300 text-lg">{t("err-loading-cover")}</p>
+        <p className="text-red-300 text-lg">Error cargando portada, reintentalo</p>
       ) : (
-        <p
-          className={twMerge(
-            isSpanish ? "text-sm sm:text-lg" : "text-lg",
-            "text-slate-300 select-none"
-          )}
-        >
+        <p className="text-sm sm:text-lg text-slate-300 select-none">
           {acceptedFiles[0] && !coverLoading
-            ? t("cover-list")
+            ? "¡Portada lista!"
             : coverLoading
-            ? t("generating-cover")
+            ? "Generando portada..."
             : isEditing
-            ? t("change-cover-image")
-            : t("select-cover-image")}
+            ? "Cambiar imagen de portada"
+            : "Selecciona una imagen de portada"}
         </p>
       )}
 

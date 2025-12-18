@@ -11,31 +11,32 @@ const COLLECTION_BOOKS: CollectionReference = collection(DB, "lymbrarie_books");
 const API_BOOKS: string = "https://www.googleapis.com/books/v1/volumes";
 
 const GENDERS: string[] = [
-  "custom",
-  "no-gender",
-  "fiction",
-  "non-fiction",
-  "religion",
-  "mystery",
-  "fantasy",
-  "essay",
-  "romance",
-  "horror",
-  "thriller",
-  "novel",
-  "history",
-  "biography",
-  "self-help",
-  "poetry",
-  "drama",
-  "adventure",
-  "psychology",
-  "young-adult",
-  "children's",
-  "philosophy",
-  "economy",
-  "constabulary",
-  "science",
+  "Personalizado",
+  "Sin asignar",
+  "Ficción",
+  "No ficción",
+  "Religión",
+  "Misterio",
+  "Fantasía",
+  "Ensayo",
+  "Romance",
+  "Terror",
+  "Thriller",
+  "Novela",
+  "Historia",
+  "Biografía",
+  "Autoayuda",
+  "Poesía",
+  "Drama",
+  "Aventura",
+  "Psicología",
+  "Juvenil",
+  "Infantil",
+  "Filosofía",
+  "Economía",
+  "Policial",
+  "Ciencia",
+  "Distopía",
 ] as const;
 
 const EMPTY_BOOK: Book = {
@@ -43,9 +44,9 @@ const EMPTY_BOOK: Book = {
   data: {
     title: "",
     author: "",
-    state: "Pending",
+    state: "Pendiente",
     image: "",
-    gender: "no-gender",
+    gender: "Sin asignar",
     notes: "",
     loaned: "",
     isFav: false,
@@ -55,7 +56,7 @@ const EMPTY_BOOK: Book = {
 const BOOK_RECO: BookData = {
   owner: "all",
   title: "¡Viven! - La tragedia de los Andes",
-  state: "Recommended",
+  state: "Recomendado",
   author: "Piers Paul Read",
   image:
     "https://res.cloudinary.com/dgs55s8qh/image/upload/v1743807173/rtbw9ominfxxqqhljpzc.webp",
@@ -80,7 +81,6 @@ const PAGES: Pages = {
   BOOK: "/book",
   RECOMMENDATION: "/recommendation",
   ERROR: "/error",
-  WRITER: "/writer",
 };
 
 export {
@@ -95,7 +95,6 @@ export {
 };
 
 interface Pages {
-  WRITER: string;
   GUEST: string;
   SEARCH: string;
   HOME: string;

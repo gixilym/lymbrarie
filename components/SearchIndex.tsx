@@ -4,10 +4,9 @@ import Select from "react-select";
 import useGuest from "@/hooks/useGuest";
 import useIsMobile from "@/hooks/useIsMobile";
 import { menuAtom, searchAtom, stateAtom } from "@/utils/atoms";
-import { selectStyles, translateState } from "@/utils/helpers";
+import { selectStyles } from "@/utils/helpers";
 import { twMerge } from "tailwind-merge";
 import { useRecoilState } from "recoil";
-import { useTranslation } from "react-i18next";
 import type {
   Component,
   EventSelect,
@@ -17,8 +16,7 @@ import type {
 } from "@/utils/types";
 
 function SearchIndex(): Component {
-  const [t] = useTranslation("global"),
-    { isGuest } = useGuest(),
+  const { isGuest } = useGuest(),
     [value, setValue] = useRecoilState<string>(searchAtom),
     [selectVal, setSelectStateVal] = useRecoilState<string>(stateAtom),
     [menuIsOpen] = useRecoilState(menuAtom),
@@ -28,26 +26,30 @@ function SearchIndex(): Component {
     handleSelect: Handler<string, void> = (val: string) =>
       setSelectStateVal(val),
     options: SelectOpt = [
-      { value: "", label: t("new-book-all") },
+      { value: "", label: "Todo" },
       {
-        value: "Reading",
-        label: t("new-book-reading"),
+        value: "Leyendo",
+        label: "Leyendo",
       },
-      { value: "Read", label: t("new-book-read") },
-      { value: "Pending", label: t("new-book-pending") },
+      { value: "Leído", label: "Leído" },
+      { value: "Pendiente", label: "Pendiente" },
       {
-        value: "Lent",
-        label: t("new-book-lent"),
-      },
-      {
-        value: "Abandoned",
-        label: t("abandoned"),
+        value: "Prestado",
+        label: "Prestado",
       },
       {
-        value: "Halfway",
-        label: t("halfway"),
+        value: "Abandonado",
+        label: "Abandonado",
       },
-    ] as const;
+      {
+        value: "A medias",
+        label: "A medias",
+      },
+    ] as const,
+    getPlaceholder = (): string => {
+      const option = options.find(opt => opt.value === selectVal);
+      return option ? option.label : "Todo";
+    };
 
   return (
     <div
@@ -64,7 +66,7 @@ function SearchIndex(): Component {
               value={value}
               onChange={handleSearch}
               className="focus:outline-0 focus:border-rose-300/10 backdrop-blur-[2px] input join-item w-[230px] sm:w-[300px] h-14 bg-slate-800/60 border-2 border-rose-300/10 placeholder:text-slate-300/70 text-sm sm:text-lg text-slate-300 placeholder:w-full"
-              placeholder={t("placeholder-library")}
+              placeholder="Busca en tu biblioteca"
               type="search"
               autoFocus
             />
@@ -73,7 +75,7 @@ function SearchIndex(): Component {
               id="select-state"
               isSearchable={false}
               options={options}
-              placeholder={translateState(selectVal, t, true)}
+              placeholder={getPlaceholder()}
               value={selectVal}
               styles={selectStyles(selectVal == "", false, isMobile)}
               onChange={(e: EventSelect) => handleSelect(e.value)}

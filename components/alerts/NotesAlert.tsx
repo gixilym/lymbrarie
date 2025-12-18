@@ -1,9 +1,6 @@
 import type { Component } from "@/utils/types";
-import { useTranslation } from "react-i18next";
 
 function NotesAlert(): Component {
-  const [t] = useTranslation("global");
-
   return (
     <div
       role="alert"
@@ -21,7 +18,7 @@ function NotesAlert(): Component {
           d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
         />
       </svg>
-      <span className="text-start">{t("error-wifi-notes")}</span>
+      <span className="text-start">No se puede guardar cambios sin conexión a internet</span>
     </div>
   );
 }

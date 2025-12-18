@@ -11,7 +11,6 @@ import { AuthAction, withUser } from "next-firebase-auth";
 import { GithubIcon, GoogleIcon } from "@/utils/svgs";
 import { notification } from "@/utils/notifications";
 import { PAGES } from "@/utils/consts";
-import { useTranslation } from "react-i18next";
 import {
   BookMarkedIcon,
   BookOpenIcon,
@@ -37,14 +36,13 @@ export default withUser({
 
 function LoginPage(): Component {
   const auth: Auth = getAuth(),
-    [t] = useTranslation("global"),
     [styles] = useSpring(() => animateOpacity(1, 400));
 
   async function logIn(provider: Providers): Promise<void> {
     try {
       await signInWithPopup(auth, provider);
     } catch (err: any) {
-      notification("error", t("login-error"));
+      notification("error", "Error al iniciar sesión");
       console.error(`catch 'logIn' ${err.message}`);
     }
   }
@@ -84,25 +82,24 @@ function LoginPage(): Component {
           />
           <h1 className="text-xl font-semibold text-slate-100">Lymbrarie</h1>
         </div>
-        {/* <ToggleLangBtn /> */}
       </header>
 
       <section className="px-4 sm:px-0 z-50 flex w-full flex-col items-center justify-center max-w-2xl gap-y-4 relative">
         <h2 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-violet-300 via-violet-50 to-violet-300 text-transparent bg-clip-text text-center">
-          {t("welcome")}
+          ¡Bienvenido a Lymbrarie!
         </h2>
         <p className="text-lg md:text-xl text-slate-200/90 text-center">
-          {t("manage-library")}
+          La mejor forma de organizar tu Biblioteca
         </p>
         <div className="pt-6 items-center justify-center flex flex-col gap-y-3">
           <button
             type="button"
             onClick={withGoogle}
-            className="bg-slate-950/25 hover:bg-slate-950/55 backdrop-blur-sm border border-violet-500/20 hover:border-violet-500/40 
+            className="bg-slate-950/25 hover:bg-slate-950/55 backdrop-blur-sm border border-violet-500/20 hover:border-violet-500/40
               flex items-center justify-start gap-x-6 px-10 w-full max-w-[410px] h-14 rounded-xl transition-all"
           >
             <GoogleIcon className="size-7" />
-            <p className="text-lg text-slate-200">{t("with-google")}</p>
+            <p className="text-lg text-slate-200">Iniciar sesión con Google</p>
           </button>
 
           <button
@@ -112,7 +109,7 @@ function LoginPage(): Component {
               flex items-center justify-start gap-x-6 px-10 w-full max-w-[410px] h-14 rounded-xl transition-all"
           >
             <GithubIcon className="size-7" />
-            <p className="text-lg text-slate-200">{t("with-github")}</p>
+            <p className="text-lg text-slate-200">Iniciar sesión con Github</p>
           </button>
 
           <Link
@@ -121,7 +118,7 @@ function LoginPage(): Component {
               flex items-center justify-start gap-x-6 px-10 w-full max-w-[410px] h-14 rounded-xl transition-all"
           >
             <GhostIcon className="size-7 text-violet-300" />
-            <p className="text-lg text-slate-200">{t("access-guest")}</p>
+            <p className="text-lg text-slate-200">Acceder como Invitado</p>
           </Link>
         </div>
       </section>
@@ -135,10 +132,10 @@ function LoginPage(): Component {
             <BookOpenIcon className="h-6 w-6 text-violet-400" />
           </div>
           <p className="text-lg md:text-xl font-semibold text-slate-100 mb-2">
-            {t("organize")}
+            Organiza tu biblioteca
           </p>
           <p className="text-sm md:text-lg text-gray-300/85">
-            {t("organize-descp")}
+            Catáloga y organiza tus libros con opciones de filtrado y clasificación.
           </p>
         </article>
         <article className="relative bg-slate-900/40 z-50 w-[350px] border border-slate-800 rounded-lg p-4 md:p-6">
@@ -146,10 +143,10 @@ function LoginPage(): Component {
             <BookMarkedIcon className="h-6 w-6 text-violet-400" />
           </div>
           <p className="text-lg md:text-xl font-semibold text-slate-100 mb-2">
-            {t("tracking")}
+            Seguimiento de lecturas
           </p>
           <p className="text-sm md:text-lg text-gray-300/85">
-            {t("tracking-descp")}
+            Controla tu progreso y obtén datos relevantes sobre tus lecturas.
           </p>
         </article>
         <article className="relative bg-slate-900/40 z-50 w-[350px] border border-slate-800 rounded-lg p-4 md:p-6">
@@ -157,10 +154,10 @@ function LoginPage(): Component {
             <SparklesIcon className="h-6 w-6 text-violet-400" />
           </div>
           <p className="text-lg md:text-xl font-semibold text-slate-100 mb-2">
-            {t("discover")}
+            Descubre nuevos libros
           </p>
           <p className="text-sm md:text-lg text-gray-300/85">
-            {t("discover-descp")}
+            Explora nuevos libros y autores con recomendaciones personalizadas.
           </p>
         </article>
         <article className="relative bg-slate-900/40 z-50 w-[350px] border-red-400/20 border-2 rounded-lg p-4 md:p-6">
@@ -168,10 +165,10 @@ function LoginPage(): Component {
             <CircleAlertIcon className="h-6 w-6 text-red-400" />
           </div>
           <p className="text-lg md:text-xl font-semibold text-slate-100 mb-2">
-            {t("important")}
+            Importante
           </p>
           <p className="text-sm md:text-[16px] text-gray-300/85">
-            {t("warning-login")}
+            Lymbrarie NO es una red social para compartir reseñas, seguir usuarios o dar likes. Es un espacio privado para registrar tus lecturas.
           </p>
         </article>
       </section>

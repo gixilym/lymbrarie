@@ -3,11 +3,9 @@ import ListSection from "@/components/ListSection";
 import SearchIndex from "@/components/SearchIndex";
 import { animateOpacity } from "@/utils/helpers";
 import { animated, useSpring } from "@react-spring/web";
-import { useTranslation } from "react-i18next";
-import type { Book, Component, Translate } from "@/utils/types";
+import type { Book, Component } from "@/utils/types";
 
 export default function GuestPage(): Component {
-  const [t] = useTranslation("global");
   const [styles] = useSpring(() => animateOpacity(1, 1000));
 
   return (
@@ -15,70 +13,68 @@ export default function GuestPage(): Component {
       style={styles}
       className="flex flex-col justify-start items-center w-full sm:max-w-[950px] h-full gap-y-6"
     >
-      <IndexBanner username={t("guest")} />
+      <IndexBanner username="Invitado" />
       <SearchIndex />
-      <ListSection myBooks={getGuestBooks(t)} isSearch={false} />
+      <ListSection myBooks={guestBooks} isSearch={false} />
     </animated.main>
   );
 }
 
-function getGuestBooks(t: Translate): Book[] {
-  return [
-    {
-      id: "0",
-      data: {
-        author: "Jane Austen",
-        gender: t("gender-book-0"),
-        image: t("cover-book-0"),
-        isFav: false,
-        loaned: "",
-        notes: t("notes-book-0"),
-        owner: "guest",
-        state: "Reading",
-        title: t("name-book-0"),
-      },
+const guestBooks: Book[] = [
+  {
+    id: "0",
+    data: {
+      author: "Jane Austen",
+      gender: "Romance clásico",
+      image: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1320399351i/1885.jpg",
+      isFav: false,
+      loaned: "",
+      notes: "Una de las novelas más queridas de la literatura inglesa, que explora temas de amor, clase social y matrimonio en la Inglaterra del siglo XIX.",
+      owner: "guest",
+      state: "Leyendo",
+      title: "Orgullo y Prejuicio",
     },
-    {
-      id: "1",
-      data: {
-        author: "George Orwell",
-        gender: t("dystopia"),
-        image: t("cover-book-1"),
-        isFav: false,
-        loaned: "",
-        notes: t("notes-book-1"),
-        owner: "guest",
-        state: "Pending",
-        title: "1984",
-      },
+  },
+  {
+    id: "1",
+    data: {
+      author: "George Orwell",
+      gender: "Distopía",
+      image: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1657781256i/61439040.jpg",
+      isFav: false,
+      loaned: "",
+      notes: "Una visión inquietante del futuro donde un gobierno totalitario vigila cada aspecto de la vida de las personas.",
+      owner: "guest",
+      state: "Pendiente",
+      title: "1984",
     },
-    {
-      id: "2",
-      data: {
-        author: "Dan Brown",
-        gender: "Thriller",
-        image: t("cover-book-2"),
-        isFav: true,
-        loaned: "",
-        notes: t("notes-book-2"),
-        owner: "guest",
-        state: "Lent",
-        title: t("name-book-2"),
-      },
+  },
+  {
+    id: "2",
+    data: {
+      author: "Dan Brown",
+      gender: "Thriller",
+      image: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1579621267i/968.jpg",
+      isFav: true,
+      loaned: "",
+      notes: "Un thriller lleno de suspense que combina arte, historia y misterio en una búsqueda del Santo Grial.",
+      owner: "guest",
+      state: "Prestado",
+      title: "El Código Da Vinci",
     },
-    {
-      id: "3",
-      data: {
-        author: "J.K. Rowling",
-        gender: t("fantasy"),
-        image: t("cover-book-3"),
-        isFav: false,
-        loaned: "",
-        notes: t(""),
-        owner: "guest",
-        state: "Read",
-        title: t("name-book-3"),
-      },
+  },
+  {
+    id: "3",
+    data: {
+      author: "J.K. Rowling",
+      gender: "Fantasía",
+      image: "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1598823299i/42844155.jpg",
+      isFav: false,
+      loaned: "",
+      notes: "",
+      owner: "guest",
+      state: "Leído",
+      title: "Harry Potter y la Piedra Filosofal",
     },
-  ];
-}
+  },
+];

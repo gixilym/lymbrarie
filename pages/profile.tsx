@@ -14,7 +14,6 @@ import { scrollAtom, stateAtom } from "@/utils/atoms";
 import { useEffect, useState } from "react";
 import { UserRound } from "lucide-react";
 import { useSetRecoilState } from "recoil";
-import { useTranslation } from "react-i18next";
 import type { Component, Book, SetState, Timer } from "@/utils/types";
 
 export default withUser({
@@ -26,7 +25,6 @@ export default withUser({
 
 function ProfilePage(): Component {
   const user = useUser(),
-    [t] = useTranslation("global"),
     img = user?.photoURL as string,
     name = user?.displayName as string,
     email: string = user?.email ?? "",
@@ -39,25 +37,25 @@ function ProfilePage(): Component {
     setSelectStateVal: SetState = useSetRecoilState<string>(stateAtom),
     setScroll: SetState = useSetRecoilState(scrollAtom),
     [stateCounts, setStateCounts] = useState<States>({
-      Read: 0,
-      Reading: 0,
-      Pending: 0,
-      Lent: 0,
-      Abandoned: 0,
-      Halfway: 0,
+      "Leído": 0,
+      "Leyendo": 0,
+      "Pendiente": 0,
+      "Prestado": 0,
+      "Abandonado": 0,
+      "A medias": 0,
     }),
-    { Read, Reading, Pending, Lent, Abandoned, Halfway }: States = stateCounts;
+    { "Leído": Read, "Leyendo": Reading, "Pendiente": Pending, "Prestado": Lent, "Abandonado": Abandoned, "A medias": Halfway }: States = stateCounts;
 
   useEffect(() => {
     if (isGuest) return;
     if (Array.isArray(cacheBooks)) {
       const counts: States = {
-        Read: 0,
-        Reading: 0,
-        Pending: 0,
-        Lent: 0,
-        Abandoned: 0,
-        Halfway: 0,
+        "Leído": 0,
+        "Leyendo": 0,
+        "Pendiente": 0,
+        "Prestado": 0,
+        "Abandonado": 0,
+        "A medias": 0,
       };
 
       cacheBooks.forEach((b: Book) => {
@@ -97,10 +95,10 @@ function ProfilePage(): Component {
             </div>
           </div>
           <p className="text-2xl font-semibold text-violet-100">
-            {isGuest ? t("guest") : username}
+            {isGuest ? "Invitado" : username}
           </p>
           <p className="mb-5 md:mb-0 text-lg text-slate-300 lowercase">
-            {isGuest ? `${t("guest")}@gmail.com` : email}
+            {isGuest ? "invitado@gmail.com" : email}
           </p>
         </div>
 
@@ -119,11 +117,11 @@ function ProfilePage(): Component {
       <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Link
           href={PAGES.HOME}
-          onClick={() => changeState("Reading")}
+          onClick={() => changeState("Leyendo")}
           className="bg-slate-900/40 hover:bg-slate-900 backdrop-blur-sm p-6 rounded-xl border border-violet-500/20 flex flex-col items-center gap-y-2 transition-all"
         >
           <p className="text-lg font-medium text-white">
-            {t("new-book-reading")}
+            Leyendo
           </p>
           <p className="text-4xl font-light text-violet-200">
             {isGuest ? 1 : Reading}
@@ -132,21 +130,21 @@ function ProfilePage(): Component {
 
         <Link
           href={PAGES.HOME}
-          onClick={() => changeState("Lent")}
+          onClick={() => changeState("Prestado")}
           className="bg-slate-900/40 hover:bg-slate-900 backdrop-blur-sm p-6 rounded-xl border border-violet-500/20 flex flex-col items-center gap-y-2 transition-all"
         >
-          <p className="text-lg font-medium text-white">{t("loaned")}</p>
+          <p className="text-lg font-medium text-white">Prestados</p>
           <p className="text-4xl font-light text-violet-200">
             {isGuest ? 1 : Lent}
           </p>
         </Link>
         <Link
           href={PAGES.HOME}
-          onClick={() => changeState("Pending")}
+          onClick={() => changeState("Pendiente")}
           className="bg-slate-900/40 hover:bg-slate-900 backdrop-blur-sm p-6 rounded-xl border border-violet-500/20 flex flex-col items-center gap-y-2 transition-all"
         >
           <p className="text-lg font-medium text-white">
-            {t("new-book-pending")}
+            Pendiente
           </p>
           <p className="text-4xl font-light text-violet-200">
             {isGuest ? 1 : Pending}
@@ -154,10 +152,10 @@ function ProfilePage(): Component {
         </Link>
         <Link
           href={PAGES.HOME}
-          onClick={() => changeState("Read")}
+          onClick={() => changeState("Leído")}
           className="bg-slate-900/40 hover:bg-slate-900 backdrop-blur-sm p-6 rounded-xl border border-violet-500/20 flex flex-col items-center gap-y-2 transition-all"
         >
-          <p className="text-lg font-medium text-white">{t("new-book-read")}</p>
+          <p className="text-lg font-medium text-white">Leído</p>
           <p className="text-4xl font-light text-violet-200">
             {isGuest ? 1 : Read}
           </p>
@@ -167,20 +165,20 @@ function ProfilePage(): Component {
       <div className="w-full grid grid-cols-2 gap-4">
         <Link
           href={PAGES.HOME}
-          onClick={() => changeState("Abandoned")}
+          onClick={() => changeState("Abandonado")}
           className="bg-slate-900/40 hover:bg-slate-900 backdrop-blur-sm p-6 rounded-xl border border-violet-500/20 flex flex-col items-center gap-y-2 transition-all"
         >
-          <p className="text-lg font-medium text-white">{t("abandoned")}</p>
+          <p className="text-lg font-medium text-white">Abandonado</p>
           <p className="text-4xl font-light text-violet-200">
             {isGuest ? 0 : Abandoned}
           </p>
         </Link>
         <Link
           href={PAGES.HOME}
-          onClick={() => changeState("Halfway")}
+          onClick={() => changeState("A medias")}
           className="bg-slate-900/40 hover:bg-slate-900 backdrop-blur-sm p-6 rounded-xl border border-violet-500/20 flex flex-col items-center gap-y-2 transition-all"
         >
-          <p className="text-lg font-medium text-white">{t("halfway")}</p>
+          <p className="text-lg font-medium text-white">A medias</p>
           <p className="text-4xl font-light text-violet-200">
             {isGuest ? 0 : Halfway}
           </p>
@@ -193,9 +191,9 @@ function ProfilePage(): Component {
 type States = { [key: string]: number };
 
 type BookState =
-  | "Read"
-  | "Reading"
-  | "Pending"
-  | "Lent"
-  | "Abandoned"
-  | "Halfway";
+  | "Leído"
+  | "Leyendo"
+  | "Pendiente"
+  | "Prestado"
+  | "Abandonado"
+  | "A medias";

@@ -2,11 +2,9 @@ import Link from "next/link";
 import { CroissantIcon, MenuIcon } from "lucide-react";
 import { PAGES } from "@/utils/consts";
 import { pathIs } from "@/utils/helpers";
-import { useTranslation } from "react-i18next";
 import type { Component } from "@/utils/types";
 
 function Nav(): Component {
-  const [t] = useTranslation("global");
   return (
     <nav className="absolute top-28 z-10 w-[200px] right-6 bg-slate-900 gap-y-3 p-4 rounded-xl flex-col items-start justify-center border border-violet-500/20 flex md:hidden">
       <Link
@@ -17,7 +15,7 @@ function Nav(): Component {
         }
         href={PAGES.HOME}
       >
-        &gt;&nbsp;&nbsp;{t("library")}
+        &gt;&nbsp;&nbsp;Biblioteca
       </Link>
       <Link
         className={
@@ -25,7 +23,7 @@ function Nav(): Component {
         }
         href={PAGES.PROFILE}
       >
-        &gt;&nbsp;&nbsp;{t("profile")}
+        &gt;&nbsp;&nbsp;Perfil
       </Link>
       <Link
         className={
@@ -33,7 +31,7 @@ function Nav(): Component {
         }
         href={PAGES.CONFIG}
       >
-        &gt;&nbsp;&nbsp;{t("settings")}
+        &gt;&nbsp;&nbsp;Configuración
       </Link>
     </nav>
   );

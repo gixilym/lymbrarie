@@ -1,10 +1,8 @@
 import Link from "next/link";
 import { LinkIcon } from "lucide-react";
-import { useTranslation } from "react-i18next";
 import type { Component } from "@/utils/types";
 
 function AnnasURL(): Component {
-  const [t] = useTranslation("global");
   return (
     <div className="text-sm text-center w-full text-slate-100 flex justify-center items-center">
       <Link
@@ -14,7 +12,7 @@ function AnnasURL(): Component {
       >
         <LinkIcon size={12} className="text-violet-300 mt-1 sm:mt-[0.5px]" />
         <p className="text-slate-300">
-          {t("annas-text")}{" "}
+          Puedes descargar libros desde{" "}
           <span className="text-violet-300">Anna&apos;s Archive</span>
         </p>
       </Link>

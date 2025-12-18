@@ -161,9 +161,6 @@ Required in `.env.local`:
 - Special recommendation system at `/recommendation`
 - Featured book stored in `BOOK_RECO` constant
 
-### Writer Mode
-- Special page at `/writer` (TinyMCE rich text editor integration)
-
 ### Rich Text Notes
 - Book notes use TinyMCE editor (local installation in `/public/tinymce/`)
 - Configured with dark theme (`oxide-dark` skin)

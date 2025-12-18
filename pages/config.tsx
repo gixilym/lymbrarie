@@ -1,25 +1,21 @@
 import ConfigOption from "@/components/ConfigOption";
 import LoaderCircle from "@/components/LoaderCircle";
-import Select from "react-select";
 import useGuest from "@/hooks/useGuest";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import {
   animateOpacity,
   clearStorage,
   len,
-  selectStyles,
 } from "@/utils/helpers";
 import { animated, useSpring } from "@react-spring/web";
 import { AuthAction, withUser } from "next-firebase-auth";
 import { PAGES } from "@/utils/consts";
-import { useTranslation } from "react-i18next";
 import { type Auth, getAuth } from "firebase/auth";
 import { type NextRouter, useRouter } from "next/router";
-import type { Component, EventSelect, Handler, SelectOpt } from "@/utils/types";
+import type { Component, EventSelect } from "@/utils/types";
 import {
   TypeIcon,
   CircleIcon,
-  LanguagesIcon,
   LibraryIcon,
   LogOutIcon,
   SparklesIcon,
@@ -34,9 +30,7 @@ export default withUser({
 
 function ConfigPage(): Component {
   const auth: Auth = getAuth(),
-    [t, { changeLanguage }] = useTranslation("global"),
-    { push, reload }: NextRouter = useRouter(),
-    [language, setLanguage] = useLocalStorage("language", "es"),
+    { push }: NextRouter = useRouter(),
     [animations, setAnimations] = useLocalStorage("animations", true),
     [state, setState] = useLocalStorage("state", true),
     [recommendations, setRecom] = useLocalStorage("recommendations", true),
@@ -44,17 +38,6 @@ function ConfigPage(): Component {
     [lang, setLang] = useLocalStorage("language", true),
     { isGuest } = useGuest(),
     [username, setUsername] = useLocalStorage("username", ""),
-    formatLang: Handler<void, string> = () =>
-      language == "en" ? "English" : "Español",
-    handleSelect: Handler<string, void> = (val: string) => {
-      changeLanguage(val);
-      setLanguage(val);
-      reload();
-    },
-    options: SelectOpt = [
-      { value: "es", label: "Español" },
-      { value: "en", label: "English" },
-    ] as const,
     [styles] = useSpring(() => animateOpacity(1, 400));
 
   function handleUsername(e: EventSelect): void {
@@ -79,35 +62,16 @@ function ConfigPage(): Component {
     >
       <div className="w-full space-y-4 bg-slate-900/40 backdrop-blur-sm p-8 md:rounded-2xl md:border border-violet-500/20">
         <ConfigOption
-          isSelect
-          Icon={LanguagesIcon}
-          label={t("language")}
-          selectOpts={
-            <Select
-              isDisabled
-              className="sm:w-[220px] w-full"
-              id={t("language")}
-              isSearchable={false}
-              options={options}
-              placeholder={formatLang()}
-              value={language}
-              styles={selectStyles(true, true, false)}
-              onChange={(e: EventSelect) => handleSelect(e.value)}
-            />
-          }
-        />
-
-        <ConfigOption
           isInput
           inputVal={username}
           handleChange={handleUsername}
           Icon={TypeIcon}
-          label={t("username")}
+          label="Nombre de usuario"
         />
 
         {/* <ConfigOption
-          label={t("recommendations")}
-          textBtn={recommendations ? t("enabled") : t("disabled")}
+          label="Recomendaciones"
+          textBtn={recommendations ? "Activado" : "Desactivado"}
           Icon={MegaphoneIcon}
           action={() => {
             if (
@@ -123,22 +87,22 @@ function ConfigPage(): Component {
         /> */}
 
         <ConfigOption
-          label={t("show-state")}
-          textBtn={state ? t("enabled") : t("disabled")}
+          label="Mostrar estado"
+          textBtn={state ? "Activado" : "Desactivado"}
           Icon={LibraryIcon}
           action={() => setState(!state)}
         />
 
         <ConfigOption
-          label={t("animations")}
-          textBtn={animations ? t("enabled") : t("disabled")}
+          label="Animaciones"
+          textBtn={animations ? "Activado" : "Desactivado"}
           Icon={SparklesIcon}
           action={() => setAnimations(!animations)}
         />
 
         <ConfigOption
-          label={t("circles-bk")}
-          textBtn={circles ? t("enabled") : t("disabled")}
+          label="Círculos de libros"
+          textBtn={circles ? "Activado" : "Desactivado"}
           Icon={CircleIcon}
           action={() => setCircles(!circles)}
         />
@@ -151,7 +115,7 @@ function ConfigPage(): Component {
           className="mt-4 px-6 py-3 flex justify-center items-center gap-x-3 rounded-xl border-2 border-red-300/70 hover:border-red-400/80 hover:text-red-400  transition-colors text-red-300 text-lg"
         >
           <LogOutIcon size={24} />
-          <span>{t("logout")}</span>
+          <span>Cerrar Sesión</span>
         </button>
       )}
     </animated.section>
