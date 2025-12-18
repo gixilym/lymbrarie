@@ -22,7 +22,7 @@ function NotesPopUp(props: Props): Component {
     { closePopUp } = usePopUp(),
     { isGuest } = useGuest(),
     [showAlert, setShowAlert] = useState<boolean>(false),
-    { notes, setNotes, updateNotes, loadingFav, title } = props,
+    { notes, setNotes, updateNotes, loadingFav } = props,
     { isLoading } = useLoad(),
     editorRef = useRef<EditorType | null>(null),
     autoSaveTimer = useRef<Timer | null>(null),
