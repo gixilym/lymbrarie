@@ -158,13 +158,7 @@ const ListSection: MemoComponent = memo(function B(props: Props) {
           )}
         </div>
       )}
-      <ListBooks
-        isSearch={isSearch}
-        listBooks={renderList}
-        showDetails={showDetails}
-        showFavs={showFavs}
-        ascSort={ascSort}
-      />
+      <ListBooks listBooks={renderList} />
     </section>
   );
 });

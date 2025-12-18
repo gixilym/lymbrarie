@@ -6,7 +6,7 @@
   "author": {
     "name": "gixi",
     "url": "https://gixi.dev",
-    "email": "gixi@lym.software"
+    "email": "gixi.tsx@gmail.com"
   },
   "repository": {
     "type": "git",
@@ -47,13 +47,11 @@
     "tinymce": "^8.0.2"
   },
   "devDependencies": {
-    "@playwright/test": "^1.50.1",
     "@types/node": "^20.16.4",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.20",
     "daisyui": "^4.12.10",
-    "dotenv": "^16.4.7",
     "eslint": "^8.57.0",
     "eslint-config-next": "14.1.3",
     "postcss": "^8.4.45",

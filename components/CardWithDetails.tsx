@@ -1,6 +1,8 @@
+import Cover from "@/public/cover.webp";
 import Image from "next/image";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { useTranslation } from "react-i18next";
+import { useState } from "react";
 import type { Component } from "@/utils/types";
 import { Tag as GenderIcon, User as UserIcon } from "lucide-react";
 import { tLC } from "@/utils/helpers";
@@ -8,7 +10,8 @@ import { tLC } from "@/utils/helpers";
 export default function CardWithDetails(props: Card): Component {
   const [t] = useTranslation("global"),
     [state] = useLocalStorage("state", true),
-    { title, formatState, img, gender, author, onClick } = props;
+    { title, formatState, img, gender, author, onClick } = props,
+    [imgSrc, setImgSrc] = useState<string>(img || Cover.src);
 
   return (
     <li
@@ -20,10 +23,11 @@ export default function CardWithDetails(props: Card): Component {
         <div className="bg-violet-500/10 p-1.5 rounded-l-xl h-full w-[75px]">
           <Image
             loading="lazy"
-            src={img}
+            src={imgSrc}
             width={75}
             height={118}
             alt="cover"
+            onError={() => setImgSrc(Cover.src)}
             className="rounded-lg select-none object-cover h-full w-full"
           />
         </div>

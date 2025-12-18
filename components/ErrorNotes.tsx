@@ -39,7 +39,10 @@ function ErrorNotes({ notes }: { notes: string }): Component {
             {t("copy")}
           </button>
         </div>
-        <p className="text-sm overflow-y-auto">{notes}</p>
+        <div
+          className="text-sm overflow-y-auto w-full prose prose-invert prose-sm max-w-none"
+          dangerouslySetInnerHTML={{ __html: notes }}
+        />
       </div>
     </div>
   );

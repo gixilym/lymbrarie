@@ -38,7 +38,7 @@ function ErrorPage(): Component {
         </p>
       </div>
       <address className="text-xl md:text-2xl text-center w-full font-bold text-blue-400 hover:text-blue-300 duration-75 ">
-        <a href="mailto:gixi@lym.software">gixi@lym.software</a>
+        <a href="mailto:gixi.tsx@gmail.com">gixi.tsx@gmail.com</a>
       </address>
       <Link
         href={PAGES.HOME}

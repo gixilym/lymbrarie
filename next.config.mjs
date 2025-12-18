@@ -27,6 +27,23 @@ const nextConfig = {
       },
     ],
   },
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.watchOptions = {
+        ...config.watchOptions,
+        ignored: [
+          "**/node_modules",
+          "**/.git",
+          "**/.next",
+          "**/C:\\DumpStack.log.tmp",
+          "**/C:\\hiberfil.sys",
+          "**/C:\\pagefile.sys",
+          "**/C:\\swapfile.sys",
+        ],
+      };
+    }
+    return config;
+  },
 };
 
 export default nextConfig;

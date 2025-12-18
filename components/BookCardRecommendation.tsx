@@ -19,6 +19,7 @@ function BookCardRecommendation({ showDetails }: Props): Component {
     [styles] = useSpring(() => animateOpacity(1, 300)),
     [, setSkipReco] = useLocalStorage(`skip-reco-${BOOK_RECO.title}`, false),
     [localSkip, setLocalSkip] = useState<boolean>(false),
+    [imgSrc, setImgSrc] = useState<string>(BOOK_RECO.image || Cover.src),
     path: string = `${PAGES.RECOMMENDATION}/${encodeURIComponent(
       BOOK_RECO.title ?? ""
     )}`;
@@ -50,10 +51,11 @@ function BookCardRecommendation({ showDetails }: Props): Component {
         <div className="bg-violet-500/10 p-1.5 rounded-l-xl h-full">
           <Image
             loading="lazy"
-            src={BOOK_RECO.image || Cover.src}
+            src={imgSrc}
             width={75}
             height={130}
             alt="cover"
+            onError={() => setImgSrc(Cover.src)}
             className="w-[75px] h-full aspect-[2/3] rounded-lg select-none object-cover"
           />
         </div>

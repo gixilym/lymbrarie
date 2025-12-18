@@ -4,8 +4,6 @@ import type { Book, BookData } from "./types";
 
 const BASE_URL: string = "https://lymbrarie.gixi.dev";
 
-const LOCAL_URL: string = "http://localhost:3000";
-
 const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/ducssjlkl/image/upload";
 
 const COLLECTION_BOOKS: CollectionReference = collection(DB, "lymbrarie_books");
@@ -91,7 +89,6 @@ export {
   COLLECTION_BOOKS,
   EMPTY_BOOK,
   GENDERS,
-  LOCAL_URL,
   BOOK_RECO,
   API_BOOKS,
   PAGES,

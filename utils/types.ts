@@ -23,7 +23,7 @@ type FormRef = RefObject<any>;
 
 type Document = DocumentData | void;
 
-type User = UserData | null;
+type User = any | null;
 
 type MemoComponent = MemoExoticComponent<(arg0: any) => Component>;
 
@@ -68,13 +68,6 @@ interface BookData {
   url?: string;
 }
 
-interface UserData {
-  name?: string | null | undefined;
-  email?: string | null | undefined;
-  image?: string | null | undefined;
-  id: string;
-}
-
 interface ArgsSync {
   UID: string;
   cacheBooks: Book[] | null;
@@ -87,14 +80,6 @@ interface ShuffleAtom {
   data: BookData[];
   version: string;
   mode: "shuffle" | null;
-}
-
-interface Entry {
-  id: string;
-  title: string;
-  content: string;
-  timestamp: string;
-  owner: string | null;
 }
 
 export type {
@@ -118,5 +103,4 @@ export type {
   User,
   EventSelect,
   ShuffleAtom,
-  Entry,
 };

@@ -1,19 +1,19 @@
 import DialogContainer from "../DialogContainer";
-import HeaderPopUp from "../HeaderPopUp";
 import NotesAlert from "../alerts/NotesAlert";
 import useGuest from "@/hooks/useGuest";
 import useLoad from "@/hooks/useLoad";
 import usePopUp from "@/hooks/usePopUp";
-import { CircleX as ExitIcon, NotebookIcon, SaveIcon } from "lucide-react";
+import { CircleX as ExitIcon } from "lucide-react";
 import { delay, noop } from "es-toolkit";
 import { useTranslation } from "react-i18next";
-import type { Component } from "@/utils/types";
-import { type NextRouter, useRouter } from "next/router";
+import type { Component, Timer } from "@/utils/types";
+import { Editor } from "@tinymce/tinymce-react";
+import { type Editor as EditorType } from "tinymce";
 import {
-  type ChangeEvent,
   type Dispatch,
   type SetStateAction,
   useEffect,
+  useRef,
   useState,
 } from "react";
 
@@ -21,21 +21,19 @@ function NotesPopUp(props: Props): Component {
   const [t] = useTranslation("global"),
     { closePopUp } = usePopUp(),
     { isGuest } = useGuest(),
-    { events }: NextRouter = useRouter(),
-    [hasChanges, setHasChanges] = useState<boolean>(false),
     [showAlert, setShowAlert] = useState<boolean>(false),
     { notes, setNotes, updateNotes, loadingFav, title } = props,
-    [originalNotes, setOriginalNotes] = useState<string>(notes),
-    { startLoading, isLoading } = useLoad();
+    { isLoading } = useLoad(),
+    editorRef = useRef<EditorType | null>(null),
+    autoSaveTimer = useRef<Timer | null>(null),
+    originalNotes = useRef<string>(notes),
+    hasInitialized = useRef<boolean>(false);
 
   useEffect(() => {
-    events.on("routeChangeStart", handleRouteChange);
-    addEventListener("beforeunload", handleBeforeUnload);
     return () => {
-      events.off("routeChangeStart", handleRouteChange);
-      removeEventListener("beforeunload", handleBeforeUnload);
+      if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current);
     };
-  }, [hasChanges]);
+  }, []);
 
   useEffect(() => {
     if (showAlert) {
@@ -46,90 +44,96 @@ function NotesPopUp(props: Props): Component {
     }
   }, [showAlert]);
 
-  function handleBeforeUnload(e: BeforeUnloadEvent): string | void {
-    if (hasChanges && !loadingFav) {
-      const msg: string = t("unsaved-changes");
-      closePopUp("notes");
-      e.preventDefault();
-      e.returnValue = msg;
-      return msg;
-    }
-  }
+  function handleChangeContent(content: string): void {
+    setNotes(content);
 
-  function handleChangeContent(e: ChangeEvent<HTMLTextAreaElement>): void {
-    setNotes(e.target.value);
-    if (!hasChanges && !loadingFav) setHasChanges(true);
-  }
-
-  function handleRouteChange(): void {
-    if (hasChanges) {
-      const confirmClose: boolean = confirm(t("unsaved-changes"));
-      if (!confirmClose) {
-        setNotes(originalNotes);
-        events.emit("routeChangeError");
-        throw "Route change aborted";
-      } else closePopUp("notes");
+    if (!hasInitialized.current) {
+      hasInitialized.current = true;
+      return;
     }
+
+    if (isGuest || loadingFav) return;
+
+    if (content === originalNotes.current) return;
+
+    if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current);
+
+    autoSaveTimer.current = setTimeout(() => {
+      saveContent();
+    }, 2000);
   }
 
   function saveContent(): void {
-    if (navigator.onLine) {
-      startLoading();
-      setHasChanges(false);
-      setOriginalNotes(notes);
+    if (navigator.onLine && !isGuest) {
+      originalNotes.current = notes;
       updateNotes();
-    } else setShowAlert(true);
+    } else if (!navigator.onLine) {
+      setShowAlert(true);
+    }
   }
 
   function handleClosePopUp(): void {
-    if (hasChanges) {
-      const confirmClose: boolean = confirm(t("unsaved-changes"));
-      if (confirmClose) {
-        setHasChanges(false);
-        setNotes(originalNotes);
-        closePopUp("notes");
-      }
-    } else closePopUp("notes");
+    if (autoSaveTimer.current && notes !== originalNotes.current) {
+      clearTimeout(autoSaveTimer.current);
+      saveContent();
+    }
+    closePopUp("notes");
   }
 
   return (
     <DialogContainer
       id="notes"
-      divClass="!max-w-[850px] !h-full !max-h-[93vh] sm:!mt-6 !overflow-y-hidden !bg-slate-800"
+      divClass="!max-w-[1200px] max-h-[950px] !h-full sm:!mt-6 !overflow-hidden !bg-slate-800 !p-0 !border-4"
     >
-      <div className="w-full h-full flex flex-col justify-between items-center gap-y-6 relative">
-        <HeaderPopUp icon={<NotebookIcon size={27} />} title={t("notes")} />
-
-        {!isGuest && hasChanges && !loadingFav && (
-          <button
-            onClick={saveContent}
-            className="absolute bottom-0 right-0 p-2.5 rounded-xl 
-            bg-violet-500/50 border border-violet-500/80 
-            hover:bg-violet-500/30 hover:border-violet-500/30 
-            transition-colors flex items-center gap-x-2 backdrop-blur-md"
-          >
-            <SaveIcon size={20} className="text-violet-200" />
-            <span className="text-white text-sm sm:text-base">{t("save")}</span>
-          </button>
-        )}
-
-        <textarea
-          id="textarea-notes"
-          value={notes}
-          spellCheck={false}
-          disabled={loadingFav}
-          onChange={isGuest ? noop : handleChangeContent}
-          autoFocus
-          placeholder={`${t("placeholder-notes")} '${title}'\xA0.\xA0.\xA0.`}
-          className="h-full pb-14 pl-3 pr-6 text-sm md:text-lg resize-none 
-          border-none focus:ring-0 focus:outline-none w-full bg-transparent 
-          text-slate-200 placeholder:text-slate-400 text-pretty"
-        />
+      <div className="w-full h-full flex flex-col relative">
+        <div className="flex-1 w-full overflow-hidden flex flex-col [&_iframe]:!border-0 [&_iframe]:!outline-0 [&_.tox-tinymce]:!border-0 [&_.tox-editor-container]:!border-0">
+          <Editor
+            tinymceScriptSrc="/tinymce/tinymce.min.js"
+            licenseKey="gpl"
+            value={notes}
+            disabled={loadingFav || isGuest}
+            onEditorChange={isGuest ? noop : handleChangeContent}
+            onInit={(_evt, editor) => {
+              editorRef.current = editor;
+            }}
+            init={{
+              theme: "silver",
+              content_css: "dark",
+              skin: "oxide-dark",
+              content_style:
+                "body { background-color: #1e293b; color: #e2e8f0; font-family: Poppins, sans-serif; font-size: 16px; padding: 16px; border: 0; outline: 0; } * { outline: 0 !important; }",
+              placeholder: `${t(
+                "placeholder-notes"
+              )} '${title}'\xA0.\xA0.\xA0.`,
+              height: "100%",
+              menubar: false,
+              statusbar: false,
+              branding: false,
+              resize: false,
+              plugins: [
+                "lists",
+                "link",
+                "image",
+                "emoticons",
+                "searchreplace",
+                "autolink",
+                "autosave",
+                "wordcount",
+              ],
+              toolbar:
+                "undo redo | blocks | bold italic underline strikethrough | alignleft aligncenter alignright | bullist numlist | link image emoticons | removeformat",
+              autosave_interval: "30s",
+              autosave_retention: "30m",
+            }}
+          />
+        </div>
 
         {isGuest && (
-          <p className="w-full text-sm text-slate-300/80 text-center">
-            {t("notes-guest")}
-          </p>
+          <div className="flex-shrink-0 p-4 bg-slate-800/50 border-t border-violet-500/20">
+            <p className="w-full text-sm text-slate-300/80 text-center">
+              {t("notes-guest")}
+            </p>
+          </div>
         )}
       </div>
 
@@ -139,12 +143,12 @@ function NotesPopUp(props: Props): Component {
         disabled={isLoading}
         type="button"
         onClick={handleClosePopUp}
-        className="absolute top-4 right-4 p-2 rounded-xl 
-        bg-violet-500/20 border border-violet-500/20 
-        hover:bg-violet-500/30 hover:border-violet-500/30 
-        transition-colors disabled:opacity-50"
+        className="absolute top-1 right-1 p-1 rounded-xl
+        bg-violet-500/30 border border-violet-500/30
+        hover:bg-violet-500/40 hover:border-violet-500/40
+        transition-colors disabled:opacity-50 z-10"
       >
-        <ExitIcon size={24} className="text-violet-200" />
+        <ExitIcon size={30} className="text-violet-200" />
       </button>
     </DialogContainer>
   );

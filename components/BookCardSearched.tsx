@@ -1,12 +1,15 @@
 import AddBookToLibraryBtn from "./btns/AddBookToLibraryBtn";
+import Cover from "@/public/cover.webp";
 import Image from "next/image";
+import { useState } from "react";
 import type { BookData, Component } from "@/utils/types";
 
 function BookCardSearched(props: Card): Component {
   const { title, image, author, notes, gender, url } = props,
+    [imgSrc, setImgSrc] = useState<string>(image || Cover.src),
     data: BookData = {
       ...props,
-      //* Los slice son para no exceder el tamaño máximo permitido.
+      //* Los slice son para no exceder el tamaño máximo permitido.
       title: title.slice(0, 80),
       author: author.slice(0, 34),
       gender: gender.slice(0, 24),
@@ -14,15 +17,16 @@ function BookCardSearched(props: Card): Component {
 
   return (
     <li
-      className="mx-4 bg-slate-900/40 backdrop-blur-sm border border-violet-500/20 transition-colors rounded-xl relative h-[200px] md:h-[220px] 
+      className="mx-4 bg-slate-900/40 backdrop-blur-sm border border-violet-500/20 transition-colors rounded-xl relative h-[200px] md:h-[220px]
     flex gap-x-6 w-full sm:w-[600px] max-w-[600px] p-6"
     >
       <div className="bg-violet-500/10 p-1.5 rounded-xl h-full">
         <Image
-          src={image}
+          src={imgSrc}
           width={120}
           height={180}
           alt="cover"
+          onError={() => setImgSrc(Cover.src)}
           className="w-[120px] h-full aspect-[2/3] rounded-lg select-none object-cover"
         />
       </div>
@@ -61,9 +65,6 @@ interface Card {
   author: string;
   notes: string;
   image: string;
-  owner: string;
   gender: string;
-  isFav: boolean;
-  loaned: string;
   url: string;
 }

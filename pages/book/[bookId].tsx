@@ -64,6 +64,7 @@ function BookId(): Component {
     [documentId, setDocumentId] = useState<string>(""),
     [notes, setNotes] = useState<string>(""),
     [loadingFav, setLoadingFav] = useState<boolean>(false),
+    [imgSrc, setImgSrc] = useState<string>(book?.data?.image || DEFAULT_COVER.src),
     [cacheBooks, setCacheBooks] = useLocalStorage("cache-books", null),
     [allTitles] = useLocalStorage("all-titles", []),
     myFavs: BookData[] = cacheBooks
@@ -102,11 +103,11 @@ function BookId(): Component {
     setBook(b);
     setNotes(b?.data?.notes ?? "");
     setDocumentId(b?.id);
+    setImgSrc(b?.data?.image || DEFAULT_COVER.src);
     finishLoading();
   }
 
   async function updateNotes(): Promise<void> {
-    notification("loading", t("saving"));
     try {
       const dataWithUpdatedNotes: BookData = { ...book?.data, notes };
       await BookAdapters.manageBook(book.id, dataWithUpdatedNotes);
@@ -116,7 +117,7 @@ function BookId(): Component {
         ),
         newVersion: Book[] = [...oldVersion, updatedNotes];
       setCacheBooks(newVersion);
-      router.reload();
+      setBook(updatedNotes);
     } catch (err: any) {
       closePopUp("notes");
       router.push(`${PAGES.ERROR}?notes=${notes}`);
@@ -179,10 +180,11 @@ function BookId(): Component {
               priority
               style={stylesImg}
               className="select-none w-[200px] h-[300px] aspect-[2/3] rounded-lg object-cover"
-              src={book?.data?.image || DEFAULT_COVER.src}
+              src={imgSrc}
               width={200}
               height={300}
               alt="cover"
+              onError={() => setImgSrc(DEFAULT_COVER.src)}
             />
           </div>
         </div>

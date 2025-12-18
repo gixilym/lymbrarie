@@ -26,11 +26,11 @@ function TermsOfUsePage(): Component {
       <address className="text-sm sm:text-lg w-full">
         <Link
           className="text-blue-400 no-underline hover:text-blue-300 cursor-pointer duration-75"
-          href="mailto:gixi@lym.software"
+          href="mailto:gixi.tsx@gmail.com"
           target="_blank"
           rel="noreferrer"
         >
-          gixi@lym.software
+          gixi.tsx@gmail.com
         </Link>
       </address>
     </animated.section>

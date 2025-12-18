@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { animateOpacity } from "@/utils/helpers";
 import { animated, useSpring } from "@react-spring/web";
-import { CoffeeIcon, CoinsIcon, HeartIcon } from "lucide-react";
+import { CoinsIcon, HeartIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import type { Component } from "@/utils/types";
 
@@ -28,26 +28,8 @@ function DonationsPage(): Component {
         </p>
       </div>
 
-      <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <div className="bg-slate-900/40 backdrop-blur-sm p-8 rounded-xl border border-rose-500/20 flex flex-col items-center gap-y-6 transition-all">
-          <div className="bg-rose-400/20 p-4 rounded-full transition-transform">
-            <CoffeeIcon size={35} className="text-rose-400" />
-          </div>
-          <p className="text-2xl font-medium text-rose-200">
-            {t("buy-coffee")}
-          </p>
-          <Link
-            href="https://cafecito.app/gixilym"
-            rel="noopener noreferrer"
-            target="_blank"
-            className="mt-4 flex justify-center items-center gap-x-3 px-6 py-3 rounded-lg bg-gradient-to-r from-rose-500 to-rose-400 hover:opacity-85 transition-opacity text-white font-medium w-full max-w-[250px]"
-          >
-            <CoffeeIcon size={20} />
-            <span>Cafecito</span>
-          </Link>
-        </div>
-
-        <div className="bg-slate-900/40 backdrop-blur-sm p-8 rounded-xl border border-blue-500/20 flex flex-col items-center gap-y-6 transition-all">
+      <div className="w-full flex justify-center">
+        <div className="bg-slate-900/40 backdrop-blur-sm p-8 rounded-xl border border-blue-500/20 flex flex-col items-center gap-y-6 transition-all max-w-md w-full">
           <div className="bg-blue-400/20 p-4 rounded-full transition-transform">
             <CoinsIcon size={35} className="text-blue-400" />
           </div>

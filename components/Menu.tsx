@@ -21,14 +21,6 @@ function Nav(): Component {
       </Link>
       <Link
         className={
-          pathIs(PAGES.SEARCH) ? "text-violet-300/95" : "text-slate-200"
-        }
-        href={PAGES.SEARCH}
-      >
-        &gt;&nbsp;&nbsp;{t("book-finder")}
-      </Link>
-      <Link
-        className={
           pathIs(PAGES.PROFILE) ? "text-violet-300/95" : "text-slate-200"
         }
         href={PAGES.PROFILE}

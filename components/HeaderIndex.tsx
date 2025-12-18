@@ -12,7 +12,7 @@ import { useEffect } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
 import type { Component, SetState } from "@/utils/types";
-import { LibraryIcon, UserIcon, Settings2Icon, SearchIcon } from "lucide-react";
+import { LibraryIcon, UserIcon, Settings2Icon } from "lucide-react";
 
 export default function HeaderIndex(): Component {
   const { isGuest } = useGuest(),
@@ -90,25 +90,6 @@ export default function HeaderIndex(): Component {
             />
             {t("writer")}
           </Link> */}
-
-          <Link
-            onClick={() => setScroll(0)}
-            href={PAGES.SEARCH}
-            className={twMerge(
-              pathIs(PAGES.SEARCH)
-                ? "bg-violet-500/20 text-violet-200"
-                : "text-slate-300",
-              "px-4 py-2 rounded-xl transition-colors hover:bg-violet-500/20 flex items-center gap-x-2"
-            )}
-          >
-            <SearchIcon
-              className={twJoin(
-                "w-5 h-5",
-                pathIs(PAGES.SEARCH) && "text-violet-300/80"
-              )}
-            />
-            {t("book-finder")}
-          </Link>
 
           <Link
             onClick={() => setScroll(0)}
