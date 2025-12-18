@@ -5,7 +5,9 @@ const nextConfig = {
     FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,
     API_KEY_BOOKS: process.env.API_KEY_BOOKS,
   },
-  compiler: { removeConsole: process.env.NODE_ENV == "production" },
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production"
+  },
   images: {
     unoptimized: false,
     remotePatterns: [

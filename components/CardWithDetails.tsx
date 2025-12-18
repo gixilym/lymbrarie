@@ -16,15 +16,15 @@ export default function CardWithDetails(props: Card): Component {
   return (
     <li
       onClick={onClick}
-      className="mx-4 bg-slate-900/40 backdrop-blur-sm border border-l-0 border-violet-500/20 hover:border-violet-500/30 rounded-xl relative h-[130px] flex gap-x-5 w-full sm:w-[600px] max-w-[600px] cursor-pointer hover:scale-[0.98] duration-300"
+      className="mx-2 sm:mx-4 bg-slate-900/40 backdrop-blur-sm border border-l-0 border-violet-500/20 hover:border-violet-500/30 rounded-xl relative h-[130px] flex gap-x-2 sm:gap-x-5 w-full sm:w-[600px] max-w-[600px] cursor-pointer hover:scale-[0.98] duration-300"
     >
       {state && formatState()}
       {img && (
-        <div className="bg-violet-500/10 p-1.5 rounded-l-xl h-full w-[75px]">
+        <div className="bg-violet-500/10 p-1 sm:p-1.5 rounded-l-xl h-full w-[85px] min-w-[85px] sm:w-[85px] sm:min-w-[85px]">
           <Image
             loading="lazy"
             src={imgSrc}
-            width={75}
+            width={85}
             height={118}
             alt="cover"
             onError={() => setImgSrc(Cover.src)}
@@ -32,8 +32,8 @@ export default function CardWithDetails(props: Card): Component {
           />
         </div>
       )}
-      <div className="flex flex-col justify-between items-start gap-y-1 h-full w-[300px] sm:w-[490px] py-2 pr-3">
-        <div className="flex flex-row justify-start items-center gap-x-2 w-full pl-1">
+      <div className="flex flex-col justify-between items-start gap-y-1 h-full flex-1 min-w-0 py-2 pr-2 sm:pr-3">
+        <div className="flex flex-row justify-start items-center gap-x-1 sm:gap-x-2 w-full">
           <p
             title={title}
             className="text-slate-200/90 text-sm sm:text-xl font-light overflow-hidden overflow-ellipsis whitespace-nowrap max-w-full"

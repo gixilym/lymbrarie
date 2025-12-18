@@ -102,9 +102,7 @@ function NotesPopUp(props: Props): Component {
               skin: "oxide-dark",
               content_style:
                 "body { background-color: #1e293b; color: #e2e8f0; font-family: Poppins, sans-serif; font-size: 16px; padding: 16px; border: 0; outline: 0; } * { outline: 0 !important; }",
-              placeholder: `${t(
-                "placeholder-notes"
-              )} '${title}'\xA0.\xA0.\xA0.`,
+              placeholder: "...",
               height: "100%",
               menubar: false,
               statusbar: false,
@@ -143,10 +141,7 @@ function NotesPopUp(props: Props): Component {
         disabled={isLoading}
         type="button"
         onClick={handleClosePopUp}
-        className="absolute top-1 right-1 p-1 rounded-xl
-        bg-violet-500/30 border border-violet-500/30
-        hover:bg-violet-500/40 hover:border-violet-500/40
-        transition-colors disabled:opacity-50 z-10"
+        className="absolute top-1 right-1 p-1 rounded-xl bg-violet-700 border border-violet-500/30 hover:bg-violet-500/40 hover:border-violet-500/40 transition-colors disabled:opacity-50 z-10"
       >
         <ExitIcon size={30} className="text-violet-200" />
       </button>
