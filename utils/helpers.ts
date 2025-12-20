@@ -71,32 +71,32 @@ function selectStyles(
 
 function translateGender(gender: string): string {
   const genderMap: Record<string, string> = {
-    "custom": "Personalizado",
+    custom: "Personalizado",
     "no-gender": "Sin asignar",
-    "fiction": "Ficción",
+    fiction: "Ficción",
     "non-fiction": "No ficción",
-    "religion": "Religión",
-    "mystery": "Misterio",
-    "fantasy": "Fantasía",
-    "essay": "Ensayo",
-    "romance": "Romance",
-    "horror": "Terror",
-    "thriller": "Thriller",
-    "novel": "Novela",
-    "history": "Historia",
-    "biography": "Biografía",
+    religion: "Religión",
+    mystery: "Misterio",
+    fantasy: "Fantasía",
+    essay: "Ensayo",
+    romance: "Romance",
+    horror: "Terror",
+    thriller: "Thriller",
+    novel: "Novela",
+    history: "Historia",
+    biography: "Biografía",
     "self-help": "Autoayuda",
-    "poetry": "Poesía",
-    "drama": "Drama",
-    "adventure": "Aventura",
-    "psychology": "Psicología",
+    poetry: "Poesía",
+    drama: "Drama",
+    adventure: "Aventura",
+    psychology: "Psicología",
     "young-adult": "Juvenil",
     "children's": "Infantil",
-    "philosophy": "Filosofía",
-    "economy": "Economía",
-    "constabulary": "Policial",
-    "science": "Ciencia",
-    "dystopia": "Distopía",
+    philosophy: "Filosofía",
+    economy: "Economía",
+    constabulary: "Policial",
+    science: "Ciencia",
+    dystopia: "Distopía",
   };
 
   const lowerGender = gender?.toLowerCase().trim();
@@ -105,16 +105,31 @@ function translateGender(gender: string): string {
 
 function translateState(state: string): string {
   const stateMap: Record<string, string> = {
-    "Reading": "Leyendo",
-    "Read": "Leído",
-    "Pending": "Pendiente",
-    "Lent": "Prestado",
-    "Recommended": "Recomendado",
-    "Abandoned": "Abandonado",
-    "Halfway": "A medias",
+    Reading: "Leyendo",
+    Read: "Leído",
+    Pending: "Pendiente",
+    Lent: "Prestado",
+    Recommended: "Recomendado",
+    Abandoned: "Abandonado",
+    Halfway: "A medias",
+    Half: "A medias",
   };
 
   return stateMap[state] || state;
+}
+
+function mapStateToEnglish(state: string): string[] {
+  const spanishToEnglishMap: Record<string, string[]> = {
+    Leyendo: ["Reading"],
+    Leído: ["Read"],
+    Pendiente: ["Pending"],
+    Prestado: ["Lent", "Loaned"],
+    Recomendado: ["Recommended"],
+    Abandonado: ["Abandoned"],
+    "A medias": ["Halfway", "Half"],
+  };
+
+  return spanishToEnglishMap[state] || [state];
 }
 
 function pathIs(path: string, options?: PathOptions): boolean {
@@ -128,7 +143,10 @@ const removeItem: Handler<string, void> = item =>
 
 const clearStorage: Handler<void, void> = () => window?.localStorage?.clear();
 
-const isLent: Handler<string, boolean> = state => isEqual(state, "Prestado");
+const isLent: Handler<string, boolean> = state =>
+  isEqual(state, "Prestado") ||
+  isEqual(state, "Lent") ||
+  isEqual(state, "Loaned");
 
 const tLC: Handler<string, string> = val => val?.toLowerCase().trim();
 
@@ -157,6 +175,7 @@ export {
   clearStorage,
   isLent,
   len,
+  mapStateToEnglish,
   removeItem,
   selectStyles,
   tLC,

@@ -6,7 +6,7 @@ import NoMatchesText from "./NoMatchesText";
 import SortBtn from "./btns/SortBtn";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { deburr, delay, isEqual, isNull, orderBy, shuffle } from "es-toolkit";
-import { len, pathIs, tLC } from "@/utils/helpers";
+import { len, mapStateToEnglish, pathIs, tLC } from "@/utils/helpers";
 import { memo, useEffect, useMemo, useState } from "react";
 import { PAGES } from "@/utils/consts";
 import { useRecoilState } from "recoil";
@@ -102,7 +102,11 @@ const ListSection: MemoComponent = memo(function B(props: Props) {
   }
 
   function where(value: string, state: string): Book[] {
-    const checkState = (b: BookData) => !state || isEqual(b.state, stateVal),
+    const checkState = (b: BookData) => {
+        if (!state) return true;
+        const englishStates: string[] = mapStateToEnglish(stateVal);
+        return englishStates.includes(b.state ?? "");
+      },
       checkTitle = (b: BookData) =>
         deburr(tLC(b.title ?? ""))?.includes(deburr(tLC(value))),
       checkAuthor = (b: BookData) =>

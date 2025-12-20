@@ -6,7 +6,7 @@ import useGuest from "@/hooks/useGuest";
 import useIsMobile from "@/hooks/useIsMobile";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { animated, useSpring } from "@react-spring/web";
-import { animateOpacity } from "@/utils/helpers";
+import { animateOpacity, translateState } from "@/utils/helpers";
 import { AuthAction, useUser, withUser } from "next-firebase-auth";
 import { isUndefined, sum } from "es-toolkit";
 import { PAGES } from "@/utils/consts";
@@ -59,7 +59,9 @@ function ProfilePage(): Component {
       };
 
       cacheBooks.forEach((b: Book) => {
-        const state = b.data.state as BookState;
+        const englishState: string = b.data.state ?? "";
+        const spanishState: string = translateState(englishState);
+        const state = spanishState as BookState;
         if (!isUndefined(counts[state])) counts[state]++;
       });
 
