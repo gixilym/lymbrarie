@@ -15,11 +15,11 @@ import type {
   SelectOpt,
 } from "@/utils/types";
 
-function SearchIndex(): Component {
+export default function SearchIndex(): Component {
   const { isGuest } = useGuest(),
     [value, setValue] = useRecoilState<string>(searchAtom),
     [selectVal, setSelectStateVal] = useRecoilState<string>(stateAtom),
-    [menuIsOpen] = useRecoilState(menuAtom),
+    [menuIsOpen] = useRecoilState<boolean>(menuAtom),
     { isMobile } = useIsMobile(),
     handleSearch: Handler<InputEvent, void> = (e: InputEvent) =>
       setValue(e.target.value),
@@ -88,5 +88,3 @@ function SearchIndex(): Component {
     </div>
   );
 }
-
-export default SearchIndex;

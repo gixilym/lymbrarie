@@ -1,6 +1,6 @@
 ## 🔴 Alta Prioridad
 
-- 
+- Eliminar dependencias en desuso y actualizar docs.
 
 ## 🟡 Media Prioridad
 

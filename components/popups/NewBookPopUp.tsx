@@ -137,7 +137,10 @@ function NewBookPopUp({ UID }: Props): Component {
 
     if (maxTitleLength) {
       setErrorKey("title-input");
-      notification("error", "El título es demasiado largo (máx. 80 caracteres)");
+      notification(
+        "error",
+        "El título es demasiado largo (máx. 80 caracteres)"
+      );
       return false;
     }
 
@@ -161,7 +164,10 @@ function NewBookPopUp({ UID }: Props): Component {
 
     if (maxLengthGender) {
       setErrorKey("gender-input");
-      notification("error", "El género es demasiado largo (máx. 24 caracteres)");
+      notification(
+        "error",
+        "El género es demasiado largo (máx. 24 caracteres)"
+      );
       return false;
     }
 
@@ -173,7 +179,10 @@ function NewBookPopUp({ UID }: Props): Component {
 
     if (maxLengthLoaned) {
       setErrorKey("lent-input");
-      notification("error", "El nombre es demasiado largo (máx. 24 caracteres)");
+      notification(
+        "error",
+        "El nombre es demasiado largo (máx. 24 caracteres)"
+      );
       return false;
     }
 

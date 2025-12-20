@@ -173,12 +173,12 @@ function FieldsBook(props: Props): Component {
             <option value="default" disabled>
               Estado actual
             </option>
-            <option value="Leyendo">Leyendo</option>
-            <option value="Leído">Leído</option>
-            <option value="Pendiente">Pendiente</option>
-            <option value="Prestado">Prestado</option>
-            <option value="Abandonado">Abandonado</option>
-            <option value="A medias">A medias</option>
+            <option value="Reading">Leyendo</option>
+            <option value="Read">Leído</option>
+            <option value="Pending">Pendiente</option>
+            <option value="Lent">Prestado</option>
+            <option value="Abandoned">Abandonado</option>
+            <option value="Halfway">A medias</option>
           </select>
           <ChevronDownIcon
             size={20}
