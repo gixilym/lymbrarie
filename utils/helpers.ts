@@ -97,6 +97,7 @@ function translateGender(gender: string): string {
     constabulary: "Policial",
     science: "Ciencia",
     dystopia: "Distopía",
+    other: "Otro",
   };
 
   const lowerGender = gender?.toLowerCase().trim();
@@ -112,7 +113,6 @@ function translateState(state: string): string {
     Recommended: "Recomendado",
     Abandoned: "Abandonado",
     Halfway: "A medias",
-    Half: "A medias",
   };
 
   return stateMap[state] || state;

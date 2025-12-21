@@ -7,7 +7,7 @@ import { BookAdapters } from "@/adapters/book.adapters";
 import { deburr, delay, isEqual } from "es-toolkit";
 import { dismissNoti, notification } from "@/utils/notifications";
 import { EMPTY_BOOK, GENDERS, PAGES } from "@/utils/consts";
-import { isLent, len, tLC, translateState } from "@/utils/helpers";
+import { isLent, len, tLC } from "@/utils/helpers";
 import { scrollAtom } from "@/utils/atoms";
 import { useRecoilState } from "recoil";
 import type {
@@ -168,7 +168,10 @@ function EditBookPopUp(props: Props): Component {
 
     if (maxTitleLength) {
       setErrorKey("title-input");
-      notification("error", "El título es demasiado largo (máx. 80 caracteres)");
+      notification(
+        "error",
+        "El título es demasiado largo (máx. 80 caracteres)"
+      );
       return false;
     }
 
@@ -192,7 +195,10 @@ function EditBookPopUp(props: Props): Component {
 
     if (maxLengthGender) {
       setErrorKey("gender-input");
-      notification("error", "El género es demasiado largo (máx. 24 caracteres)");
+      notification(
+        "error",
+        "El género es demasiado largo (máx. 24 caracteres)"
+      );
       return false;
     }
 
@@ -204,7 +210,10 @@ function EditBookPopUp(props: Props): Component {
 
     if (maxLengthLoaned) {
       setErrorKey("lent-input");
-      notification("error", "El nombre es demasiado largo (máx. 24 caracteres)");
+      notification(
+        "error",
+        "El nombre es demasiado largo (máx. 24 caracteres)"
+      );
       return false;
     }
 
@@ -235,7 +244,7 @@ function EditBookPopUp(props: Props): Component {
         defaultValueTitle={data?.title}
         defaultValueAuthor={data?.author}
         defaultValueGender={data?.gender}
-        defaultValueState={translateState(data?.state ?? "")}
+        defaultValueState={data?.state}
         defaultValueLoaned={data?.loaned}
         defaultValueImg={data?.image}
         isEditing
