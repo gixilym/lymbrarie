@@ -10,7 +10,7 @@
 
 ## P0 - CRÍTICO (Seguridad)
 
-### P0.1 XSS via query params
+### P0.1 XSS via query params 
 **Archivo:** `pages/error.tsx:11`, `components/ErrorNotes.tsx:42`
 **Problema:** `dangerouslySetInnerHTML` con datos de URL sin sanitizar
 **Fix:** Instalar y usar `dompurify` para sanitizar antes de renderizar
@@ -20,10 +20,10 @@ const sanitizedNotes = DOMPurify.sanitize(notes);
 dangerouslySetInnerHTML={{ __html: sanitizedNotes }}
 ```
 
-### P0.2 Clave de descrypt expuesta al cliente
+### P0.2 Clave de descrypt expuesta al cliente ✅
 **Archivo:** `utils/encrypt.ts:4`
-**Problema:** `NEXT_PUBLIC_DECRYPT` es accesible client-side
-**Fix:** Renombrar a variable de servidor, usar solo en server-side
+**Problema:** `NEXT_PUBLIC_DECRYPT` era accesible client-side
+**Fix:** Renombrado a `DECRYPT` (solo servidor). Actualizado `.env.local`, `.env.production`, `.env.example`
 
 ### P0.3 Verificar .env.local no esté en git
 **Problema:** Credenciales de producción en el archivo
