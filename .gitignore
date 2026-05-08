@@ -16,7 +16,7 @@ GEMINI.md
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.env
+.env*.production
 .env*.local
 .vercel
 *.tsbuildinfo
