@@ -26,6 +26,7 @@
     "@react-spring/web": "^9.7.4",
     "@tinymce/tinymce-react": "^6.3.0",
     "crypto-js": "^4.2.0",
+    "dompurify": "^3.4.2",
     "es-toolkit": "^1.17.0",
     "firebase": "^10.13.1",
     "firebase-admin": "^11.11.1",

@@ -1,3 +1,4 @@
+import DOMPurify from "dompurify";
 import { notification } from "@/utils/notifications";
 import type { Component } from "@/utils/types";
 import { delay } from "es-toolkit";
@@ -5,6 +6,7 @@ import { useRouter } from "next/router";
 
 function ErrorNotes({ notes }: { notes: string }): Component {
   const { push } = useRouter();
+  const sanitizedNotes: string = DOMPurify.sanitize(notes);
 
   async function copy(): Promise<void> {
     notification("success", "Copiado");
@@ -39,7 +41,7 @@ function ErrorNotes({ notes }: { notes: string }): Component {
         </div>
         <div
           className="text-sm overflow-y-auto w-full prose prose-invert prose-sm max-w-none"
-          dangerouslySetInnerHTML={{ __html: notes }}
+          dangerouslySetInnerHTML={{ __html: sanitizedNotes }}
         />
       </div>
     </div>
