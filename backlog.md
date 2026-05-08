@@ -25,9 +25,8 @@ dangerouslySetInnerHTML={{ __html: sanitizedNotes }}
 **Problema:** `NEXT_PUBLIC_DECRYPT` era accesible client-side
 **Fix:** Renombrado a `DECRYPT` (solo servidor). Actualizado `.env.local`, `.env.production`, `.env.example`
 
-### P0.3 Verificar .env.local no esté en git
-**Problema:** Credenciales de producción en el archivo
-**Fix:** Ejecutar `git status` y asegurar que .env.local está en .gitignore
+### P0.3 Verificar .env.local no esté en git ✅
+**Verificado:** `.env.local` contiene credenciales reales pero está correctamente excluido en `.gitignore` (línea 20: `.env*.local`). Solo `.env.example` (valores placeholder "0") está rastreado. Ningún secreto real está en el repositorio.
 
 ---
 
