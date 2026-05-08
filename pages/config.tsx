@@ -2,11 +2,7 @@ import ConfigOption from "@/components/ConfigOption";
 import LoaderCircle from "@/components/LoaderCircle";
 import useGuest from "@/hooks/useGuest";
 import useLocalStorage from "@/hooks/useLocalStorage";
-import {
-  animateOpacity,
-  clearStorage,
-  len,
-} from "@/utils/helpers";
+import { animateOpacity, clearStorage, len } from "@/utils/helpers";
 import { animated, useSpring } from "@react-spring/web";
 import { AuthAction, withUser } from "next-firebase-auth";
 import { PAGES } from "@/utils/consts";
@@ -87,7 +83,7 @@ function ConfigPage(): Component {
         /> */}
 
         <ConfigOption
-          label="Mostrar estado"
+          label="Mostrar estado del libro en la lista"
           textBtn={state ? "Activado" : "Desactivado"}
           Icon={LibraryIcon}
           action={() => setState(!state)}
@@ -101,7 +97,7 @@ function ConfigPage(): Component {
         />
 
         <ConfigOption
-          label="Círculos de libros"
+          label="Círculos violetas de fondo"
           textBtn={circles ? "Activado" : "Desactivado"}
           Icon={CircleIcon}
           action={() => setCircles(!circles)}
