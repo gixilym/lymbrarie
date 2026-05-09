@@ -28,7 +28,7 @@ import {
 } from "react";
 
 function EditBookPopUp(props: Props): Component {
-  const { data: dataBook, documentId } = props,
+  const { data: dataBook, documentId, UID } = props,
     data: BookData = dataBook?.data,
     { closePopUp } = usePopUp(),
     router: NextRouter = useRouter(),
@@ -119,7 +119,7 @@ function EditBookPopUp(props: Props): Component {
       newTitles: string[] = [...allTitles, book.title];
 
     try {
-      await BookAdapters.manageBook(documentId, updatedData);
+      await BookAdapters.manageBook(documentId, updatedData, UID);
       setCacheBooks(newVersion);
       setAllTitles(newTitles);
       setScrollLS(scroll);
@@ -289,4 +289,5 @@ export default EditBookPopUp;
 interface Props {
   data: Book;
   documentId: string;
+  UID: string;
 }

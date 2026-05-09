@@ -49,10 +49,15 @@ dangerouslySetInnerHTML={{ __html: sanitizedNotes }}
 - BookState usa `BookStateMemo` envuelto en memo para evitar conflicto con fnState
 - Menu.Nav y Menu.IconBtn envueltos en memo
 
-### P1.4 Verificación de propiedad en Firestore
-**Archivo:** `adapters/book.adapters.ts:71,84`
-**Problema:** No se verifica ownership del libro antes de modificar/eliminar
-**Fix:** Agregar verificación de UID en cada operación
+### P1.4 Verificación de propiedad en Firestore ✅
+**Archivo:** `adapters/book.adapters.ts:70,78`
+**Problema:** No se verificaba ownership del libro antes de modificar/eliminar
+**Fix:** 
+- `manageBook(bookId, data, UID)` - verifica `data.owner === UID` antes de escribir
+- `deleteBook(bookId, UID, ownerCheck)` - verifica `ownerCheck === UID` antes de eliminar
+- Actualizados todos los callers (`NewBookPopUp`, `EditBookPopUp`, `DeleteBookPopUp`, `[bookId]`, `AddBookToLibraryBtn`) para pasar UID
+- `AddBookToLibraryBtn` ahora establece `owner: UID` al crear un libro desde búsqueda
+- Las Firestore Security Rules ya exigen ownership, esto agrega defense-in-depth
 
 ### P1.5 Estados duplicados en 10+ ubicaciones
 **Archivos:** `utils/consts.ts`, `utils/helpers.ts`, `components/BookState.tsx`, `FieldsBook.tsx`, `pages/profile.tsx`, `pages/guest.tsx`, `pages/search.tsx`, `pages/recommendation/[BookRecommendationId].tsx`

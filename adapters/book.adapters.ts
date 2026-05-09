@@ -67,11 +67,19 @@ export class BookAdapters {
     }
   }
 
-  static async manageBook(bookId: string, data: BookData): Promise<void> {
+  static async manageBook(bookId: string, data: BookData, UID: string): Promise<void> {
+    if (data.owner !== UID) {
+      console.error("Unauthorized: cannot modify book belonging to another user");
+      return;
+    }
     await setDoc(doc(COLLECTION_BOOKS, bookId), data);
   }
 
-  static async deleteBook(bookId: string): Promise<void> {
+  static async deleteBook(bookId: string, UID: string, ownerCheck: string): Promise<void> {
+    if (ownerCheck !== UID) {
+      console.error("Unauthorized: cannot delete book belonging to another user");
+      return;
+    }
     await deleteDoc(doc(COLLECTION_BOOKS, bookId));
   }
 }

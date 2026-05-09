@@ -14,7 +14,7 @@ import useLoad from "@/hooks/useLoad";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
 import { animateOpacity, isLent, translateGender, translateState } from "@/utils/helpers";
-import { AuthAction, withUser } from "next-firebase-auth";
+import { AuthAction, type User, useUser, withUser } from "next-firebase-auth";
 import { EMPTY_BOOK, PAGES } from "@/utils/consts";
 import { dismissNoti, notification } from "@/utils/notifications";
 import { isEqual, noop } from "es-toolkit";
@@ -51,7 +51,8 @@ export default withUser({
 })(BookId);
 
 function BookId(): Component {
-  const auth: Auth = getAuth(),
+  const user: User = useUser(),
+    auth: Auth = getAuth(),
     router: NextRouter = useRouter(),
     { openPopUp, closePopUp, closeBookPopUps } = usePopUp(),
     bookTitle: string = router.query.bookId?.toString() ?? "",
@@ -108,7 +109,7 @@ function BookId(): Component {
   async function updateNotes(): Promise<void> {
     try {
       const dataWithUpdatedNotes: BookData = { ...book?.data, notes };
-      await BookAdapters.manageBook(book.id, dataWithUpdatedNotes);
+      await BookAdapters.manageBook(book.id, dataWithUpdatedNotes, user.id as string);
       const updatedNotes: Book = { ...book, data: { ...book?.data, notes } },
         oldVersion: Book[] = cacheBooks.filter(
           (b: Book) => b?.id != documentId
@@ -130,7 +131,7 @@ function BookId(): Component {
       setLoadingFav(true);
       notification("loading", checkFav ? "Eliminando de favoritos..." : "Añadiendo a favoritos...");
       const dataWithUpdatedFav: BookData = { ...book?.data, isFav: !checkFav };
-      await BookAdapters.manageBook(documentId, dataWithUpdatedFav);
+      await BookAdapters.manageBook(documentId, dataWithUpdatedFav, user.id as string);
       const oldVersion: Book[] = cacheBooks.filter(
         (b: Book) => b?.id != documentId
       );
@@ -156,12 +157,14 @@ function BookId(): Component {
       </Head>
 
       {popup.offline && <OfflinePopUp />}
-      {popup.edit_book && <EditBookPopUp data={book} documentId={documentId} />}
+      {popup.edit_book && <EditBookPopUp data={book} documentId={documentId} UID={user.id as string} />}
       {popup.notes && <NotesPopUp {...notesProps} />}
       {popup.delete_book && (
         <DeleteBookPopUp
           documentId={documentId}
           title={book?.data?.title ?? ""}
+          UID={user.id as string}
+          owner={book?.data?.owner ?? ""}
         />
       )}
 

@@ -14,7 +14,7 @@ import { useSetRecoilState } from "recoil";
 import { type NextRouter, useRouter } from "next/router";
 import type { Book, Component, SetState } from "@/utils/types";
 
-function DeleteBookPopUp({ documentId, title }: Props): Component {
+function DeleteBookPopUp({ documentId, title, UID, owner }: Props): Component {
   const { updateTitles } = useTitles(),
     { closePopUp } = usePopUp(),
     { push }: NextRouter = useRouter(),
@@ -30,7 +30,7 @@ function DeleteBookPopUp({ documentId, title }: Props): Component {
     notification("loading", "Eliminando");
 
     try {
-      await BookAdapters.deleteBook(documentId);
+      await BookAdapters.deleteBook(documentId, UID, owner);
       setSearchVal("");
       setZeroBooks(isEqual(len(cacheBooks), 1));
       updateData();
@@ -128,4 +128,6 @@ export default DeleteBookPopUp;
 interface Props {
   documentId: string;
   title: string;
+  UID: string;
+  owner: string;
 }

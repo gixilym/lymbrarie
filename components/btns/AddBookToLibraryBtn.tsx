@@ -18,9 +18,9 @@ import type { Book, BookData, Component } from "@/utils/types";
 export default withUser()(AddBookToLibraryBtn);
 
 function AddBookToLibraryBtn(props: Props | any): Component {
-  const { id }: User = useUser(),
+  const { id: UID }: User = useUser(),
     { data, title, isRecommended } = props,
-    [userId, setUserId] = useState<string | null>(id),
+    [userId, setUserId] = useState<string | null>(UID),
     router: NextRouter = useRouter(),
     { openPopUp } = usePopUp(),
     [animations] = useLocalStorage("animations", true),
@@ -31,7 +31,7 @@ function AddBookToLibraryBtn(props: Props | any): Component {
     [cacheBooks, setCacheBooks] = useLocalStorage("cache-books", null),
     { startLoading, isLoading, finishLoading } = useLoad();
 
-  useEffect(() => setUserId(id), [id]);
+  useEffect(() => setUserId(UID), [UID]);
 
   useEffect(() => {
     if (!animations) return;
@@ -42,8 +42,9 @@ function AddBookToLibraryBtn(props: Props | any): Component {
     startLoading();
     try {
       const id: string = crypto.randomUUID();
-      const newVersion: Book[] = [...(cacheBooks ?? []), { id, data }];
-      await BookAdapters.manageBook(id, data);
+      const bookData: BookData = { ...data, owner: UID ?? "" };
+      const newVersion: Book[] = [...(cacheBooks ?? []), { id, data: bookData }];
+      await BookAdapters.manageBook(id, bookData, UID ?? "");
       setIsPressed(true);
       setCacheBooks(newVersion);
       if (isRecommended) return redirectToBook();

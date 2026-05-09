@@ -94,7 +94,7 @@ function NewBookPopUp({ UID }: Props): Component {
     try {
       const id: string = crypto.randomUUID();
       const data: BookData = { ...book.data, owner: UID };
-      await BookAdapters.manageBook(id, data);
+      await BookAdapters.manageBook(id, data, UID);
       const newVersion: Book[] = [...(cacheBooks ?? []), { id, data }];
       setCacheBooks(newVersion);
       setShowNoti(true);
