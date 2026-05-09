@@ -54,6 +54,17 @@ const EMPTY_BOOK: Book = {
   },
 } as const;
 
+const EMPTY_BOOK_DATA: BookData = {
+  title: "",
+  author: "",
+  state: BOOK_STATES.PENDING.es,
+  image: "",
+  gender: "Sin asignar",
+  notes: "",
+  loaned: "",
+  isFav: false,
+};
+
 const BOOK_RECO: BookData = {
   owner: "all",
   title: "¡Viven! - La tragedia de los Andes",
@@ -89,6 +100,7 @@ export {
   CLOUDINARY_URL,
   COLLECTION_BOOKS,
   EMPTY_BOOK,
+  EMPTY_BOOK_DATA,
   GENDERS,
   BOOK_RECO,
   API_BOOKS,

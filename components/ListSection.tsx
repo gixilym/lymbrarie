@@ -7,7 +7,7 @@ import SortBtn from "./btns/SortBtn";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { deburr, delay, isEqual, isNull, orderBy, shuffle } from "es-toolkit";
 import { len, mapStateToEnglish, pathIs, tLC } from "@/utils/helpers";
-import { memo, useEffect, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { PAGES } from "@/utils/consts";
 import { useRecoilState } from "recoil";
 import {
@@ -37,7 +37,10 @@ const ListSection = memo(function B(props: Props) {
     [ascSort, setSort] = useState<SortModes>(ascSortLS),
     [showFavs, setShowFavs] = useRecoilState<boolean>(showFavsAtom),
     [shuffledData, setShuffledData] = useRecoilState<ShuffleAtom>(shuffleAtom),
-    myFavs: Book[] = myBooks.filter((b: Book) => b?.data?.isFav);
+    myFavs: Book[] = useMemo(
+      () => myBooks.filter((b: Book) => b?.data?.isFav),
+      [myBooks]
+    );
 
   const filteredBooks: Book[] = useMemo(() => {
     function where(value: string, state: string): Book[] {
@@ -58,7 +61,7 @@ const ListSection = memo(function B(props: Props) {
       );
     }
     return where(searchVal, stateVal);
-  }, [searchVal, stateVal, showFavs, myBooks, myFavs, showDetails]);
+  }, [searchVal, stateVal, showFavs, myBooks, myFavs]);
 
   useEffect(() => {
     if (pathIs(PAGES.HOME, { exact: true })) {
@@ -109,21 +112,22 @@ const ListSection = memo(function B(props: Props) {
     );
   }, [filteredBooks, sortedBooks, searchVal, showFavs, stateVal]);
 
-  const bookDataList: BookData[] = useMemo(
-    () => sortedBooks.map(b => b),
-    [sortedBooks]
+  const renderBookItem = useCallback(
+    (book: BookData, _index: number): Component => (
+      <BookCard key={book.title} data={book} showDetails={showDetails} />
+    ),
+    [showDetails]
   );
 
-  function renderBookItem(book: BookData, _index: number): Component {
-    return <BookCard key={book.title} data={book} showDetails={showDetails} />;
-  }
+  const changeDetails = useCallback((): void => {
+    setShowDetails(prev => {
+      const next = !prev;
+      setShowDetailsLS(next);
+      return next;
+    });
+  }, [setShowDetailsLS]);
 
-  function changeDetails(): void {
-    setShowDetails(!showDetails);
-    setShowDetailsLS(!showDetails);
-  }
-
-  function toggleSort(): void {
+  const toggleSort = useCallback((): void => {
     switch (ascSort) {
       case "asc":
         setSort("desc");
@@ -138,7 +142,7 @@ const ListSection = memo(function B(props: Props) {
         setSortLS("asc");
         break;
     }
-  }
+  }, [ascSort, setSort, setSortLS]);
 
   return (
     <section className="w-full px-4 sm:px-0 sm:w-[620px] flex flex-col justify-between items-center gap-y-7 relative">
@@ -159,7 +163,7 @@ const ListSection = memo(function B(props: Props) {
           txt={showFavs && !searchVal ? "no-favs" : "no-matches"}
         />
       ) : (
-        <ListBooks listBooks={bookDataList} renderItem={renderBookItem} />
+        <ListBooks listBooks={sortedBooks} renderItem={renderBookItem} />
       )}
     </section>
   );

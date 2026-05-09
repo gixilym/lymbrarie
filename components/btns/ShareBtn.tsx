@@ -17,22 +17,23 @@ function ShareBtn({ title }: { title: string }): Component {
 export default ShareBtn;
 
 function handleShare(title: string): void {
-  const content = document.getElementById("screenshot") as HTMLElement,
-    contentClone = content.cloneNode(true) as HTMLElement,
-    iconsClone = contentClone.querySelector("#icons") as HTMLElement,
-    stateCont = contentClone.querySelector("#state-cont") as HTMLElement,
-    watermark = document.createElement("div") as HTMLDivElement,
-    link = document.createElement("a") as HTMLAnchorElement;
+  const content = document.getElementById("screenshot");
+  if (!(content instanceof HTMLElement)) return;
+
+  const contentClone = content.cloneNode(true);
+  if (!(contentClone instanceof HTMLElement)) return;
+
+  const iconsClone = contentClone.querySelector("#icons"),
+    stateCont = contentClone.querySelector("#state-cont"),
+    watermark = document.createElement("div"),
+    link = document.createElement("a");
 
   contentClone.style.padding = "20px";
   contentClone.style.border = "3px solid rgba(139,92,246,0.3)";
   contentClone.style.height = "auto";
   contentClone.style.borderRadius = "0px";
-  stateCont.style.opacity = "0";
-
-  if (iconsClone) {
-    iconsClone.style.opacity = "0";
-  }
+  if (stateCont instanceof HTMLElement) stateCont.style.opacity = "0";
+  if (iconsClone instanceof HTMLElement) iconsClone.style.opacity = "0";
 
   watermark.textContent = "lymbrarie.gixi.dev";
   watermark.style.position = "absolute";

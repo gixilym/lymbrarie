@@ -62,8 +62,7 @@ function ProfilePage(): Component {
       cacheBooks.forEach((b: Book) => {
         const englishState: string = b.data.state ?? "";
         const spanishState: string = translateState(englishState);
-        const state = spanishState as BookState;
-        if (!isUndefined(counts[state])) counts[state]++;
+        if (!isUndefined(counts[spanishState])) counts[spanishState]++;
       });
 
       setStateCounts(counts);
@@ -194,3 +193,5 @@ function ProfilePage(): Component {
 type States = { [key: string]: number };
 
 type BookState = (typeof BOOK_STATES)[keyof typeof BOOK_STATES]["es"];
+
+export type { States, BookState };

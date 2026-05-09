@@ -1,31 +1,18 @@
 import DialogContainer from "../DialogContainer";
 import FieldsBook from "../FieldsBook";
-import useLoad from "@/hooks/useLoad";
+import { useBookForm } from "@/hooks/useBookForm";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import usePopUp from "@/hooks/usePopUp";
 import { BookAdapters } from "@/adapters/book.adapters";
-import { deburr, delay, isEqual } from "es-toolkit";
+import { deburr, isEqual } from "es-toolkit";
 import { dismissNoti, notification } from "@/utils/notifications";
-import { EMPTY_BOOK, GENDERS, PAGES } from "@/utils/consts";
-import { ERROR_DELAY_MS, validateImageUrl } from "@/utils/validation";
-import { ERROR_KEYS, VALIDATION_MESSAGES } from "@/utils/messages";
-import { isLent, len, tLC } from "@/utils/helpers";
+import { GENDERS, PAGES } from "@/utils/consts";
+import { tLC, isLent } from "@/utils/helpers";
 import { scrollAtom } from "@/utils/atoms";
 import { useRecoilState } from "recoil";
-import type {
-  Book,
-  BookData,
-  Component,
-  InputEvent,
-  SelectEvent,
-} from "@/utils/types";
+import type { Book, BookData, Component } from "@/utils/types";
 import { type NextRouter, useRouter } from "next/router";
-import {
-  type FormEvent,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 
 function EditBookPopUp(props: Props): Component {
   const { data: dataBook, documentId, UID } = props,
@@ -35,28 +22,23 @@ function EditBookPopUp(props: Props): Component {
     bookId: string = router.query.bookId as string,
     formatBookId: string = decodeURIComponent(bookId),
     form = useRef<HTMLFormElement>(null),
-    { isLoading, startLoading } = useLoad(),
-    [book, setBook] = useState<any>(EMPTY_BOOK),
-    customVal: boolean = !GENDERS.includes(tLC(data?.gender ?? "")),
-    [isCustomGender, setIsCustomGender] = useState<boolean>(customVal),
-    [addClicked, setAddClicked] = useState<boolean>(false),
     [cacheBooks, setCacheBooks] = useLocalStorage<Book[] | null>("cache-books", null),
     [allTitles, setAllTitles] = useLocalStorage<string[]>("all-titles", []),
     [, setScrollLS] = useLocalStorage("scroll-editpopup", 0),
     [scroll] = useRecoilState(scrollAtom),
     [editDisabled, setEditDisabled] = useState<boolean>(true),
-    [errorKey, setErrorKey] = useState<string>(""),
-    handleState = (state: string): void => setBook({ ...book, state }),
-    [cusGenderVal, setCusGenderVal] = useState<string>(data?.gender ?? "");
+    {
+      book, setBook,
+      isLoading, startLoading,
+      errorKey,
+      isCustomGender, setIsCustomGender,
+      setCusGenderVal,
+      addClicked, setAddClicked,
+      handleChange, handleState, handleImage, handleGender,
+      validateFields,
+    } = useBookForm();
 
   useEffect(() => loadBookData(), [data]);
-
-  useEffect(() => {
-    (async function () {
-      await delay(ERROR_DELAY_MS);
-      setErrorKey("");
-    })();
-  }, [addClicked]);
 
   useEffect(() => {
     const noChanges: boolean =
@@ -83,40 +65,33 @@ function EditBookPopUp(props: Props): Component {
       notes: data?.notes ?? "",
       isFav: data?.isFav ?? false,
     };
-    setBook({ ...loadData });
-  }
-
-  function handleChange(e: InputEvent): void {
-    const key: string = e.target?.name;
-    const value: string = e.target?.value.trim();
-    setBook({ ...book, [key]: value });
-  }
-
-  function handleGender(e: SelectEvent): void {
-    const gender: string = e.target?.value.trim();
-    setBook({ ...book, gender });
-    setIsCustomGender(isEqual(gender, "custom"));
-  }
-
-  function handleImage(image: string): void {
-    setBook({ ...book, image });
+    setBook(loadData);
+    setIsCustomGender(!GENDERS.includes(tLC(data?.gender ?? "")));
+    setCusGenderVal(data?.gender ?? "");
   }
 
   async function editBook(e: FormEvent): Promise<void> {
     e.preventDefault();
     setAddClicked(!addClicked);
 
-    if (!validateFields()) return;
+    const title: string = tLC(book.title ?? ""),
+      repeteadTitle: boolean = allTitles.some(
+        (t: string) =>
+          deburr(tLC(t)) != deburr(tLC(formatBookId)) &&
+          isEqual(deburr(tLC(t)), deburr(tLC(title)))
+      );
+
+    if (!validateFields(repeteadTitle)) return;
     startLoading();
     notification("loading", "Editando...");
 
-    const loaned: string = isLent(book.state) ? book.loaned : "",
-      updatedData: BookData = { ...book, loaned } as const,
+    const loaned: string = isLent(book.state ?? "") ? (book.loaned ?? "") : "",
+      updatedData: BookData = { ...book, loaned },
       oldVersion: Book[] = cacheBooks?.filter((b: Book) => b.id != documentId) ?? [],
       newVersion: Book[] = [...oldVersion, { id: documentId, data }],
-      titlePage: string = encodeURIComponent(book.title),
+      titlePage: string = encodeURIComponent(book.title ?? ""),
       newPath: string = `${PAGES.BOOK}/${titlePage}`,
-      newTitles: string[] = [...allTitles, book.title];
+      newTitles: string[] = [...allTitles, book.title ?? ""];
 
     try {
       await BookAdapters.manageBook(documentId, updatedData, UID);
@@ -130,74 +105,6 @@ function EditBookPopUp(props: Props): Component {
     } finally {
       dismissNoti();
     }
-  }
-
-  function validateFields(): boolean {
-    const title: string = tLC(book.title ?? ""),
-      repeteadTitle: boolean = allTitles.some(
-        (t: string) =>
-          deburr(tLC(t)) != deburr(tLC(formatBookId)) &&
-          isEqual(deburr(tLC(t)), deburr(tLC(title)))
-      ),
-      maxTitleLength = len(title) > 80,
-      maxAuthorLength = len(book.author ?? "0") > 34,
-      emptyCustomGender = isCustomGender && !cusGenderVal,
-      maxLengthGender = isCustomGender && len(cusGenderVal ?? "0") > 24,
-      emptyLoaned = isLent(book.state ?? "") && !book.loaned?.trim(),
-      maxLengthLoaned = isLent(book.state ?? "") && len(book.loaned ?? "0") > 24,
-      validateImg = len(book?.image ?? "0") > 0 && !validateImageUrl(book.image ?? "");
-
-    if (!title) {
-      setErrorKey(ERROR_KEYS.TITLE);
-      notification("error", VALIDATION_MESSAGES.TITLE_EMPTY);
-      return false;
-    }
-    if (repeteadTitle) {
-      setErrorKey(ERROR_KEYS.TITLE);
-      notification("error", VALIDATION_MESSAGES.TITLE_REPEATED);
-      return false;
-    }
-    if (maxTitleLength) {
-      setErrorKey(ERROR_KEYS.TITLE);
-      notification("error", VALIDATION_MESSAGES.TITLE_TOO_LONG);
-      return false;
-    }
-    if (title.includes("/")) {
-      setErrorKey(ERROR_KEYS.TITLE);
-      notification("error", VALIDATION_MESSAGES.TITLE_HAS_SLASH);
-      return false;
-    }
-    if (maxAuthorLength) {
-      setErrorKey(ERROR_KEYS.AUTHOR);
-      notification("error", VALIDATION_MESSAGES.AUTHOR_TOO_LONG);
-      return false;
-    }
-    if (emptyCustomGender) {
-      setErrorKey(ERROR_KEYS.GENDER);
-      notification("error", VALIDATION_MESSAGES.GENDER_EMPTY);
-      return false;
-    }
-    if (maxLengthGender) {
-      setErrorKey(ERROR_KEYS.GENDER);
-      notification("error", VALIDATION_MESSAGES.GENDER_TOO_LONG);
-      return false;
-    }
-    if (emptyLoaned) {
-      setErrorKey(ERROR_KEYS.LOANED);
-      notification("error", VALIDATION_MESSAGES.LOANED_EMPTY);
-      return false;
-    }
-    if (maxLengthLoaned) {
-      setErrorKey(ERROR_KEYS.LOANED);
-      notification("error", VALIDATION_MESSAGES.LOANED_TOO_LONG);
-      return false;
-    }
-    if (validateImg) {
-      setErrorKey(ERROR_KEYS.IMAGE);
-      notification("error", VALIDATION_MESSAGES.INVALID_URL);
-      return false;
-    }
-    return true;
   }
 
   return (
@@ -214,7 +121,7 @@ function EditBookPopUp(props: Props): Component {
         handleGender={handleGender}
         handleState={handleState}
         handleImage={handleImage}
-        isLent={isLent(book?.state)}
+        isLent={isLent(book.state ?? "")}
         defaultValueTitle={data?.title}
         defaultValueAuthor={data?.author}
         defaultValueGender={data?.gender}

@@ -6,7 +6,7 @@ function selectStyles(
   showAll: boolean,
   normal: boolean,
   isMobile: boolean
-): any {
+): object {
   return {
     placeholder: (s: StylesConfig) => ({
       ...s,
@@ -165,3 +165,5 @@ interface AnimatePopup {
   to: { transform: string };
   config: { duration: number };
 }
+
+export type { AnimateOpacity, PathOptions, AnimatePopup };
