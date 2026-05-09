@@ -24,6 +24,7 @@
   "dependencies": {
     "@fontsource/poppins": "^5.0.15",
     "@react-spring/web": "^9.7.4",
+    "@tanstack/react-virtual": "^3.13.24",
     "@tinymce/tinymce-react": "^6.3.0",
     "crypto-js": "^4.2.0",
     "dompurify": "^3.4.2",

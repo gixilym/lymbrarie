@@ -37,10 +37,10 @@ dangerouslySetInnerHTML={{ __html: sanitizedNotes }}
 **Problema:** `onSnapshot` retornaba unsubscribe pero no se limpiaba
 **Fix:** `syncBooks` ya no es async, retorna `Unsubscribe | null | undefined`. En `index.tsx` se guarda en `useRef` y se limpia en el return del `useEffect`
 
-### P1.2 Sin virtualización en listas grandes
-**Archivo:** `components/ListBooks.tsx:29`
+### P1.2 Sin virtualización en listas grandes ✅
+**Archivos:** `components/ListBooks.tsx`, `components/ListSection.tsx`
 **Problema:** Todos los libros renderizan de golpe - DOM inflado con cientos de items
-**Fix:** Implementar `react-window` o `react-virtualized` para windowing
+**Fix:** Implementado `@tanstack/react-virtual` para windowing. `ListBooks` ahora usa `useVirtualizer` para renderizar solo los items visibles. `ListSection` pasa `BookData[]` y `renderItem` callback en vez de JSX children
 
 ### P1.3 Componentes sin memo - re-renders excesivos
 **Archivos:** `components/BookCard.tsx`, `CardWithDetails.tsx`, `CardWithoutDetails.tsx`, `BookCardSearched.tsx`, `BookState.tsx`, `FieldsBook.tsx`, `Menu.tsx`

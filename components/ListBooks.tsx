@@ -5,15 +5,23 @@ import { animListAtom, searchAtom, stateAtom } from "@/utils/atoms";
 import { noop } from "es-toolkit";
 import { useRecoilState } from "recoil";
 import type { Component } from "@/utils/types";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { useVirtualizer } from "@tanstack/react-virtual";
 
 export default function ListBooks(props: Props): Component {
-  const { listBooks } = props,
+  const { listBooks, renderItem } = props,
     [searchVal] = useRecoilState<string>(searchAtom),
     [stateVal] = useRecoilState<string>(stateAtom),
     [animateCard] = useRecoilState<boolean>(animListAtom),
     [animations] = useLocalStorage("animations", true),
-    [styles, api] = useSpring(() => noop());
+    [styles, api] = useSpring(() => noop()),
+    parentRef = useRef<HTMLDivElement>(null),
+    rowVirtualizer = useVirtualizer({
+      count: listBooks.length,
+      getScrollElement: () => parentRef.current,
+      estimateSize: () => 120,
+      overscan: 5,
+    });
 
   useEffect(() => {
     if (!animations) return;
@@ -21,16 +29,58 @@ export default function ListBooks(props: Props): Component {
   }, [animateCard, searchVal, stateVal]);
 
   return (
-    <animated.ul
+    <animated.div
       style={styles}
       className="mb-36 flex flex-col justify-start w-full items-center gap-y-4 sm:overflow-hidden h-auto"
       data-testid="list-books"
+      ref={parentRef}
     >
-      {listBooks}
-    </animated.ul>
+      <div
+        style={{
+          height: `${rowVirtualizer.getTotalSize()}px`,
+          width: "100%",
+          position: "relative",
+        }}
+      >
+        {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+          const item = listBooks[virtualRow.index];
+          return (
+            <div
+              key={virtualRow.key}
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: `${virtualRow.size}px`,
+                transform: `translateY(${virtualRow.start}px)`,
+              }}
+              data-index={virtualRow.index}
+              ref={rowVirtualizer.measureElement}
+            >
+              {renderItem(item, virtualRow.index)}
+            </div>
+          );
+        })}
+      </div>
+    </animated.div>
   );
 }
 
 interface Props {
-  listBooks: Component;
+  listBooks: BookData[];
+  renderItem: (book: BookData, index: number) => Component;
+}
+
+interface BookData {
+  title?: string;
+  author?: string;
+  image?: string;
+  gender?: string;
+  state?: string;
+  notes?: string;
+  owner?: string;
+  isFav?: boolean;
+  loaned?: string;
+  url?: string;
 }

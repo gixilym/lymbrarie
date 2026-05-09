@@ -38,11 +38,28 @@ const ListSection: MemoComponent = memo(function B(props: Props) {
     [ascSort, setSort] = useState<SortModes>(ascSortLS),
     [showFavs, setShowFavs] = useRecoilState<boolean>(showFavsAtom),
     [shuffledData, setShuffledData] = useRecoilState<ShuffleAtom>(shuffleAtom),
-    myFavs: Book[] = myBooks.filter((b: Book) => b?.data?.isFav),
-    filteredBooks: Book[] = useMemo(
-      () => where(searchVal, stateVal),
-      [searchVal, stateVal, showFavs, myBooks]
-    );
+    myFavs: Book[] = myBooks.filter((b: Book) => b?.data?.isFav);
+
+  const filteredBooks: Book[] = useMemo(() => {
+    function where(value: string, state: string): Book[] {
+      const checkState = (b: BookData) => {
+          if (!state) return true;
+          const englishStates: string[] = mapStateToEnglish(stateVal);
+          return englishStates.includes(b.state ?? "");
+        },
+        checkTitle = (b: BookData) =>
+          deburr(tLC(b.title ?? ""))?.includes(deburr(tLC(value))),
+        checkAuthor = (b: BookData) =>
+          deburr(tLC(b.author ?? ""))?.includes(deburr(tLC(value))),
+        books: Book[] = showFavs ? myFavs : myBooks;
+
+      return books.filter(
+        (b: Book) =>
+          checkState(b.data) && (checkTitle(b.data) || checkAuthor(b.data))
+      );
+    }
+    return where(searchVal, stateVal);
+  }, [searchVal, stateVal, showFavs, myBooks, myFavs, showDetails]);
 
   useEffect(() => {
     if (pathIs(PAGES.HOME, { exact: true })) {
@@ -75,48 +92,31 @@ const ListSection: MemoComponent = memo(function B(props: Props) {
     }
   }, [filteredBooks, ascSort]);
 
-  function renderBooks(arr: Book[]): Component {
-    const data: BookData[] = arr.map((b: Book) => b?.data),
-      order: Order = ascSort == "asc" ? ["asc", "desc"] : ["desc", "asc"],
-      books: BookData[] =
-        ascSort == "random"
-          ? shuffledData?.data || []
-          : orderBy(data, ["title"], order),
-      noMatches: boolean =
-        (isEqual(len(arr), 0) && !isEqual(searchVal, "")) ||
-        (isEqual(len(books), 0) && showFavs) ||
-        (isEqual(searchVal, "") &&
-          !isEqual(stateVal, "") &&
-          isEqual(len(books), 0));
+  const sortedBooks: BookData[] = useMemo(() => {
+    const data: BookData[] = filteredBooks.map(b => b?.data),
+      order: Order = ascSort == "asc" ? ["asc", "desc"] : ["desc", "asc"];
+    return ascSort == "random"
+      ? shuffledData?.data || []
+      : orderBy(data, ["title"], order);
+  }, [filteredBooks, ascSort, shuffledData]);
 
-    if (noMatches)
-      return (
-        <NoMatchesText
-          txt={showFavs && !searchVal ? "no-favs" : "no-matches"}
-        />
-      );
-
-    return books.map((b: BookData) => (
-      <BookCard key={b.title} data={b} showDetails={showDetails} />
-    ));
-  }
-
-  function where(value: string, state: string): Book[] {
-    const checkState = (b: BookData) => {
-        if (!state) return true;
-        const englishStates: string[] = mapStateToEnglish(stateVal);
-        return englishStates.includes(b.state ?? "");
-      },
-      checkTitle = (b: BookData) =>
-        deburr(tLC(b.title ?? ""))?.includes(deburr(tLC(value))),
-      checkAuthor = (b: BookData) =>
-        deburr(tLC(b.author ?? ""))?.includes(deburr(tLC(value))),
-      books: Book[] = showFavs ? myFavs : myBooks;
-
-    return books.filter(
-      (b: Book) =>
-        checkState(b.data) && (checkTitle(b.data) || checkAuthor(b.data))
+  const noMatches: boolean = useMemo(() => {
+    return (
+      (isEqual(len(filteredBooks), 0) && !isEqual(searchVal, "")) ||
+      (isEqual(len(sortedBooks), 0) && showFavs) ||
+      (isEqual(searchVal, "") &&
+        !isEqual(stateVal, "") &&
+        isEqual(len(sortedBooks), 0))
     );
+  }, [filteredBooks, sortedBooks, searchVal, showFavs, stateVal]);
+
+  const bookDataList: BookData[] = useMemo(
+    () => sortedBooks.map(b => b),
+    [sortedBooks]
+  );
+
+  function renderBookItem(book: BookData, _index: number): Component {
+    return <BookCard key={book.title} data={book} showDetails={showDetails} />;
   }
 
   function changeDetails(): void {
@@ -141,11 +141,6 @@ const ListSection: MemoComponent = memo(function B(props: Props) {
     }
   }
 
-  const renderList: Component = useMemo(
-    () => renderBooks(where(searchVal, stateVal)),
-    [searchVal, stateVal, showDetails, ascSort, showFavs, myBooks, shuffledData]
-  );
-
   return (
     <section className="w-full px-4 sm:px-0 sm:w-[620px] flex flex-col justify-between items-center gap-y-7 relative">
       {!isSearch && (
@@ -160,7 +155,13 @@ const ListSection: MemoComponent = memo(function B(props: Props) {
           )}
         </div>
       )}
-      <ListBooks listBooks={renderList} />
+      {noMatches ? (
+        <NoMatchesText
+          txt={showFavs && !searchVal ? "no-favs" : "no-matches"}
+        />
+      ) : (
+        <ListBooks listBooks={bookDataList} renderItem={renderBookItem} />
+      )}
     </section>
   );
 });
