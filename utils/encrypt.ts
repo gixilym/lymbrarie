@@ -3,18 +3,16 @@ import { isNull } from "es-toolkit";
 
 const key = process.env.DECRYPT as string;
 
-function decrypt(data: any): any {
+function decrypt(data: unknown): unknown {
   if (isNull(data)) return null;
-  const bytes: any = Rabbit.decrypt(data, key);
+  const bytes = Rabbit.decrypt(data as string, key);
   const decryptedData: string = bytes.toString(enc.Utf8);
-  const parseData: any = JSON.parse(decryptedData);
-  return parseData;
+  return JSON.parse(decryptedData);
 }
 
-function encrypt(data: any): string {
+function encrypt(data: unknown): string {
   const stringData: string = JSON.stringify(data);
-  const encryptedData: string = Rabbit.encrypt(stringData, key).toString();
-  return encryptedData;
+  return Rabbit.encrypt(stringData, key).toString();
 }
 
 export { decrypt, encrypt };

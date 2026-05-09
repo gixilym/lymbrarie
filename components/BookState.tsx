@@ -1,5 +1,6 @@
 import { memo } from "react";
 import { twMerge } from "tailwind-merge";
+import { BOOK_STATES } from "@/utils/states";
 import type { Component } from "@/utils/types";
 
 function fnState(s: string, d: boolean): Component {
@@ -8,38 +9,12 @@ function fnState(s: string, d: boolean): Component {
 
 function BookStateUI({ state, showDetails }: Props): Component {
   function getState(): State {
-    switch (state) {
-      case "Leyendo":
-      case "Reading":
-        return { text: "Leyendo", bg: "bg-yellow-600/30" };
-
-      case "Leído":
-      case "Read":
-        return { text: "Leído", bg: "bg-green-600/30" };
-
-      case "Pendiente":
-      case "Pending":
-        return { text: "Pendiente", bg: "bg-orange-600/30" };
-
-      case "Prestado":
-      case "Lent":
-        return { text: "Prestado", bg: "bg-blue-600/30" };
-
-      case "Recomendado":
-      case "Recommended":
-        return { text: "Recomendado", bg: "bg-violet-600/30" };
-
-      case "Abandonado":
-      case "Abandoned":
-        return { text: "Abandonado", bg: "bg-red-600/30" };
-
-      case "A medias":
-      case "Halfway":
-        return { text: "A medias", bg: "bg-gray-600/30" };
-
-      default:
-        return { text: "", bg: "" };
-    }
+    const entry = Object.values(BOOK_STATES).find(
+      s => s.es === state || s.en.some(e => e === state)
+    );
+    return entry
+      ? { text: entry.es, bg: entry.bg }
+      : { text: "", bg: "" };
   }
 
   const { text, bg }: State = getState();

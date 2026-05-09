@@ -4,7 +4,7 @@ import { tLC } from "@/utils/helpers";
 import type { Book } from "@/utils/types";
 
 function useTitles(title?: string): Titles {
-  const [allTitles, setAllTitles] = useLocalStorage("all-titles", []);
+  const [allTitles, setAllTitles] = useLocalStorage<string[]>("all-titles", []);
 
   const isRepeated: boolean = allTitles.some((itemTitle: string) => {
     if (!title) return false;
@@ -13,7 +13,7 @@ function useTitles(title?: string): Titles {
 
   function updateTitles(arr: Book[]): void {
     if (!Array.isArray(arr)) return;
-    setAllTitles(arr.map((b: Book) => b?.data?.title).filter(Boolean));
+    setAllTitles(arr.map((b: Book) => b?.data?.title).filter((t): t is string => !!t));
   }
 
   return { isRepeated, allTitles, updateTitles };

@@ -10,7 +10,7 @@ import { PAGES } from "@/utils/consts";
 import { round } from "es-toolkit";
 import { scrollAtom } from "@/utils/atoms";
 import { useSetRecoilState } from "recoil";
-import type { BookData, Component, SetState } from "@/utils/types";
+import type { BookData, Component } from "@/utils/types";
 import { useRouter, type NextRouter } from "next/router";
 
 const BookCard = memo(function BookCard({ data, showDetails }: Props): Component {
@@ -18,7 +18,7 @@ const BookCard = memo(function BookCard({ data, showDetails }: Props): Component
     title: string = encodeURIComponent(data.title ?? ""),
     { isGuest } = useGuest(),
     img: string = data.image || Cover.src,
-    setScroll: SetState = useSetRecoilState(scrollAtom),
+    setScroll = useSetRecoilState(scrollAtom),
     formatState = (): Component => fnState(data.state ?? "", showDetails),
     withDetails: Details = {
       title: data.title ?? "",

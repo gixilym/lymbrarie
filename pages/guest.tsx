@@ -1,6 +1,7 @@
 import IndexBanner from "@/components/banners/IndexBanner";
 import ListSection from "@/components/ListSection";
 import SearchIndex from "@/components/SearchIndex";
+import { BOOK_STATES } from "@/utils/states";
 import { animateOpacity } from "@/utils/helpers";
 import { animated, useSpring } from "@react-spring/web";
 import type { Book, Component } from "@/utils/types";
@@ -31,7 +32,7 @@ const guestBooks: Book[] = [
       loaned: "",
       notes: "Una de las novelas más queridas de la literatura inglesa, que explora temas de amor, clase social y matrimonio en la Inglaterra del siglo XIX.",
       owner: "guest",
-      state: "Leyendo",
+      state: BOOK_STATES.READING.es,
       title: "Orgullo y Prejuicio",
     },
   },
@@ -45,7 +46,7 @@ const guestBooks: Book[] = [
       loaned: "",
       notes: "Una visión inquietante del futuro donde un gobierno totalitario vigila cada aspecto de la vida de las personas.",
       owner: "guest",
-      state: "Pendiente",
+      state: BOOK_STATES.PENDING.es,
       title: "1984",
     },
   },
@@ -59,7 +60,7 @@ const guestBooks: Book[] = [
       loaned: "",
       notes: "Un thriller lleno de suspense que combina arte, historia y misterio en una búsqueda del Santo Grial.",
       owner: "guest",
-      state: "Prestado",
+      state: BOOK_STATES.LENT.es,
       title: "El Código Da Vinci",
     },
   },
@@ -73,7 +74,7 @@ const guestBooks: Book[] = [
       loaned: "",
       notes: "",
       owner: "guest",
-      state: "Leído",
+      state: BOOK_STATES.READ.es,
       title: "Harry Potter y la Piedra Filosofal",
     },
   },

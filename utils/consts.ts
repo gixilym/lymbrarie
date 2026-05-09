@@ -1,6 +1,7 @@
 import { DB } from "@/database/initAuth";
 import { collection, type CollectionReference } from "firebase/firestore";
 import type { Book, BookData } from "./types";
+import { BOOK_STATES } from "./states";
 
 const BASE_URL: string = "https://lymbrarie.gixi.dev";
 
@@ -44,7 +45,7 @@ const EMPTY_BOOK: Book = {
   data: {
     title: "",
     author: "",
-    state: "Pendiente",
+    state: BOOK_STATES.PENDING.es,
     image: "",
     gender: "Sin asignar",
     notes: "",
@@ -56,7 +57,7 @@ const EMPTY_BOOK: Book = {
 const BOOK_RECO: BookData = {
   owner: "all",
   title: "¡Viven! - La tragedia de los Andes",
-  state: "Recomendado",
+  state: BOOK_STATES.RECOMMENDED.es,
   author: "Piers Paul Read",
   image:
     "https://res.cloudinary.com/dgs55s8qh/image/upload/v1743807173/rtbw9ominfxxqqhljpzc.webp",

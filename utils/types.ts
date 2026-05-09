@@ -3,39 +3,21 @@ import type {
   ChangeEvent,
   Dispatch,
   JSX,
-  MemoExoticComponent,
   ReactNode,
-  RefObject,
   SetStateAction,
 } from "react";
-import { SingleValue } from "react-select";
-import type { SetterOrUpdater } from "recoil";
 
 type Component = JSX.Element | JSX.Element[] | ReactNode;
 
 type Handler<T, R> = (arg: T) => R;
 
-type EventSelect = SingleValue<any>;
-
 type InputEvent = ChangeEvent<HTMLInputElement>;
-
-type FormRef = RefObject<any>;
-
-type Document = DocumentData | void;
-
-type User = any | null;
-
-type MemoComponent = MemoExoticComponent<(arg0: any) => Component>;
 
 type SelectEvent = ChangeEvent<HTMLSelectElement>;
 
 type Timer = ReturnType<typeof setTimeout>;
 
 type Doc = QueryDocumentSnapshot<DocumentData, DocumentData>;
-
-type SetState = SetterOrUpdater<any>;
-
-type Translate = (key: string) => string;
 
 type SelectOpt = { value: string; label: string }[];
 
@@ -88,19 +70,12 @@ export type {
   BookData,
   Component,
   Doc,
-  Document,
-  FormRef,
   InputEvent,
-  MemoComponent,
   Handler,
   PopupIds,
   SelectEvent,
-  SetState,
   ArgsSync,
   Timer,
-  Translate,
   SelectOpt,
-  User,
-  EventSelect,
   ShuffleAtom,
 };

@@ -12,15 +12,15 @@ import { searchAtom, zeroAtom } from "@/utils/atoms";
 import { TriangleAlert as WarningIcon } from "lucide-react";
 import { useSetRecoilState } from "recoil";
 import { type NextRouter, useRouter } from "next/router";
-import type { Book, Component, SetState } from "@/utils/types";
+import type { Book, Component } from "@/utils/types";
 
 function DeleteBookPopUp({ documentId, title, UID, owner }: Props): Component {
   const { updateTitles } = useTitles(),
     { closePopUp } = usePopUp(),
     { push }: NextRouter = useRouter(),
-    setSearchVal: SetState = useSetRecoilState<string>(searchAtom),
-    setZeroBooks: SetState = useSetRecoilState<boolean>(zeroAtom),
-    [cacheBooks, setCacheBooks] = useLocalStorage("cache-books", null),
+    setSearchVal = useSetRecoilState<string>(searchAtom),
+    setZeroBooks = useSetRecoilState<boolean>(zeroAtom),
+    [cacheBooks, setCacheBooks] = useLocalStorage<Book[] | null>("cache-books", null),
     { isLoading, startLoading, finishLoading } = useLoad(),
     [, setShowNoti] = useLocalStorage("deleted", false),
     [styles] = useSpring(() => animatePopup());
@@ -50,7 +50,7 @@ function DeleteBookPopUp({ documentId, title, UID, owner }: Props): Component {
     } else {
       const updatedBooks: Book[] = cacheBooks?.filter(
         (b: Book) => b?.data?.title != title
-      );
+      ) ?? [];
       setCacheBooks(updatedBooks);
       updateTitles(updatedBooks);
       redirectToHome();

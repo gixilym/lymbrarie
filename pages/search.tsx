@@ -11,6 +11,7 @@ import useLocalStorage from "@/hooks/useLocalStorage";
 import { animateOpacity, len, tLC } from "@/utils/helpers";
 import { animated, useSpring } from "@react-spring/web";
 import { API_BOOKS, PAGES } from "@/utils/consts";
+import { BOOK_STATES } from "@/utils/states";
 import {
   type Auth,
   getAuth,
@@ -91,7 +92,7 @@ function SearchPage(): Component {
             image: b?.volumeInfo?.imageLinks?.thumbnail,
             url: b?.volumeInfo?.canonicalVolumeLink,
             loaned: "",
-            state: "Pendiente",
+            state: BOOK_STATES.PENDING.es,
             isFav: false,
             owner: user?.id,
           },

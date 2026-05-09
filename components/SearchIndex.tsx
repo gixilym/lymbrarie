@@ -4,16 +4,16 @@ import Select from "react-select";
 import useGuest from "@/hooks/useGuest";
 import useIsMobile from "@/hooks/useIsMobile";
 import { menuAtom, searchAtom, stateAtom } from "@/utils/atoms";
+import { BOOK_STATES } from "@/utils/states";
 import { selectStyles } from "@/utils/helpers";
 import { twMerge } from "tailwind-merge";
 import { useRecoilState } from "recoil";
 import type {
   Component,
-  EventSelect,
   Handler,
   InputEvent,
-  SelectOpt,
 } from "@/utils/types";
+import type { SingleValue } from "react-select";
 
 export default function SearchIndex(): Component {
   const { isGuest } = useGuest(),
@@ -25,27 +25,13 @@ export default function SearchIndex(): Component {
       setValue(e.target.value),
     handleSelect: Handler<string, void> = (val: string) =>
       setSelectStateVal(val),
-    options: SelectOpt = [
+    options = [
       { value: "", label: "Todo" },
-      {
-        value: "Leyendo",
-        label: "Leyendo",
-      },
-      { value: "Leído", label: "Leído" },
-      { value: "Pendiente", label: "Pendiente" },
-      {
-        value: "Prestado",
-        label: "Prestado",
-      },
-      {
-        value: "Abandonado",
-        label: "Abandonado",
-      },
-      {
-        value: "A medias",
-        label: "A medias",
-      },
-    ] as const,
+      ...Object.values(BOOK_STATES).map(s => ({
+        value: s.es,
+        label: s.es,
+      })),
+    ],
     getPlaceholder = (): string => {
       const option = options.find(opt => opt.value === selectVal);
       return option ? option.label : "Todo";
@@ -76,9 +62,9 @@ export default function SearchIndex(): Component {
               isSearchable={false}
               options={options}
               placeholder={getPlaceholder()}
-              value={selectVal}
+               value={options.find(o => o.value === selectVal) ?? null}
               styles={selectStyles(selectVal == "", false, isMobile)}
-              onChange={(e: EventSelect) => handleSelect(e.value)}
+              onChange={(e: SingleValue<{ value: string; label: string }>) => e && handleSelect(e.value)}
             />
           </div>
 

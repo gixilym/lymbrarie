@@ -10,11 +10,12 @@ import { animateOpacity, translateState } from "@/utils/helpers";
 import { AuthAction, useUser, withUser } from "next-firebase-auth";
 import { isUndefined, sum } from "es-toolkit";
 import { PAGES } from "@/utils/consts";
+import { BOOK_STATES } from "@/utils/states";
 import { scrollAtom, stateAtom } from "@/utils/atoms";
 import { useEffect, useState } from "react";
 import { UserRound } from "lucide-react";
 import { useSetRecoilState } from "recoil";
-import type { Component, Book, SetState, Timer } from "@/utils/types";
+import type { Component, Book, Timer } from "@/utils/types";
 
 export default withUser({
   whenAuthed: AuthAction.RENDER,
@@ -31,31 +32,31 @@ function ProfilePage(): Component {
     { isGuest } = useGuest(),
     [nameuser] = useLocalStorage("username", ""),
     username = nameuser.trim() == "" ? name : nameuser,
-    [cacheBooks] = useLocalStorage("cache-books", null),
+    [cacheBooks] = useLocalStorage<Book[] | null>("cache-books", null),
     [styles] = useSpring(() => animateOpacity(1, 400)),
     { isMobile } = useIsMobile(),
-    setSelectStateVal: SetState = useSetRecoilState<string>(stateAtom),
-    setScroll: SetState = useSetRecoilState(scrollAtom),
+    setSelectStateVal = useSetRecoilState<string>(stateAtom),
+    setScroll = useSetRecoilState(scrollAtom),
     [stateCounts, setStateCounts] = useState<States>({
-      "Leído": 0,
-      "Leyendo": 0,
-      "Pendiente": 0,
-      "Prestado": 0,
-      "Abandonado": 0,
-      "A medias": 0,
+      [BOOK_STATES.READ.es]: 0,
+      [BOOK_STATES.READING.es]: 0,
+      [BOOK_STATES.PENDING.es]: 0,
+      [BOOK_STATES.LENT.es]: 0,
+      [BOOK_STATES.ABANDONED.es]: 0,
+      [BOOK_STATES.HALFWAY.es]: 0,
     }),
-    { "Leído": Read, "Leyendo": Reading, "Pendiente": Pending, "Prestado": Lent, "Abandonado": Abandoned, "A medias": Halfway }: States = stateCounts;
+    { [BOOK_STATES.READ.es]: Read, [BOOK_STATES.READING.es]: Reading, [BOOK_STATES.PENDING.es]: Pending, [BOOK_STATES.LENT.es]: Lent, [BOOK_STATES.ABANDONED.es]: Abandoned, [BOOK_STATES.HALFWAY.es]: Halfway }: States = stateCounts;
 
   useEffect(() => {
     if (isGuest) return;
     if (Array.isArray(cacheBooks)) {
       const counts: States = {
-        "Leído": 0,
-        "Leyendo": 0,
-        "Pendiente": 0,
-        "Prestado": 0,
-        "Abandonado": 0,
-        "A medias": 0,
+        [BOOK_STATES.READ.es]: 0,
+        [BOOK_STATES.READING.es]: 0,
+        [BOOK_STATES.PENDING.es]: 0,
+        [BOOK_STATES.LENT.es]: 0,
+        [BOOK_STATES.ABANDONED.es]: 0,
+        [BOOK_STATES.HALFWAY.es]: 0,
       };
 
       cacheBooks.forEach((b: Book) => {
@@ -119,11 +120,11 @@ function ProfilePage(): Component {
       <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Link
           href={PAGES.HOME}
-          onClick={() => changeState("Leyendo")}
+          onClick={() => changeState(BOOK_STATES.READING.es)}
           className="bg-slate-900/40 hover:bg-slate-900 backdrop-blur-sm p-6 rounded-xl border border-violet-500/20 flex flex-col items-center gap-y-2 transition-all"
         >
           <p className="text-lg font-medium text-white">
-            Leyendo
+            {BOOK_STATES.READING.es}
           </p>
           <p className="text-4xl font-light text-violet-200">
             {isGuest ? 1 : Reading}
@@ -132,7 +133,7 @@ function ProfilePage(): Component {
 
         <Link
           href={PAGES.HOME}
-          onClick={() => changeState("Prestado")}
+          onClick={() => changeState(BOOK_STATES.LENT.es)}
           className="bg-slate-900/40 hover:bg-slate-900 backdrop-blur-sm p-6 rounded-xl border border-violet-500/20 flex flex-col items-center gap-y-2 transition-all"
         >
           <p className="text-lg font-medium text-white">Prestados</p>
@@ -142,11 +143,11 @@ function ProfilePage(): Component {
         </Link>
         <Link
           href={PAGES.HOME}
-          onClick={() => changeState("Pendiente")}
+          onClick={() => changeState(BOOK_STATES.PENDING.es)}
           className="bg-slate-900/40 hover:bg-slate-900 backdrop-blur-sm p-6 rounded-xl border border-violet-500/20 flex flex-col items-center gap-y-2 transition-all"
         >
           <p className="text-lg font-medium text-white">
-            Pendiente
+            {BOOK_STATES.PENDING.es}
           </p>
           <p className="text-4xl font-light text-violet-200">
             {isGuest ? 1 : Pending}
@@ -154,10 +155,10 @@ function ProfilePage(): Component {
         </Link>
         <Link
           href={PAGES.HOME}
-          onClick={() => changeState("Leído")}
+          onClick={() => changeState(BOOK_STATES.READ.es)}
           className="bg-slate-900/40 hover:bg-slate-900 backdrop-blur-sm p-6 rounded-xl border border-violet-500/20 flex flex-col items-center gap-y-2 transition-all"
         >
-          <p className="text-lg font-medium text-white">Leído</p>
+          <p className="text-lg font-medium text-white">{BOOK_STATES.READ.es}</p>
           <p className="text-4xl font-light text-violet-200">
             {isGuest ? 1 : Read}
           </p>
@@ -167,20 +168,20 @@ function ProfilePage(): Component {
       <div className="w-full grid grid-cols-2 gap-4">
         <Link
           href={PAGES.HOME}
-          onClick={() => changeState("Abandonado")}
+          onClick={() => changeState(BOOK_STATES.ABANDONED.es)}
           className="bg-slate-900/40 hover:bg-slate-900 backdrop-blur-sm p-6 rounded-xl border border-violet-500/20 flex flex-col items-center gap-y-2 transition-all"
         >
-          <p className="text-lg font-medium text-white">Abandonado</p>
+          <p className="text-lg font-medium text-white">{BOOK_STATES.ABANDONED.es}</p>
           <p className="text-4xl font-light text-violet-200">
             {isGuest ? 0 : Abandoned}
           </p>
         </Link>
         <Link
           href={PAGES.HOME}
-          onClick={() => changeState("A medias")}
+          onClick={() => changeState(BOOK_STATES.HALFWAY.es)}
           className="bg-slate-900/40 hover:bg-slate-900 backdrop-blur-sm p-6 rounded-xl border border-violet-500/20 flex flex-col items-center gap-y-2 transition-all"
         >
-          <p className="text-lg font-medium text-white">A medias</p>
+          <p className="text-lg font-medium text-white">{BOOK_STATES.HALFWAY.es}</p>
           <p className="text-4xl font-light text-violet-200">
             {isGuest ? 0 : Halfway}
           </p>
@@ -192,10 +193,4 @@ function ProfilePage(): Component {
 
 type States = { [key: string]: number };
 
-type BookState =
-  | "Leído"
-  | "Leyendo"
-  | "Pendiente"
-  | "Prestado"
-  | "Abandonado"
-  | "A medias";
+type BookState = (typeof BOOK_STATES)[keyof typeof BOOK_STATES]["es"];

@@ -21,20 +21,19 @@ import type {
   Book,
   BookData,
   Component,
-  MemoComponent,
   SortModes,
   ShuffleAtom,
 } from "@/utils/types";
 
-const ListSection: MemoComponent = memo(function B(props: Props) {
+const ListSection = memo(function B(props: Props) {
   const { myBooks, isSearch } = props,
     [searchVal] = useRecoilState<string>(searchAtom),
     [stateVal] = useRecoilState<string>(stateAtom),
     [showDetailsLS, setShowDetailsLS] = useLocalStorage("show-details", true),
     [showDetails, setShowDetails] = useState<boolean>(showDetailsLS),
-    [scrollLS, setScrollLS] = useLocalStorage("scroll-editpopup", null),
+    [scrollLS, setScrollLS] = useLocalStorage<number | null>("scroll-editpopup", null),
     [scroll] = useRecoilState(scrollAtom),
-    [ascSortLS, setSortLS] = useLocalStorage("sort", "asc"),
+    [ascSortLS, setSortLS] = useLocalStorage<SortModes>("sort", "asc"),
     [ascSort, setSort] = useState<SortModes>(ascSortLS),
     [showFavs, setShowFavs] = useRecoilState<boolean>(showFavsAtom),
     [shuffledData, setShuffledData] = useRecoilState<ShuffleAtom>(shuffleAtom),

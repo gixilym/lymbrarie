@@ -10,14 +10,14 @@ import { PAGES } from "@/utils/consts";
 import { twJoin, twMerge } from "tailwind-merge";
 import { useEffect } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import type { Component, SetState } from "@/utils/types";
+import type { Component } from "@/utils/types";
 import { LibraryIcon, UserIcon, Settings2Icon } from "lucide-react";
 
 export default function HeaderIndex(): Component {
   const { isGuest } = useGuest(),
     [menuIsOpen, setMenuIsOpen] = useRecoilState(menuAtom),
     [styles] = useSpring(() => animateOpacity(1, 400, 600)),
-    setScroll: SetState = useSetRecoilState(scrollAtom);
+    setScroll = useSetRecoilState(scrollAtom);
 
   useEffect(() => setMenuIsOpen(false), [location.pathname]);
 

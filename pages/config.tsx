@@ -8,7 +8,8 @@ import { AuthAction, withUser } from "next-firebase-auth";
 import { PAGES } from "@/utils/consts";
 import { type Auth, getAuth } from "firebase/auth";
 import { type NextRouter, useRouter } from "next/router";
-import type { Component, EventSelect } from "@/utils/types";
+import type { Component } from "@/utils/types";
+import type { ChangeEvent } from "react";
 import {
   TypeIcon,
   CircleIcon,
@@ -36,7 +37,7 @@ function ConfigPage(): Component {
     [username, setUsername] = useLocalStorage("username", ""),
     [styles] = useSpring(() => animateOpacity(1, 400));
 
-  function handleUsername(e: EventSelect): void {
+  function handleUsername(e: ChangeEvent<HTMLInputElement>): void {
     if (len(username) > 38) return;
     else setUsername(e.target.value);
   }

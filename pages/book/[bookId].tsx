@@ -64,15 +64,15 @@ function BookId(): Component {
     [notes, setNotes] = useState<string>(""),
     [loadingFav, setLoadingFav] = useState<boolean>(false),
     [imgSrc, setImgSrc] = useState<string>(book?.data?.image || DEFAULT_COVER.src),
-    [cacheBooks, setCacheBooks] = useLocalStorage("cache-books", null),
-    [allTitles] = useLocalStorage("all-titles", []),
-    myFavs: BookData[] = cacheBooks
+    [cacheBooks, setCacheBooks] = useLocalStorage<Book[] | null>("cache-books", null),
+    [allTitles] = useLocalStorage<string[]>("all-titles", []),
+    myFavs: BookData[] = (cacheBooks ?? [])
       .map((b: Book) => b?.data)
-      .filter((b: BookData) => b?.isFav),
+      .filter((b): b is BookData => !!b?.isFav),
     checkFav: boolean = myFavs.some((b: BookData) => isEqual(b?.title, title)),
     notExist: boolean = !allTitles.includes(title),
     notesProps = { updateNotes, notes, setNotes, isLoading, loadingFav, title },
-    [popup] = useRecoilState<any>(popupsAtom),
+    [popup] = useRecoilState(popupsAtom),
     handleRouteChange: Handler<void, void> = () => closeBookPopUps(),
     [stylesImg] = useSpring(() => animateOpacity(1, 200, 200)),
     [stylesIcons] = useSpring(() => animateOpacity(1, 1000)),
@@ -96,9 +96,10 @@ function BookId(): Component {
   }, [notExist]);
 
   function getCacheBook(): void {
-    const b: Book = cacheBooks.find((b: Book) =>
+    const b: Book | undefined = cacheBooks?.find((b: Book) =>
       isEqual(b?.data?.title, title)
     );
+    if (!b) return;
     setBook(b);
     setNotes(b?.data?.notes ?? "");
     setDocumentId(b?.id);
@@ -111,7 +112,7 @@ function BookId(): Component {
       const dataWithUpdatedNotes: BookData = { ...book?.data, notes };
       await BookAdapters.manageBook(book.id, dataWithUpdatedNotes, user.id as string);
       const updatedNotes: Book = { ...book, data: { ...book?.data, notes } },
-        oldVersion: Book[] = cacheBooks.filter(
+        oldVersion: Book[] = (cacheBooks ?? []).filter(
           (b: Book) => b?.id != documentId
         ),
         newVersion: Book[] = [...oldVersion, updatedNotes];
@@ -132,7 +133,7 @@ function BookId(): Component {
       notification("loading", checkFav ? "Eliminando de favoritos..." : "Añadiendo a favoritos...");
       const dataWithUpdatedFav: BookData = { ...book?.data, isFav: !checkFav };
       await BookAdapters.manageBook(documentId, dataWithUpdatedFav, user.id as string);
-      const oldVersion: Book[] = cacheBooks.filter(
+      const oldVersion: Book[] = (cacheBooks ?? []).filter(
         (b: Book) => b?.id != documentId
       );
       const newVersion: Book[] = [

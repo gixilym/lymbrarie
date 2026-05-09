@@ -28,7 +28,7 @@ function AddBookToLibraryBtn(props: Props | any): Component {
     [isPressed, setIsPressed] = useState<boolean>(false),
     { isRepeated } = useTitles(title),
     inLibrary: boolean = isRepeated || isPressed,
-    [cacheBooks, setCacheBooks] = useLocalStorage("cache-books", null),
+    [cacheBooks, setCacheBooks] = useLocalStorage<Book[] | null>("cache-books", null),
     { startLoading, isLoading, finishLoading } = useLoad();
 
   useEffect(() => setUserId(UID), [UID]);

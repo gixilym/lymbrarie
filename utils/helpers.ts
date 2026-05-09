@@ -1,6 +1,6 @@
-import { isEqual } from "es-toolkit";
 import type { StylesConfig } from "react-select";
 import type { Handler } from "./types";
+import { translateState, mapStateToEnglish, isLent } from "./states";
 
 function selectStyles(
   showAll: boolean,
@@ -104,34 +104,6 @@ function translateGender(gender: string): string {
   return genderMap[lowerGender] || gender;
 }
 
-function translateState(state: string): string {
-  const stateMap: Record<string, string> = {
-    Reading: "Leyendo",
-    Read: "Leído",
-    Pending: "Pendiente",
-    Lent: "Prestado",
-    Recommended: "Recomendado",
-    Abandoned: "Abandonado",
-    Halfway: "A medias",
-  };
-
-  return stateMap[state] || state;
-}
-
-function mapStateToEnglish(state: string): string[] {
-  const spanishToEnglishMap: Record<string, string[]> = {
-    Leyendo: ["Reading"],
-    Leído: ["Read"],
-    Pendiente: ["Pending"],
-    Prestado: ["Lent", "Loaned"],
-    Recomendado: ["Recommended"],
-    Abandonado: ["Abandoned"],
-    "A medias": ["Halfway", "Half"],
-  };
-
-  return spanishToEnglishMap[state] || [state];
-}
-
 function pathIs(path: string, options?: PathOptions): boolean {
   const pathname: string = window?.location?.pathname;
   if (options?.exact) return pathname === path;
@@ -143,14 +115,9 @@ const removeItem: Handler<string, void> = item =>
 
 const clearStorage: Handler<void, void> = () => window?.localStorage?.clear();
 
-const isLent: Handler<string, boolean> = state =>
-  isEqual(state, "Prestado") ||
-  isEqual(state, "Lent") ||
-  isEqual(state, "Loaned");
-
 const tLC: Handler<string, string> = val => val?.toLowerCase().trim();
 
-const len: Handler<string | Array<any>, number> = str => str.length;
+const len = (val: string | unknown[] | null | undefined): number => val?.length ?? 0;
 
 const animateOpacity = (
   to: number,

@@ -9,20 +9,20 @@ import { coverAtom } from "@/utils/atoms";
 import { delay, isEqual } from "es-toolkit";
 import { dismissNoti, notification } from "@/utils/notifications";
 import { EMPTY_BOOK, PAGES } from "@/utils/consts";
+import { ERROR_DELAY_MS, validateImageUrl } from "@/utils/validation";
+import { ERROR_KEYS, VALIDATION_MESSAGES } from "@/utils/messages";
 import { isLent, len, tLC } from "@/utils/helpers";
 import { useRecoilState } from "recoil";
 import type {
   Book,
   BookData,
   Component,
-  FormRef,
   InputEvent,
   SelectEvent,
 } from "@/utils/types";
 import { type NextRouter, useRouter } from "next/router";
 import {
   type FormEvent,
-  type Reference,
   useEffect,
   useRef,
   useState,
@@ -31,10 +31,10 @@ import {
 function NewBookPopUp({ UID }: Props): Component {
   const { closePopUp } = usePopUp(),
     router: NextRouter = useRouter(),
-    formRef: FormRef = useRef<Reference>(null),
+    formRef = useRef<HTMLFormElement>(null),
     [book, setBook] = useState<Book>(EMPTY_BOOK),
     { isLoading, startLoading } = useLoad(),
-    [cacheBooks, setCacheBooks] = useLocalStorage("cache-books", null),
+    [cacheBooks, setCacheBooks] = useLocalStorage<Book[] | null>("cache-books", null),
     [, setShowNoti] = useLocalStorage("added", false),
     [errorKey, setErrorKey] = useState<string>(""),
     [addClicked, setAddClicked] = useState<boolean>(false),
@@ -46,7 +46,7 @@ function NewBookPopUp({ UID }: Props): Component {
 
   useEffect(() => {
     (async function () {
-      await delay(2300);
+      await delay(ERROR_DELAY_MS);
       setErrorKey("");
     })();
   }, [addClicked]);
@@ -108,90 +108,65 @@ function NewBookPopUp({ UID }: Props): Component {
   }
 
   function validateFields(): boolean {
-    const maxTitleLength: boolean = len(formatTitle) > 80,
-      maxAuthorLength: boolean = len(book?.data?.author ?? "0") > 34,
-      emptyCustomGender: boolean =
-        isCustomGender && isEqual(len(cusGenderVal), 0),
-      maxLengthGender: boolean = isCustomGender && len(cusGenderVal) > 24,
-      emptyLoaned: boolean =
-        isLent(book?.data?.state ?? "") &&
-        isEqual(book?.data?.loaned?.trim(), ""),
-      maxLengthLoaned: boolean =
-        isLent(book?.data?.state ?? "") && len(book?.data?.loaned ?? "0") > 24,
-      validateURL: RegExp =
-        /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/,
-      validateImg: boolean =
-        len(book?.data?.image ?? "0") > 0 &&
-        !validateURL.test(book?.data?.image ?? "");
+    const
+      maxTitleLength = len(formatTitle) > 80,
+      maxAuthorLength = len(book?.data?.author ?? "0") > 34,
+      emptyCustomGender = isCustomGender && !cusGenderVal,
+      maxLengthGender = isCustomGender && len(cusGenderVal) > 24,
+      emptyLoaned = isLent(book?.data?.state ?? "") && !book?.data?.loaned?.trim(),
+      maxLengthLoaned = isLent(book?.data?.state ?? "") && len(book?.data?.loaned ?? "0") > 24,
+      validateImg = len(book?.data?.image ?? "0") > 0 && !validateImageUrl(book?.data?.image ?? "");
 
     if (!formatTitle) {
-      setErrorKey("title-input");
-      notification("error", "El título no puede estar vacío");
+      setErrorKey(ERROR_KEYS.TITLE);
+      notification("error", VALIDATION_MESSAGES.TITLE_EMPTY);
       return false;
     }
     if (isRepeated) {
-      setErrorKey("title-input");
-      notification("error", "Ya tienes un libro con ese título");
+      setErrorKey(ERROR_KEYS.TITLE);
+      notification("error", VALIDATION_MESSAGES.TITLE_REPEATED);
       return false;
     }
-
     if (maxTitleLength) {
-      setErrorKey("title-input");
-      notification(
-        "error",
-        "El título es demasiado largo (máx. 80 caracteres)"
-      );
+      setErrorKey(ERROR_KEYS.TITLE);
+      notification("error", VALIDATION_MESSAGES.TITLE_TOO_LONG);
       return false;
     }
-
     if (formatTitle.includes("/")) {
-      setErrorKey("title-input");
-      notification("error", "El título no puede contener el símbolo /");
+      setErrorKey(ERROR_KEYS.TITLE);
+      notification("error", VALIDATION_MESSAGES.TITLE_HAS_SLASH);
       return false;
     }
-
     if (maxAuthorLength) {
-      setErrorKey("author-input");
-      notification("error", "El autor es demasiado largo (máx. 34 caracteres)");
+      setErrorKey(ERROR_KEYS.AUTHOR);
+      notification("error", VALIDATION_MESSAGES.AUTHOR_TOO_LONG);
       return false;
     }
-
     if (emptyCustomGender) {
-      setErrorKey("gender-input");
-      notification("error", "El género personalizado no puede estar vacío");
+      setErrorKey(ERROR_KEYS.GENDER);
+      notification("error", VALIDATION_MESSAGES.GENDER_EMPTY);
       return false;
     }
-
     if (maxLengthGender) {
-      setErrorKey("gender-input");
-      notification(
-        "error",
-        "El género es demasiado largo (máx. 24 caracteres)"
-      );
+      setErrorKey(ERROR_KEYS.GENDER);
+      notification("error", VALIDATION_MESSAGES.GENDER_TOO_LONG);
       return false;
     }
-
     if (emptyLoaned) {
-      setErrorKey("lent-input");
-      notification("error", "Debes indicar a quién prestaste el libro");
+      setErrorKey(ERROR_KEYS.LOANED);
+      notification("error", VALIDATION_MESSAGES.LOANED_EMPTY);
       return false;
     }
-
     if (maxLengthLoaned) {
-      setErrorKey("lent-input");
-      notification(
-        "error",
-        "El nombre es demasiado largo (máx. 24 caracteres)"
-      );
+      setErrorKey(ERROR_KEYS.LOANED);
+      notification("error", VALIDATION_MESSAGES.LOANED_TOO_LONG);
       return false;
     }
-
     if (validateImg) {
-      setErrorKey("image-input");
-      notification("error", "La URL de la imagen no es válida");
+      setErrorKey(ERROR_KEYS.IMAGE);
+      notification("error", VALIDATION_MESSAGES.INVALID_URL);
       return false;
     }
-
     return true;
   }
 

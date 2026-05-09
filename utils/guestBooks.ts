@@ -1,3 +1,5 @@
+import { BOOK_STATES } from "./states";
+
 interface GuestBookData {
   title: string;
   image: string;
@@ -15,7 +17,7 @@ export const GUEST_BOOKS: Record<string, GuestBookData> = {
     notes: "Una de las novelas más queridas de la literatura inglesa, que explora temas de amor, clase social y matrimonio en la Inglaterra del siglo XIX.",
     author: "Jane Austen",
     gender: "Romance clásico",
-    state: "Leyendo",
+    state: BOOK_STATES.READING.es,
   },
   "1": {
     title: "1984",
@@ -23,7 +25,7 @@ export const GUEST_BOOKS: Record<string, GuestBookData> = {
     notes: "Una visión inquietante del futuro donde un gobierno totalitario vigila cada aspecto de la vida de las personas.",
     author: "George Orwell",
     gender: "Distopía",
-    state: "Pendiente",
+    state: BOOK_STATES.PENDING.es,
   },
   "2": {
     title: "El Código Da Vinci",
@@ -31,7 +33,7 @@ export const GUEST_BOOKS: Record<string, GuestBookData> = {
     notes: "Un thriller lleno de suspense que combina arte, historia y misterio en una búsqueda del Santo Grial.",
     author: "Dan Brown",
     gender: "Thriller",
-    state: "Prestado",
+    state: BOOK_STATES.LENT.es,
     loanedTo: "María",
   },
   "3": {
@@ -40,6 +42,6 @@ export const GUEST_BOOKS: Record<string, GuestBookData> = {
     notes: "",
     author: "J. K. Rowling",
     gender: "Fantasía",
-    state: "Leído",
+    state: BOOK_STATES.READ.es,
   },
 };
