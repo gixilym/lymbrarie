@@ -1,10 +1,11 @@
+import { memo } from "react";
 import Link from "next/link";
 import { CroissantIcon, MenuIcon } from "lucide-react";
 import { PAGES } from "@/utils/consts";
 import { pathIs } from "@/utils/helpers";
 import type { Component } from "@/utils/types";
 
-function Nav(): Component {
+const Nav = memo(function Nav(): Component {
   return (
     <nav className="absolute top-28 z-10 w-[200px] right-6 bg-slate-900 gap-y-3 p-4 rounded-xl flex-col items-start justify-center border border-violet-500/20 flex md:hidden">
       <Link
@@ -35,9 +36,9 @@ function Nav(): Component {
       </Link>
     </nav>
   );
-}
+});
 
-function IconBtn({ menuIsOpen, setMenuIsOpen }: PropsBtn): Component {
+const IconBtn = memo(function IconBtn({ menuIsOpen, setMenuIsOpen }: PropsBtn): Component {
   return (
     <button
       type="button"
@@ -51,9 +52,9 @@ function IconBtn({ menuIsOpen, setMenuIsOpen }: PropsBtn): Component {
       )}
     </button>
   );
-}
+});
 
-const Menu: MenuProps = {
+const Menu = {
   Nav,
   IconBtn,
 };
@@ -63,9 +64,4 @@ export default Menu;
 interface PropsBtn {
   menuIsOpen: boolean;
   setMenuIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-interface MenuProps {
-  Nav: () => Component;
-  IconBtn: ({ menuIsOpen, setMenuIsOpen }: PropsBtn) => Component;
 }

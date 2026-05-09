@@ -1,3 +1,4 @@
+import { memo } from "react";
 import Cover from "@/public/cover.webp";
 import Image from "next/image";
 import useLocalStorage from "@/hooks/useLocalStorage";
@@ -6,7 +7,7 @@ import { useState } from "react";
 import type { Component } from "@/utils/types";
 import { Tag as GenderIcon, User as UserIcon } from "lucide-react";
 
-export default function CardWithDetails(props: Card): Component {
+const CardWithDetails = memo(function CardWithDetails(props: Card): Component {
   const [state] = useLocalStorage("state", true),
     { title, formatState, img, gender, author, onClick } = props,
     [imgSrc, setImgSrc] = useState<string>(img || Cover.src),
@@ -65,7 +66,9 @@ export default function CardWithDetails(props: Card): Component {
       </div>
     </li>
   );
-}
+});
+
+export default CardWithDetails;
 
 interface Card {
   title: string;

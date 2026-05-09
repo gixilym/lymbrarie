@@ -1,9 +1,10 @@
+import { memo } from "react";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { Book as Icon } from "lucide-react";
 import { twMerge } from "tailwind-merge";
 import type { Component } from "@/utils/types";
 
-function CardWithOutDetails(props: Card): Component {
+const CardWithOutDetails = memo(function CardWithOutDetails(props: Card): Component {
   const { title, formatState, onClick } = props;
   const [state] = useLocalStorage("state", true);
 
@@ -35,7 +36,7 @@ function CardWithOutDetails(props: Card): Component {
       </div>
     </li>
   );
-}
+});
 
 export default CardWithOutDetails;
 

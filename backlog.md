@@ -42,12 +42,12 @@ dangerouslySetInnerHTML={{ __html: sanitizedNotes }}
 **Problema:** Todos los libros renderizan de golpe - DOM inflado con cientos de items
 **Fix:** Implementado `@tanstack/react-virtual` para windowing. `ListBooks` ahora usa `useVirtualizer` para renderizar solo los items visibles. `ListSection` pasa `BookData[]` y `renderItem` callback en vez de JSX children
 
-### P1.3 Componentes sin memo - re-renders excesivos
-**Archivos:** `components/BookCard.tsx`, `CardWithDetails.tsx`, `CardWithoutDetails.tsx`, `BookCardSearched.tsx`, `BookState.tsx`, `FieldsBook.tsx`, `Menu.tsx`
-**Fix:** Envolver cada uno en `memo()`:
-```typescript
-const BookCard = memo(function BookCard({ ... }: BookCardProps) { ... });
-```
+### P1.3 Componentes sin memo - re-renders excesivos ✅
+**Archivos:** `BookCard.tsx`, `CardWithDetails.tsx`, `CardWithoutDetails.tsx`, `BookCardSearched.tsx`, `BookState.tsx`, `FieldsBook.tsx`, `Menu.tsx`
+**Fix:** Todos los componentes envolveron en `memo()`:
+- BookCard, CardWithDetails, CardWithoutDetails, BookCardSearched, FieldsBook - memo() directo
+- BookState usa `BookStateMemo` envuelto en memo para evitar conflicto con fnState
+- Menu.Nav y Menu.IconBtn envueltos en memo
 
 ### P1.4 Verificación de propiedad en Firestore
 **Archivo:** `adapters/book.adapters.ts:71,84`

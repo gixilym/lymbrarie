@@ -1,10 +1,11 @@
+import { memo } from "react";
 import AddBookToLibraryBtn from "./btns/AddBookToLibraryBtn";
 import Cover from "@/public/cover.webp";
 import Image from "next/image";
 import { useState } from "react";
 import type { BookData, Component } from "@/utils/types";
 
-function BookCardSearched(props: Card): Component {
+const BookCardSearched = memo(function BookCardSearched(props: Card): Component {
   const { title, image, author, notes, gender, url } = props,
     [imgSrc, setImgSrc] = useState<string>(image || Cover.src),
     data: BookData = {
@@ -56,7 +57,7 @@ function BookCardSearched(props: Card): Component {
       <AddBookToLibraryBtn data={data} title={title} />
     </li>
   );
-}
+});
 
 export default BookCardSearched;
 

@@ -1,3 +1,4 @@
+import { memo } from "react";
 import InputCover from "./InputCover";
 import { GENDERS } from "@/utils/consts";
 import { isEqual } from "es-toolkit";
@@ -15,7 +16,7 @@ import {
 } from "lucide-react";
 import type { ChangeEventHandler } from "react";
 
-function FieldsBook(props: Props): Component {
+const FieldsBook = memo(function FieldsBook(props: Props): Component {
   const {
       errorKey,
       handleChange,
@@ -218,7 +219,7 @@ function FieldsBook(props: Props): Component {
       />
     </>
   );
-}
+});
 
 export default FieldsBook;
 

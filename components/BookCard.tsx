@@ -1,3 +1,4 @@
+import { memo } from "react";
 import BookCardSearched from "./BookCardSearched";
 import CardWithDetails from "./CardWithDetails";
 import CardWithOutDetails from "./CardWithoutDetails";
@@ -12,7 +13,7 @@ import { useSetRecoilState } from "recoil";
 import type { BookData, Component, SetState } from "@/utils/types";
 import { useRouter, type NextRouter } from "next/router";
 
-function BookCard({ data, showDetails }: Props): Component {
+const BookCard = memo(function BookCard({ data, showDetails }: Props): Component {
   const { push }: NextRouter = useRouter(),
     title: string = encodeURIComponent(data.title ?? ""),
     { isGuest } = useGuest(),
@@ -65,7 +66,7 @@ function BookCard({ data, showDetails }: Props): Component {
   }
 
   return renderCard();
-}
+});
 
 export default BookCard;
 

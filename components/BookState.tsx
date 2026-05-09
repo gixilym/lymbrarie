@@ -1,11 +1,12 @@
+import { memo } from "react";
 import { twMerge } from "tailwind-merge";
 import type { Component } from "@/utils/types";
 
-export default function fnState(s: string, d: boolean): Component {
-  return <BookState state={s} showDetails={d} />;
+function fnState(s: string, d: boolean): Component {
+  return <BookStateUI state={s} showDetails={d} />;
 }
 
-function BookState({ state, showDetails }: Props): Component {
+function BookStateUI({ state, showDetails }: Props): Component {
   function getState(): State {
     switch (state) {
       case "Leyendo":
@@ -57,6 +58,11 @@ function BookState({ state, showDetails }: Props): Component {
     </span>
   );
 }
+
+const BookStateMemo = memo(BookStateUI);
+
+export default fnState;
+export { BookStateMemo };
 
 interface Props {
   state: string;
