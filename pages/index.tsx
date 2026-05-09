@@ -9,18 +9,12 @@ import useTitles from "@/hooks/useTitles";
 import { animated, useSpring } from "@react-spring/web";
 import { animateOpacity, len } from "@/utils/helpers";
 import { BookAdapters } from "@/adapters/book.adapters";
-import { noop } from "es-toolkit";
 import { showNotifications } from "@/utils/notifications";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import { zeroAtom } from "@/utils/atoms";
 import type { Book, Component, ArgsSync } from "@/utils/types";
-import {
-  type Auth,
-  getAuth,
-  onAuthStateChanged,
-  type Unsubscribe,
-} from "firebase/auth";
+import type { Unsubscribe } from "firebase/auth";
 import { AuthAction, type User, useUser, withUser } from "next-firebase-auth";
 
 export default withUser({
@@ -32,7 +26,6 @@ export default withUser({
 
 function Index(): Component {
   const user: User = useUser(),
-    auth: Auth = getAuth(),
     [myBooks, setMyBooks] = useState<Book[]>([]),
     UID: string = user.id as string,
     profileName: string = user?.displayName as string,
@@ -54,12 +47,20 @@ function Index(): Component {
       setCacheBooks,
       setMyBooks,
       setAllTitles,
-    };
+    },
+    syncUnsubRef = useRef<Unsubscribe | null>(null);
 
   useEffect(() => {
     showNotifications(newNoti, deletedNoti);
     if (!navigator.onLine) return;
-    BookAdapters.syncBooks(argsSync);
+    const unsub = BookAdapters.syncBooks(argsSync);
+    if (unsub) syncUnsubRef.current = unsub;
+    return () => {
+      if (syncUnsubRef.current) {
+        syncUnsubRef.current();
+        syncUnsubRef.current = null;
+      }
+    };
   }, []);
 
   useEffect(() => animateList(), [myBooks]);
@@ -67,12 +68,6 @@ function Index(): Component {
   useEffect(() => {
     fetchBooks();
   }, [user]);
-
-  useEffect(() => {
-    if (!navigator.onLine) return;
-    const unsub: Unsubscribe = onAuthStateChanged(auth, () => noop());
-    return () => unsub();
-  }, [auth]);
 
   useEffect(() => {
     if (zeroBooks) return;

@@ -32,16 +32,10 @@ dangerouslySetInnerHTML={{ __html: sanitizedNotes }}
 
 ## P1 - ALTA (Performance + Seguridad Media)
 
-### P1.1 Fuga de memoria: onSnapshot sin cleanup
-**Archivo:** `adapters/book.adapters.ts:44`
-**Problema:** `onSnapshot` retorna unsubscribe pero nunca se limpia
-**Fix:** En componentes que usan `syncBooks`, agregar `useEffect` con cleanup:
-```typescript
-useEffect(() => {
-  const unsub = syncBooks(...);
-  return () => unsub();
-}, [...]);
-```
+### P1.1 Fuga de memoria: onSnapshot sin cleanup ✅
+**Archivo:** `adapters/book.adapters.ts:44`, `pages/index.tsx:59-62`
+**Problema:** `onSnapshot` retornaba unsubscribe pero no se limpiaba
+**Fix:** `syncBooks` ya no es async, retorna `Unsubscribe | null | undefined`. En `index.tsx` se guarda en `useRef` y se limpia en el return del `useEffect`
 
 ### P1.2 Sin virtualización en listas grandes
 **Archivo:** `components/ListBooks.tsx:29`

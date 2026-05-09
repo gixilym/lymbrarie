@@ -33,8 +33,8 @@ export class BookAdapters {
     return { books, isEmpty };
   }
 
-  static async syncBooks(props: ArgsSync): Promise<SyncRes> {
-    if (isNull(props.UID)) return;
+  static syncBooks(props: ArgsSync): SyncRes {
+    if (isNull(props.UID)) return undefined;
 
     try {
       const myQuery: Query = query(
@@ -78,4 +78,4 @@ export class BookAdapters {
 
 type BooksRes = { books: Book[]; isEmpty: boolean };
 
-type SyncRes = Unsubscribe | void;
+type SyncRes = Unsubscribe | null | undefined;
