@@ -16,6 +16,8 @@
   },
   "scripts": {
     "dev": "next dev",
+    "predev": "node scripts/patch-watchpack.cjs",
+    "postinstall": "node scripts/patch-watchpack.cjs",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

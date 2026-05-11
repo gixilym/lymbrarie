@@ -1,68 +1,49 @@
 import { atom, type RecoilState } from "recoil";
 import type { ShuffleAtom } from "./types";
 
-const searchAtom: RecoilState<string> = atom({
-  key: "search-atom",
-  default: "",
+const atomCache: Map<string, RecoilState<any>> =
+  ((globalThis as any).__RECOIL_ATOM_CACHE ??= new Map());
+
+function cachedAtom<T>(key: string, defaultVal: T): RecoilState<T> {
+  const cached = atomCache.get(key);
+  if (cached) return cached as RecoilState<T>;
+  const a = atom<T>({ key, default: defaultVal });
+  atomCache.set(key, a);
+  return a;
+}
+
+const searchAtom = cachedAtom<string>("search-atom", "");
+
+const stateAtom = cachedAtom<string>("state-atom", "");
+
+const popupsAtom = cachedAtom<any>("popups-atom", {
+  add_book: false,
+  edit_book: false,
+  delete_book: false,
+  profile: false,
+  settings: false,
+  offline: false,
+  login: false,
+  recommendation: false,
 });
 
-const stateAtom: RecoilState<string> = atom({
-  key: "state-atom",
-  default: "",
+const zeroAtom = cachedAtom<boolean>("zero-atom", false);
+
+const animListAtom = cachedAtom<boolean>("anim-list-atom", false);
+
+const coverAtom = cachedAtom<boolean>("cover-atom", false);
+
+const menuAtom = cachedAtom<boolean>("menu-atom", false);
+
+const scrollAtom = cachedAtom<number>("scroll-atom", 0);
+
+const shuffleAtom = cachedAtom<ShuffleAtom>("shuffle-atom", {
+  data: [],
+  version: "",
+  mode: null,
 });
 
-const popupsAtom: RecoilState<any> = atom({
-  key: "popups-atom",
-  default: {
-    add_book: false,
-    edit_book: false,
-    delete_book: false,
-    profile: false,
-    settings: false,
-    offline: false,
-    login: false,
-    recommendation: false,
-  },
-});
-
-const zeroAtom: RecoilState<boolean> = atom({
-  key: "zero-atom",
-  default: false,
-});
-
-const animListAtom: RecoilState<boolean> = atom({
-  key: "anim-list-atom",
-  default: false,
-});
-
-const coverAtom: RecoilState<boolean> = atom({
-  key: "cover-atom",
-  default: false,
-});
-
-const menuAtom: RecoilState<boolean> = atom({
-  key: "menu-atom",
-  default: false,
-});
-
-const scrollAtom: RecoilState<number> = atom({
-  key: "scroll-atom",
-  default: 0,
-});
-
-const shuffleAtom = atom<ShuffleAtom>({
-  key: "shuffle-atom",
-  default: {
-    data: [],
-    version: "",
-    mode: null,
-  },
-});
-
-const showFavsAtom: RecoilState<boolean> = atom({
-  key: "show-favs-atom",
-  default: false,
-});
+const showFavsAtom = cachedAtom<boolean>("show-favs-atom", false);
 
 export {
   animListAtom,

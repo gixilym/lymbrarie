@@ -14,7 +14,7 @@ import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import { zeroAtom } from "@/utils/atoms";
 import type { Book, Component, ArgsSync } from "@/utils/types";
-import type { Unsubscribe } from "firebase/auth";
+import { type Auth, getAuth, onAuthStateChanged, type Unsubscribe } from "firebase/auth";
 import { AuthAction, type User, useUser, withUser } from "next-firebase-auth";
 
 export default withUser({
@@ -26,6 +26,7 @@ export default withUser({
 
 function Index(): Component {
   const user: User = useUser(),
+    auth: Auth = getAuth(),
     [myBooks, setMyBooks] = useState<Book[]>([]),
     UID: string = user.id as string,
     profileName: string = user?.displayName as string,
@@ -62,6 +63,12 @@ function Index(): Component {
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (!navigator.onLine) return;
+    const unsub: Unsubscribe = onAuthStateChanged(auth, () => {});
+    return () => unsub();
+  }, [auth]);
 
   useEffect(() => animateList(), [myBooks]);
 

@@ -29,21 +29,12 @@ const nextConfig = {
       },
     ],
   },
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      config.watchOptions = {
-        ...config.watchOptions,
-        ignored: [
-          "**/node_modules",
-          "**/.git",
-          "**/.next",
-          "**/C:\\DumpStack.log.tmp",
-          "**/C:\\hiberfil.sys",
-          "**/C:\\pagefile.sys",
-          "**/C:\\swapfile.sys",
-        ],
-      };
-    }
+  webpack: (config) => {
+    config.watchOptions = {
+      ...config.watchOptions,
+      poll: 500,
+      ignored: /(DumpStack\.log\.tmp|hiberfil\.sys|pagefile\.sys|swapfile\.sys)$/,
+    };
     return config;
   },
 };
