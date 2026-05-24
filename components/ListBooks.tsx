@@ -9,7 +9,7 @@ import { useEffect, useRef } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 
 export default function ListBooks(props: Props): Component {
-  const { listBooks, renderItem } = props,
+  const { listBooks, renderItem, showDetails } = props,
     [searchVal] = useRecoilState<string>(searchAtom),
     [stateVal] = useRecoilState<string>(stateAtom),
     [animateCard] = useRecoilState<boolean>(animListAtom),
@@ -19,7 +19,7 @@ export default function ListBooks(props: Props): Component {
     rowVirtualizer = useVirtualizer({
       count: listBooks.length,
       getScrollElement: () => parentRef.current,
-      estimateSize: () => 120,
+      estimateSize: () => (showDetails ? 145 : 75),
       overscan: 5,
     });
 
@@ -31,9 +31,10 @@ export default function ListBooks(props: Props): Component {
   return (
     <animated.div
       style={styles}
-      className="mb-36 flex flex-col justify-start w-full items-center gap-y-4 sm:overflow-hidden h-auto"
+      className="mb-36 flex flex-col justify-start w-full items-center sm:overflow-hidden h-auto"
       data-testid="list-books"
       ref={parentRef}
+      key={String(showDetails)}
     >
       <div
         style={{
@@ -42,7 +43,7 @@ export default function ListBooks(props: Props): Component {
           position: "relative",
         }}
       >
-        {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+        {rowVirtualizer.getVirtualItems().map(virtualRow => {
           const item = listBooks[virtualRow.index];
           return (
             <div
@@ -70,6 +71,7 @@ export default function ListBooks(props: Props): Component {
 interface Props {
   listBooks: BookData[];
   renderItem: (book: BookData, index: number) => Component;
+  showDetails: boolean;
 }
 
 interface BookData {

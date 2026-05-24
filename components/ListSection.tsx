@@ -163,7 +163,7 @@ const ListSection = memo(function B(props: Props) {
           txt={showFavs && !searchVal ? "no-favs" : "no-matches"}
         />
       ) : (
-        <ListBooks listBooks={sortedBooks} renderItem={renderBookItem} />
+        <ListBooks listBooks={sortedBooks} renderItem={renderBookItem} showDetails={showDetails} />
       )}
     </section>
   );
